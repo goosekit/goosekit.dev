@@ -170,6 +170,30 @@
             "applicationCategory": "DeveloperApplication",
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
           }
+        },
+        {
+          "@type": "ListItem",
+          "position": 12,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Lorem Ipsum Generator",
+            "url": "https://loremipsum-ashy.vercel.app/",
+            "description": "Generate placeholder text: paragraphs, sentences, words, or list items",
+            "applicationCategory": "DeveloperApplication",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 13,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Password Generator",
+            "url": "https://passwordgen-two-kappa.vercel.app/",
+            "description": "Generate strong, secure random passwords with crypto API",
+            "applicationCategory": "UtilityApplication",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
         }
       ]
     }
@@ -622,7 +646,7 @@
 
   <!-- TOOLS GRID -->
   <main>
-    <p class="tools-count" id="tools-count">11 tools available</p>
+    <p class="tools-count" id="tools-count">13 tools available</p>
 
     <div class="grid" id="grid" role="list">
 
@@ -864,6 +888,50 @@
           <span class="tag">Design</span>
         </div>
         <a class="card-link" href="https://cssgradient-five.vercel.app/" target="_blank" rel="noopener noreferrer">
+          Open tool →
+        </a>
+      </article>
+
+      <!-- Lorem Ipsum Generator -->
+      <article
+        class="card"
+        data-accent="loremipsum"
+        data-search="lorem ipsum generator placeholder text dummy content paragraphs sentences words filler"
+        role="listitem"
+      >
+        <div class="card-header">
+          <span class="card-icon" aria-hidden="true">📄</span>
+          <span class="card-title">Lorem Ipsum</span>
+        </div>
+        <p class="card-desc">Generate placeholder text instantly. Paragraphs, sentences, words, or list items with HTML wrapping.</p>
+        <div class="tags">
+          <span class="tag">Lorem Ipsum</span>
+          <span class="tag">Placeholder</span>
+          <span class="tag">Text</span>
+        </div>
+        <a class="card-link" href="https://loremipsum-ashy.vercel.app/" target="_blank" rel="noopener noreferrer">
+          Open tool →
+        </a>
+      </article>
+
+      <!-- Password Generator -->
+      <article
+        class="card"
+        data-accent="passwordgen"
+        data-search="password generator secure random strong passphrase crypto entropy symbols uppercase lowercase"
+        role="listitem"
+      >
+        <div class="card-header">
+          <span class="card-icon" aria-hidden="true">🔑</span>
+          <span class="card-title">Password Gen</span>
+        </div>
+        <p class="card-desc">Generate strong, secure random passwords. Customizable length &amp; characters. 100% client-side.</p>
+        <div class="tags">
+          <span class="tag">Password</span>
+          <span class="tag">Security</span>
+          <span class="tag">Crypto</span>
+        </div>
+        <a class="card-link" href="https://passwordgen-two-kappa.vercel.app/" target="_blank" rel="noopener noreferrer">
           Open tool →
         </a>
       </article>
