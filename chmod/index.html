@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chmod Calculator - Unix File Permissions Tool</title>
+<meta name="description" content="Interactive chmod calculator for Unix/Linux file permissions. Convert between numeric (octal) and symbolic notation, with support for setuid, setgid, and sticky bit.">
+<meta name="keywords" content="chmod, calculator, unix, linux, file permissions, octal, symbolic, setuid, setgid, sticky bit">
+<meta name="author" content="GooseKit">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://devtoolshub.com/chmod">
+<meta property="og:title" content="Chmod Calculator - Unix File Permissions Tool">
+<meta property="og:description" content="Interactive chmod calculator. Convert between numeric and symbolic Unix file permissions with visual checkboxes.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://devtoolshub.com/chmod">
+<meta property="og:site_name" content="GooseKit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Chmod Calculator - Unix File Permissions Tool">
+<meta name="twitter:description" content="Interactive chmod calculator. Convert between numeric and symbolic Unix file permissions.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Chmod Calculator",
+  "description": "Interactive chmod calculator for Unix/Linux file permissions. Convert between numeric (octal) and symbolic notation.",
+  "url": "https://devtoolshub.com/chmod",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "GooseKit",
+    "url": "https://devtoolshub.com"
+  }
+}
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #1a1a1a;
+  --bg-tertiary: #2a2a2a;
+  --accent: #3b82f6;
+  --accent-hover: #2563eb;
+  --text-primary: #e5e5e5;
+  --text-secondary: #a3a3a3;
+  --border: #333;
+  --success: #22c55e;
+  --error: #ef4444;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { color: var(--accent-hover); text-decoration: underline; }
+
+.container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+
+header { text-align: center; margin-bottom: 2.5rem; }
+header h1 { font-size: 2rem; font-weight: 700; margin-bottom: .5rem; }
+header h1 span { color: var(--accent); }
+header p { color: var(--text-secondary); font-size: 1.05rem; }
+
+.card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.card h2 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+/* Permission Grid */
+.perm-grid {
+  display: grid;
+  grid-template-columns: auto repeat(3, 1fr);
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.perm-grid .cell {
+  padding: .75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  min-height: 48px;
+}
+.perm-grid .cell:nth-child(4n) { border-right: none; }
+.perm-grid .cell.header-cell {
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  font-size: .85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.perm-grid .cell.row-label {
+  background: var(--bg-tertiary);
+  font-weight: 600;
+  font-size: .9rem;
+  justify-content: flex-start;
+  padding-left: 1rem;
+  min-width: 100px;
+}
+.perm-grid .row-last .cell,
+.perm-grid .cell:nth-last-child(-n+4) { border-bottom: none; }
+
+/* Checkbox */
+.perm-cb { display: none; }
+.perm-label {
+  width: 44px; height: 44px;
+  border-radius: 8px;
+  background: var(--bg-primary);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .15s;
+  font-size: 1.1rem;
+  user-select: none;
+}
+.perm-label:hover { border-color: var(--accent); }
+.perm-cb:checked + .perm-label {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* Special perms */
+.special-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.special-item {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .5rem 1rem;
+  cursor: pointer;
+  transition: border-color .15s;
+  flex: 1;
+  min-width: 140px;
+}
+.special-item:hover { border-color: var(--accent); }
+.special-item input { display: none; }
+.special-check {
+  width: 20px; height: 20px;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.special-item input:checked ~ .special-check {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.special-item input:checked ~ .special-check::after {
+  content: '✓';
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+}
+.special-info { display: flex; flex-direction: column; }
+.special-info .name { font-weight: 600; font-size: .9rem; }
+.special-info .desc { font-size: .75rem; color: var(--text-secondary); }
+
+/* Output */
+.output-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 500px) { .output-grid { grid-template-columns: 1fr; } }
+.output-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+}
+.output-box label {
+  display: block;
+  font-size: .8rem;
+  color: var(--text-secondary);
+  margin-bottom: .35rem;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.output-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.output-row input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 1.3rem;
+  font-weight: 700;
+  outline: none;
+  min-width: 0;
+}
+.copy-btn {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: .35rem .6rem;
+  cursor: pointer;
+  font-size: .8rem;
+  transition: all .15s;
+  white-space: nowrap;
+}
+.copy-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+.copy-btn.copied { background: var(--success); border-color: var(--success); color: #fff; }
+
+/* Command */
+.cmd-box {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+.cmd-box code {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 1rem;
+  color: var(--success);
+  flex: 1;
+}
+.cmd-box .cmd-prefix { color: var(--text-secondary); }
+.filename-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed var(--border);
+  color: var(--accent);
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 1rem;
+  outline: none;
+  width: 120px;
+}
+.filename-input:focus { border-color: var(--accent); }
+
+/* Presets */
+.presets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: .5rem;
+}
+.preset-btn {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .65rem .85rem;
+  cursor: pointer;
+  transition: all .15s;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: .15rem;
+}
+.preset-btn:hover { border-color: var(--accent); background: var(--bg-tertiary); }
+.preset-btn.active { border-color: var(--accent); background: rgba(59,130,246,.1); }
+.preset-btn .val {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-weight: 700;
+  color: var(--text-primary);
+  font-size: .95rem;
+}
+.preset-btn .lbl {
+  font-size: .75rem;
+  color: var(--text-secondary);
+}
+
+/* Reference */
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: .75rem;
+}
+.ref-item {
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: .85rem;
+}
+.ref-item .symbol {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+.ref-item .meaning {
+  font-size: .85rem;
+  color: var(--text-secondary);
+  margin-top: .2rem;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  color: var(--text-secondary);
+  font-size: .85rem;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>🔐 <span>Chmod</span> Calculator</h1>
+    <p>Unix file permissions made easy — interactive, visual, instant</p>
+  </header>
+
+  <!-- Permission Grid -->
+  <div class="card">
+    <h2>📋 Permissions</h2>
+    <div class="perm-grid" id="permGrid">
+      <div class="cell header-cell"></div>
+      <div class="cell header-cell">Read (4)</div>
+      <div class="cell header-cell">Write (2)</div>
+      <div class="cell header-cell">Execute (1)</div>
+      <div class="cell row-label">Owner</div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="or" data-who="o" data-perm="r"><label class="perm-label" for="or">r</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="ow" data-who="o" data-perm="w"><label class="perm-label" for="ow">w</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="ox" data-who="o" data-perm="x"><label class="perm-label" for="ox">x</label></div>
+      <div class="cell row-label">Group</div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="gr" data-who="g" data-perm="r"><label class="perm-label" for="gr">r</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="gw" data-who="g" data-perm="w"><label class="perm-label" for="gw">w</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="gx" data-who="g" data-perm="x"><label class="perm-label" for="gx">x</label></div>
+      <div class="cell row-label">Others</div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="tr" data-who="t" data-perm="r"><label class="perm-label" for="tr">r</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="tw" data-who="t" data-perm="w"><label class="perm-label" for="tw">w</label></div>
+      <div class="cell"><input type="checkbox" class="perm-cb" id="tx" data-who="t" data-perm="x"><label class="perm-label" for="tx">x</label></div>
+    </div>
+
+    <div class="special-row">
+      <label class="special-item">
+        <input type="checkbox" id="setuid" class="sp-cb">
+        <div class="special-check"></div>
+        <div class="special-info"><span class="name">Setuid (4)</span><span class="desc">Run as file owner</span></div>
+      </label>
+      <label class="special-item">
+        <input type="checkbox" id="setgid" class="sp-cb">
+        <div class="special-check"></div>
+        <div class="special-info"><span class="name">Setgid (2)</span><span class="desc">Run as file group</span></div>
+      </label>
+      <label class="special-item">
+        <input type="checkbox" id="sticky" class="sp-cb">
+        <div class="special-check"></div>
+        <div class="special-info"><span class="name">Sticky (1)</span><span class="desc">Restrict deletion</span></div>
+      </label>
+    </div>
+  </div>
+
+  <!-- Output -->
+  <div class="card">
+    <h2>⚡ Result</h2>
+    <div class="output-grid">
+      <div class="output-box">
+        <label>Numeric (Octal)</label>
+        <div class="output-row">
+          <input type="text" id="numericInput" maxlength="4" placeholder="0755">
+          <button class="copy-btn" data-target="numericInput">Copy</button>
+        </div>
+      </div>
+      <div class="output-box">
+        <label>Symbolic</label>
+        <div class="output-row">
+          <input type="text" id="symbolicInput" placeholder="rwxr-xr-x" maxlength="10">
+          <button class="copy-btn" data-target="symbolicInput">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="cmd-box">
+      <span class="cmd-prefix">$</span>
+      <code id="cmdOutput">chmod 0755 filename</code>
+      <input type="text" class="filename-input" id="filenameInput" value="filename" placeholder="filename">
+      <button class="copy-btn" id="copyCmd">Copy</button>
+    </div>
+  </div>
+
+  <!-- Presets -->
+  <div class="card">
+    <h2>🎯 Common Presets</h2>
+    <div class="presets-grid" id="presets"></div>
+  </div>
+
+  <!-- Reference -->
+  <div class="card">
+    <h2>📖 Permission Reference</h2>
+    <div class="ref-grid">
+      <div class="ref-item"><div class="symbol">r (4)</div><div class="meaning"><strong>Read</strong> — View file contents or list directory</div></div>
+      <div class="ref-item"><div class="symbol">w (2)</div><div class="meaning"><strong>Write</strong> — Modify file or add/remove directory entries</div></div>
+      <div class="ref-item"><div class="symbol">x (1)</div><div class="meaning"><strong>Execute</strong> — Run file or traverse directory</div></div>
+      <div class="ref-item"><div class="symbol">s (setuid)</div><div class="meaning"><strong>Set User ID</strong> — Execute as file owner (on owner-x)</div></div>
+      <div class="ref-item"><div class="symbol">s (setgid)</div><div class="meaning"><strong>Set Group ID</strong> — Execute as file group (on group-x)</div></div>
+      <div class="ref-item"><div class="symbol">t (sticky)</div><div class="meaning"><strong>Sticky Bit</strong> — Only owner can delete in directory</div></div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>Part of <a href="https://devtoolshub.com">GooseKit</a> — Free tools for developers</p>
+</footer>
+
+<script>
+const PRESETS = [
+  ['0755', 'Standard executable / directory'],
+  ['0644', 'Standard file (owner rw, others r)'],
+  ['0777', 'Full access (everyone rwx)'],
+  ['0700', 'Owner only (full access)'],
+  ['0600', 'Owner read/write only'],
+  ['0400', 'Owner read only'],
+  ['0444', 'Read-only for everyone'],
+  ['0555', 'Read/execute for everyone'],
+  ['0775', 'Owner/group full, others rx'],
+  ['0664', 'Owner/group rw, others read'],
+  ['1777', 'Sticky + full access (/tmp)'],
+  ['4755', 'Setuid + standard exec (sudo)'],
+  ['2755', 'Setgid + standard exec'],
+  ['0750', 'Owner full, group rx, others none'],
+];
+
+const $  = s => document.querySelector(s);
+const $$ = s => document.querySelectorAll(s);
+
+const cbs = {
+  or: $('#or'), ow: $('#ow'), ox: $('#ox'),
+  gr: $('#gr'), gw: $('#gw'), gx: $('#gx'),
+  tr: $('#tr'), tw: $('#tw'), tx: $('#tx'),
+};
+const sp = { setuid: $('#setuid'), setgid: $('#setgid'), sticky: $('#sticky') };
+const numIn = $('#numericInput');
+const symIn = $('#symbolicInput');
+const cmdOut = $('#cmdOutput');
+const fnIn = $('#filenameInput');
+
+// Build presets
+const presetsEl = $('#presets');
+PRESETS.forEach(([val, desc]) => {
+  const b = document.createElement('button');
+  b.className = 'preset-btn';
+  b.innerHTML = `<span class="val">${val}</span><span class="lbl">${desc}</span>`;
+  b.addEventListener('click', () => applyNumeric(val));
+  presetsEl.appendChild(b);
+});
+
+// Checkbox → output
+$$('.perm-cb, .sp-cb').forEach(cb => cb.addEventListener('change', syncFromCheckboxes));
+
+function getOctal() {
+  const v = (r, w, x) => (r ? 4 : 0) + (w ? 2 : 0) + (x ? 1 : 0);
+  const special = (sp.setuid.checked ? 4 : 0) + (sp.setgid.checked ? 2 : 0) + (sp.sticky.checked ? 1 : 0);
+  const o = v(cbs.or.checked, cbs.ow.checked, cbs.ox.checked);
+  const g = v(cbs.gr.checked, cbs.gw.checked, cbs.gx.checked);
+  const t = v(cbs.tr.checked, cbs.tw.checked, cbs.tx.checked);
+  return `${special}${o}${g}${t}`;
+}
+
+function getSymbolic() {
+  const p = (r, w, x) => (r ? 'r' : '-') + (w ? 'w' : '-') + (x ? 'x' : '-');
+  let s = p(cbs.or.checked, cbs.ow.checked, cbs.ox.checked)
+        + p(cbs.gr.checked, cbs.gw.checked, cbs.gx.checked)
+        + p(cbs.tr.checked, cbs.tw.checked, cbs.tx.checked);
+  let a = [...s];
+  if (sp.setuid.checked) a[2] = a[2] === 'x' ? 's' : 'S';
+  if (sp.setgid.checked) a[5] = a[5] === 'x' ? 's' : 'S';
+  if (sp.sticky.checked)  a[8] = a[8] === 'x' ? 't' : 'T';
+  return a.join('');
+}
+
+function syncFromCheckboxes() {
+  const octal = getOctal();
+  numIn.value = octal;
+  symIn.value = getSymbolic();
+  updateCmd(octal);
+  highlightPreset(octal);
+}
+
+function applyNumeric(val) {
+  val = val.replace(/[^0-7]/g, '');
+  if (val.length < 3) return;
+  if (val.length === 3) val = '0' + val;
+  if (val.length > 4) val = val.slice(0, 4);
+
+  const s = parseInt(val[0]);
+  const o = parseInt(val[1]);
+  const g = parseInt(val[2]);
+  const t = parseInt(val[3]);
+
+  cbs.or.checked = !!(o & 4); cbs.ow.checked = !!(o & 2); cbs.ox.checked = !!(o & 1);
+  cbs.gr.checked = !!(g & 4); cbs.gw.checked = !!(g & 2); cbs.gx.checked = !!(g & 1);
+  cbs.tr.checked = !!(t & 4); cbs.tw.checked = !!(t & 2); cbs.tx.checked = !!(t & 1);
+  sp.setuid.checked = !!(s & 4);
+  sp.setgid.checked = !!(s & 2);
+  sp.sticky.checked = !!(s & 1);
+
+  numIn.value = val;
+  symIn.value = getSymbolic();
+  updateCmd(val);
+  highlightPreset(val);
+}
+
+function applySymbolic(sym) {
+  sym = sym.replace(/[^rwxsStT\-]/g, '');
+  if (sym.length !== 9) return;
+
+  cbs.or.checked = sym[0] === 'r';
+  cbs.ow.checked = sym[1] === 'w';
+  cbs.ox.checked = sym[2] === 'x' || sym[2] === 's';
+  cbs.gr.checked = sym[3] === 'r';
+  cbs.gw.checked = sym[4] === 'w';
+  cbs.gx.checked = sym[5] === 'x' || sym[5] === 's';
+  cbs.tr.checked = sym[6] === 'r';
+  cbs.tw.checked = sym[7] === 'w';
+  cbs.tx.checked = sym[8] === 'x' || sym[8] === 't';
+
+  sp.setuid.checked = sym[2] === 's' || sym[2] === 'S';
+  sp.setgid.checked = sym[5] === 's' || sym[5] === 'S';
+  sp.sticky.checked  = sym[8] === 't' || sym[8] === 'T';
+
+  const octal = getOctal();
+  numIn.value = octal;
+  symIn.value = getSymbolic();
+  updateCmd(octal);
+  highlightPreset(octal);
+}
+
+numIn.addEventListener('input', () => {
+  const v = numIn.value.trim();
+  if (/^[0-7]{3,4}$/.test(v)) applyNumeric(v);
+});
+
+symIn.addEventListener('input', () => {
+  const v = symIn.value.trim();
+  if (v.length === 9) applySymbolic(v);
+});
+
+function updateCmd(octal) {
+  const fn = fnIn.value.trim() || 'filename';
+  cmdOut.textContent = `chmod ${octal} ${fn}`;
+}
+
+fnIn.addEventListener('input', () => updateCmd(numIn.value));
+
+function highlightPreset(octal) {
+  const norm = octal.length === 3 ? '0' + octal : octal;
+  $$('.preset-btn').forEach(b => {
+    b.classList.toggle('active', b.querySelector('.val').textContent === norm);
+  });
+}
+
+// Copy buttons
+$$('.copy-btn[data-target]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const input = $(`#${btn.dataset.target}`);
+    navigator.clipboard.writeText(input.value).then(() => flash(btn));
+  });
+});
+$('#copyCmd').addEventListener('click', () => {
+  navigator.clipboard.writeText(cmdOut.textContent).then(() => flash($('#copyCmd')));
+});
+
+function flash(btn) {
+  btn.classList.add('copied');
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => { btn.classList.remove('copied'); btn.textContent = orig; }, 1200);
+}
+
+// Default
+applyNumeric('0755');
+</script>
+</body>
+</html>

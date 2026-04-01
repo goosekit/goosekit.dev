@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HashGen — Free Online Hash Generator (MD5, SHA-256, SHA-512)</title>
+  <meta name="description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes online for free. Hash text or files, compare hashes, HMAC support. No signup." />
+  <meta property="og:title" content="HashGen — Free Online Hash Generator" />
+  <meta property="og:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes online for free. Hash text or files, compare hashes, HMAC support. No signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arthurpierrey.github.io/hashgen/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="HashGen — Free Online Hash Generator" />
+  <meta name="twitter:description" content="Generate MD5, SHA-1, SHA-256, SHA-512 hashes online for free. Hash text or files, compare hashes, HMAC support. No signup." />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "HashGen",
+    "description": "Generate MD5, SHA-1, SHA-256, SHA-512 hashes online for free. Hash text or files, compare hashes, HMAC support.",
+    "url": "https://arthurpierrey.github.io/hashgen/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1f2937;
+      --border: #30363d;
+      --accent: #a78bfa;
+      --accent-dim: #7c5cdb;
+      --accent-bg: rgba(167,139,250,0.08);
+      --text: #e6edf3;
+      --text-dim: #8b949e;
+      --green: #3fb950;
+      --red: #f85149;
+      --green-bg: rgba(63,185,80,0.12);
+      --red-bg: rgba(248,81,73,0.12);
+      --mono: 'Courier New', Courier, monospace;
+    }
+
+    html { font-size: 16px; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .logo-icon {
+      width: 36px; height: 36px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+    }
+    header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: -0.02em; }
+    header h1 span { color: var(--accent); }
+    .tagline { color: var(--text-dim); font-size: 0.8rem; margin-left: auto; }
+
+    /* ── Main layout ── */
+    main {
+      flex: 1;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+    .card-title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .card-title svg { opacity: 0.7; }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 1rem;
+    }
+    .tab-btn {
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.15s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Textarea ── */
+    textarea {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 0.75rem;
+      resize: vertical;
+      min-height: 130px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: var(--text-dim); }
+
+    /* ── Drag & Drop ── */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-bg);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+    .drop-text { color: var(--text-dim); font-size: 0.9rem; }
+    .drop-text strong { color: var(--accent); }
+    .file-info {
+      margin-top: 0.75rem;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.6rem 0.9rem;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .file-info .file-name { font-weight: 500; }
+    .file-info .file-size { color: var(--text-dim); }
+    .file-info .btn-clear {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+      padding: 0 0.2rem;
+    }
+    .file-info .btn-clear:hover { color: var(--red); }
+
+    /* ── Options bar ── */
+    .options-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+    .toggle-group {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .toggle-label { font-size: 0.85rem; color: var(--text-dim); }
+    .toggle {
+      position: relative;
+      width: 36px; height: 20px;
+      cursor: pointer;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle-track {
+      position: absolute; inset: 0;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .toggle input:checked + .toggle-track {
+      background: var(--accent-dim);
+      border-color: var(--accent);
+    }
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      left: 2px; top: 2px;
+      width: 14px; height: 14px;
+      background: #fff;
+      border-radius: 50%;
+      transition: left 0.2s;
+    }
+    .toggle input:checked + .toggle-track::after { left: 18px; }
+
+    /* ── HMAC key input ── */
+    .hmac-key-wrap {
+      display: none;
+      gap: 0.5rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .hmac-key-wrap.visible { display: flex; }
+    .hmac-key-wrap label { font-size: 0.85rem; color: var(--text-dim); white-space: nowrap; }
+    .hmac-key-wrap input {
+      flex: 1;
+      min-width: 160px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      padding: 0.4rem 0.6rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .hmac-key-wrap input:focus { border-color: var(--accent); }
+    .hmac-note { font-size: 0.75rem; color: var(--text-dim); }
+
+    /* ── Results ── */
+    .results-panel { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .hash-row {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      gap: 0.5rem 0.75rem;
+      align-items: center;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      transition: border-color 0.2s;
+    }
+    .hash-row.match { border-color: var(--green); background: var(--green-bg); }
+    .hash-row.mismatch { border-color: var(--red); background: var(--red-bg); }
+
+    .hash-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent);
+    }
+    .hash-value {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text);
+      word-break: break-all;
+      line-height: 1.4;
+    }
+    .hash-value.empty { color: var(--text-dim); font-style: italic; font-family: inherit; font-size: 0.82rem; }
+
+    .btn-copy {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 0.75rem;
+      padding: 0.3rem 0.6rem;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .btn-copy:hover { color: var(--accent); border-color: var(--accent); }
+    .btn-copy.copied { color: var(--green); border-color: var(--green); }
+
+    /* ── Compare ── */
+    .compare-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .compare-label { font-size: 0.85rem; color: var(--text-dim); }
+    .compare-input {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      padding: 0.65rem 0.75rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .compare-input:focus { border-color: var(--accent); }
+    .compare-input::placeholder { color: var(--text-dim); font-family: inherit; }
+    .compare-status {
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.4rem 0.75rem;
+      border-radius: 6px;
+      display: none;
+    }
+    .compare-status.match { display: block; color: var(--green); background: var(--green-bg); }
+    .compare-status.mismatch { display: block; color: var(--red); background: var(--red-bg); }
+
+    /* ── Computing indicator ── */
+    .computing-badge {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .computing-badge.visible { display: flex; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 12px; height: 12px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .footer-label {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.75rem;
+    }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .footer-links a {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      padding: 0.35rem 0.75rem;
+      text-decoration: none;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .footer-links a:hover { color: var(--accent); border-color: var(--accent); }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      margin-top: 1rem;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      .hash-row { grid-template-columns: 60px 1fr; }
+      .btn-copy { grid-column: 2; justify-self: start; }
+      .tagline { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🔐</div>
+  <h1>Hash<span>Gen</span></h1>
+  <span class="tagline">Free Online Hash Generator</span>
+</header>
+
+<main>
+
+  <!-- Input section -->
+  <div class="card">
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="text">📝 Text</button>
+      <button class="tab-btn" data-tab="file">📁 File</button>
+    </div>
+
+    <div class="tab-panel active" id="tab-text">
+      <textarea id="text-input" placeholder="Type or paste text to hash…" rows="5" spellcheck="false"></textarea>
+      <div style="text-align:right; font-size:0.78rem; color:var(--text-dim); margin-top:0.3rem;">
+        <span id="char-count">0</span> characters
+      </div>
+    </div>
+
+    <div class="tab-panel" id="tab-file">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" />
+        <div class="drop-icon">📂</div>
+        <div class="drop-text"><strong>Click to choose</strong> or drag &amp; drop any file</div>
+        <div class="drop-text" style="font-size:0.75rem; margin-top:0.25rem;">All file types supported</div>
+      </div>
+      <div class="file-info" id="file-info" style="display:none;">
+        <span>📄</span>
+        <span class="file-name" id="file-name"></span>
+        <span class="file-size" id="file-size"></span>
+        <button class="btn-clear" id="btn-clear-file" title="Remove file">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/></svg>
+      Options
+    </div>
+    <div class="options-bar">
+      <div class="toggle-group">
+        <span class="toggle-label">Uppercase</span>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-uppercase" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+      <div class="toggle-group">
+        <span class="toggle-label">HMAC mode</span>
+        <label class="toggle">
+          <input type="checkbox" id="toggle-hmac" />
+          <span class="toggle-track"></span>
+        </label>
+      </div>
+    </div>
+    <div class="hmac-key-wrap" id="hmac-key-wrap" style="margin-top:0.75rem;">
+      <label for="hmac-key">HMAC Key:</label>
+      <input type="text" id="hmac-key" placeholder="Enter HMAC secret key…" spellcheck="false" />
+      <span class="hmac-note">⚠ MD5 HMAC not supported (MD5 unavailable in Web Crypto)</span>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="card">
+    <div class="card-title" style="justify-content:space-between;">
+      <span style="display:flex;align-items:center;gap:0.5rem;">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5 2.5a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 3a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1H5zm0 3a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1H5z"/></svg>
+        Hash Results
+      </span>
+      <div class="computing-badge" id="computing-badge">
+        <div class="spinner"></div> Computing…
+      </div>
+    </div>
+    <div class="results-panel" id="results-panel">
+      <!-- rows injected by JS -->
+    </div>
+  </div>
+
+  <!-- Compare -->
+  <div class="card">
+    <div class="card-title">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M6 12.796V3.204L11.482 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/></svg>
+      Compare Hash
+    </div>
+    <div class="compare-wrap">
+      <span class="compare-label">Paste an expected hash to compare against all results:</span>
+      <input type="text" class="compare-input" id="compare-input" placeholder="e.g. 5d41402abc4b2a76b9719d911017c592" spellcheck="false" />
+      <div class="compare-status" id="compare-status"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-label">More Free Dev Tools</div>
+  <div class="footer-links">
+    <a href="https://arthurpierrey.github.io/screensnap/" target="_blank" rel="noopener">📸 ScreenSnap</a>
+    <a href="https://arthurpierrey.github.io/ogpreview/" target="_blank" rel="noopener">🔗 OG Preview</a>
+    <a href="https://arthurpierrey.github.io/devformat/" target="_blank" rel="noopener">🛠 DevFormat</a>
+    <a href="https://base64tool-phi.vercel.app/" target="_blank" rel="noopener">🔣 Base64 Tool</a>
+    <a href="https://regextester-kappa.vercel.app/" target="_blank" rel="noopener">🔍 RegexLab</a>
+    <a href="https://diffchecker-chi.vercel.app/" target="_blank" rel="noopener">📄 DiffView</a>
+  </div>
+  <div class="footer-copy">HashGen — No data sent to any server. All hashing runs locally in your browser.</div>
+</footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   MD5 — classic implementation (no Web Crypto)
+   ═══════════════════════════════════════════════════════ */
+function md5(inputStr) {
+  function safeAdd(x, y) {
+    const lsw = (x & 0xffff) + (y & 0xffff);
+    const msw = (x >> 16) + (y >> 16) + (lsw >> 16);
+    return (msw << 16) | (lsw & 0xffff);
+  }
+  function bitRotLeft(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
+  function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
+  function md5ff(a,b,c,d,x,s,t){ return md5cmn((b&c)|((~b)&d),a,b,x,s,t); }
+  function md5gg(a,b,c,d,x,s,t){ return md5cmn((b&d)|(c&(~d)),a,b,x,s,t); }
+  function md5hh(a,b,c,d,x,s,t){ return md5cmn(b^c^d,a,b,x,s,t); }
+  function md5ii(a,b,c,d,x,s,t){ return md5cmn(c^(b|(~d)),a,b,x,s,t); }
+
+  function coremd5(x, len) {
+    x[len >> 5] |= 0x80 << (len % 32);
+    x[(((len + 64) >>> 9) << 4) + 14] = len;
+    let [a,b,c,d] = [1732584193,-271733879,-1732584194,271733878];
+    for (let i = 0; i < x.length; i += 16) {
+      const [olda,oldb,oldc,oldd] = [a,b,c,d];
+      a=md5ff(a,b,c,d,x[i],7,-680876936);    d=md5ff(d,a,b,c,x[i+1],12,-389564586);
+      c=md5ff(c,d,a,b,x[i+2],17,606105819);  b=md5ff(b,c,d,a,x[i+3],22,-1044525330);
+      a=md5ff(a,b,c,d,x[i+4],7,-176418897);  d=md5ff(d,a,b,c,x[i+5],12,1200080426);
+      c=md5ff(c,d,a,b,x[i+6],17,-1473231341);b=md5ff(b,c,d,a,x[i+7],22,-45705983);
+      a=md5ff(a,b,c,d,x[i+8],7,1770035416);  d=md5ff(d,a,b,c,x[i+9],12,-1958414417);
+      c=md5ff(c,d,a,b,x[i+10],17,-42063);    b=md5ff(b,c,d,a,x[i+11],22,-1990404162);
+      a=md5ff(a,b,c,d,x[i+12],7,1804603682); d=md5ff(d,a,b,c,x[i+13],12,-40341101);
+      c=md5ff(c,d,a,b,x[i+14],17,-1502002290);b=md5ff(b,c,d,a,x[i+15],22,1236535329);
+      a=md5gg(a,b,c,d,x[i+1],5,-165796510);  d=md5gg(d,a,b,c,x[i+6],9,-1069501632);
+      c=md5gg(c,d,a,b,x[i+11],14,643717713); b=md5gg(b,c,d,a,x[i],20,-373897302);
+      a=md5gg(a,b,c,d,x[i+5],5,-701558691);  d=md5gg(d,a,b,c,x[i+10],9,38016083);
+      c=md5gg(c,d,a,b,x[i+15],14,-660478335);b=md5gg(b,c,d,a,x[i+4],20,-405537848);
+      a=md5gg(a,b,c,d,x[i+9],5,568446438);   d=md5gg(d,a,b,c,x[i+14],9,-1019803690);
+      c=md5gg(c,d,a,b,x[i+3],14,-187363961); b=md5gg(b,c,d,a,x[i+8],20,1163531501);
+      a=md5gg(a,b,c,d,x[i+13],5,-1444681467);d=md5gg(d,a,b,c,x[i+2],9,-51403784);
+      c=md5gg(c,d,a,b,x[i+7],14,1735328473); b=md5gg(b,c,d,a,x[i+12],20,-1926607734);
+      a=md5hh(a,b,c,d,x[i+5],4,-378558);     d=md5hh(d,a,b,c,x[i+8],11,-2022574463);
+      c=md5hh(c,d,a,b,x[i+11],16,1839030562);b=md5hh(b,c,d,a,x[i+14],23,-35309556);
+      a=md5hh(a,b,c,d,x[i+1],4,-1530992060); d=md5hh(d,a,b,c,x[i+4],11,1272893353);
+      c=md5hh(c,d,a,b,x[i+7],16,-155497632); b=md5hh(b,c,d,a,x[i+10],23,-1094730640);
+      a=md5hh(a,b,c,d,x[i+13],4,681279174);  d=md5hh(d,a,b,c,x[i],11,-358537222);
+      c=md5hh(c,d,a,b,x[i+3],16,-722521979); b=md5hh(b,c,d,a,x[i+6],23,76029189);
+      a=md5hh(a,b,c,d,x[i+9],4,-640364487);  d=md5hh(d,a,b,c,x[i+12],11,-421815835);
+      c=md5hh(c,d,a,b,x[i+15],16,530742520); b=md5hh(b,c,d,a,x[i+2],23,-995338651);
+      a=md5ii(a,b,c,d,x[i],6,-198630844);    d=md5ii(d,a,b,c,x[i+7],10,1126891415);
+      c=md5ii(c,d,a,b,x[i+14],15,-1416354905);b=md5ii(b,c,d,a,x[i+5],21,-57434055);
+      a=md5ii(a,b,c,d,x[i+12],6,1700485571); d=md5ii(d,a,b,c,x[i+3],10,-1894986606);
+      c=md5ii(c,d,a,b,x[i+10],15,-1051523);  b=md5ii(b,c,d,a,x[i+1],21,-2054922799);
+      a=md5ii(a,b,c,d,x[i+8],6,1873313359);  d=md5ii(d,a,b,c,x[i+15],10,-30611744);
+      c=md5ii(c,d,a,b,x[i+6],15,-1560198380);b=md5ii(b,c,d,a,x[i+13],21,1309151649);
+      a=md5ii(a,b,c,d,x[i+4],6,-145523070);  d=md5ii(d,a,b,c,x[i+11],10,-1120210379);
+      c=md5ii(c,d,a,b,x[i+2],15,718787259);  b=md5ii(b,c,d,a,x[i+9],21,-343485551);
+      a=safeAdd(a,olda); b=safeAdd(b,oldb); c=safeAdd(c,oldc); d=safeAdd(d,oldd);
+    }
+    return [a,b,c,d];
+  }
+
+  function str2binl(str) {
+    const bin = [];
+    const mask = (1 << 8) - 1;
+    for (let i = 0; i < str.length * 8; i += 8)
+      bin[i >> 5] |= (str.charCodeAt(i / 8) & mask) << (i % 32);
+    return bin;
+  }
+  function binl2hex(binarray) {
+    const hexTab = '0123456789abcdef';
+    let str = '';
+    for (let i = 0; i < binarray.length * 4; i++)
+      str += hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8 + 4)) & 0xf) +
+             hexTab.charAt((binarray[i >> 2] >> ((i % 4) * 8)) & 0xf);
+    return str;
+  }
+  // encode to Latin-1 (MD5 operates on byte strings)
+  const encoded = unescape(encodeURIComponent(inputStr));
+  return binl2hex(coremd5(str2binl(encoded), encoded.length * 8));
+}
+
+/* MD5 for ArrayBuffer (file hashing) */
+function md5Buffer(buffer) {
+  function safeAdd(x, y) {
+    const lsw = (x & 0xffff) + (y & 0xffff);
+    return ((x >> 16) + (y >> 16) + (lsw >> 16)) << 16 | (lsw & 0xffff);
+  }
+  function bitRotLeft(num, cnt) { return (num << cnt) | (num >>> (32 - cnt)); }
+  function md5cmn(q, a, b, x, s, t) { return safeAdd(bitRotLeft(safeAdd(safeAdd(a, q), safeAdd(x, t)), s), b); }
+  function md5ff(a,b,c,d,x,s,t){ return md5cmn((b&c)|((~b)&d),a,b,x,s,t); }
+  function md5gg(a,b,c,d,x,s,t){ return md5cmn((b&d)|(c&(~d)),a,b,x,s,t); }
+  function md5hh(a,b,c,d,x,s,t){ return md5cmn(b^c^d,a,b,x,s,t); }
+  function md5ii(a,b,c,d,x,s,t){ return md5cmn(c^(b|(~d)),a,b,x,s,t); }
+
+  const bytes = new Uint8Array(buffer);
+  const len8 = bytes.length;
+  // Convert to 32-bit words (LE)
+  const extra = ((len8 % 64) < 56) ? (55 - (len8 % 64)) : (119 - (len8 % 64));
+  const padded = new Uint8Array(len8 + extra + 9);
+  padded.set(bytes);
+  padded[len8] = 0x80;
+  const bitlen = len8 * 8;
+  padded[padded.length - 8] = bitlen & 0xff;
+  padded[padded.length - 7] = (bitlen >>> 8) & 0xff;
+  padded[padded.length - 6] = (bitlen >>> 16) & 0xff;
+  padded[padded.length - 5] = (bitlen >>> 24) & 0xff;
+
+  const words = new Int32Array(padded.buffer);
+  let [a,b,c,d] = [1732584193,-271733879,-1732584194,271733878];
+  for (let i = 0; i < words.length; i += 16) {
+    const [oa,ob,oc,od] = [a,b,c,d];
+    a=md5ff(a,b,c,d,words[i],7,-680876936);    d=md5ff(d,a,b,c,words[i+1],12,-389564586);
+    c=md5ff(c,d,a,b,words[i+2],17,606105819);  b=md5ff(b,c,d,a,words[i+3],22,-1044525330);
+    a=md5ff(a,b,c,d,words[i+4],7,-176418897);  d=md5ff(d,a,b,c,words[i+5],12,1200080426);
+    c=md5ff(c,d,a,b,words[i+6],17,-1473231341);b=md5ff(b,c,d,a,words[i+7],22,-45705983);
+    a=md5ff(a,b,c,d,words[i+8],7,1770035416);  d=md5ff(d,a,b,c,words[i+9],12,-1958414417);
+    c=md5ff(c,d,a,b,words[i+10],17,-42063);    b=md5ff(b,c,d,a,words[i+11],22,-1990404162);
+    a=md5ff(a,b,c,d,words[i+12],7,1804603682); d=md5ff(d,a,b,c,words[i+13],12,-40341101);
+    c=md5ff(c,d,a,b,words[i+14],17,-1502002290);b=md5ff(b,c,d,a,words[i+15],22,1236535329);
+    a=md5gg(a,b,c,d,words[i+1],5,-165796510);  d=md5gg(d,a,b,c,words[i+6],9,-1069501632);
+    c=md5gg(c,d,a,b,words[i+11],14,643717713); b=md5gg(b,c,d,a,words[i],20,-373897302);
+    a=md5gg(a,b,c,d,words[i+5],5,-701558691);  d=md5gg(d,a,b,c,words[i+10],9,38016083);
+    c=md5gg(c,d,a,b,words[i+15],14,-660478335);b=md5gg(b,c,d,a,words[i+4],20,-405537848);
+    a=md5gg(a,b,c,d,words[i+9],5,568446438);   d=md5gg(d,a,b,c,words[i+14],9,-1019803690);
+    c=md5gg(c,d,a,b,words[i+3],14,-187363961); b=md5gg(b,c,d,a,words[i+8],20,1163531501);
+    a=md5gg(a,b,c,d,words[i+13],5,-1444681467);d=md5gg(d,a,b,c,words[i+2],9,-51403784);
+    c=md5gg(c,d,a,b,words[i+7],14,1735328473); b=md5gg(b,c,d,a,words[i+12],20,-1926607734);
+    a=md5hh(a,b,c,d,words[i+5],4,-378558);     d=md5hh(d,a,b,c,words[i+8],11,-2022574463);
+    c=md5hh(c,d,a,b,words[i+11],16,1839030562);b=md5hh(b,c,d,a,words[i+14],23,-35309556);
+    a=md5hh(a,b,c,d,words[i+1],4,-1530992060); d=md5hh(d,a,b,c,words[i+4],11,1272893353);
+    c=md5hh(c,d,a,b,words[i+7],16,-155497632); b=md5hh(b,c,d,a,words[i+10],23,-1094730640);
+    a=md5hh(a,b,c,d,words[i+13],4,681279174);  d=md5hh(d,a,b,c,words[i],11,-358537222);
+    c=md5hh(c,d,a,b,words[i+3],16,-722521979); b=md5hh(b,c,d,a,words[i+6],23,76029189);
+    a=md5hh(a,b,c,d,words[i+9],4,-640364487);  d=md5hh(d,a,b,c,words[i+12],11,-421815835);
+    c=md5hh(c,d,a,b,words[i+15],16,530742520); b=md5hh(b,c,d,a,words[i+2],23,-995338651);
+    a=md5ii(a,b,c,d,words[i],6,-198630844);    d=md5ii(d,a,b,c,words[i+7],10,1126891415);
+    c=md5ii(c,d,a,b,words[i+14],15,-1416354905);b=md5ii(b,c,d,a,words[i+5],21,-57434055);
+    a=md5ii(a,b,c,d,words[i+12],6,1700485571); d=md5ii(d,a,b,c,words[i+3],10,-1894986606);
+    c=md5ii(c,d,a,b,words[i+10],15,-1051523);  b=md5ii(b,c,d,a,words[i+1],21,-2054922799);
+    a=md5ii(a,b,c,d,words[i+8],6,1873313359);  d=md5ii(d,a,b,c,words[i+15],10,-30611744);
+    c=md5ii(c,d,a,b,words[i+6],15,-1560198380);b=md5ii(b,c,d,a,words[i+13],21,1309151649);
+    a=md5ii(a,b,c,d,words[i+4],6,-145523070);  d=md5ii(d,a,b,c,words[i+11],10,-1120210379);
+    c=md5ii(c,d,a,b,words[i+2],15,718787259);  b=md5ii(b,c,d,a,words[i+9],21,-343485551);
+    a=safeAdd(a,oa); b=safeAdd(b,ob); c=safeAdd(c,oc); d=safeAdd(d,od);
+  }
+  function i32ToHex(n) {
+    let s = '';
+    for (let i = 0; i < 4; i++) s += ('0' + ((n >>> (i*8)) & 0xff).toString(16)).slice(-2);
+    return s;
+  }
+  return i32ToHex(a) + i32ToHex(b) + i32ToHex(c) + i32ToHex(d);
+}
+
+/* ═══════════════════════════════════════════════════════
+   Web Crypto helpers
+   ═══════════════════════════════════════════════════════ */
+function bufToHex(buf) {
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+async function shaDigest(algo, data) {
+  const buf = await crypto.subtle.digest(algo, data);
+  return bufToHex(buf);
+}
+
+async function hmacDigest(algo, keyStr, data) {
+  const keyMat = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(keyStr),
+    { name: 'HMAC', hash: algo },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', keyMat, data);
+  return bufToHex(sig);
+}
+
+/* ═══════════════════════════════════════════════════════
+   App State
+   ═══════════════════════════════════════════════════════ */
+const ALGOS = [
+  { id: 'md5',    label: 'MD5',     algo: null },
+  { id: 'sha1',   label: 'SHA-1',   algo: 'SHA-1' },
+  { id: 'sha256', label: 'SHA-256', algo: 'SHA-256' },
+  { id: 'sha384', label: 'SHA-384', algo: 'SHA-384' },
+  { id: 'sha512', label: 'SHA-512', algo: 'SHA-512' },
+];
+
+let state = {
+  mode: 'text',       // 'text' | 'file'
+  text: '',
+  fileBuffer: null,
+  uppercase: false,
+  hmac: false,
+  hmacKey: '',
+  results: {},        // id → hex string
+  compare: '',
+};
+
+/* ═══════════════════════════════════════════════════════
+   DOM refs
+   ═══════════════════════════════════════════════════════ */
+const $ = id => document.getElementById(id);
+const textInput    = $('text-input');
+const charCount    = $('char-count');
+const fileInput    = $('file-input');
+const dropZone     = $('drop-zone');
+const fileInfo     = $('file-info');
+const fileName     = $('file-name');
+const fileSize     = $('file-size');
+const btnClearFile = $('btn-clear-file');
+const toggleUpper  = $('toggle-uppercase');
+const toggleHmac   = $('toggle-hmac');
+const hmacKeyWrap  = $('hmac-key-wrap');
+const hmacKeyInput = $('hmac-key');
+const resultsPanel = $('results-panel');
+const computeBadge = $('computing-badge');
+const compareInput = $('compare-input');
+const compareStatus= $('compare-status');
+
+/* ═══════════════════════════════════════════════════════
+   Build result rows
+   ═══════════════════════════════════════════════════════ */
+function buildRows() {
+  resultsPanel.innerHTML = '';
+  ALGOS.forEach(({ id, label }) => {
+    const row = document.createElement('div');
+    row.className = 'hash-row';
+    row.id = `row-${id}`;
+    row.innerHTML = `
+      <span class="hash-name">${label}</span>
+      <span class="hash-value empty" id="val-${id}">—</span>
+      <button class="btn-copy" id="copy-${id}" data-id="${id}">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/></svg>
+        Copy
+      </button>`;
+    resultsPanel.appendChild(row);
+  });
+
+  // Copy click handler
+  resultsPanel.addEventListener('click', e => {
+    const btn = e.target.closest('.btn-copy');
+    if (!btn) return;
+    const id = btn.dataset.id;
+    const val = state.results[id];
+    if (!val) return;
+    navigator.clipboard.writeText(val).then(() => {
+      btn.textContent = '✓ Copied';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.innerHTML = `<svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1H2z"/></svg> Copy`;
+        btn.classList.remove('copied');
+      }, 1500);
+    });
+  });
+}
+
+function updateRow(id, hex) {
+  const valEl = $(`val-${id}`);
+  const rowEl = $(`row-${id}`);
+  if (!hex) {
+    valEl.textContent = '—';
+    valEl.className = 'hash-value empty';
+    rowEl.className = 'hash-row';
+    return;
+  }
+  const display = state.uppercase ? hex.toUpperCase() : hex.toLowerCase();
+  valEl.textContent = display;
+  valEl.className = 'hash-value';
+  state.results[id] = display;
+
+  // Compare highlight
+  const cmp = state.compare.trim().toLowerCase();
+  if (cmp) {
+    rowEl.className = 'hash-row ' + (hex.toLowerCase() === cmp ? 'match' : 'mismatch');
+  } else {
+    rowEl.className = 'hash-row';
+  }
+}
+
+function updateCompareStatus() {
+  const cmp = state.compare.trim().toLowerCase();
+  if (!cmp) { compareStatus.className = 'compare-status'; compareStatus.textContent = ''; return; }
+  const vals = Object.values(state.results).map(v => v.toLowerCase());
+  if (vals.includes(cmp)) {
+    compareStatus.className = 'compare-status match';
+    compareStatus.textContent = '✓ Hash matches!';
+  } else if (vals.length > 0) {
+    compareStatus.className = 'compare-status mismatch';
+    compareStatus.textContent = '✗ No matching hash found.';
+  } else {
+    compareStatus.className = 'compare-status';
+    compareStatus.textContent = '';
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   Core compute
+   ═══════════════════════════════════════════════════════ */
+async function computeHashes(data /* ArrayBuffer */) {
+  computeBadge.classList.add('visible');
+  state.results = {};
+  const isHmac = state.hmac;
+  const key = state.hmacKey;
+
+  for (const { id, label, algo } of ALGOS) {
+    try {
+      let hex;
+      if (id === 'md5') {
+        if (isHmac) {
+          hex = null; // MD5 HMAC not supported via Web Crypto
+          updateRow(id, null);
+          $(`val-${id}`).textContent = 'HMAC not supported for MD5';
+          $(`val-${id}`).className = 'hash-value empty';
+          continue;
+        } else {
+          // For file buffers, use buffer version
+          if (state.mode === 'file' && data) {
+            hex = md5Buffer(data);
+          } else {
+            hex = md5(state.text);
+          }
+        }
+      } else {
+        if (isHmac) {
+          if (!key) { updateRow(id, null); continue; }
+          hex = await hmacDigest(algo, key, data);
+        } else {
+          hex = await shaDigest(algo, data);
+        }
+      }
+      state.results[id] = state.uppercase ? hex.toUpperCase() : hex.toLowerCase();
+      updateRow(id, hex);
+    } catch (err) {
+      updateRow(id, null);
+      $(`val-${id}`).textContent = 'Error';
+    }
+  }
+
+  updateCompareStatus();
+  computeBadge.classList.remove('visible');
+}
+
+async function runFromText() {
+  const text = state.text;
+  const buf = new TextEncoder().encode(text).buffer;
+  if (!text && !state.hmac) {
+    ALGOS.forEach(({ id }) => updateRow(id, null));
+    updateCompareStatus();
+    return;
+  }
+  await computeHashes(buf);
+}
+
+async function runFromFile() {
+  if (!state.fileBuffer) {
+    ALGOS.forEach(({ id }) => updateRow(id, null));
+    updateCompareStatus();
+    return;
+  }
+  await computeHashes(state.fileBuffer);
+}
+
+async function run() {
+  if (state.mode === 'text') await runFromText();
+  else await runFromFile();
+}
+
+/* ═══════════════════════════════════════════════════════
+   Debounce
+   ═══════════════════════════════════════════════════════ */
+let debTimer = null;
+function debounce(fn, ms = 300) {
+  clearTimeout(debTimer);
+  debTimer = setTimeout(fn, ms);
+}
+
+/* ═══════════════════════════════════════════════════════
+   Event listeners
+   ═══════════════════════════════════════════════════════ */
+
+// Tabs
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const tab = btn.dataset.tab;
+    $(`tab-${tab}`).classList.add('active');
+    state.mode = tab;
+    run();
+  });
+});
+
+// Text input
+textInput.addEventListener('input', () => {
+  state.text = textInput.value;
+  charCount.textContent = textInput.value.length;
+  debounce(run);
+});
+
+// File input
+fileInput.addEventListener('change', () => {
+  const f = fileInput.files[0];
+  if (f) loadFile(f);
+});
+
+// Drag and drop
+dropZone.addEventListener('dragover', e => {
+  e.preventDefault();
+  dropZone.classList.add('drag-over');
+});
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault();
+  dropZone.classList.remove('drag-over');
+  const f = e.dataTransfer.files[0];
+  if (f) loadFile(f);
+});
+
+function loadFile(f) {
+  fileName.textContent = f.name;
+  fileSize.textContent = formatSize(f.size);
+  fileInfo.style.display = 'flex';
+  const reader = new FileReader();
+  reader.onload = e => {
+    state.fileBuffer = e.target.result;
+    run();
+  };
+  reader.readAsArrayBuffer(f);
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+  if (bytes < 1073741824) return (bytes / 1048576).toFixed(1) + ' MB';
+  return (bytes / 1073741824).toFixed(2) + ' GB';
+}
+
+btnClearFile.addEventListener('click', () => {
+  state.fileBuffer = null;
+  fileInput.value = '';
+  fileInfo.style.display = 'none';
+  ALGOS.forEach(({ id }) => updateRow(id, null));
+  updateCompareStatus();
+});
+
+// Uppercase toggle
+toggleUpper.addEventListener('change', () => {
+  state.uppercase = toggleUpper.checked;
+  // Re-render existing results with new case
+  ALGOS.forEach(({ id }) => {
+    const rawHex = state.results[id];
+    if (rawHex) {
+      const el = $(`val-${id}`);
+      el.textContent = state.uppercase ? rawHex.toUpperCase() : rawHex.toLowerCase();
+      state.results[id] = state.uppercase ? rawHex.toUpperCase() : rawHex.toLowerCase();
+    }
+  });
+  updateCompareStatus();
+});
+
+// HMAC toggle
+toggleHmac.addEventListener('change', () => {
+  state.hmac = toggleHmac.checked;
+  hmacKeyWrap.classList.toggle('visible', state.hmac);
+  run();
+});
+
+hmacKeyInput.addEventListener('input', () => {
+  state.hmacKey = hmacKeyInput.value;
+  debounce(run);
+});
+
+// Compare input
+compareInput.addEventListener('input', () => {
+  state.compare = compareInput.value;
+  // Re-check all rows
+  ALGOS.forEach(({ id }) => {
+    const hex = state.results[id];
+    if (!hex) return;
+    const cmp = state.compare.trim().toLowerCase();
+    const row = $(`row-${id}`);
+    if (cmp) {
+      row.className = 'hash-row ' + (hex.toLowerCase() === cmp ? 'match' : 'mismatch');
+    } else {
+      row.className = 'hash-row';
+    }
+  });
+  updateCompareStatus();
+});
+
+/* ═══════════════════════════════════════════════════════
+   Init
+   ═══════════════════════════════════════════════════════ */
+buildRows();
+</script>
+</body>
+</html>

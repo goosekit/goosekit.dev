@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lorem Ipsum Generator — Free Placeholder Text for Developers</title>
+  <meta name="description" content="Generate lorem ipsum placeholder text for your projects. Paragraphs, sentences, or words. Copy with one click. No signup needed." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Lorem Ipsum Generator — Free Placeholder Text" />
+  <meta property="og:description" content="Generate lorem ipsum placeholder text for your projects. Paragraphs, sentences, or words. No signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arthurpierrey.github.io/loremipsum/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Lorem Ipsum Generator",
+    "description": "Free lorem ipsum placeholder text generator. Paragraphs, sentences, or words. Browser-based, no signup.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --purple: #a78bfa;
+      --radius: 6px;
+      --mono: ui-monospace, "SFMono-Regular", "Cascadia Code", "Consolas", monospace;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+
+    header {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    header .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    header .logo span { color: var(--cyan); }
+    header .tagline { font-size: 12px; color: var(--muted); }
+
+    main { flex: 1; display: flex; flex-direction: column; padding: 16px 20px; gap: 14px; max-width: 900px; margin: 0 auto; width: 100%; }
+
+    .controls {
+      display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+      padding: 12px 16px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius);
+    }
+    .controls label { font-size: 13px; color: var(--muted); display: flex; align-items: center; gap: 6px; }
+    .controls select, .controls input[type="number"] {
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      border-radius: 4px; padding: 5px 8px; font-size: 13px;
+    }
+    .controls input[type="number"] { width: 60px; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+    button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 7px 14px; font-size: 13px; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    button:hover { background: #1c2129; border-color: #484f58; }
+    button.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+    button.primary:hover { background: #16a34a; }
+
+    .output-area {
+      flex: 1; display: flex; flex-direction: column; gap: 6px;
+    }
+    .output-header {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .output-header span { font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--muted); letter-spacing: .5px; }
+    .stats { font-size: 12px; color: var(--muted); }
+    .stats strong { color: var(--cyan); }
+
+    #output {
+      flex: 1; min-height: 300px; padding: 14px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      font-family: var(--mono); font-size: 13px; line-height: 1.7;
+      color: var(--text); overflow-y: auto; white-space: pre-wrap; word-wrap: break-word;
+    }
+
+    .checkbox-wrap { display: flex; align-items: center; gap: 5px; }
+    .checkbox-wrap input[type="checkbox"] { accent-color: var(--green); }
+
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--green); color: #000; padding: 8px 20px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; opacity: 0; transition: all .3s ease;
+      pointer-events: none; z-index: 999;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Lorem<span>Gen</span></div>
+  <div class="tagline">Placeholder Text Generator</div>
+</header>
+
+<main>
+  <div class="controls">
+    <label>Type:
+      <select id="type">
+        <option value="paragraphs">Paragraphs</option>
+        <option value="sentences">Sentences</option>
+        <option value="words">Words</option>
+        <option value="lists">List Items</option>
+      </select>
+    </label>
+    <label>Count:
+      <input type="number" id="count" value="3" min="1" max="100" />
+    </label>
+    <div class="checkbox-wrap">
+      <input type="checkbox" id="startLorem" checked />
+      <label for="startLorem">Start with "Lorem ipsum..."</label>
+    </div>
+    <div class="checkbox-wrap">
+      <input type="checkbox" id="htmlWrap" />
+      <label for="htmlWrap">Wrap in HTML tags</label>
+    </div>
+  </div>
+
+  <div class="btn-row">
+    <button class="primary" onclick="generate()">⚡ Generate</button>
+    <button onclick="copyOutput()">⎘ Copy</button>
+    <button onclick="downloadOutput()">↓ Download</button>
+    <button onclick="clearOutput()">✕ Clear</button>
+  </div>
+
+  <div class="output-area">
+    <div class="output-header">
+      <span>Output</span>
+      <div class="stats" id="stats"></div>
+    </div>
+    <div id="output">Click "Generate" to create placeholder text…</div>
+  </div>
+</main>
+
+<footer>
+  LoremGen · Free placeholder text. No signup needed.
+  More free dev tools:
+  <a href="https://arthurpierrey.github.io/screensnap/app.html">ScreenSnap</a> ·
+  <a href="https://arthurpierrey.github.io/ogpreview/">OG Preview</a> ·
+  <a href="https://arthurpierrey.github.io/devformat/">DevFormat</a> ·
+  <a href="https://regextester-kappa.vercel.app/">RegexLab</a> ·
+  <a href="https://diffchecker-chi.vercel.app/">DiffView</a> ·
+  <a href="https://goosekit.dev/">All Tools →</a>
+</footer>
+
+<div id="toast">Copied!</div>
+
+<script>
+const WORDS = [
+  "lorem","ipsum","dolor","sit","amet","consectetur","adipiscing","elit","sed","do",
+  "eiusmod","tempor","incididunt","ut","labore","et","dolore","magna","aliqua","enim",
+  "ad","minim","veniam","quis","nostrud","exercitation","ullamco","laboris","nisi",
+  "aliquip","ex","ea","commodo","consequat","duis","aute","irure","in","reprehenderit",
+  "voluptate","velit","esse","cillum","fugiat","nulla","pariatur","excepteur","sint",
+  "occaecat","cupidatat","non","proident","sunt","culpa","qui","officia","deserunt",
+  "mollit","anim","id","est","laborum","porta","nibh","venenatis","cras","ornare",
+  "arcu","dui","vivamus","at","augue","eget","praesent","elementum","facilisis","leo",
+  "vel","fringilla","turpis","nunc","eget","mauris","pharetra","pulvinar","mattis",
+  "pellentesque","habitant","morbi","tristique","senectus","netus","malesuada","fames",
+  "ac","ante","ipsum","primis","faucibus","orci","luctus","ultrices","posuere","cubilia",
+  "curae","donec","velit","neque","auctor","blandit","cursus","risus","sed","vulputate",
+  "odio","urna","condimentum","lacinia","quis","vel","eros","semper","auctor","neque",
+  "vitae","tempus","quam","pellentesque","nec","nam","aliquam","sem","tortor","consequat",
+  "id","porta","nibh","venenatis","cras","fermentum","odio","eu","feugiat","pretium",
+  "nibh","ipsum","consequat","nisl","vel","pretium","lectus","quam","id","leo",
+  "integer","malesuada","nunc","vel","risus","commodo","viverra","maecenas","accumsan",
+  "lacus","sociis","natoque","penatibus","magnis","dis","parturient","montes","nascetur",
+  "ridiculus","mus","mauris","vitae","ultricies","integer","quis","auctor","elit"
+];
+
+const LOREM_START = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+
+function randomInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+
+function randomWord() { return WORDS[randomInt(0, WORDS.length - 1)]; }
+
+function generateSentence(startWithLorem) {
+  if (startWithLorem) return LOREM_START + ". ";
+  const len = randomInt(8, 20);
+  let words = [];
+  for (let i = 0; i < len; i++) words.push(randomWord());
+  words[0] = words[0][0].toUpperCase() + words[0].slice(1);
+  return words.join(" ") + ". ";
+}
+
+function generateParagraph(startWithLorem) {
+  const sentenceCount = randomInt(4, 8);
+  let sentences = [];
+  for (let i = 0; i < sentenceCount; i++) {
+    sentences.push(generateSentence(i === 0 && startWithLorem));
+  }
+  return sentences.join("").trim();
+}
+
+function generate() {
+  const type = document.getElementById("type").value;
+  const count = parseInt(document.getElementById("count").value) || 3;
+  const startLorem = document.getElementById("startLorem").checked;
+  const htmlWrap = document.getElementById("htmlWrap").checked;
+  let result = [];
+
+  switch (type) {
+    case "paragraphs":
+      for (let i = 0; i < count; i++) {
+        const p = generateParagraph(i === 0 && startLorem);
+        result.push(htmlWrap ? `<p>${p}</p>` : p);
+      }
+      break;
+    case "sentences":
+      for (let i = 0; i < count; i++) {
+        const s = generateSentence(i === 0 && startLorem).trim();
+        result.push(htmlWrap ? `<p>${s}</p>` : s);
+      }
+      break;
+    case "words": {
+      let words = [];
+      if (startLorem) words.push("Lorem", "ipsum", "dolor", "sit", "amet");
+      while (words.length < count) words.push(randomWord());
+      words = words.slice(0, count);
+      const text = words.join(" ");
+      result.push(htmlWrap ? `<span>${text}</span>` : text);
+      break;
+    }
+    case "lists": {
+      let items = [];
+      for (let i = 0; i < count; i++) {
+        const s = generateSentence(i === 0 && startLorem).trim();
+        items.push(htmlWrap ? `  <li>${s}</li>` : `• ${s}`);
+      }
+      result = htmlWrap ? [`<ul>\n${items.join("\n")}\n</ul>`] : items;
+      break;
+    }
+  }
+
+  const text = result.join("\n\n");
+  document.getElementById("output").textContent = text;
+
+  const wordCount = text.split(/\s+/).filter(w => w.length > 0).length;
+  const charCount = text.length;
+  const byteSize = new Blob([text]).size;
+  document.getElementById("stats").innerHTML =
+    `<strong>${wordCount}</strong> words · <strong>${charCount}</strong> chars · <strong>${formatBytes(byteSize)}</strong>`;
+}
+
+function formatBytes(b) {
+  if (b < 1024) return b + " B";
+  return (b / 1024).toFixed(1) + " KB";
+}
+
+function copyOutput() {
+  const text = document.getElementById("output").textContent;
+  if (!text || text.startsWith("Click")) return;
+  navigator.clipboard.writeText(text);
+  showToast("Copied!");
+}
+
+function downloadOutput() {
+  const text = document.getElementById("output").textContent;
+  if (!text || text.startsWith("Click")) return;
+  const blob = new Blob([text], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "lorem-ipsum.txt";
+  a.click();
+}
+
+function clearOutput() {
+  document.getElementById("output").textContent = 'Click "Generate" to create placeholder text…';
+  document.getElementById("stats").innerHTML = "";
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1500);
+}
+
+// Generate on load
+generate();
+</script>
+
+</body>
+</html>

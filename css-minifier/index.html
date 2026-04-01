@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CSS Minifier — Free Online CSS Minifier & Beautifier</title>
+  <meta name="description" content="Minify or beautify CSS instantly in your browser. Remove whitespace, comments, optimize selectors. 100% client-side, no data leaves your machine." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cssminifier-one.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="CSS Minifier — Free Online CSS Minifier & Beautifier" />
+  <meta property="og:description" content="Minify or beautify CSS instantly in your browser. No signup, no tracking." />
+  <meta property="og:url" content="https://cssminifier-one.vercel.app/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="CSS Minifier — Free Online CSS Minifier & Beautifier" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🗜️</text></svg>" />
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{--bg:#0f1117;--surface:#1a1d27;--surface2:#252836;--border:#2d3142;--text:#e4e6eb;--text2:#9ca3af;--accent:#8b5cf6;--accent2:#a78bfa;--green:#34d399;--red:#f87171;--radius:12px}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px}
+    .container{max-width:1100px;width:100%}
+    header{text-align:center;margin-bottom:32px}
+    header h1{font-size:2rem;background:linear-gradient(135deg,var(--accent),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px}
+    header p{color:var(--text2);font-size:0.95rem}
+    .toolbar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+    .toolbar button{padding:8px 18px;border:1px solid var(--border);border-radius:8px;background:var(--surface2);color:var(--text);cursor:pointer;font-size:0.85rem;transition:all .2s}
+    .toolbar button:hover{border-color:var(--accent);color:var(--accent2)}
+    .toolbar button.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+    .toolbar button.primary:hover{background:var(--accent2)}
+    .toolbar .spacer{flex:1}
+    .stats{color:var(--text2);font-size:0.8rem;display:flex;gap:16px;align-items:center}
+    .stats .saved{color:var(--green);font-weight:600}
+    .editor-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+    @media(max-width:768px){.editor-wrap{grid-template-columns:1fr}}
+    .editor-panel{display:flex;flex-direction:column}
+    .editor-label{font-size:0.8rem;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em;display:flex;justify-content:space-between;align-items:center}
+    .editor-label button{font-size:0.75rem;padding:3px 8px;border:1px solid var(--border);border-radius:4px;background:var(--surface);color:var(--text2);cursor:pointer}
+    .editor-label button:hover{color:var(--accent2);border-color:var(--accent)}
+    textarea{width:100%;height:400px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;color:var(--text);font-family:'Fira Code','JetBrains Mono','SF Mono',Menlo,monospace;font-size:0.85rem;line-height:1.6;resize:vertical;outline:none;transition:border-color .2s;tab-size:2}
+    textarea:focus{border-color:var(--accent)}
+    textarea::placeholder{color:var(--text2)}
+    .options{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
+    .option-group{display:flex;align-items:center;gap:8px;font-size:0.85rem}
+    .option-group label{color:var(--text2)}
+    .option-group input[type="checkbox"]{accent-color:var(--accent)}
+    .toast{position:fixed;bottom:20px;right:20px;background:var(--green);color:#000;padding:10px 20px;border-radius:8px;font-size:0.85rem;font-weight:600;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;z-index:999}
+    .toast.show{opacity:1;transform:translateY(0)}
+    footer{margin-top:40px;text-align:center;color:var(--text2);font-size:0.8rem}
+    footer a{color:var(--accent2);text-decoration:none}
+    footer a:hover{text-decoration:underline}
+    .back-link{display:inline-flex;align-items:center;gap:6px;color:var(--text2);text-decoration:none;font-size:0.85rem;margin-bottom:20px;transition:color .2s}
+    .back-link:hover{color:var(--accent2)}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="https://goosekit.dev/" class="back-link">← Back to GooseKit</a>
+    <header>
+      <h1>🗜️ CSS Minifier</h1>
+      <p>Minify or beautify CSS in your browser — no data ever leaves your machine</p>
+    </header>
+
+    <div class="options">
+      <div class="option-group">
+        <input type="checkbox" id="removeComments" checked />
+        <label for="removeComments">Remove comments</label>
+      </div>
+      <div class="option-group">
+        <input type="checkbox" id="removeWhitespace" checked />
+        <label for="removeWhitespace">Remove whitespace</label>
+      </div>
+      <div class="option-group">
+        <input type="checkbox" id="removeLastSemicolon" checked />
+        <label for="removeLastSemicolon">Remove trailing semicolons</label>
+      </div>
+      <div class="option-group">
+        <input type="checkbox" id="shortenColors" checked />
+        <label for="shortenColors">Shorten hex colors</label>
+      </div>
+      <div class="option-group">
+        <input type="checkbox" id="removeZeroUnits" checked />
+        <label for="removeZeroUnits">Remove zero units (0px → 0)</label>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <button class="primary" onclick="minify()">🗜️ Minify</button>
+      <button onclick="beautify()">✨ Beautify</button>
+      <button onclick="swapPanels()">🔄 Swap</button>
+      <span class="spacer"></span>
+      <div class="stats" id="stats"></div>
+    </div>
+
+    <div class="editor-wrap">
+      <div class="editor-panel">
+        <div class="editor-label">
+          <span>Input CSS</span>
+          <button onclick="clearInput()">Clear</button>
+        </div>
+        <textarea id="input" placeholder="Paste your CSS here...
+
+/* Example */
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: #ffffff;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}" spellcheck="false"></textarea>
+      </div>
+      <div class="editor-panel">
+        <div class="editor-label">
+          <span>Output</span>
+          <button onclick="copyOutput()">📋 Copy</button>
+        </div>
+        <textarea id="output" placeholder="Minified or beautified CSS will appear here..." readonly spellcheck="false"></textarea>
+      </div>
+    </div>
+
+    <footer>
+      <p>Part of <a href="https://goosekit.dev/">GooseKit</a> — Free developer tools by <a href="https://github.com/arthurpierrey">Arthur Pierrey</a></p>
+    </footer>
+  </div>
+
+  <div class="toast" id="toast">Copied!</div>
+
+  <script>
+    const $input = document.getElementById('input');
+    const $output = document.getElementById('output');
+    const $stats = document.getElementById('stats');
+    const $toast = document.getElementById('toast');
+
+    function getOpts() {
+      return {
+        removeComments: document.getElementById('removeComments').checked,
+        removeWhitespace: document.getElementById('removeWhitespace').checked,
+        removeLastSemicolon: document.getElementById('removeLastSemicolon').checked,
+        shortenColors: document.getElementById('shortenColors').checked,
+        removeZeroUnits: document.getElementById('removeZeroUnits').checked,
+      };
+    }
+
+    function minify() {
+      let css = $input.value;
+      if (!css.trim()) return;
+      const opts = getOpts();
+      const originalSize = new Blob([css]).size;
+
+      // Remove comments
+      if (opts.removeComments) {
+        css = css.replace(/\/\*[\s\S]*?\*\//g, '');
+      }
+
+      // Remove whitespace
+      if (opts.removeWhitespace) {
+        css = css.replace(/\s+/g, ' ');
+        css = css.replace(/\s*([{};:,>~+])\s*/g, '$1');
+        css = css.replace(/;\s*}/g, '}');
+      }
+
+      // Remove trailing semicolons before }
+      if (opts.removeLastSemicolon) {
+        css = css.replace(/;}/g, '}');
+      }
+
+      // Shorten hex colors (#ffffff → #fff)
+      if (opts.shortenColors) {
+        css = css.replace(/#([0-9a-fA-F])\1([0-9a-fA-F])\2([0-9a-fA-F])\3/gi, '#$1$2$3');
+      }
+
+      // Remove zero units
+      if (opts.removeZeroUnits) {
+        css = css.replace(/([:,\s])0(px|em|rem|%|pt|cm|mm|in|pc|ex|ch|vw|vh|vmin|vmax)/gi, '$10');
+      }
+
+      css = css.trim();
+      $output.value = css;
+
+      const minifiedSize = new Blob([css]).size;
+      const saved = originalSize - minifiedSize;
+      const pct = originalSize > 0 ? ((saved / originalSize) * 100).toFixed(1) : 0;
+      $stats.innerHTML = `Original: ${formatBytes(originalSize)} → Minified: ${formatBytes(minifiedSize)} | <span class="saved">Saved ${formatBytes(saved)} (${pct}%)</span>`;
+    }
+
+    function beautify() {
+      let css = $input.value;
+      if (!css.trim()) return;
+
+      // Remove existing excessive whitespace
+      css = css.replace(/\s+/g, ' ').trim();
+
+      let result = '';
+      let indent = 0;
+      const TAB = '  ';
+      let inString = false;
+      let stringChar = '';
+
+      for (let i = 0; i < css.length; i++) {
+        const c = css[i];
+        const next = css[i + 1] || '';
+
+        // Handle strings
+        if ((c === '"' || c === "'") && (i === 0 || css[i-1] !== '\\')) {
+          if (!inString) { inString = true; stringChar = c; }
+          else if (c === stringChar) { inString = false; }
+          result += c;
+          continue;
+        }
+        if (inString) { result += c; continue; }
+
+        if (c === '{') {
+          result = result.trimEnd() + ' {\n';
+          indent++;
+          result += TAB.repeat(indent);
+        } else if (c === '}') {
+          indent = Math.max(0, indent - 1);
+          result = result.trimEnd() + '\n' + TAB.repeat(indent) + '}\n';
+          if (indent === 0) result += '\n';
+          if (next && next !== '}') result += TAB.repeat(indent);
+        } else if (c === ';') {
+          result += ';\n' + TAB.repeat(indent);
+        } else if (c === ':' && next !== ':' && css[i-1] !== ':') {
+          result += ': ';
+          // skip any following space
+          while (css[i + 1] === ' ') i++;
+        } else if (c === ' ' && result.endsWith('\n' + TAB.repeat(indent))) {
+          // skip leading space after indent
+        } else {
+          result += c;
+        }
+      }
+
+      $output.value = result.replace(/\n{3,}/g, '\n\n').trim();
+      $stats.innerHTML = '';
+    }
+
+    function swapPanels() {
+      const tmp = $input.value;
+      $input.value = $output.value;
+      $output.value = tmp;
+    }
+
+    function clearInput() {
+      $input.value = '';
+      $output.value = '';
+      $stats.innerHTML = '';
+    }
+
+    function copyOutput() {
+      if (!$output.value) return;
+      navigator.clipboard.writeText($output.value).then(() => showToast('Copied!'));
+    }
+
+    function showToast(msg) {
+      $toast.textContent = msg;
+      $toast.classList.add('show');
+      setTimeout(() => $toast.classList.remove('show'), 2000);
+    }
+
+    function formatBytes(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      return (bytes / 1024).toFixed(1) + ' KB';
+    }
+
+    // Auto-minify on input after debounce
+    let debounceTimer;
+    $input.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if ($input.value.trim()) minify();
+      }, 500);
+    });
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', (e) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') {
+        e.preventDefault();
+        minify();
+      }
+    });
+  </script>
+</body>
+</html>

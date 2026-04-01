@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Password Generator — Free Secure Random Passwords</title>
+  <meta name="description" content="Generate strong, secure random passwords instantly. Customizable length, characters. Client-side only, no data sent anywhere. Free." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Password Generator — Free Secure Random Passwords" />
+  <meta property="og:description" content="Generate strong, secure random passwords. Customizable, client-side only. No signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://arthurpierrey.github.io/passwordgen/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Password Generator",
+    "description": "Free secure random password generator. Runs entirely in the browser using crypto API.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0d1117; --surface: #161b22; --border: #30363d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --red: #ef4444;
+      --purple: #a78bfa; --radius: 6px;
+      --mono: ui-monospace, "SFMono-Regular", "Cascadia Code", "Consolas", monospace;
+    }
+    html, body { height: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+
+    header {
+      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+    }
+    header .logo { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+    header .logo span { color: var(--green); }
+    header .tagline { font-size: 12px; color: var(--muted); }
+
+    main { flex: 1; display: flex; flex-direction: column; padding: 20px; gap: 16px; max-width: 700px; margin: 0 auto; width: 100%; }
+
+    .password-display {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; text-align: center; position: relative;
+    }
+    #password {
+      font-family: var(--mono); font-size: 22px; letter-spacing: 1px;
+      word-break: break-all; line-height: 1.5; user-select: all;
+    }
+    .strength-bar {
+      margin-top: 12px; height: 4px; border-radius: 2px; background: var(--border);
+      overflow: hidden;
+    }
+    .strength-bar .fill { height: 100%; transition: width .3s, background .3s; }
+    .strength-label { font-size: 12px; margin-top: 6px; text-align: center; }
+
+    .btn-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+    button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px 16px; font-size: 13px; cursor: pointer;
+      transition: background .15s, border-color .15s;
+    }
+    button:hover { background: #1c2129; border-color: #484f58; }
+    button.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+    button.primary:hover { background: #16a34a; }
+
+    .controls {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px 20px; display: flex; flex-direction: column; gap: 14px;
+    }
+    .control-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .control-row label { font-size: 13px; color: var(--muted); min-width: 80px; }
+    .control-row input[type="range"] { flex: 1; accent-color: var(--green); min-width: 150px; }
+    .control-row .value { font-family: var(--mono); font-size: 14px; color: var(--cyan); min-width: 30px; text-align: center; }
+
+    .char-options { display: flex; flex-wrap: wrap; gap: 12px; }
+    .char-option { display: flex; align-items: center; gap: 6px; }
+    .char-option input[type="checkbox"] { accent-color: var(--green); }
+    .char-option label { font-size: 13px; cursor: pointer; }
+    .char-option .chars { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+    .history {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .history h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .history-list { display: flex; flex-direction: column; gap: 4px; }
+    .history-item {
+      font-family: var(--mono); font-size: 12px; color: var(--text);
+      padding: 4px 8px; background: var(--bg); border-radius: 4px; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .history-item:hover { background: #1c2129; }
+    .history-item .time { color: var(--muted); font-size: 11px; }
+
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(100px);
+      background: var(--green); color: #000; padding: 8px 20px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; opacity: 0; transition: all .3s ease;
+      pointer-events: none; z-index: 999;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Pass<span>Gen</span></div>
+  <div class="tagline">Secure Password Generator</div>
+</header>
+
+<main>
+  <div class="password-display">
+    <div id="password">Click Generate…</div>
+    <div class="strength-bar"><div class="fill" id="strengthFill"></div></div>
+    <div class="strength-label" id="strengthLabel"></div>
+  </div>
+
+  <div class="btn-row">
+    <button class="primary" onclick="generatePassword()">🔄 Generate</button>
+    <button onclick="copyPassword()">⎘ Copy</button>
+    <button onclick="generateMultiple()">×5 Bulk</button>
+  </div>
+
+  <div class="controls">
+    <div class="control-row">
+      <label>Length</label>
+      <input type="range" id="length" min="4" max="128" value="16" oninput="updateLength()" />
+      <span class="value" id="lengthVal">16</span>
+    </div>
+    <div class="char-options">
+      <div class="char-option">
+        <input type="checkbox" id="uppercase" checked />
+        <label for="uppercase">Uppercase</label>
+        <span class="chars">A-Z</span>
+      </div>
+      <div class="char-option">
+        <input type="checkbox" id="lowercase" checked />
+        <label for="lowercase">Lowercase</label>
+        <span class="chars">a-z</span>
+      </div>
+      <div class="char-option">
+        <input type="checkbox" id="numbers" checked />
+        <label for="numbers">Numbers</label>
+        <span class="chars">0-9</span>
+      </div>
+      <div class="char-option">
+        <input type="checkbox" id="symbols" checked />
+        <label for="symbols">Symbols</label>
+        <span class="chars">!@#$%^&*</span>
+      </div>
+      <div class="char-option">
+        <input type="checkbox" id="noAmbiguous" />
+        <label for="noAmbiguous">Exclude ambiguous</label>
+        <span class="chars">0OoIl1</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="history">
+    <h3>Recent Passwords</h3>
+    <div class="history-list" id="historyList">
+      <div class="history-item" style="color: var(--muted); justify-content: center;">No passwords generated yet</div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  PassGen · 100% client-side, nothing sent to any server.
+  More free dev tools:
+  <a href="https://arthurpierrey.github.io/screensnap/app.html">ScreenSnap</a> ·
+  <a href="https://arthurpierrey.github.io/ogpreview/">OG Preview</a> ·
+  <a href="https://arthurpierrey.github.io/devformat/">DevFormat</a> ·
+  <a href="https://regextester-kappa.vercel.app/">RegexLab</a> ·
+  <a href="https://diffchecker-chi.vercel.app/">DiffView</a> ·
+  <a href="https://goosekit.dev/">All Tools →</a>
+</footer>
+
+<div id="toast">Copied!</div>
+
+<script>
+const UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const LOWER = "abcdefghijklmnopqrstuvwxyz";
+const NUMS = "0123456789";
+const SYMS = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+const AMBIGUOUS = "0OoIl1";
+
+let history = [];
+
+function getCharset() {
+  let charset = "";
+  if (document.getElementById("uppercase").checked) charset += UPPER;
+  if (document.getElementById("lowercase").checked) charset += LOWER;
+  if (document.getElementById("numbers").checked) charset += NUMS;
+  if (document.getElementById("symbols").checked) charset += SYMS;
+
+  if (document.getElementById("noAmbiguous").checked) {
+    charset = charset.split("").filter(c => !AMBIGUOUS.includes(c)).join("");
+  }
+
+  return charset || LOWER; // fallback
+}
+
+function generatePassword() {
+  const len = parseInt(document.getElementById("length").value);
+  const charset = getCharset();
+  const array = new Uint32Array(len);
+  crypto.getRandomValues(array);
+  let pw = "";
+  for (let i = 0; i < len; i++) {
+    pw += charset[array[i] % charset.length];
+  }
+
+  document.getElementById("password").textContent = pw;
+  updateStrength(pw);
+  addToHistory(pw);
+  return pw;
+}
+
+function generateMultiple() {
+  const passwords = [];
+  for (let i = 0; i < 5; i++) passwords.push(generatePassword());
+  // Show last one in main display
+  document.getElementById("password").textContent = passwords[passwords.length - 1];
+}
+
+function updateLength() {
+  document.getElementById("lengthVal").textContent = document.getElementById("length").value;
+}
+
+function updateStrength(pw) {
+  let score = 0;
+  if (pw.length >= 8) score++;
+  if (pw.length >= 12) score++;
+  if (pw.length >= 20) score++;
+  if (/[a-z]/.test(pw) && /[A-Z]/.test(pw)) score++;
+  if (/\d/.test(pw)) score++;
+  if (/[^a-zA-Z\d]/.test(pw)) score++;
+
+  const entropy = Math.log2(Math.pow(getCharset().length, pw.length));
+
+  const levels = [
+    { label: "Very Weak", color: "var(--red)", width: "15%" },
+    { label: "Weak", color: "var(--orange)", width: "30%" },
+    { label: "Fair", color: "var(--orange)", width: "50%" },
+    { label: "Good", color: "var(--cyan)", width: "70%" },
+    { label: "Strong", color: "var(--green)", width: "85%" },
+    { label: "Very Strong", color: "var(--green)", width: "100%" },
+  ];
+
+  const level = levels[Math.min(score, levels.length - 1)];
+  const fill = document.getElementById("strengthFill");
+  fill.style.width = level.width;
+  fill.style.background = level.color;
+  document.getElementById("strengthLabel").innerHTML =
+    `<span style="color: ${level.color}">${level.label}</span> · ${Math.round(entropy)} bits of entropy`;
+}
+
+function addToHistory(pw) {
+  const now = new Date().toLocaleTimeString();
+  history.unshift({ pw, time: now });
+  if (history.length > 10) history.pop();
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById("historyList");
+  list.innerHTML = history.map(h =>
+    `<div class="history-item" onclick="copyText('${h.pw.replace(/'/g, "\\'")}')">
+      <span>${h.pw}</span>
+      <span class="time">${h.time}</span>
+    </div>`
+  ).join("");
+}
+
+function copyPassword() {
+  const pw = document.getElementById("password").textContent;
+  if (!pw || pw.startsWith("Click")) return;
+  copyText(pw);
+}
+
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+  showToast("Copied!");
+}
+
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  setTimeout(() => t.classList.remove("show"), 1500);
+}
+
+// Generate on load
+generatePassword();
+</script>
+
+</body>
+</html>

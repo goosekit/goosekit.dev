@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Entity Encoder/Decoder - Free Online Tool</title>
+    <meta name="description" content="Free online HTML entity encoder and decoder. Convert special characters to HTML entities (named &amp; numeric) and decode them back instantly. No sign-up required.">
+    <meta name="keywords" content="HTML entity encoder, HTML entity decoder, HTML entities, character encoder, special characters, web development tool">
+    <meta name="author" content="GooseKit">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://devtoolshub.com/htmlentity/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="HTML Entity Encoder/Decoder - Free Online Tool">
+    <meta property="og:description" content="Encode and decode HTML entities instantly. Supports named entities, numeric entities, and hex entities. Free, fast, no sign-up.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://devtoolshub.com/htmlentity/">
+    <meta property="og:site_name" content="GooseKit">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="HTML Entity Encoder/Decoder - Free Online Tool">
+    <meta name="twitter:description" content="Encode and decode HTML entities instantly. Supports named, numeric, and hex entities.">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "HTML Entity Encoder/Decoder",
+        "description": "Free online tool to encode and decode HTML entities. Supports named entities, numeric (decimal) entities, and hexadecimal entities.",
+        "url": "https://devtoolshub.com/htmlentity/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Any",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+        },
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "GooseKit",
+            "url": "https://devtoolshub.com"
+        }
+    }
+    </script>
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #2a2a2a;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --text-primary: #e5e5e5;
+            --text-secondary: #a3a3a3;
+            --border: #333;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        header {
+            background: var(--bg-secondary);
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        header h1 span {
+            color: var(--accent);
+        }
+
+        header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        main {
+            flex: 1;
+            max-width: 960px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1.5rem 1rem;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .controls label {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .mode-toggle {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .mode-toggle button {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .mode-toggle button.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .mode-toggle button:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .entity-type-toggle {
+            display: flex;
+            background: var(--bg-tertiary);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .entity-type-toggle button {
+            padding: 0.5rem 0.85rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .entity-type-toggle button.active {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .entity-type-toggle button:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-hover);
+            border-color: var(--accent-hover);
+            color: #fff;
+        }
+
+        .btn-danger {
+            border-color: var(--border);
+        }
+
+        .btn-danger:hover {
+            border-color: var(--error);
+            color: var(--error);
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .editor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .editor-pane {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .pane-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.65rem 0.85rem;
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pane-header .title {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+        }
+
+        .pane-header .meta {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 220px;
+            padding: 0.85rem;
+            background: transparent;
+            color: var(--text-primary);
+            border: none;
+            resize: vertical;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            outline: none;
+        }
+
+        textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .preview-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1.25rem;
+        }
+
+        .preview-section .pane-header {
+            background: var(--bg-tertiary);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preview-content {
+            padding: 0.85rem;
+            min-height: 60px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            word-break: break-word;
+        }
+
+        .preview-content:empty::after {
+            content: 'Decoded HTML will render here...';
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .reference-section {
+            margin-top: 2rem;
+        }
+
+        .reference-section h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .entity-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            font-size: 0.85rem;
+        }
+
+        .entity-table th {
+            background: var(--bg-tertiary);
+            padding: 0.6rem 0.85rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-size: 0.75rem;
+        }
+
+        .entity-table td {
+            padding: 0.5rem 0.85rem;
+            border-top: 1px solid var(--border);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            color: var(--text-primary);
+        }
+
+        .entity-table tr:hover td {
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.65rem 1.15rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #fff;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--error);
+        }
+
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-secondary);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 640px) {
+            .editor-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.3rem;
+            }
+
+            .controls {
+                gap: 0.5rem;
+            }
+
+            .entity-table {
+                font-size: 0.78rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>&lt;/&gt; HTML Entity <span>Encoder/Decoder</span></h1>
+        <p>Convert special characters to HTML entities and back — instantly</p>
+    </header>
+
+    <main>
+        <div class="controls">
+            <label>Mode:</label>
+            <div class="mode-toggle">
+                <button class="active" data-mode="encode" onclick="setMode('encode')">Encode</button>
+                <button data-mode="decode" onclick="setMode('decode')">Decode</button>
+            </div>
+
+            <label>Entity type:</label>
+            <div class="entity-type-toggle" id="entityTypeToggle">
+                <button class="active" data-type="named" onclick="setEntityType('named')">Named</button>
+                <button data-type="decimal" onclick="setEntityType('decimal')">Decimal</button>
+                <button data-type="hex" onclick="setEntityType('hex')">Hex</button>
+            </div>
+
+            <div class="spacer"></div>
+
+            <button class="btn btn-danger" onclick="clearAll()" title="Clear input and output">✕ Clear</button>
+        </div>
+
+        <div class="editor-grid">
+            <div class="editor-pane">
+                <div class="pane-header">
+                    <span class="title" id="inputLabel">Input (Plain Text)</span>
+                    <span class="meta" id="inputCount">0 chars</span>
+                </div>
+                <textarea id="input" placeholder="Type or paste text here..." spellcheck="false" oninput="process()"></textarea>
+            </div>
+            <div class="editor-pane">
+                <div class="pane-header">
+                    <span class="title" id="outputLabel">Output (HTML Entities)</span>
+                    <span class="meta">
+                        <span id="outputCount">0 chars</span>
+                        &nbsp;·&nbsp;
+                        <button class="btn" style="padding:0.25rem 0.6rem;font-size:0.75rem" onclick="copyOutput()">📋 Copy</button>
+                    </span>
+                </div>
+                <textarea id="output" placeholder="Result will appear here..." spellcheck="false" readonly></textarea>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <div class="pane-header">
+                <span class="title">Live Preview (Rendered HTML)</span>
+            </div>
+            <div class="preview-content" id="preview"></div>
+        </div>
+
+        <div class="reference-section">
+            <h2>Common HTML Entities Reference</h2>
+            <table class="entity-table">
+                <thead>
+                    <tr>
+                        <th>Character</th>
+                        <th>Named</th>
+                        <th>Decimal</th>
+                        <th>Hex</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>&amp;</td><td>&amp;amp;</td><td>&amp;#38;</td><td>&amp;#x26;</td><td>Ampersand</td></tr>
+                    <tr><td>&lt;</td><td>&amp;lt;</td><td>&amp;#60;</td><td>&amp;#x3C;</td><td>Less than</td></tr>
+                    <tr><td>&gt;</td><td>&amp;gt;</td><td>&amp;#62;</td><td>&amp;#x3E;</td><td>Greater than</td></tr>
+                    <tr><td>"</td><td>&amp;quot;</td><td>&amp;#34;</td><td>&amp;#x22;</td><td>Double quote</td></tr>
+                    <tr><td>'</td><td>&amp;apos;</td><td>&amp;#39;</td><td>&amp;#x27;</td><td>Apostrophe</td></tr>
+                    <tr><td>&nbsp;</td><td>&amp;nbsp;</td><td>&amp;#160;</td><td>&amp;#xA0;</td><td>Non-breaking space</td></tr>
+                    <tr><td>©</td><td>&amp;copy;</td><td>&amp;#169;</td><td>&amp;#xA9;</td><td>Copyright</td></tr>
+                    <tr><td>®</td><td>&amp;reg;</td><td>&amp;#174;</td><td>&amp;#xAE;</td><td>Registered</td></tr>
+                    <tr><td>™</td><td>&amp;trade;</td><td>&amp;#8482;</td><td>&amp;#x2122;</td><td>Trademark</td></tr>
+                    <tr><td>€</td><td>&amp;euro;</td><td>&amp;#8364;</td><td>&amp;#x20AC;</td><td>Euro sign</td></tr>
+                    <tr><td>£</td><td>&amp;pound;</td><td>&amp;#163;</td><td>&amp;#xA3;</td><td>Pound sign</td></tr>
+                    <tr><td>¥</td><td>&amp;yen;</td><td>&amp;#165;</td><td>&amp;#xA5;</td><td>Yen sign</td></tr>
+                    <tr><td>—</td><td>&amp;mdash;</td><td>&amp;#8212;</td><td>&amp;#x2014;</td><td>Em dash</td></tr>
+                    <tr><td>–</td><td>&amp;ndash;</td><td>&amp;#8211;</td><td>&amp;#x2013;</td><td>En dash</td></tr>
+                    <tr><td>•</td><td>&amp;bull;</td><td>&amp;#8226;</td><td>&amp;#x2022;</td><td>Bullet</td></tr>
+                    <tr><td>…</td><td>&amp;hellip;</td><td>&amp;#8230;</td><td>&amp;#x2026;</td><td>Ellipsis</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>Part of <a href="https://devtoolshub.com">GooseKit</a> — Free tools for developers</p>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+        let currentMode = 'encode';
+        let currentEntityType = 'named';
+
+        const NAMED_ENTITIES = {
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;',
+            '\u00A0': '&nbsp;', '©': '&copy;', '®': '&reg;', '™': '&trade;',
+            '€': '&euro;', '£': '&pound;', '¥': '&yen;', '¢': '&cent;',
+            '§': '&sect;', '°': '&deg;', '±': '&plusmn;', 'µ': '&micro;',
+            '¶': '&para;', '·': '&middot;', '¼': '&frac14;', '½': '&frac12;',
+            '¾': '&frac34;', '×': '&times;', '÷': '&divide;',
+            '—': '&mdash;', '–': '&ndash;', '"': '&ldquo;', '"': '&rdquo;',
+            ''': '&lsquo;', ''': '&rsquo;', '«': '&laquo;', '»': '&raquo;',
+            '•': '&bull;', '…': '&hellip;', '†': '&dagger;', '‡': '&Dagger;',
+            '♠': '&spades;', '♣': '&clubs;', '♥': '&hearts;', '♦': '&diams;',
+            'α': '&alpha;', 'β': '&beta;', 'γ': '&gamma;', 'δ': '&delta;',
+            'π': '&pi;', 'Σ': '&Sigma;', 'Ω': '&Omega;',
+            '←': '&larr;', '→': '&rarr;', '↑': '&uarr;', '↓': '&darr;',
+            '∞': '&infin;', '≈': '&asymp;', '≠': '&ne;', '≤': '&le;', '≥': '&ge;'
+        };
+
+        // Build reverse map for decoding
+        const REVERSE_NAMED = {};
+        for (const [char, entity] of Object.entries(NAMED_ENTITIES)) {
+            REVERSE_NAMED[entity] = char;
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
+            document.querySelectorAll('.mode-toggle button').forEach(b => {
+                b.classList.toggle('active', b.dataset.mode === mode);
+            });
+            const entityToggle = document.getElementById('entityTypeToggle');
+            entityToggle.style.opacity = mode === 'encode' ? '1' : '0.4';
+            entityToggle.style.pointerEvents = mode === 'encode' ? 'auto' : 'none';
+
+            if (mode === 'encode') {
+                document.getElementById('inputLabel').textContent = 'Input (Plain Text)';
+                document.getElementById('outputLabel').textContent = 'Output (HTML Entities)';
+                document.getElementById('input').placeholder = 'Type or paste text here...';
+            } else {
+                document.getElementById('inputLabel').textContent = 'Input (HTML Entities)';
+                document.getElementById('outputLabel').textContent = 'Output (Decoded Text)';
+                document.getElementById('input').placeholder = 'Paste HTML entities here, e.g. &amp;lt;div&amp;gt;...';
+            }
+            process();
+        }
+
+        function setEntityType(type) {
+            currentEntityType = type;
+            document.querySelectorAll('.entity-type-toggle button').forEach(b => {
+                b.classList.toggle('active', b.dataset.type === type);
+            });
+            process();
+        }
+
+        function encodeToEntities(text, type) {
+            let result = '';
+            for (const char of text) {
+                if (type === 'named' && NAMED_ENTITIES[char]) {
+                    result += NAMED_ENTITIES[char];
+                } else if (char.charCodeAt(0) > 127 || '&<>"\' '.includes(char) && char === '&' || char === '<' || char === '>' || char === '"' || char === "'") {
+                    if (type === 'named') {
+                        // Fallback to decimal for chars without named entity
+                        const cp = char.codePointAt(0);
+                        result += '&#' + cp + ';';
+                    } else if (type === 'decimal') {
+                        const cp = char.codePointAt(0);
+                        result += '&#' + cp + ';';
+                    } else {
+                        const cp = char.codePointAt(0);
+                        result += '&#x' + cp.toString(16).toUpperCase() + ';';
+                    }
+                } else {
+                    result += char;
+                }
+            }
+            return result;
+        }
+
+        function decodeEntities(text) {
+            // First replace named entities
+            let result = text.replace(/&[a-zA-Z]+;/g, match => {
+                if (REVERSE_NAMED[match] !== undefined) return REVERSE_NAMED[match];
+                // Use browser's built-in decoder for other named entities
+                const el = document.createElement('span');
+                el.innerHTML = match;
+                return el.textContent;
+            });
+            // Then replace hex numeric entities
+            result = result.replace(/&#x([0-9a-fA-F]+);/g, (_, hex) => {
+                return String.fromCodePoint(parseInt(hex, 16));
+            });
+            // Then replace decimal numeric entities
+            result = result.replace(/&#(\d+);/g, (_, dec) => {
+                return String.fromCodePoint(parseInt(dec, 10));
+            });
+            return result;
+        }
+
+        function process() {
+            const input = document.getElementById('input').value;
+            let output;
+
+            if (currentMode === 'encode') {
+                output = encodeToEntities(input, currentEntityType);
+            } else {
+                output = decodeEntities(input);
+            }
+
+            document.getElementById('output').value = output;
+            document.getElementById('inputCount').textContent = input.length + ' chars';
+            document.getElementById('outputCount').textContent = output.length + ' chars';
+
+            // Live preview: always try to render the decoded HTML
+            const preview = document.getElementById('preview');
+            try {
+                const decoded = currentMode === 'encode' ? input : output;
+                preview.textContent = decoded;
+            } catch (e) {
+                preview.textContent = '';
+            }
+        }
+
+        function copyOutput() {
+            const output = document.getElementById('output').value;
+            if (!output) {
+                showToast('Nothing to copy', 'error');
+                return;
+            }
+            navigator.clipboard.writeText(output).then(() => {
+                showToast('Copied to clipboard!', 'success');
+            }).catch(() => {
+                // Fallback
+                const ta = document.getElementById('output');
+                ta.select();
+                document.execCommand('copy');
+                showToast('Copied to clipboard!', 'success');
+            });
+        }
+
+        function clearAll() {
+            document.getElementById('input').value = '';
+            document.getElementById('output').value = '';
+            document.getElementById('preview').textContent = '';
+            document.getElementById('inputCount').textContent = '0 chars';
+            document.getElementById('outputCount').textContent = '0 chars';
+        }
+
+        function showToast(msg, type) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = 'toast ' + type + ' show';
+            setTimeout(() => { toast.classList.remove('show'); }, 2000);
+        }
+    </script>
+</body>
+</html>

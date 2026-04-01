@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SVG to PNG Converter — Free Online Tool</title>
+  <meta name="description" content="Convert SVG to PNG instantly in your browser. Choose custom dimensions, background color, and quality. Free, no upload, no tracking." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://svg2png-devtools.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="SVG to PNG Converter — Free Online Tool" />
+  <meta property="og:description" content="Convert SVG to PNG instantly in your browser. Custom dimensions, transparent or colored backgrounds. No upload, no tracking." />
+  <meta name="twitter:card" content="summary" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+      --accent: #7c3aed; --accent-glow: rgba(124,58,237,0.3); --radius: 16px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center; padding: 60px 24px 40px;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.18) 0%, transparent 70%);
+    }
+    header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; }
+    header h1 span { background: linear-gradient(135deg, #a78bfa, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    header p { color: var(--text-muted); margin-top: 8px; font-size: 1.05rem; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 60px; }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 32px; margin-bottom: 24px;
+      backdrop-filter: blur(12px);
+    }
+    .card h2 { font-size: 1rem; font-weight: 600; margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .drop-zone {
+      border: 2px dashed rgba(124,58,237,0.3); border-radius: 12px;
+      padding: 48px 24px; text-align: center; cursor: pointer;
+      transition: var(--transition); position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: rgba(124,58,237,0.05); }
+    .drop-zone .icon { font-size: 3rem; margin-bottom: 12px; }
+    .drop-zone .label { color: var(--text-muted); font-size: 0.95rem; }
+    .drop-zone .label strong { color: var(--accent); }
+    .drop-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    textarea {
+      width: 100%; min-height: 200px; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px; color: var(--text); font-family: "SF Mono", "Fira Code", monospace;
+      font-size: 0.85rem; resize: vertical; outline: none; transition: var(--transition);
+    }
+    textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .or-divider { text-align: center; color: var(--text-dim); margin: 16px 0; font-size: 0.85rem; }
+    .options { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 20px; }
+    .option label { display: block; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .option input, .option select {
+      width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px; color: var(--text); font-size: 0.9rem; outline: none;
+      transition: var(--transition);
+    }
+    .option input:focus, .option select:focus { border-color: var(--accent); }
+    .option input[type="color"] { height: 42px; padding: 4px; cursor: pointer; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+    .checkbox-row input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+    .checkbox-row label { color: var(--text-muted); font-size: 0.9rem; cursor: pointer; }
+    .btn-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 28px; border-radius: 10px; border: none; font-weight: 600;
+      font-size: 0.95rem; cursor: pointer; transition: var(--transition);
+    }
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .preview-area { text-align: center; margin-top: 20px; }
+    .preview-area img { max-width: 100%; max-height: 400px; border-radius: 10px; border: 1px solid var(--border); background: repeating-conic-gradient(#1a1a2e 0% 25%, #0f0f24 0% 50%) 0 0 / 20px 20px; }
+    .preview-info { color: var(--text-dim); font-size: 0.8rem; margin-top: 8px; }
+    .hidden { display: none; }
+    footer { text-align: center; padding: 40px 24px; color: var(--text-dim); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 600px) {
+      header h1 { font-size: 1.6rem; }
+      .card { padding: 20px; }
+      .options { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🖼️ SVG to <span>PNG</span> Converter</h1>
+    <p>Convert SVG to high-quality PNG — runs entirely in your browser</p>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>📂 Input SVG</h2>
+      <div class="drop-zone" id="dropZone">
+        <div class="icon">📁</div>
+        <div class="label">Drop an SVG file here or <strong>click to browse</strong></div>
+        <input type="file" accept=".svg,image/svg+xml" id="fileInput" />
+      </div>
+      <div class="or-divider">— or paste SVG code —</div>
+      <textarea id="svgInput" placeholder="<svg xmlns='http://www.w3.org/2000/svg' ...>&#10;  ...&#10;</svg>" spellcheck="false"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>⚙️ Options</h2>
+      <div class="options">
+        <div class="option">
+          <label>Width (px)</label>
+          <input type="number" id="widthInput" placeholder="Auto" min="1" max="8192" />
+        </div>
+        <div class="option">
+          <label>Height (px)</label>
+          <input type="number" id="heightInput" placeholder="Auto" min="1" max="8192" />
+        </div>
+        <div class="option">
+          <label>Scale</label>
+          <select id="scaleSelect">
+            <option value="1">1x</option>
+            <option value="2" selected>2x (Retina)</option>
+            <option value="3">3x</option>
+            <option value="4">4x</option>
+          </select>
+        </div>
+        <div class="option">
+          <label>Background</label>
+          <input type="color" id="bgColor" value="#0a0a1a" />
+        </div>
+      </div>
+      <div class="checkbox-row">
+        <input type="checkbox" id="transparentBg" checked />
+        <label for="transparentBg">Transparent background</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="btn-row">
+        <button class="btn btn-primary" id="convertBtn" disabled>Convert to PNG</button>
+        <button class="btn btn-secondary hidden" id="downloadBtn">⬇ Download PNG</button>
+        <button class="btn btn-secondary hidden" id="copyBtn">📋 Copy to Clipboard</button>
+      </div>
+      <div class="preview-area hidden" id="previewArea">
+        <img id="previewImg" alt="PNG preview" />
+        <div class="preview-info" id="previewInfo"></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Part of <a href="https://goosekit.dev/">GooseKit</a> — Free developer tools, no signup, no tracking</p>
+  </footer>
+
+  <script>
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const svgInput = document.getElementById('svgInput');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    const scaleSelect = document.getElementById('scaleSelect');
+    const bgColor = document.getElementById('bgColor');
+    const transparentBg = document.getElementById('transparentBg');
+    const convertBtn = document.getElementById('convertBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const previewArea = document.getElementById('previewArea');
+    const previewImg = document.getElementById('previewImg');
+    const previewInfo = document.getElementById('previewInfo');
+
+    let svgData = '';
+    let pngBlob = null;
+
+    // Drag & drop
+    ['dragenter', 'dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('drag-over'); }));
+    ['dragleave', 'drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('drag-over'); }));
+
+    dropZone.addEventListener('drop', e => {
+      const file = e.dataTransfer.files[0];
+      if (file && file.type === 'image/svg+xml') loadFile(file);
+    });
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files[0]) loadFile(fileInput.files[0]);
+    });
+
+    function loadFile(file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        svgInput.value = e.target.result;
+        svgData = e.target.result;
+        convertBtn.disabled = false;
+      };
+      reader.readAsText(file);
+    }
+
+    svgInput.addEventListener('input', () => {
+      svgData = svgInput.value.trim();
+      convertBtn.disabled = !svgData;
+    });
+
+    transparentBg.addEventListener('change', () => {
+      bgColor.disabled = transparentBg.checked;
+    });
+
+    convertBtn.addEventListener('click', convert);
+
+    async function convert() {
+      if (!svgData) return;
+      convertBtn.textContent = 'Converting…';
+      convertBtn.disabled = true;
+
+      try {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(svgData, 'image/svg+xml');
+        const svgEl = doc.querySelector('svg');
+        if (!svgEl) throw new Error('Invalid SVG');
+
+        // Get intrinsic size
+        let svgW = parseFloat(svgEl.getAttribute('width')) || 0;
+        let svgH = parseFloat(svgEl.getAttribute('height')) || 0;
+        const vb = svgEl.getAttribute('viewBox');
+        if (vb && (!svgW || !svgH)) {
+          const parts = vb.split(/[\s,]+/).map(Number);
+          if (!svgW) svgW = parts[2];
+          if (!svgH) svgH = parts[3];
+        }
+        if (!svgW) svgW = 300;
+        if (!svgH) svgH = 150;
+
+        const scale = parseInt(scaleSelect.value);
+        const outW = (parseInt(widthInput.value) || svgW) * scale;
+        const outH = (parseInt(heightInput.value) || svgH) * scale;
+
+        // Ensure SVG has proper dimensions for rendering
+        const svgClone = svgEl.cloneNode(true);
+        svgClone.setAttribute('width', outW);
+        svgClone.setAttribute('height', outH);
+        if (!svgClone.getAttribute('viewBox')) {
+          svgClone.setAttribute('viewBox', `0 0 ${svgW} ${svgH}`);
+        }
+
+        const serializer = new XMLSerializer();
+        const svgString = serializer.serializeToString(svgClone);
+        const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = outW;
+          canvas.height = outH;
+          const ctx = canvas.getContext('2d');
+
+          if (!transparentBg.checked) {
+            ctx.fillStyle = bgColor.value;
+            ctx.fillRect(0, 0, outW, outH);
+          }
+
+          ctx.drawImage(img, 0, 0, outW, outH);
+          URL.revokeObjectURL(url);
+
+          canvas.toBlob(b => {
+            pngBlob = b;
+            previewImg.src = URL.createObjectURL(b);
+            previewInfo.textContent = `${outW} × ${outH} px — ${(b.size / 1024).toFixed(1)} KB`;
+            previewArea.classList.remove('hidden');
+            downloadBtn.classList.remove('hidden');
+            copyBtn.classList.remove('hidden');
+            convertBtn.textContent = 'Convert to PNG';
+            convertBtn.disabled = false;
+          }, 'image/png');
+        };
+        img.onerror = () => {
+          URL.revokeObjectURL(url);
+          throw new Error('Failed to render SVG');
+        };
+        img.src = url;
+      } catch (err) {
+        alert('Error: ' + err.message);
+        convertBtn.textContent = 'Convert to PNG';
+        convertBtn.disabled = false;
+      }
+    }
+
+    downloadBtn.addEventListener('click', () => {
+      if (!pngBlob) return;
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(pngBlob);
+      a.download = 'converted.png';
+      a.click();
+    });
+
+    copyBtn.addEventListener('click', async () => {
+      if (!pngBlob) return;
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': pngBlob })]);
+        copyBtn.textContent = '✅ Copied!';
+        setTimeout(() => copyBtn.textContent = '📋 Copy to Clipboard', 2000);
+      } catch {
+        copyBtn.textContent = '❌ Failed';
+        setTimeout(() => copyBtn.textContent = '📋 Copy to Clipboard', 2000);
+      }
+    });
+
+    // Keyboard shortcut
+    document.addEventListener('keydown', e => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); convert(); }
+    });
+  </script>
+</body>
+</html>

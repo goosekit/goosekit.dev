@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Placeholder Image Generator — Custom Size, Color, Text | Free Dev Tool</title>
+  <meta name="description" content="Generate placeholder images with custom dimensions, colors, and text. Download PNG or copy URL. Perfect for mockups and prototyping. Free, no signup." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://placeholderimg-devtools.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Placeholder Image Generator" />
+  <meta property="og:description" content="Generate custom placeholder images for mockups. Set size, color, text. Download PNG instantly." />
+  <meta name="twitter:card" content="summary" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+      --accent: #22c55e; --radius: 16px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center; padding: 60px 24px 40px;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(34,197,94,0.18) 0%, transparent 70%);
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 30%, #86efac 70%, #67e8f9 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    header p { color: var(--text-muted); margin-top: 12px; max-width: 500px; margin-inline: auto; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .layout { display: grid; grid-template-columns: 300px 1fr; gap: 24px; margin-top: 32px; }
+    @media (max-width: 700px) { .layout { grid-template-columns: 1fr; } }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px;
+    }
+    .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+
+    .field { margin-bottom: 14px; }
+    .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .field input[type="text"], .field input[type="number"], .field select {
+      width: 100%; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 14px; outline: none;
+      transition: border-color var(--transition);
+    }
+    .field input:focus { border-color: rgba(34,197,94,0.5); }
+    .field-row { display: flex; gap: 8px; }
+    .field-row input { flex: 1; }
+
+    .color-field { display: flex; gap: 8px; align-items: center; }
+    .color-field input[type="color"] {
+      width: 40px; height: 38px; border: 1px solid var(--border); border-radius: 8px;
+      background: transparent; cursor: pointer; padding: 2px;
+    }
+    .color-field input[type="text"] { flex: 1; }
+
+    .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .preset {
+      padding: 6px 12px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text-muted); font-size: 12px; cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+    }
+    .preset:hover { background: rgba(34,197,94,0.15); color: var(--text); }
+
+    .btn {
+      width: 100%; padding: 12px; background: rgba(34,197,94,0.15); border: 1px solid rgba(34,197,94,0.3);
+      border-radius: 8px; color: #86efac; font-size: 14px; font-weight: 600; cursor: pointer;
+      transition: background var(--transition); margin-top: 8px;
+    }
+    .btn:hover { background: rgba(34,197,94,0.25); }
+    .btn-row { display: flex; gap: 8px; }
+    .btn-row .btn { flex: 1; }
+
+    .preview-area {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 300px; position: relative;
+    }
+    #canvas { max-width: 100%; max-height: 500px; border-radius: 8px; border: 1px solid var(--border); }
+
+    footer {
+      text-align: center; padding: 40px 24px; border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 13px;
+    }
+    footer a { color: #86efac; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🖼️ Placeholder Image</h1>
+    <p>Generate placeholder images with custom size, colors &amp; text. Download PNG or copy data URL.</p>
+  </header>
+
+  <div class="container">
+    <div class="layout">
+      <!-- Controls -->
+      <div class="card">
+        <h2>Settings</h2>
+
+        <div class="presets">
+          <span class="preset" onclick="setSize(1200,630)">OG Image</span>
+          <span class="preset" onclick="setSize(1920,1080)">1080p</span>
+          <span class="preset" onclick="setSize(800,600)">800×600</span>
+          <span class="preset" onclick="setSize(400,300)">400×300</span>
+          <span class="preset" onclick="setSize(150,150)">Avatar</span>
+          <span class="preset" onclick="setSize(728,90)">Banner</span>
+          <span class="preset" onclick="setSize(300,250)">Ad</span>
+        </div>
+
+        <div class="field">
+          <label>Dimensions (px)</label>
+          <div class="field-row">
+            <input type="number" id="w" value="800" min="1" max="4096" />
+            <span style="color:var(--text-dim);line-height:38px;">×</span>
+            <input type="number" id="h" value="600" min="1" max="4096" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Background Color</label>
+          <div class="color-field">
+            <input type="color" id="bgPick" value="#1e293b" oninput="document.getElementById('bgHex').value=this.value;generate()" />
+            <input type="text" id="bgHex" value="#1e293b" oninput="document.getElementById('bgPick').value=this.value;generate()" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Text Color</label>
+          <div class="color-field">
+            <input type="color" id="fgPick" value="#94a3b8" oninput="document.getElementById('fgHex').value=this.value;generate()" />
+            <input type="text" id="fgHex" value="#94a3b8" oninput="document.getElementById('fgPick').value=this.value;generate()" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Custom Text (leave empty for dimensions)</label>
+          <input type="text" id="customText" placeholder="800 × 600" spellcheck="false" oninput="generate()" />
+        </div>
+
+        <div class="field">
+          <label>Format</label>
+          <select id="format" onchange="generate()">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+            <option value="webp">WebP</option>
+          </select>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn" onclick="download()">⬇ Download</button>
+          <button class="btn" onclick="copyDataUrl()">📋 Copy URL</button>
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="card">
+        <h2>Preview</h2>
+        <div class="preview-area">
+          <canvas id="canvas"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Part of <a href="https://goosekit.dev/" target="_blank">GooseKit</a> — Free developer tools by <a href="https://github.com/arthurpierrey" target="_blank">Arthur Pierrey</a>
+  </footer>
+
+  <script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  function generate() {
+    const w = Math.min(4096, Math.max(1, +document.getElementById('w').value || 800));
+    const h = Math.min(4096, Math.max(1, +document.getElementById('h').value || 600));
+    const bg = document.getElementById('bgHex').value || '#1e293b';
+    const fg = document.getElementById('fgHex').value || '#94a3b8';
+    const customText = document.getElementById('customText').value;
+    const text = customText || `${w} × ${h}`;
+
+    canvas.width = w;
+    canvas.height = h;
+
+    // Background
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, w, h);
+
+    // Crosshair lines
+    ctx.strokeStyle = fg;
+    ctx.globalAlpha = 0.15;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, h/2); ctx.lineTo(w, h/2);
+    ctx.moveTo(w/2, 0); ctx.lineTo(w/2, h);
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    // Text
+    const fontSize = Math.max(12, Math.min(w, h) / 8);
+    ctx.font = `600 ${fontSize}px -apple-system, system-ui, sans-serif`;
+    ctx.fillStyle = fg;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, w/2, h/2);
+
+    // Dimension label below
+    if (customText) {
+      const smallSize = Math.max(10, fontSize * 0.4);
+      ctx.font = `400 ${smallSize}px -apple-system, system-ui, sans-serif`;
+      ctx.globalAlpha = 0.5;
+      ctx.fillText(`${w} × ${h}`, w/2, h/2 + fontSize * 0.8);
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  function setSize(w, h) {
+    document.getElementById('w').value = w;
+    document.getElementById('h').value = h;
+    generate();
+  }
+
+  function getDataUrl() {
+    const fmt = document.getElementById('format').value;
+    return canvas.toDataURL(`image/${fmt}`, 0.92);
+  }
+
+  function download() {
+    const a = document.createElement('a');
+    const fmt = document.getElementById('format').value;
+    const w = document.getElementById('w').value;
+    const h = document.getElementById('h').value;
+    a.download = `placeholder-${w}x${h}.${fmt}`;
+    a.href = getDataUrl();
+    a.click();
+  }
+
+  function copyDataUrl() {
+    navigator.clipboard.writeText(getDataUrl());
+  }
+
+  // Re-generate on dimension change
+  document.getElementById('w').addEventListener('input', generate);
+  document.getElementById('h').addEventListener('input', generate);
+
+  generate();
+  </script>
+</body>
+</html>

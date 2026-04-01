@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IP Address Lookup — What Is My IP? Free IP Info Tool</title>
+<meta name="description" content="Free IP address lookup tool. Find your public IP, geolocation, ISP, timezone, and more. Lookup any IP address instantly. 100% free, no signup required.">
+<meta name="keywords" content="ip address lookup, what is my ip, ip info, ip geolocation, ip location, my ip address, ip checker, ip finder">
+<meta name="robots" content="index, follow">
+<meta name="author" content="GooseKit">
+<link rel="canonical" href="https://ipinfo-lac.vercel.app/">
+<meta property="og:title" content="IP Address Lookup — What Is My IP? Free IP Info Tool">
+<meta property="og:description" content="Find your public IP address, geolocation, ISP, timezone and more. Lookup any IP instantly.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ipinfo-lac.vercel.app/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IP Address Lookup — What Is My IP?">
+<meta name="twitter:description" content="Free IP address lookup. Find your IP, location, ISP, timezone. No signup.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#242836;--border:#2e3348;--text:#e4e6f0;--text2:#9ca0b4;--accent:#6c5ce7;--accent2:#a29bfe;--green:#00cec9;--red:#ff6b6b;--yellow:#ffc048;--radius:12px;--shadow:0 4px 24px rgba(0,0,0,.3)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;line-height:1.6}
+a{color:var(--accent2);text-decoration:none}a:hover{text-decoration:underline}
+.container{max-width:780px;width:100%;margin:0 auto;padding:0 20px}
+header{padding:40px 0 20px;text-align:center}
+header h1{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2),var(--green));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+header p{color:var(--text2);margin-top:6px;font-size:.95rem}
+main{flex:1;padding-bottom:40px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.card h2{font-size:1.1rem;margin-bottom:16px;color:var(--accent2)}
+.search-row{display:flex;gap:10px;margin-bottom:20px}
+.search-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:12px 16px;color:var(--text);font-size:.95rem;outline:none;transition:border .2s}
+.search-row input:focus{border-color:var(--accent)}
+.search-row input::placeholder{color:var(--text2)}
+.btn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:12px 24px;font-size:.95rem;cursor:pointer;font-weight:600;transition:all .2s;white-space:nowrap}
+.btn:hover{background:var(--accent2);color:var(--bg)}
+.btn-secondary{background:var(--surface2);border:1px solid var(--border);color:var(--text)}
+.btn-secondary:hover{border-color:var(--accent);color:var(--accent2)}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:600px){.info-grid{grid-template-columns:1fr}.search-row{flex-direction:column}}
+.info-item{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.info-item .label{font-size:.8rem;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+.info-item .value{font-size:1.05rem;font-weight:600;word-break:break-all}
+.ip-big{text-align:center;padding:24px;background:linear-gradient(135deg,rgba(108,92,231,.15),rgba(0,206,201,.1));border-radius:var(--radius);margin-bottom:20px;border:1px solid var(--border)}
+.ip-big .label{font-size:.85rem;color:var(--text2);margin-bottom:8px}
+.ip-big .ip{font-size:2rem;font-weight:700;font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;color:var(--accent2)}
+.copy-btn{display:inline-flex;align-items:center;gap:6px;margin-top:8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 14px;font-size:.85rem;cursor:pointer;color:var(--text2);transition:all .2s}
+.copy-btn:hover{border-color:var(--accent);color:var(--accent2)}
+.loading{text-align:center;padding:40px;color:var(--text2)}
+.loading .spinner{width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error{background:rgba(255,107,107,.1);border:1px solid var(--red);border-radius:8px;padding:14px;color:var(--red);text-align:center;margin-bottom:16px}
+.map-container{width:100%;height:300px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);margin-top:16px}
+.map-container iframe{width:100%;height:100%;border:none}
+footer{text-align:center;padding:24px 0;border-top:1px solid var(--border);color:var(--text2);font-size:.85rem}
+footer a{color:var(--accent2)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:.75rem;font-weight:600;text-transform:uppercase}
+.badge-vpn{background:rgba(255,192,72,.15);color:var(--yellow)}
+.badge-proxy{background:rgba(255,107,107,.15);color:var(--red)}
+.badge-hosting{background:rgba(108,92,231,.15);color:var(--accent2)}
+</style>
+</head>
+<body>
+<header>
+<div class="container">
+<h1>🌐 IP Address Lookup</h1>
+<p>Find your public IP, geolocation, ISP, and more — instantly</p>
+</div>
+</header>
+<main>
+<div class="container">
+<div class="card">
+<h2>Lookup IP Address</h2>
+<div class="search-row">
+<input type="text" id="ipInput" placeholder="Enter an IP address (or leave blank for yours)" spellcheck="false" autocomplete="off">
+<button class="btn" id="lookupBtn" onclick="lookupIP()">Lookup</button>
+<button class="btn btn-secondary" onclick="lookupMyIP()">My IP</button>
+</div>
+<div id="error" class="error" style="display:none"></div>
+</div>
+
+<div id="loading" class="loading" style="display:none">
+<div class="spinner"></div>
+<p>Looking up IP info...</p>
+</div>
+
+<div id="results" style="display:none">
+<div class="ip-big" id="ipBig">
+<div class="label">IP Address</div>
+<div class="ip" id="ipDisplay">—</div>
+<div id="badges"></div>
+<button class="copy-btn" onclick="copyIP()">📋 Copy IP</button>
+</div>
+
+<div class="card">
+<h2>📍 Location</h2>
+<div class="info-grid" id="locationGrid"></div>
+<div class="map-container" id="mapContainer" style="display:none">
+<iframe id="mapFrame" loading="lazy"></iframe>
+</div>
+</div>
+
+<div class="card">
+<h2>🌐 Network</h2>
+<div class="info-grid" id="networkGrid"></div>
+</div>
+
+<div class="card">
+<h2>⏰ Timezone & Locale</h2>
+<div class="info-grid" id="timezoneGrid"></div>
+</div>
+</div>
+</div>
+</main>
+<footer>
+<div class="container">
+<p>Part of <a href="https://goosekit.dev/">GooseKit</a> — Free developer tools, no signup, no tracking.</p>
+<p style="margin-top:4px">Data from <a href="https://ip-api.com" target="_blank" rel="noopener">ip-api.com</a> (free, non-commercial use)</p>
+</div>
+</footer>
+<script>
+const $ = id => document.getElementById(id);
+
+function makeItem(label, value) {
+  return `<div class="info-item"><div class="label">${label}</div><div class="value">${value || '—'}</div></div>`;
+}
+
+let currentIP = '';
+
+async function lookupIP() {
+  const input = $('ipInput').value.trim();
+  await fetchIP(input || '');
+}
+
+async function lookupMyIP() {
+  $('ipInput').value = '';
+  await fetchIP('');
+}
+
+async function fetchIP(ip) {
+  $('error').style.display = 'none';
+  $('results').style.display = 'none';
+  $('loading').style.display = 'block';
+
+  try {
+    const url = ip
+      ? `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,asname,mobile,proxy,hosting,query`
+      : `http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,asname,mobile,proxy,hosting,query`;
+
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.status === 'fail') {
+      throw new Error(data.message || 'Invalid IP address');
+    }
+
+    currentIP = data.query;
+    renderResults(data);
+  } catch (err) {
+    $('error').textContent = err.message || 'Failed to lookup IP';
+    $('error').style.display = 'block';
+  } finally {
+    $('loading').style.display = 'none';
+  }
+}
+
+function renderResults(d) {
+  $('ipDisplay').textContent = d.query;
+
+  // Badges
+  let badges = '';
+  if (d.proxy) badges += '<span class="badge badge-proxy">VPN/Proxy</span> ';
+  if (d.hosting) badges += '<span class="badge badge-hosting">Hosting/DC</span> ';
+  if (d.mobile) badges += '<span class="badge badge-vpn">Mobile</span> ';
+  $('badges').innerHTML = badges;
+
+  // Location
+  $('locationGrid').innerHTML =
+    makeItem('Country', `${d.country} (${d.countryCode})`) +
+    makeItem('Region', d.regionName || d.region) +
+    makeItem('City', d.city) +
+    makeItem('ZIP / Postal', d.zip) +
+    makeItem('Latitude', d.lat) +
+    makeItem('Longitude', d.lon);
+
+  // Map
+  if (d.lat && d.lon) {
+    $('mapContainer').style.display = 'block';
+    $('mapFrame').src = `https://www.openstreetmap.org/export/embed.html?bbox=${d.lon-0.05},${d.lat-0.03},${d.lon+0.05},${d.lat+0.03}&layer=mapnik&marker=${d.lat},${d.lon}`;
+  } else {
+    $('mapContainer').style.display = 'none';
+  }
+
+  // Network
+  $('networkGrid').innerHTML =
+    makeItem('ISP', d.isp) +
+    makeItem('Organization', d.org) +
+    makeItem('AS Number', d.as) +
+    makeItem('AS Name', d.asname);
+
+  // Timezone
+  const now = new Date();
+  let localTime = '—';
+  try { localTime = now.toLocaleString('en-US', { timeZone: d.timezone, hour12: true }); } catch(e) {}
+  $('timezoneGrid').innerHTML =
+    makeItem('Timezone', d.timezone) +
+    makeItem('Local Time', localTime) +
+    makeItem('UTC Offset', getUTCOffset(d.timezone));
+
+  $('results').style.display = 'block';
+}
+
+function getUTCOffset(tz) {
+  try {
+    const now = new Date();
+    const utc = now.getTime() + now.getTimezoneOffset() * 60000;
+    const target = new Date(utc);
+    const fmt = new Intl.DateTimeFormat('en-US', { timeZone: tz, timeZoneName: 'shortOffset' });
+    const parts = fmt.formatToParts(target);
+    const tzPart = parts.find(p => p.type === 'timeZoneName');
+    return tzPart ? tzPart.value : '—';
+  } catch(e) { return '—'; }
+}
+
+function copyIP() {
+  if (!currentIP) return;
+  navigator.clipboard.writeText(currentIP).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = '✅ Copied!';
+    setTimeout(() => btn.innerHTML = '📋 Copy IP', 1500);
+  });
+}
+
+// Auto-lookup on load
+window.addEventListener('DOMContentLoaded', () => lookupMyIP());
+
+// Enter key
+$('ipInput').addEventListener('keydown', e => { if (e.key === 'Enter') lookupIP(); });
+</script>
+</body>
+</html>

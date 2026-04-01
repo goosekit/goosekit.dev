@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Decoder — Decode & Inspect JSON Web Tokens Online</title>
+    <meta name="description" content="Free online JWT decoder. Paste a JSON Web Token to instantly decode the header, payload, and verify the signature. No data sent to any server.">
+    <meta name="keywords" content="JWT decoder, JSON Web Token, JWT parser, JWT debugger, token inspector, decode JWT online">
+    <meta property="og:title" content="JWT Decoder — Free Online JWT Inspector">
+    <meta property="og:description" content="Decode and inspect JSON Web Tokens instantly. See header, payload, expiration, and claims. 100% client-side.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://jwtdecoder-eight.vercel.app">
+    <link rel="canonical" href="https://jwtdecoder-eight.vercel.app">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "JWT Decoder",
+      "url": "https://jwtdecoder-eight.vercel.app",
+      "description": "Free online JWT decoder and inspector",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a28;
+            --border: #2a2a3d;
+            --text: #e4e4ed;
+            --text2: #8888a0;
+            --accent: #7c5cfc;
+            --accent2: #a78bfa;
+            --header-color: #f97316;
+            --payload-color: #22d3ee;
+            --signature-color: #f472b6;
+            --success: #22c55e;
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --radius: 12px;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        header p { color: var(--text2); font-size: 1rem; }
+
+        .input-section { margin-bottom: 2rem; }
+        .input-section label {
+            display: block; font-weight: 600; margin-bottom: 0.5rem;
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text2);
+        }
+        textarea {
+            width: 100%; min-height: 120px; padding: 1rem;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); color: var(--text);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.85rem; resize: vertical; outline: none;
+            transition: border-color 0.2s;
+        }
+        textarea:focus { border-color: var(--accent); }
+        textarea::placeholder { color: var(--text2); opacity: 0.6; }
+
+        .token-preview {
+            margin: 1rem 0; padding: 1rem;
+            background: var(--surface); border-radius: var(--radius);
+            font-family: monospace; font-size: 0.8rem;
+            word-break: break-all; line-height: 1.8;
+            border: 1px solid var(--border);
+        }
+        .token-preview .header-part { color: var(--header-color); font-weight: 600; }
+        .token-preview .payload-part { color: var(--payload-color); font-weight: 600; }
+        .token-preview .signature-part { color: var(--signature-color); font-weight: 600; }
+        .token-preview .dot { color: var(--text2); font-size: 1.2em; }
+
+        .results { display: grid; gap: 1.5rem; }
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .panel-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.75rem 1rem;
+            font-weight: 600; font-size: 0.85rem;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+        .panel-header.header-panel { background: rgba(249, 115, 22, 0.1); color: var(--header-color); }
+        .panel-header.payload-panel { background: rgba(34, 211, 238, 0.1); color: var(--payload-color); }
+        .panel-header.signature-panel { background: rgba(244, 114, 182, 0.1); color: var(--signature-color); }
+
+        .panel-body { padding: 1rem; }
+        .panel-body pre {
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.85rem; line-height: 1.7;
+            white-space: pre-wrap; word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--surface2); color: var(--text2);
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 0.25rem 0.6rem; font-size: 0.75rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .copy-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .claims-grid {
+            display: grid; gap: 0.5rem; margin-top: 0.75rem;
+        }
+        .claim-row {
+            display: flex; gap: 0.75rem; padding: 0.5rem 0.75rem;
+            background: var(--surface2); border-radius: 8px;
+            font-size: 0.85rem; align-items: center;
+        }
+        .claim-key {
+            font-family: monospace; color: var(--accent2);
+            min-width: 80px; font-weight: 600;
+        }
+        .claim-value { color: var(--text); font-family: monospace; flex: 1; }
+        .claim-label { color: var(--text2); font-size: 0.78rem; margin-left: auto; white-space: nowrap; }
+
+        .status-bar {
+            display: flex; gap: 0.75rem; flex-wrap: wrap;
+            margin: 1rem 0; font-size: 0.85rem;
+        }
+        .status-badge {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.35rem 0.75rem; border-radius: 20px;
+            font-weight: 500;
+        }
+        .status-badge.valid { background: rgba(34, 197, 94, 0.15); color: var(--success); }
+        .status-badge.expired { background: rgba(239, 68, 68, 0.15); color: var(--error); }
+        .status-badge.warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
+        .status-badge .dot-indicator { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+        .empty-state {
+            text-align: center; padding: 3rem;
+            color: var(--text2); font-size: 0.95rem;
+        }
+        .empty-state .icon { font-size: 2.5rem; margin-bottom: 1rem; }
+
+        .sample-btn {
+            display: inline-block; margin-top: 0.5rem;
+            background: var(--surface2); color: var(--accent2);
+            border: 1px solid var(--border); border-radius: 8px;
+            padding: 0.4rem 1rem; font-size: 0.85rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .sample-btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .toolbar {
+            display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap;
+        }
+
+        footer {
+            margin-top: 3rem; padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center; color: var(--text2); font-size: 0.82rem;
+        }
+        footer a { color: var(--accent2); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 600px) {
+            .container { padding: 1.25rem 1rem; }
+            header h1 { font-size: 1.6rem; }
+            .claim-row { flex-direction: column; gap: 0.2rem; }
+            .claim-label { margin-left: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔐 JWT Decoder</h1>
+            <p>Paste a JSON Web Token to instantly decode and inspect it. 100% client-side — nothing leaves your browser.</p>
+        </header>
+
+        <div class="input-section">
+            <label for="jwt-input">Paste your JWT</label>
+            <textarea id="jwt-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c" spellcheck="false"></textarea>
+            <div class="toolbar">
+                <button class="sample-btn" onclick="loadSample()">📋 Load sample JWT</button>
+                <button class="sample-btn" onclick="clearAll()">✕ Clear</button>
+            </div>
+        </div>
+
+        <div id="output">
+            <div class="empty-state">
+                <div class="icon">🔍</div>
+                <p>Paste a JWT above to decode it</p>
+            </div>
+        </div>
+
+        <footer>
+            <p>
+                <a href="https://goosekit.dev">GooseKit</a> ·
+                <a href="https://arthurpierrey.github.io/screensnap/app.html">ScreenSnap</a> ·
+                <a href="https://arthurpierrey.github.io/ogpreview/">OG Preview</a>
+            </p>
+            <p style="margin-top: 0.4rem;">Free developer tools. No tracking, no ads. Open source.</p>
+        </footer>
+    </div>
+
+    <script>
+    const input = document.getElementById('jwt-input');
+    const output = document.getElementById('output');
+
+    const SAMPLE_JWT = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJqb2huQGV4YW1wbGUuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQzNDUwMDAwLCJleHAiOjE3NDM1MzY0MDAsImlzcyI6ImF1dGgubXlhcHAuY29tIiwiYXVkIjoibXlhcHAuY29tIn0.X7VpDRCJkjGhN_qB7nHKL3Zr8O5gF0xQ2mWy4VaRdNc';
+
+    const CLAIM_LABELS = {
+        iss: 'Issuer', sub: 'Subject', aud: 'Audience', exp: 'Expiration',
+        nbf: 'Not Before', iat: 'Issued At', jti: 'JWT ID',
+        name: 'Name', email: 'Email', role: 'Role', scope: 'Scope',
+        azp: 'Authorized Party', nonce: 'Nonce', at_hash: 'Access Token Hash',
+        acr: 'Auth Context', amr: 'Auth Methods', typ: 'Token Type'
+    };
+
+    const TIME_CLAIMS = ['exp', 'nbf', 'iat'];
+
+    function base64UrlDecode(str) {
+        str = str.replace(/-/g, '+').replace(/_/g, '/');
+        const pad = str.length % 4;
+        if (pad) str += '='.repeat(4 - pad);
+        return JSON.parse(atob(str));
+    }
+
+    function formatTime(ts) {
+        const d = new Date(ts * 1000);
+        return d.toLocaleString('en-US', {
+            weekday: 'short', year: 'numeric', month: 'short', day: 'numeric',
+            hour: '2-digit', minute: '2-digit', second: '2-digit', timeZoneName: 'short'
+        });
+    }
+
+    function relativeTime(ts) {
+        const now = Math.floor(Date.now() / 1000);
+        const diff = ts - now;
+        const abs = Math.abs(diff);
+        if (abs < 60) return `${abs}s ${diff > 0 ? 'from now' : 'ago'}`;
+        if (abs < 3600) return `${Math.floor(abs / 60)}m ${diff > 0 ? 'from now' : 'ago'}`;
+        if (abs < 86400) return `${Math.floor(abs / 3600)}h ${diff > 0 ? 'from now' : 'ago'}`;
+        return `${Math.floor(abs / 86400)}d ${diff > 0 ? 'from now' : 'ago'}`;
+    }
+
+    function copyText(text, btn) {
+        navigator.clipboard.writeText(text).then(() => {
+            const orig = btn.textContent;
+            btn.textContent = '✓ Copied';
+            setTimeout(() => btn.textContent = orig, 1500);
+        });
+    }
+
+    function decode() {
+        const token = input.value.trim();
+        if (!token) {
+            output.innerHTML = '<div class="empty-state"><div class="icon">🔍</div><p>Paste a JWT above to decode it</p></div>';
+            return;
+        }
+
+        const parts = token.split('.');
+        if (parts.length !== 3) {
+            output.innerHTML = '<div class="empty-state"><div class="icon">⚠️</div><p>Invalid JWT format. A JWT should have 3 parts separated by dots.</p></div>';
+            return;
+        }
+
+        let header, payload;
+        try {
+            header = base64UrlDecode(parts[0]);
+        } catch (e) {
+            output.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Failed to decode header: ' + e.message + '</p></div>';
+            return;
+        }
+        try {
+            payload = base64UrlDecode(parts[1]);
+        } catch (e) {
+            output.innerHTML = '<div class="empty-state"><div class="icon">❌</div><p>Failed to decode payload: ' + e.message + '</p></div>';
+            return;
+        }
+
+        const now = Math.floor(Date.now() / 1000);
+        const statuses = [];
+
+        if (payload.exp) {
+            if (payload.exp < now) {
+                statuses.push({ cls: 'expired', text: 'Expired ' + relativeTime(payload.exp) });
+            } else {
+                statuses.push({ cls: 'valid', text: 'Valid — expires ' + relativeTime(payload.exp) });
+            }
+        }
+        if (payload.nbf && payload.nbf > now) {
+            statuses.push({ cls: 'warning', text: 'Not yet valid (nbf: ' + relativeTime(payload.nbf) + ')' });
+        }
+        if (header.alg) {
+            statuses.push({ cls: header.alg === 'none' ? 'warning' : 'valid', text: 'Algorithm: ' + header.alg });
+        }
+
+        const headerJson = JSON.stringify(header, null, 2);
+        const payloadJson = JSON.stringify(payload, null, 2);
+
+        let claimsHtml = '';
+        const entries = Object.entries(payload);
+        if (entries.length > 0) {
+            claimsHtml = '<div class="claims-grid">';
+            for (const [key, value] of entries) {
+                const label = CLAIM_LABELS[key] || '';
+                let displayValue = typeof value === 'object' ? JSON.stringify(value) : String(value);
+                if (TIME_CLAIMS.includes(key) && typeof value === 'number') {
+                    displayValue = formatTime(value) + ' (' + relativeTime(value) + ')';
+                }
+                claimsHtml += `<div class="claim-row">
+                    <span class="claim-key">${key}</span>
+                    <span class="claim-value">${escapeHtml(displayValue)}</span>
+                    ${label ? `<span class="claim-label">${label}</span>` : ''}
+                </div>`;
+            }
+            claimsHtml += '</div>';
+        }
+
+        output.innerHTML = `
+            <div class="token-preview">
+                <span class="header-part">${escapeHtml(parts[0])}</span><span class="dot">.</span><span class="payload-part">${escapeHtml(parts[1])}</span><span class="dot">.</span><span class="signature-part">${escapeHtml(parts[2])}</span>
+            </div>
+
+            <div class="status-bar">
+                ${statuses.map(s => `<span class="status-badge ${s.cls}"><span class="dot-indicator"></span>${s.text}</span>`).join('')}
+            </div>
+
+            <div class="results">
+                <div class="panel">
+                    <div class="panel-header header-panel">
+                        <span>🟠 Header</span>
+                        <button class="copy-btn" onclick="copyText(\`${headerJson.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`, this)">Copy</button>
+                    </div>
+                    <div class="panel-body"><pre>${syntaxHighlight(headerJson)}</pre></div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header payload-panel">
+                        <span>🔵 Payload</span>
+                        <button class="copy-btn" onclick="copyText(\`${payloadJson.replace(/`/g, '\\`').replace(/\\/g, '\\\\')}\`, this)">Copy</button>
+                    </div>
+                    <div class="panel-body">
+                        <pre>${syntaxHighlight(payloadJson)}</pre>
+                        ${claimsHtml}
+                    </div>
+                </div>
+
+                <div class="panel">
+                    <div class="panel-header signature-panel">
+                        <span>🔴 Signature</span>
+                        <button class="copy-btn" onclick="copyText('${parts[2]}', this)">Copy</button>
+                    </div>
+                    <div class="panel-body">
+                        <pre style="color: var(--signature-color);">${escapeHtml(parts[2])}</pre>
+                        <p style="color: var(--text2); font-size: 0.82rem; margin-top: 0.5rem;">
+                            ⓘ Signature verification requires the secret/key and is not performed client-side.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function syntaxHighlight(json) {
+        return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let cls = 'color: #22d3ee'; // number
+            if (/^"/.test(match)) {
+                if (/:$/.test(match)) {
+                    cls = 'color: #a78bfa'; // key
+                } else {
+                    cls = 'color: #22c55e'; // string
+                }
+            } else if (/true|false/.test(match)) {
+                cls = 'color: #f59e0b'; // boolean
+            } else if (/null/.test(match)) {
+                cls = 'color: #ef4444'; // null
+            }
+            return '<span style="' + cls + '">' + match + '</span>';
+        });
+    }
+
+    function loadSample() {
+        input.value = SAMPLE_JWT;
+        decode();
+    }
+
+    function clearAll() {
+        input.value = '';
+        decode();
+    }
+
+    input.addEventListener('input', decode);
+
+    // Auto-decode if URL has a token param
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('token')) {
+        input.value = params.get('token');
+        decode();
+    }
+    </script>
+</body>
+</html>

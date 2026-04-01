@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Favicon Generator — Create Favicons from Text, Emoji or Image</title>
+  <meta name="description" content="Generate favicons from text, emoji, or uploaded images. Export as ICO, PNG (16×16 to 512×512), and Apple Touch Icon. Free, no signup." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://arthurpierrey.github.io/favicon/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Favicon Generator — Create Favicons from Text, Emoji or Image" />
+  <meta property="og:description" content="Generate favicons from text, emoji, or image. Export ICO, PNG, Apple Touch Icon. Free." />
+  <meta property="og:url" content="https://arthurpierrey.github.io/favicon/" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Favicon Generator",
+    "url": "https://arthurpierrey.github.io/favicon/",
+    "description": "Generate favicons from text, emoji, or uploaded images. Export as ICO, PNG, Apple Touch Icon.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Arthur Pierrey" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary: #0a0a0a; --bg-secondary: #1a1a1a; --bg-tertiary: #2a2a2a;
+      --accent: #3b82f6; --accent-hover: #2563eb; --accent-glow: rgba(59,130,246,0.15);
+      --text-primary: #e5e5e5; --text-secondary: #a3a3a3; --text-muted: #737373;
+      --border: #333; --radius: 12px; --radius-sm: 8px;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+    .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .tab { padding: 0.5rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .tab:hover { border-color: var(--accent); color: var(--text-primary); }
+    .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 500; }
+    input, select { width: 100%; padding: 0.75rem 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
+    input:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .form-group { margin-bottom: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); border: none; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-group { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .preview-grid { display: flex; gap: 1.5rem; align-items: center; justify-content: center; flex-wrap: wrap; padding: 1.5rem 0; }
+    .preview-item { text-align: center; }
+    .preview-item canvas { border: 1px solid var(--border); border-radius: 4px; image-rendering: pixelated; }
+    .preview-item .label { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.3rem; }
+    .color-row { display: flex; align-items: center; gap: 0.5rem; }
+    .color-row input[type="color"] { width: 40px; height: 40px; padding: 2px; border-radius: 6px; cursor: pointer; border: 1px solid var(--border); }
+    .color-row input[type="text"] { flex: 1; }
+    .hidden { display: none; }
+    .drop-zone { border: 2px dashed var(--border); border-radius: var(--radius); padding: 2rem; text-align: center; color: var(--text-muted); cursor: pointer; transition: all 0.2s; }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--accent); color: var(--text-secondary); background: var(--accent-glow); }
+    .code-block { background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1rem; font-family: 'SF Mono', Monaco, Consolas, monospace; font-size: 0.85rem; color: var(--text-secondary); overflow-x: auto; position: relative; white-space: pre; }
+    .copy-code { position: absolute; top: 0.5rem; right: 0.5rem; padding: 0.3rem 0.6rem; font-size: 0.75rem; }
+    .section-title { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.75rem; }
+    footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Favicon Generator</h1>
+    <p class="subtitle">Create favicons from text, emoji, or images — export as ICO, PNG & Apple Touch Icon</p>
+
+    <div class="card">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-type="emoji">😀 Emoji</button>
+        <button class="tab" data-type="text">Aa Text</button>
+        <button class="tab" data-type="image">🖼️ Image</button>
+      </div>
+
+      <!-- Emoji input -->
+      <div id="form-emoji" class="type-form">
+        <div class="form-group">
+          <label for="emoji-input">Emoji</label>
+          <input id="emoji-input" value="🦊" style="font-size:2rem;text-align:center;" maxlength="4" />
+        </div>
+        <div class="form-group">
+          <label>Background</label>
+          <div class="color-row">
+            <input type="color" id="emoji-bg" value="#1a1a2e" />
+            <input type="text" id="emoji-bg-text" value="#1a1a2e" />
+            <label style="margin:0;display:flex;align-items:center;gap:0.3rem;cursor:pointer;">
+              <input type="checkbox" id="emoji-transparent" /> Transparent
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Text input -->
+      <div id="form-text" class="type-form hidden">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="text-input">Letter(s)</label>
+            <input id="text-input" value="A" maxlength="3" style="font-size:1.5rem;text-align:center;" />
+          </div>
+          <div class="form-group">
+            <label for="text-font">Font</label>
+            <select id="text-font">
+              <option value="system-ui, sans-serif">System Sans</option>
+              <option value="Georgia, serif">Serif</option>
+              <option value="'Courier New', monospace">Monospace</option>
+              <option value="Impact, sans-serif">Impact</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Text Color</label>
+            <div class="color-row">
+              <input type="color" id="text-fg" value="#ffffff" />
+              <input type="text" id="text-fg-text" value="#ffffff" />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Background</label>
+            <div class="color-row">
+              <input type="color" id="text-bg" value="#3b82f6" />
+              <input type="text" id="text-bg-text" value="#3b82f6" />
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Shape</label>
+          <div class="tabs" id="shape-tabs" style="margin-bottom:0">
+            <button class="tab active" data-shape="square">◼ Square</button>
+            <button class="tab" data-shape="rounded">◻ Rounded</button>
+            <button class="tab" data-shape="circle">⬤ Circle</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Image upload -->
+      <div id="form-image" class="type-form hidden">
+        <div class="drop-zone" id="drop-zone">
+          <p>📁 Drop an image here or click to upload</p>
+          <p style="font-size:0.8rem;margin-top:0.5rem;">PNG, JPG, SVG — will be resized to favicon sizes</p>
+          <input type="file" id="file-input" accept="image/*" style="display:none" />
+        </div>
+        <canvas id="upload-preview" class="hidden"></canvas>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="card">
+      <div class="section-title">Preview</div>
+      <div class="preview-grid" id="preview-grid"></div>
+    </div>
+
+    <!-- Download -->
+    <div class="card">
+      <div class="section-title">Download</div>
+      <div class="btn-group" style="margin-bottom:1rem;">
+        <button class="btn btn-primary" id="dl-ico">📥 favicon.ico</button>
+        <button class="btn btn-secondary" id="dl-16">16×16 PNG</button>
+        <button class="btn btn-secondary" id="dl-32">32×32 PNG</button>
+        <button class="btn btn-secondary" id="dl-180">180×180 PNG</button>
+        <button class="btn btn-secondary" id="dl-192">192×192 PNG</button>
+        <button class="btn btn-secondary" id="dl-512">512×512 PNG</button>
+        <button class="btn btn-primary" id="dl-all">📦 Download All</button>
+      </div>
+    </div>
+
+    <!-- HTML snippet -->
+    <div class="card">
+      <div class="section-title">HTML Code</div>
+      <div class="code-block" id="html-code"><button class="btn btn-secondary copy-code" id="copy-html">📋 Copy</button>&lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;
+&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;</div>
+    </div>
+
+    <footer>
+      <p style="color:var(--text-muted);font-size:0.85rem;">
+        Part of <a href="https://goosekit.dev">GooseKit</a> — Free developer tools, no signup, no tracking
+      </p>
+    </footer>
+  </div>
+
+  <script>
+  const $ = s => document.querySelector(s);
+  const sizes = [16, 32, 48, 64, 180, 192, 512];
+  let currentType = 'emoji';
+  let uploadedImage = null;
+  let textShape = 'square';
+
+  // Tab switching
+  $('#tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab || !tab.dataset.type) return;
+    document.querySelectorAll('#tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentType = tab.dataset.type;
+    document.querySelectorAll('.type-form').forEach(f => f.classList.add('hidden'));
+    $(`#form-${currentType}`).classList.remove('hidden');
+    render();
+  });
+
+  // Shape tabs
+  $('#shape-tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab || !tab.dataset.shape) return;
+    document.querySelectorAll('#shape-tabs .tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    textShape = tab.dataset.shape;
+    render();
+  });
+
+  // Color sync
+  function syncColor(cId, tId) {
+    $(cId).addEventListener('input', () => { $(tId).value = $(cId).value; render(); });
+    $(tId).addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test($(tId).value)) { $(cId).value = $(tId).value; render(); } });
+  }
+  syncColor('#emoji-bg', '#emoji-bg-text');
+  syncColor('#text-fg', '#text-fg-text');
+  syncColor('#text-bg', '#text-bg-text');
+
+  // File upload
+  const dz = $('#drop-zone');
+  dz.addEventListener('click', () => $('#file-input').click());
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('dragover'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('dragover'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('dragover'); handleFile(e.dataTransfer.files[0]); });
+  $('#file-input').addEventListener('change', e => { if (e.target.files[0]) handleFile(e.target.files[0]); });
+
+  function handleFile(file) {
+    const img = new Image();
+    img.onload = () => { uploadedImage = img; dz.innerHTML = `<p>✅ ${file.name} loaded (${img.width}×${img.height})</p>`; render(); };
+    img.src = URL.createObjectURL(file);
+  }
+
+  // Render favicon to canvas at given size
+  function renderToCanvas(size) {
+    const c = document.createElement('canvas');
+    c.width = size; c.height = size;
+    const ctx = c.getContext('2d');
+
+    if (currentType === 'emoji') {
+      const transparent = $('#emoji-transparent').checked;
+      if (!transparent) {
+        ctx.fillStyle = $('#emoji-bg').value;
+        ctx.fillRect(0, 0, size, size);
+      }
+      const emoji = $('#emoji-input').value || '😀';
+      ctx.font = `${size * 0.75}px system-ui, "Apple Color Emoji", "Segoe UI Emoji", sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(emoji, size / 2, size / 2 + size * 0.05);
+    } else if (currentType === 'text') {
+      const bg = $('#text-bg').value;
+      const fg = $('#text-fg').value;
+      const font = $('#text-font').value;
+      const text = $('#text-input').value || 'A';
+
+      if (textShape === 'circle') {
+        ctx.beginPath();
+        ctx.arc(size / 2, size / 2, size / 2, 0, Math.PI * 2);
+        ctx.fillStyle = bg;
+        ctx.fill();
+      } else if (textShape === 'rounded') {
+        const r = size * 0.2;
+        ctx.beginPath();
+        ctx.moveTo(r, 0); ctx.lineTo(size - r, 0); ctx.quadraticCurveTo(size, 0, size, r);
+        ctx.lineTo(size, size - r); ctx.quadraticCurveTo(size, size, size - r, size);
+        ctx.lineTo(r, size); ctx.quadraticCurveTo(0, size, 0, size - r);
+        ctx.lineTo(0, r); ctx.quadraticCurveTo(0, 0, r, 0);
+        ctx.fillStyle = bg; ctx.fill();
+      } else {
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, size, size);
+      }
+
+      ctx.fillStyle = fg;
+      ctx.font = `bold ${size * (text.length > 2 ? 0.4 : text.length > 1 ? 0.55 : 0.65)}px ${font}`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(text, size / 2, size / 2 + size * 0.05);
+    } else if (currentType === 'image' && uploadedImage) {
+      const img = uploadedImage;
+      const scale = Math.min(size / img.width, size / img.height);
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (size - w) / 2, (size - h) / 2, w, h);
+    }
+
+    return c;
+  }
+
+  function render() {
+    const grid = $('#preview-grid');
+    grid.innerHTML = '';
+    [16, 32, 64, 180, 512].forEach(s => {
+      const c = renderToCanvas(s);
+      const display = Math.min(s, 80);
+      c.style.width = display + 'px';
+      c.style.height = display + 'px';
+      const div = document.createElement('div');
+      div.className = 'preview-item';
+      div.appendChild(c);
+      const lbl = document.createElement('div');
+      lbl.className = 'label';
+      lbl.textContent = `${s}×${s}`;
+      div.appendChild(lbl);
+      grid.appendChild(div);
+    });
+  }
+
+  // Auto-render
+  document.querySelectorAll('input, select').forEach(el => {
+    el.addEventListener('input', () => { clearTimeout(window._rt); window._rt = setTimeout(render, 150); });
+  });
+
+  // Download PNG
+  function dlPng(size) {
+    const c = renderToCanvas(size);
+    const link = document.createElement('a');
+    link.download = size === 180 ? 'apple-touch-icon.png' : `favicon-${size}x${size}.png`;
+    link.href = c.toDataURL('image/png');
+    link.click();
+  }
+
+  $('#dl-16').addEventListener('click', () => dlPng(16));
+  $('#dl-32').addEventListener('click', () => dlPng(32));
+  $('#dl-180').addEventListener('click', () => dlPng(180));
+  $('#dl-192').addEventListener('click', () => dlPng(192));
+  $('#dl-512').addEventListener('click', () => dlPng(512));
+
+  // ICO generation (simple BMP-based ICO for 16+32+48)
+  function createICO() {
+    const icoSizes = [16, 32, 48];
+    const images = icoSizes.map(s => {
+      const c = renderToCanvas(s);
+      const ctx = c.getContext('2d');
+      const data = ctx.getImageData(0, 0, s, s).data;
+      // BMP format: BITMAPINFOHEADER + pixel data (bottom-up BGRA)
+      const headerSize = 40;
+      const pixelSize = s * s * 4;
+      const bmp = new Uint8Array(headerSize + pixelSize);
+      const dv = new DataView(bmp.buffer);
+      dv.setUint32(0, 40, true); // header size
+      dv.setInt32(4, s, true); // width
+      dv.setInt32(8, s * 2, true); // height (double for ICO)
+      dv.setUint16(12, 1, true); // planes
+      dv.setUint16(14, 32, true); // bpp
+      dv.setUint32(16, 0, true); // compression
+      dv.setUint32(20, pixelSize, true); // image size
+      // Pixel data (bottom-up, BGRA)
+      for (let y = s - 1; y >= 0; y--) {
+        for (let x = 0; x < s; x++) {
+          const src = (y * s + x) * 4;
+          const dst = headerSize + ((s - 1 - y) * s + x) * 4;
+          bmp[dst] = data[src + 2]; // B
+          bmp[dst + 1] = data[src + 1]; // G
+          bmp[dst + 2] = data[src]; // R
+          bmp[dst + 3] = data[src + 3]; // A
+        }
+      }
+      return { size: s, data: bmp };
+    });
+
+    // ICO file structure
+    const headerLen = 6 + images.length * 16;
+    let totalSize = headerLen;
+    images.forEach(i => totalSize += i.data.length);
+
+    const ico = new Uint8Array(totalSize);
+    const dv = new DataView(ico.buffer);
+    dv.setUint16(0, 0, true); // reserved
+    dv.setUint16(2, 1, true); // ICO type
+    dv.setUint16(4, images.length, true); // count
+
+    let offset = headerLen;
+    images.forEach((img, idx) => {
+      const base = 6 + idx * 16;
+      ico[base] = img.size < 256 ? img.size : 0; // width
+      ico[base + 1] = img.size < 256 ? img.size : 0; // height
+      ico[base + 2] = 0; // palette
+      ico[base + 3] = 0; // reserved
+      dv.setUint16(base + 4, 1, true); // planes
+      dv.setUint16(base + 6, 32, true); // bpp
+      dv.setUint32(base + 8, img.data.length, true); // size
+      dv.setUint32(base + 12, offset, true); // offset
+      ico.set(img.data, offset);
+      offset += img.data.length;
+    });
+
+    return new Blob([ico], { type: 'image/x-icon' });
+  }
+
+  $('#dl-ico').addEventListener('click', () => {
+    const blob = createICO();
+    const link = document.createElement('a');
+    link.download = 'favicon.ico';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+
+  // Download all as zip (simple, no library — individual downloads)
+  $('#dl-all').addEventListener('click', () => {
+    // Download all files sequentially
+    const blob = createICO();
+    const link = document.createElement('a');
+    link.download = 'favicon.ico';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    setTimeout(() => dlPng(16), 200);
+    setTimeout(() => dlPng(32), 400);
+    setTimeout(() => dlPng(180), 600);
+    setTimeout(() => dlPng(192), 800);
+    setTimeout(() => dlPng(512), 1000);
+  });
+
+  // Copy HTML
+  $('#copy-html').addEventListener('click', () => {
+    const code = `<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">`;
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = $('#copy-html');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy', 2000);
+    });
+  });
+
+  // Initial render
+  render();
+  </script>
+</body>
+</html>

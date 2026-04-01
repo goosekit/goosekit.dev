@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Encoder/Decoder — Encode & Decode URLs Online</title>
+    <meta name="description" content="Free online URL encoder and decoder. Encode special characters for URLs or decode percent-encoded strings. Supports full URL and component encoding.">
+    <meta name="keywords" content="URL encoder, URL decoder, percent encoding, encodeURIComponent, URL escape, online URL tool">
+    <meta property="og:title" content="URL Encoder/Decoder — Free Online Tool">
+    <meta property="og:description" content="Encode and decode URLs instantly. Supports encodeURI, encodeURIComponent, and full URL parsing. 100% client-side.">
+    <meta property="og:type" content="website">
+    <link rel="canonical" href="https://urlencode-gamma.vercel.app">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "URL Encoder/Decoder",
+      "url": "https://urlencode-gamma.vercel.app",
+      "description": "Free online URL encoder and decoder tool",
+      "applicationCategory": "DeveloperApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #0a0a0f; --surface: #12121a; --surface2: #1a1a28;
+            --border: #2a2a3d; --text: #e4e4ed; --text2: #8888a0;
+            --accent: #10b981; --accent2: #34d399;
+            --radius: 12px;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.6;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem; }
+        header { text-align: center; margin-bottom: 2.5rem; }
+        header h1 {
+            font-size: 2.2rem;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        header p { color: var(--text2); }
+
+        .mode-tabs {
+            display: flex; gap: 0; margin-bottom: 1.5rem;
+            background: var(--surface); border-radius: var(--radius);
+            border: 1px solid var(--border); overflow: hidden;
+        }
+        .mode-tab {
+            flex: 1; padding: 0.75rem; text-align: center;
+            background: transparent; color: var(--text2); border: none;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            transition: all 0.2s;
+        }
+        .mode-tab.active { background: var(--accent); color: white; }
+        .mode-tab:hover:not(.active) { color: var(--text); background: var(--surface2); }
+
+        .editor-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+        }
+        .editor-panel {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden;
+        }
+        .editor-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+            font-weight: 600; font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text2);
+        }
+        textarea {
+            width: 100%; min-height: 250px; padding: 1rem;
+            background: transparent; border: none; color: var(--text);
+            font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.85rem;
+            resize: vertical; outline: none;
+        }
+        textarea::placeholder { color: var(--text2); opacity: 0.5; }
+
+        .btn {
+            background: var(--surface2); color: var(--text2);
+            border: 1px solid var(--border); border-radius: 6px;
+            padding: 0.3rem 0.65rem; font-size: 0.75rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .btn:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+        .swap-btn {
+            display: flex; align-items: center; justify-content: center;
+            align-self: center; width: 40px; height: 40px;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 50%; color: var(--accent); font-size: 1.2rem;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .swap-btn:hover { background: var(--accent); color: white; transform: rotate(180deg); }
+
+        .url-parser {
+            margin-top: 2rem; background: var(--surface);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .parser-header {
+            padding: 0.75rem 1rem; border-bottom: 1px solid var(--border);
+            font-weight: 600; font-size: 0.85rem; text-transform: uppercase;
+            letter-spacing: 0.05em; color: var(--text2);
+        }
+        .parser-body { padding: 1rem; }
+        .param-row {
+            display: flex; gap: 0.75rem; padding: 0.5rem 0.75rem;
+            background: var(--surface2); border-radius: 8px;
+            font-size: 0.85rem; margin-bottom: 0.4rem;
+            font-family: monospace;
+        }
+        .param-key { color: var(--accent2); font-weight: 600; min-width: 120px; }
+        .param-value { color: var(--text); word-break: break-all; }
+
+        .stats {
+            display: flex; gap: 1rem; margin-top: 1rem;
+            font-size: 0.82rem; color: var(--text2);
+        }
+        .stat-badge {
+            background: var(--surface2); padding: 0.3rem 0.7rem;
+            border-radius: 16px;
+        }
+
+        footer {
+            margin-top: 3rem; padding-top: 1.5rem;
+            border-top: 1px solid var(--border);
+            text-align: center; color: var(--text2); font-size: 0.82rem;
+        }
+        footer a { color: var(--accent2); text-decoration: none; }
+        footer a:hover { text-decoration: underline; }
+
+        @media (max-width: 700px) {
+            .editor-grid { grid-template-columns: 1fr; }
+            .swap-btn { transform: rotate(90deg); margin: 0 auto; }
+            header h1 { font-size: 1.6rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🔗 URL Encoder/Decoder</h1>
+            <p>Encode special characters for URLs or decode percent-encoded strings. Everything runs in your browser.</p>
+        </header>
+
+        <div class="mode-tabs">
+            <button class="mode-tab active" onclick="setMode('component')" id="tab-component">Component</button>
+            <button class="mode-tab" onclick="setMode('full')" id="tab-full">Full URL</button>
+            <button class="mode-tab" onclick="setMode('base64url')" id="tab-base64url">Base64URL</button>
+        </div>
+
+        <div class="editor-grid">
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <span>Decoded (Plain Text)</span>
+                    <div style="display:flex;gap:0.4rem;">
+                        <button class="btn" onclick="copyField('decoded')">Copy</button>
+                        <button class="btn" onclick="clearField('decoded')">Clear</button>
+                    </div>
+                </div>
+                <textarea id="decoded" placeholder="Type or paste text here..." oninput="encode()"></textarea>
+            </div>
+
+            <div class="editor-panel">
+                <div class="editor-header">
+                    <span>Encoded</span>
+                    <div style="display:flex;gap:0.4rem;">
+                        <button class="btn" onclick="copyField('encoded')">Copy</button>
+                        <button class="btn" onclick="clearField('encoded')">Clear</button>
+                    </div>
+                </div>
+                <textarea id="encoded" placeholder="Or paste encoded text here..." oninput="decodeInput()"></textarea>
+            </div>
+        </div>
+
+        <div class="stats" id="stats"></div>
+
+        <div class="url-parser" id="url-parser" style="display:none;">
+            <div class="parser-header">📊 URL Breakdown</div>
+            <div class="parser-body" id="parser-body"></div>
+        </div>
+
+        <footer>
+            <p>
+                <a href="https://goosekit.dev">GooseKit</a> ·
+                <a href="https://arthurpierrey.github.io/screensnap/app.html">ScreenSnap</a> ·
+                <a href="https://arthurpierrey.github.io/ogpreview/">OG Preview</a>
+            </p>
+            <p style="margin-top:0.4rem;">Free developer tools. No tracking, no ads. Open source.</p>
+        </footer>
+    </div>
+
+    <script>
+    let currentMode = 'component';
+    const decoded = document.getElementById('decoded');
+    const encoded = document.getElementById('encoded');
+    const stats = document.getElementById('stats');
+    const urlParser = document.getElementById('url-parser');
+    const parserBody = document.getElementById('parser-body');
+
+    function setMode(mode) {
+        currentMode = mode;
+        document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('tab-' + mode).classList.add('active');
+        if (decoded.value) encode();
+        else if (encoded.value) decodeInput();
+    }
+
+    function encode() {
+        const text = decoded.value;
+        if (!text) { encoded.value = ''; updateStats('', ''); hideParser(); return; }
+        try {
+            let result;
+            if (currentMode === 'component') result = encodeURIComponent(text);
+            else if (currentMode === 'full') result = encodeURI(text);
+            else result = btoa(text).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+            encoded.value = result;
+            updateStats(text, result);
+            tryParseURL(text);
+        } catch(e) {
+            encoded.value = '⚠️ Error: ' + e.message;
+        }
+    }
+
+    function decodeInput() {
+        const text = encoded.value;
+        if (!text) { decoded.value = ''; updateStats('', ''); hideParser(); return; }
+        try {
+            let result;
+            if (currentMode === 'component') result = decodeURIComponent(text);
+            else if (currentMode === 'full') result = decodeURI(text);
+            else {
+                let b64 = text.replace(/-/g, '+').replace(/_/g, '/');
+                const pad = b64.length % 4;
+                if (pad) b64 += '='.repeat(4 - pad);
+                result = atob(b64);
+            }
+            decoded.value = result;
+            updateStats(result, text);
+            tryParseURL(result);
+        } catch(e) {
+            decoded.value = '⚠️ Error: ' + e.message;
+        }
+    }
+
+    function updateStats(plain, enc) {
+        if (!plain && !enc) { stats.innerHTML = ''; return; }
+        const encodedChars = (enc.match(/%[0-9A-Fa-f]{2}/g) || []).length;
+        stats.innerHTML = `
+            <span class="stat-badge">Plain: ${plain.length} chars</span>
+            <span class="stat-badge">Encoded: ${enc.length} chars</span>
+            ${encodedChars ? `<span class="stat-badge">${encodedChars} encoded chars</span>` : ''}
+        `;
+    }
+
+    function tryParseURL(text) {
+        try {
+            const url = new URL(text);
+            let html = '';
+            const parts = [
+                ['Protocol', url.protocol],
+                ['Host', url.host],
+                ['Pathname', url.pathname],
+                ['Hash', url.hash || '(none)'],
+            ];
+            parts.forEach(([k, v]) => {
+                html += `<div class="param-row"><span class="param-key">${k}</span><span class="param-value">${escapeHtml(v)}</span></div>`;
+            });
+            if (url.searchParams.toString()) {
+                html += '<div style="margin:0.75rem 0 0.4rem;font-weight:600;font-size:0.82rem;color:var(--text2);">Query Parameters</div>';
+                url.searchParams.forEach((v, k) => {
+                    html += `<div class="param-row"><span class="param-key">${escapeHtml(k)}</span><span class="param-value">${escapeHtml(v)}</span></div>`;
+                });
+            }
+            parserBody.innerHTML = html;
+            urlParser.style.display = 'block';
+        } catch(e) {
+            hideParser();
+        }
+    }
+
+    function hideParser() { urlParser.style.display = 'none'; }
+
+    function escapeHtml(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function copyField(id) {
+        const el = document.getElementById(id);
+        navigator.clipboard.writeText(el.value);
+    }
+
+    function clearField(id) {
+        document.getElementById(id).value = '';
+        decoded.value = ''; encoded.value = '';
+        stats.innerHTML = ''; hideParser();
+    }
+    </script>
+</body>
+</html>

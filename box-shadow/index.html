@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Box Shadow Generator — CSS Shadow Tool | Free Dev Tool</title>
+  <meta name="description" content="Generate beautiful CSS box shadows with a visual editor. Multiple layers, inset shadows, presets, live preview. Free, no signup, no tracking." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://boxshadow-devtools.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Box Shadow Generator — CSS Shadow Tool" />
+  <meta property="og:description" content="Visual CSS box-shadow generator with presets, layered shadows, and live preview. Free, browser-based." />
+  <meta name="twitter:card" content="summary" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+      --accent: #7c3aed; --accent-glow: rgba(124,58,237,0.3); --radius: 16px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center; padding: 60px 24px 40px;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.18) 0%, transparent 70%);
+    }
+    header h1 { font-size: 2.2rem; font-weight: 800; letter-spacing: -0.03em; }
+    header h1 span { background: linear-gradient(135deg, #a78bfa, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    header p { color: var(--text-muted); margin-top: 8px; font-size: 1.05rem; }
+    .container { max-width: 1000px; margin: 0 auto; padding: 0 24px 60px; }
+    .layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 28px;
+      backdrop-filter: blur(12px);
+    }
+    .card h2 { font-size: 0.85rem; font-weight: 600; margin-bottom: 16px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .preview-box {
+      width: 100%; aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 12px; background: #1a1a2e; position: relative; overflow: hidden;
+    }
+    .shadow-target {
+      width: 200px; height: 200px; border-radius: 16px; background: #1e1e3a;
+      transition: box-shadow 0.15s ease;
+    }
+    .slider-group { margin-bottom: 16px; }
+    .slider-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 4px; }
+    .slider-label span:last-child { color: var(--accent); font-family: "SF Mono", monospace; font-weight: 600; }
+    input[type="range"] {
+      width: 100%; height: 6px; -webkit-appearance: none; background: rgba(255,255,255,0.08);
+      border-radius: 3px; outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--accent); cursor: pointer; box-shadow: 0 0 8px var(--accent-glow);
+    }
+    .color-row { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; }
+    .color-row label { font-size: 0.8rem; color: var(--text-muted); min-width: 60px; text-transform: uppercase; letter-spacing: 0.04em; }
+    .color-row input[type="color"] { width: 42px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: transparent; cursor: pointer; padding: 2px; }
+    .checkbox-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+    .checkbox-row input { accent-color: var(--accent); width: 16px; height: 16px; }
+    .checkbox-row label { color: var(--text-muted); font-size: 0.9rem; cursor: pointer; }
+    .layers { margin-bottom: 16px; }
+    .layer-item {
+      display: flex; align-items: center; gap: 8px; padding: 8px 12px;
+      background: rgba(0,0,0,0.2); border-radius: 8px; margin-bottom: 6px;
+      font-size: 0.8rem; font-family: "SF Mono", monospace; color: var(--text-muted);
+      cursor: pointer; transition: var(--transition);
+    }
+    .layer-item.active { border: 1px solid var(--accent); background: rgba(124,58,237,0.08); color: var(--text); }
+    .layer-item .del { margin-left: auto; color: #ef4444; cursor: pointer; opacity: 0.6; font-size: 1rem; }
+    .layer-item .del:hover { opacity: 1; }
+    .btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn {
+      padding: 10px 20px; border-radius: 10px; border: none; font-weight: 600;
+      font-size: 0.85rem; cursor: pointer; transition: var(--transition);
+    }
+    .btn-sm { padding: 6px 14px; font-size: 0.8rem; border-radius: 8px; }
+    .btn-primary { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px var(--accent-glow); }
+    .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+    .output-box {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px; font-family: "SF Mono", "Fira Code", monospace; font-size: 0.85rem;
+      color: #a78bfa; word-break: break-all; position: relative; min-height: 60px;
+    }
+    .copy-btn {
+      position: absolute; top: 8px; right: 8px; background: rgba(124,58,237,0.2);
+      border: none; border-radius: 6px; padding: 4px 10px; color: var(--accent);
+      cursor: pointer; font-size: 0.75rem; transition: var(--transition);
+    }
+    .copy-btn:hover { background: rgba(124,58,237,0.4); }
+    .presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .preset-btn {
+      padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03); color: var(--text-muted); cursor: pointer;
+      font-size: 0.8rem; transition: var(--transition);
+    }
+    .preset-btn:hover { border-color: var(--accent); color: var(--text); }
+    .full-width { grid-column: 1 / -1; }
+    footer { text-align: center; padding: 40px 24px; color: var(--text-dim); font-size: 0.85rem; }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 700px) {
+      .layout { grid-template-columns: 1fr; }
+      header h1 { font-size: 1.6rem; }
+      .shadow-target { width: 140px; height: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎨 Box <span>Shadow</span> Generator</h1>
+    <p>Visual CSS box-shadow editor with layers, presets & live preview</p>
+  </header>
+
+  <div class="container">
+    <div class="card full-width" style="margin-bottom:24px">
+      <h2>⚡ Presets</h2>
+      <div class="presets" id="presets"></div>
+    </div>
+
+    <div class="layout">
+      <div class="card">
+        <h2>🖼️ Preview</h2>
+        <div class="preview-box">
+          <div class="shadow-target" id="target"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>🔧 Controls</h2>
+        <div class="layers" id="layers"></div>
+        <div class="btn-row">
+          <button class="btn btn-sm btn-primary" id="addLayer">+ Add Layer</button>
+        </div>
+
+        <div id="controls">
+          <div class="slider-group">
+            <div class="slider-label"><span>Offset X</span><span id="valX">0px</span></div>
+            <input type="range" id="offX" min="-100" max="100" value="0" />
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Offset Y</span><span id="valY">10px</span></div>
+            <input type="range" id="offY" min="-100" max="100" value="10" />
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Blur</span><span id="valBlur">30px</span></div>
+            <input type="range" id="blur" min="0" max="200" value="30" />
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Spread</span><span id="valSpread">0px</span></div>
+            <input type="range" id="spread" min="-100" max="100" value="0" />
+          </div>
+          <div class="color-row">
+            <label>Color</label>
+            <input type="color" id="shadowColor" value="#000000" />
+          </div>
+          <div class="slider-group">
+            <div class="slider-label"><span>Opacity</span><span id="valOpacity">25%</span></div>
+            <input type="range" id="opacity" min="0" max="100" value="25" />
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="inset" />
+            <label for="inset">Inset shadow</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="card full-width">
+        <h2>📋 CSS Output</h2>
+        <div class="output-box" id="output">
+          <button class="copy-btn" id="copyBtn">📋 Copy</button>
+          <code id="cssCode"></code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>Part of <a href="https://goosekit.dev/">GooseKit</a> — Free developer tools, no signup, no tracking</p>
+  </footer>
+
+  <script>
+    const presets = [
+      { name: 'Subtle', layers: [{ x:0,y:1,blur:3,spread:0,color:'#000000',opacity:12,inset:false }] },
+      { name: 'Soft Lift', layers: [{ x:0,y:4,blur:14,spread:-3,color:'#000000',opacity:20,inset:false }] },
+      { name: 'Card', layers: [{ x:0,y:10,blur:30,spread:-5,color:'#000000',opacity:25,inset:false }, { x:0,y:4,blur:6,spread:-2,color:'#000000',opacity:10,inset:false }] },
+      { name: 'Elevated', layers: [{ x:0,y:20,blur:60,spread:-15,color:'#000000',opacity:30,inset:false }] },
+      { name: 'Sharp', layers: [{ x:6,y:6,blur:0,spread:0,color:'#000000',opacity:40,inset:false }] },
+      { name: 'Neon', layers: [{ x:0,y:0,blur:20,spread:2,color:'#7c3aed',opacity:60,inset:false }, { x:0,y:0,blur:60,spread:-5,color:'#7c3aed',opacity:30,inset:false }] },
+      { name: 'Inner Glow', layers: [{ x:0,y:0,blur:30,spread:10,color:'#7c3aed',opacity:20,inset:true }] },
+      { name: 'Dreamy', layers: [{ x:0,y:8,blur:32,spread:0,color:'#7c3aed',opacity:18,inset:false }, { x:0,y:2,blur:8,spread:0,color:'#000000',opacity:12,inset:false }] },
+      { name: 'Layered', layers: [{ x:0,y:1,blur:1,spread:0,color:'#000000',opacity:9,inset:false },{ x:0,y:2,blur:2,spread:0,color:'#000000',opacity:9,inset:false },{ x:0,y:4,blur:4,spread:0,color:'#000000',opacity:9,inset:false },{ x:0,y:8,blur:8,spread:0,color:'#000000',opacity:9,inset:false },{ x:0,y:16,blur:16,spread:0,color:'#000000',opacity:9,inset:false }] },
+      { name: 'Neumorphic', layers: [{ x:6,y:6,blur:12,spread:0,color:'#000000',opacity:30,inset:false },{ x:-6,y:-6,blur:12,spread:0,color:'#ffffff',opacity:5,inset:false }] },
+    ];
+
+    let shadowLayers = [{ x:0,y:10,blur:30,spread:0,color:'#000000',opacity:25,inset:false }];
+    let activeLayer = 0;
+
+    const $ = id => document.getElementById(id);
+
+    // Build presets
+    const presetsEl = $('presets');
+    presets.forEach((p, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'preset-btn';
+      btn.textContent = p.name;
+      btn.onclick = () => { shadowLayers = JSON.parse(JSON.stringify(p.layers)); activeLayer = 0; renderAll(); };
+      presetsEl.appendChild(btn);
+    });
+
+    function hexToRGBA(hex, opacity) {
+      const r = parseInt(hex.slice(1,3),16);
+      const g = parseInt(hex.slice(3,5),16);
+      const b = parseInt(hex.slice(5,7),16);
+      return `rgba(${r}, ${g}, ${b}, ${(opacity/100).toFixed(2)})`;
+    }
+
+    function buildCSS() {
+      return shadowLayers.map(l => {
+        const prefix = l.inset ? 'inset ' : '';
+        return `${prefix}${l.x}px ${l.y}px ${l.blur}px ${l.spread}px ${hexToRGBA(l.color, l.opacity)}`;
+      }).join(',\n    ');
+    }
+
+    function renderAll() {
+      // Layers list
+      const layersEl = $('layers');
+      layersEl.innerHTML = '';
+      shadowLayers.forEach((l, i) => {
+        const div = document.createElement('div');
+        div.className = 'layer-item' + (i === activeLayer ? ' active' : '');
+        div.innerHTML = `<span>${l.inset?'inset ':''}${l.x}px ${l.y}px ${l.blur}px ${l.spread}px</span>`;
+        if (shadowLayers.length > 1) {
+          const del = document.createElement('span');
+          del.className = 'del';
+          del.textContent = '×';
+          del.onclick = e => { e.stopPropagation(); shadowLayers.splice(i,1); if(activeLayer>=shadowLayers.length)activeLayer=shadowLayers.length-1; renderAll(); };
+          div.appendChild(del);
+        }
+        div.onclick = () => { activeLayer = i; renderAll(); };
+        layersEl.appendChild(div);
+      });
+
+      // Sync controls to active layer
+      const l = shadowLayers[activeLayer];
+      $('offX').value = l.x; $('valX').textContent = l.x + 'px';
+      $('offY').value = l.y; $('valY').textContent = l.y + 'px';
+      $('blur').value = l.blur; $('valBlur').textContent = l.blur + 'px';
+      $('spread').value = l.spread; $('valSpread').textContent = l.spread + 'px';
+      $('shadowColor').value = l.color;
+      $('opacity').value = l.opacity; $('valOpacity').textContent = l.opacity + '%';
+      $('inset').checked = l.inset;
+
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const css = buildCSS();
+      $('target').style.boxShadow = css;
+      $('cssCode').textContent = `box-shadow: ${css};`;
+    }
+
+    // Slider events
+    ['offX','offY','blur','spread','opacity'].forEach(id => {
+      $(id).addEventListener('input', () => {
+        const l = shadowLayers[activeLayer];
+        const v = parseInt($(id).value);
+        if (id==='offX') { l.x=v; $('valX').textContent=v+'px'; }
+        if (id==='offY') { l.y=v; $('valY').textContent=v+'px'; }
+        if (id==='blur') { l.blur=v; $('valBlur').textContent=v+'px'; }
+        if (id==='spread') { l.spread=v; $('valSpread').textContent=v+'px'; }
+        if (id==='opacity') { l.opacity=v; $('valOpacity').textContent=v+'%'; }
+        updatePreview();
+        // Update layer list text
+        const items = $('layers').querySelectorAll('.layer-item span:first-child');
+        if (items[activeLayer]) items[activeLayer].textContent = `${l.inset?'inset ':''}${l.x}px ${l.y}px ${l.blur}px ${l.spread}px`;
+      });
+    });
+
+    $('shadowColor').addEventListener('input', () => { shadowLayers[activeLayer].color = $('shadowColor').value; updatePreview(); });
+    $('inset').addEventListener('change', () => { shadowLayers[activeLayer].inset = $('inset').checked; renderAll(); });
+    $('addLayer').addEventListener('click', () => { shadowLayers.push({x:0,y:4,blur:10,spread:0,color:'#000000',opacity:20,inset:false}); activeLayer=shadowLayers.length-1; renderAll(); });
+
+    $('copyBtn').addEventListener('click', async () => {
+      const css = `box-shadow: ${buildCSS()};`;
+      await navigator.clipboard.writeText(css);
+      $('copyBtn').textContent = '✅ Copied!';
+      setTimeout(() => $('copyBtn').textContent = '📋 Copy', 2000);
+    });
+
+    renderAll();
+  </script>
+</body>
+</html>

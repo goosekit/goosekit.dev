@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ScreenSnap — Free Online Screenshot Beautifier</title>
+  <meta name="description" content="Beautify your screenshots online for free. Add gradient backgrounds, shadows, device frames, and export as PNG. No signup needed." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="ScreenSnap — Free Online Screenshot Beautifier" />
+  <meta property="og:description" content="Beautify your screenshots online for free. Add gradient backgrounds, shadows, device frames, and export as PNG. No signup needed." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://screensnap.app/app" />
+  <meta property="og:image" content="https://screensnap.app/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ScreenSnap — Free Online Screenshot Beautifier" />
+  <meta name="twitter:description" content="Beautify your screenshots online for free. Add gradient backgrounds, shadows, device frames, and export as PNG. No signup needed." />
+
+  <!-- Schema.org WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "ScreenSnap Screenshot Beautifier",
+    "description": "Beautify your screenshots online for free. Add gradient backgrounds, shadows, device frames, and export as PNG. No signup needed.",
+    "url": "https://screensnap.app/app",
+    "applicationCategory": "DesignApplication",
+    "operatingSystem": "Any",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Gradient backgrounds",
+      "Shadow effects",
+      "Device frames",
+      "PNG export",
+      "Clipboard paste",
+      "Drag and drop"
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #1a1a2e;
+      --surface: #16213e;
+      --surface2: #0f3460;
+      --border: rgba(255,255,255,0.08);
+      --border-hover: rgba(139,92,246,0.5);
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #7c3aed;
+      --accent2: #a78bfa;
+      --accent-glow: rgba(124,58,237,0.3);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --transition: 0.2s ease;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    /* ── Banner ── */
+    .banner {
+      background: linear-gradient(90deg, #7c3aed, #6366f1);
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+    .banner a {
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,0.5);
+      transition: border-color var(--transition);
+    }
+    .banner a:hover { border-color: #fff; }
+
+    /* ── Header ── */
+    header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .logo {
+      width: 32px; height: 32px;
+      background: linear-gradient(135deg, #7c3aed, #a78bfa);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-text { font-size: 18px; font-weight: 700; }
+    .logo-text span { background: linear-gradient(90deg, #a78bfa, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .header-sub { font-size: 12px; color: var(--text-muted); margin-left: auto; }
+
+    /* ── Layout ── */
+    .app-shell {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      height: calc(100vh - 94px); /* banner + header */
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 20px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .section-title {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    /* ── Drop zone ── */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius);
+      padding: 24px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color var(--transition), background var(--transition);
+      position: relative;
+    }
+    .drop-zone:hover, .drop-zone.drag-over {
+      border-color: var(--accent);
+      background: var(--accent-glow);
+    }
+    .drop-zone input[type="file"] {
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
+    }
+    .drop-icon { font-size: 28px; margin-bottom: 8px; }
+    .drop-label { font-size: 13px; color: var(--text-muted); }
+    .drop-label strong { color: var(--text); }
+    .drop-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    /* ── Gradient presets ── */
+    .gradient-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .gradient-swatch {
+      height: 36px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      position: relative;
+      border: 2px solid transparent;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .gradient-swatch:hover { transform: scale(1.06); }
+    .gradient-swatch.active { border-color: #fff; box-shadow: 0 0 0 3px var(--accent); }
+    .gradient-swatch[data-id="transparent"] {
+      background: repeating-conic-gradient(#aaa 0% 25%, #fff 0% 50%) 0 0 / 12px 12px;
+    }
+    .gradient-swatch[data-id="solid"] {
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 600; color: var(--text-muted);
+      background: #222;
+    }
+    .color-row {
+      display: flex; align-items: center; gap: 8px; margin-top: 8px;
+    }
+    .color-row label { font-size: 12px; color: var(--text-muted); flex: 1; }
+    .color-row input[type="color"] {
+      width: 40px; height: 28px; border: none; background: none; cursor: pointer;
+      border-radius: 4px; padding: 0;
+    }
+
+    /* ── Sliders ── */
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .control-row label { font-size: 12px; color: var(--text-muted); min-width: 80px; }
+    .control-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer;
+    }
+    .control-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: var(--accent2);
+      border: 2px solid var(--accent);
+      cursor: pointer;
+      transition: transform var(--transition);
+    }
+    .control-row input[type="range"]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+    .control-row .val {
+      min-width: 32px; text-align: right; font-size: 12px; color: var(--text-muted);
+    }
+
+    /* ── Button groups ── */
+    .btn-group {
+      display: flex;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+    }
+    .btn-group button {
+      flex: 1;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      padding: 7px 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition);
+      border-right: 1px solid var(--border);
+    }
+    .btn-group button:last-child { border-right: none; }
+    .btn-group button:hover { background: var(--accent-glow); color: var(--text); }
+    .btn-group button.active {
+      background: linear-gradient(135deg, var(--accent), #6366f1);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    /* ── Export buttons ── */
+    .export-row {
+      display: flex;
+      gap: 8px;
+    }
+    .btn {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary {
+      background: linear-gradient(135deg, #7c3aed, #6366f1);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(99,102,241,0.4);
+    }
+    .btn-primary:hover { box-shadow: 0 6px 20px rgba(99,102,241,0.6); }
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-secondary:hover { border-color: var(--accent); background: var(--accent-glow); }
+    .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Toast ── */
+    .toast {
+      position: fixed;
+      bottom: 24px; right: 24px;
+      background: #1e293b;
+      color: var(--text);
+      padding: 10px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      font-size: 13px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+
+    /* ── Canvas area ── */
+    .canvas-area {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      overflow: auto;
+      background: radial-gradient(ellipse at 60% 40%, rgba(99,102,241,0.06) 0%, transparent 70%),
+                  var(--bg);
+      position: relative;
+    }
+    .canvas-wrapper {
+      position: relative;
+      max-width: 100%;
+    }
+    canvas#preview {
+      display: block;
+      max-width: 100%;
+      border-radius: 4px;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    .canvas-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      color: var(--text-muted);
+      text-align: center;
+    }
+    .canvas-placeholder .big-icon { font-size: 64px; opacity: 0.3; }
+    .canvas-placeholder p { font-size: 16px; }
+    .canvas-placeholder small { font-size: 13px; opacity: 0.6; }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .app-shell {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: auto;
+        overflow: visible;
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        max-height: 50vh;
+      }
+      .canvas-area { min-height: 50vh; padding: 16px; }
+      .header-sub { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">
+  ✨ Want it even faster? <a href="#chrome-store-link">Get the Chrome extension →</a>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo">📸</div>
+  <div class="logo-text">Screen<span>Snap</span></div>
+  <div class="header-sub">Free Online Screenshot Beautifier</div>
+</header>
+
+<!-- App shell -->
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <!-- Image input -->
+    <div>
+      <div class="section-title">📂 Image</div>
+      <div class="drop-zone" id="dropZone">
+        <input type="file" id="fileInput" accept="image/*" />
+        <div class="drop-icon">🖼️</div>
+        <div class="drop-label"><strong>Drop image here</strong> or click to browse</div>
+        <div class="drop-hint">Ctrl+V to paste from clipboard</div>
+      </div>
+    </div>
+
+    <!-- Background -->
+    <div>
+      <div class="section-title">🎨 Background</div>
+      <div class="gradient-grid" id="gradientGrid">
+        <!-- filled by JS -->
+      </div>
+      <div class="color-row" id="solidColorRow" style="display:none;">
+        <label>Solid color</label>
+        <input type="color" id="solidColor" value="#7c3aed" />
+      </div>
+    </div>
+
+    <!-- Padding -->
+    <div>
+      <div class="section-title">📐 Padding</div>
+      <div class="control-row">
+        <label>Padding</label>
+        <input type="range" id="padding" min="0" max="128" value="40" step="4" />
+        <span class="val" id="paddingVal">40px</span>
+      </div>
+    </div>
+
+    <!-- Corner radius -->
+    <div>
+      <div class="section-title">⬛ Corner Radius</div>
+      <div class="control-row">
+        <label>Radius</label>
+        <input type="range" id="radius" min="0" max="32" value="12" step="1" />
+        <span class="val" id="radiusVal">12px</span>
+      </div>
+    </div>
+
+    <!-- Shadow -->
+    <div>
+      <div class="section-title">🌑 Shadow</div>
+      <div class="btn-group" id="shadowGroup">
+        <button data-val="none" class="active">None</button>
+        <button data-val="small">Small</button>
+        <button data-val="medium">Medium</button>
+        <button data-val="large">Large</button>
+      </div>
+    </div>
+
+    <!-- Device frame -->
+    <div>
+      <div class="section-title">📱 Device Frame</div>
+      <div class="btn-group" id="frameGroup">
+        <button data-val="none" class="active">None</button>
+        <button data-val="browser">Browser</button>
+        <button data-val="iphone">iPhone</button>
+        <button data-val="macbook">MacBook</button>
+      </div>
+    </div>
+
+    <!-- Scale -->
+    <div>
+      <div class="section-title">🔍 Export Scale</div>
+      <div class="btn-group" id="scaleGroup">
+        <button data-val="1" class="active">1×</button>
+        <button data-val="2">2×</button>
+      </div>
+    </div>
+
+    <!-- Export -->
+    <div>
+      <div class="section-title">💾 Export</div>
+      <div class="export-row">
+        <button class="btn btn-primary" id="btnDownload" disabled>⬇ Download PNG</button>
+        <button class="btn btn-secondary" id="btnCopy" disabled>📋 Copy</button>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- Canvas -->
+  <main class="canvas-area" id="canvasArea">
+    <div class="canvas-placeholder" id="placeholder">
+      <div class="big-icon">🖼️</div>
+      <p>Drop a screenshot to get started</p>
+      <small>Supports PNG, JPG, WebP, GIF — or paste with Ctrl+V</small>
+    </div>
+    <div class="canvas-wrapper" id="canvasWrapper" style="display:none;">
+      <canvas id="preview"></canvas>
+    </div>
+  </main>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function () {
+  'use strict';
+
+  // ─── State ─────────────────────────────────────────────────
+  const state = {
+    image: null,         // HTMLImageElement
+    background: 'violet',
+    solidColor: '#7c3aed',
+    padding: 40,
+    radius: 12,
+    shadow: 'none',
+    frame: 'none',
+    scale: 1,
+  };
+
+  // ─── Gradient presets ───────────────────────────────────────
+  const GRADIENTS = [
+    { id: 'violet',   label: 'Violet',  from: '#7c3aed', to: '#a78bfa' },
+    { id: 'ocean',    label: 'Ocean',   from: '#0ea5e9', to: '#6366f1' },
+    { id: 'sunset',   label: 'Sunset',  from: '#f43f5e', to: '#f97316' },
+    { id: 'emerald',  label: 'Emerald', from: '#059669', to: '#34d399' },
+    { id: 'rose',     label: 'Rose',    from: '#e11d48', to: '#f472b6' },
+    { id: 'amber',    label: 'Amber',   from: '#d97706', to: '#fbbf24' },
+    { id: 'slate',    label: 'Slate',   from: '#334155', to: '#64748b' },
+    { id: 'neon',     label: 'Neon',    from: '#06b6d4', to: '#8b5cf6' },
+    { id: 'solid',    label: 'Solid',   from: null,      to: null       },
+    { id: 'transparent', label: 'None', from: null,      to: null       },
+  ];
+
+  // ─── Shadow configs ─────────────────────────────────────────
+  const SHADOWS = {
+    none:   { blur: 0,  offsetX: 0,  offsetY: 0,  color: 'rgba(0,0,0,0)' },
+    small:  { blur: 16, offsetX: 0,  offsetY: 4,  color: 'rgba(0,0,0,0.3)' },
+    medium: { blur: 40, offsetX: 0,  offsetY: 12, color: 'rgba(0,0,0,0.45)' },
+    large:  { blur: 80, offsetX: 0,  offsetY: 24, color: 'rgba(0,0,0,0.6)' },
+  };
+
+  // ─── DOM refs ───────────────────────────────────────────────
+  const dropZone     = document.getElementById('dropZone');
+  const fileInput    = document.getElementById('fileInput');
+  const gradientGrid = document.getElementById('gradientGrid');
+  const solidColorEl = document.getElementById('solidColor');
+  const solidColorRow= document.getElementById('solidColorRow');
+  const paddingEl    = document.getElementById('padding');
+  const paddingVal   = document.getElementById('paddingVal');
+  const radiusEl     = document.getElementById('radius');
+  const radiusVal    = document.getElementById('radiusVal');
+  const shadowGroup  = document.getElementById('shadowGroup');
+  const frameGroup   = document.getElementById('frameGroup');
+  const scaleGroup   = document.getElementById('scaleGroup');
+  const btnDownload  = document.getElementById('btnDownload');
+  const btnCopy      = document.getElementById('btnCopy');
+  const canvas       = document.getElementById('preview');
+  const ctx          = canvas.getContext('2d');
+  const placeholder  = document.getElementById('placeholder');
+  const canvasWrapper= document.getElementById('canvasWrapper');
+  const toast        = document.getElementById('toast');
+
+  // ─── Build gradient swatches ────────────────────────────────
+  GRADIENTS.forEach(g => {
+    const el = document.createElement('div');
+    el.className = 'gradient-swatch' + (g.id === state.background ? ' active' : '');
+    el.dataset.id = g.id;
+    el.title = g.label;
+    if (g.from && g.to) {
+      el.style.background = `linear-gradient(135deg, ${g.from}, ${g.to})`;
+    }
+    if (g.id === 'solid') el.textContent = 'Solid';
+    el.addEventListener('click', () => selectBackground(g.id));
+    gradientGrid.appendChild(el);
+  });
+
+  function selectBackground(id) {
+    state.background = id;
+    document.querySelectorAll('.gradient-swatch').forEach(s => {
+      s.classList.toggle('active', s.dataset.id === id);
+    });
+    solidColorRow.style.display = id === 'solid' ? 'flex' : 'none';
+    render();
+  }
+
+  // ─── Slider events ──────────────────────────────────────────
+  paddingEl.addEventListener('input', () => {
+    state.padding = +paddingEl.value;
+    paddingVal.textContent = state.padding + 'px';
+    render();
+  });
+
+  radiusEl.addEventListener('input', () => {
+    state.radius = +radiusEl.value;
+    radiusVal.textContent = state.radius + 'px';
+    render();
+  });
+
+  solidColorEl.addEventListener('input', () => {
+    state.solidColor = solidColorEl.value;
+    render();
+  });
+
+  // ─── Button groups ──────────────────────────────────────────
+  function setupBtnGroup(groupEl, stateKey) {
+    groupEl.querySelectorAll('button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        groupEl.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state[stateKey] = btn.dataset.val;
+        if (stateKey === 'scale') state.scale = +btn.dataset.val;
+        render();
+      });
+    });
+  }
+  setupBtnGroup(shadowGroup, 'shadow');
+  setupBtnGroup(frameGroup, 'frame');
+  setupBtnGroup(scaleGroup, 'scale');
+
+  // ─── File input ─────────────────────────────────────────────
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files[0]) loadFile(fileInput.files[0]);
+  });
+
+  // ─── Drag & drop ────────────────────────────────────────────
+  dropZone.addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) loadFile(f);
+  });
+
+  // Drag & drop on canvas area too
+  document.getElementById('canvasArea').addEventListener('dragover', e => {
+    e.preventDefault();
+    dropZone.classList.add('drag-over');
+  });
+  document.getElementById('canvasArea').addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag-over');
+    const f = e.dataTransfer.files[0];
+    if (f && f.type.startsWith('image/')) loadFile(f);
+  });
+
+  // ─── Clipboard paste ────────────────────────────────────────
+  document.addEventListener('paste', e => {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        loadFile(item.getAsFile());
+        break;
+      }
+    }
+  });
+
+  // ─── Load file ──────────────────────────────────────────────
+  function loadFile(file) {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      if (state.image) URL.revokeObjectURL(state.image.src);
+      state.image = img;
+      placeholder.style.display = 'none';
+      canvasWrapper.style.display = 'block';
+      btnDownload.disabled = false;
+      btnCopy.disabled = false;
+      render();
+    };
+    img.src = url;
+  }
+
+  // ─── Core rendering ──────────────────────────────────────────
+  function getCompositeCanvas(scale) {
+    if (!state.image) return null;
+    const s = scale || state.scale;
+    const pad = state.padding * s;
+    const img = state.image;
+    const frame = state.frame;
+
+    // Frame chrome dimensions (in scaled pixels)
+    let frameTop = 0, frameRight = 0, frameBottom = 0, frameLeft = 0;
+    let frameFn = null;
+
+    if (frame === 'browser') {
+      frameTop = 36 * s; frameRight = 2 * s; frameBottom = 2 * s; frameLeft = 2 * s;
+      frameFn = drawBrowserFrame;
+    } else if (frame === 'iphone') {
+      frameTop = 56 * s; frameRight = 22 * s; frameBottom = 56 * s; frameLeft = 22 * s;
+      frameFn = drawIphoneFrame;
+    } else if (frame === 'macbook') {
+      frameTop = 28 * s; frameRight = 30 * s; frameBottom = 50 * s; frameLeft = 30 * s;
+      frameFn = drawMacbookFrame;
+    }
+
+    const imgW = img.naturalWidth * s;
+    const imgH = img.naturalHeight * s;
+    const contentW = imgW + frameLeft + frameRight;
+    const contentH = imgH + frameTop + frameBottom;
+    const totalW = contentW + pad * 2;
+    const totalH = contentH + pad * 2;
+
+    const c = document.createElement('canvas');
+    c.width = totalW;
+    c.height = totalH;
+    const cx = c.getContext('2d');
+
+    // Background
+    drawBackground(cx, totalW, totalH);
+
+    // Shadow
+    const sh = SHADOWS[state.shadow];
+    if (sh.blur > 0) {
+      cx.save();
+      cx.shadowColor = sh.color;
+      cx.shadowBlur = sh.blur * s;
+      cx.shadowOffsetX = sh.offsetX * s;
+      cx.shadowOffsetY = sh.offsetY * s;
+      // Draw a rect just to cast shadow
+      cx.fillStyle = '#000';
+      const r = state.radius * s;
+      roundRect(cx, pad + frameLeft, pad + frameTop, imgW, imgH, r);
+      cx.fill();
+      cx.restore();
+    }
+
+    // Image with rounded corners
+    cx.save();
+    const r = state.radius * s;
+    roundRect(cx, pad + frameLeft, pad + frameTop, imgW, imgH, r);
+    cx.clip();
+    cx.drawImage(img, pad + frameLeft, pad + frameTop, imgW, imgH);
+    cx.restore();
+
+    // Device frame overlay
+    if (frameFn) {
+      frameFn(cx, pad, pad, contentW, contentH, frameTop, frameLeft, imgW, imgH, s);
+    }
+
+    return c;
+  }
+
+  // ─── Background drawing ──────────────────────────────────────
+  function drawBackground(cx, w, h) {
+    const bg = state.background;
+    if (bg === 'transparent') {
+      // checkerboard
+      const size = 16;
+      for (let y = 0; y < h; y += size) {
+        for (let x = 0; x < w; x += size) {
+          cx.fillStyle = ((x / size + y / size) % 2 === 0) ? '#aaaaaa' : '#ffffff';
+          cx.fillRect(x, y, size, size);
+        }
+      }
+      return;
+    }
+    if (bg === 'solid') {
+      cx.fillStyle = state.solidColor;
+      cx.fillRect(0, 0, w, h);
+      return;
+    }
+    const preset = GRADIENTS.find(g => g.id === bg);
+    if (preset && preset.from) {
+      const grad = cx.createLinearGradient(0, 0, w, h);
+      grad.addColorStop(0, preset.from);
+      grad.addColorStop(1, preset.to);
+      cx.fillStyle = grad;
+    } else {
+      cx.fillStyle = '#1a1a2e';
+    }
+    cx.fillRect(0, 0, w, h);
+  }
+
+  // ─── Rounded rect helper ────────────────────────────────────
+  function roundRect(cx, x, y, w, h, r) {
+    r = Math.min(r, w / 2, h / 2);
+    cx.beginPath();
+    cx.moveTo(x + r, y);
+    cx.lineTo(x + w - r, y);
+    cx.quadraticCurveTo(x + w, y, x + w, y + r);
+    cx.lineTo(x + w, y + h - r);
+    cx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    cx.lineTo(x + r, y + h);
+    cx.quadraticCurveTo(x, y + h, x, y + h - r);
+    cx.lineTo(x, y + r);
+    cx.quadraticCurveTo(x, y, x + r, y);
+    cx.closePath();
+  }
+
+  // ─── Browser frame ───────────────────────────────────────────
+  function drawBrowserFrame(cx, px, py, cW, cH, fTop, fLeft, imgW, imgH, s) {
+    const bR = 10 * s;
+    // Frame background
+    cx.save();
+    roundRect(cx, px, py, cW, cH, bR);
+    cx.fillStyle = '#1e2030';
+    cx.fill();
+    cx.restore();
+
+    // Titlebar
+    cx.fillStyle = '#2a2d3e';
+    cx.beginPath();
+    cx.moveTo(px + bR, py);
+    cx.lineTo(px + cW - bR, py);
+    cx.quadraticCurveTo(px + cW, py, px + cW, py + bR);
+    cx.lineTo(px + cW, py + fTop);
+    cx.lineTo(px, py + fTop);
+    cx.lineTo(px, py + bR);
+    cx.quadraticCurveTo(px, py, px + bR, py);
+    cx.closePath();
+    cx.fill();
+
+    // Traffic lights
+    const dotY = py + fTop / 2;
+    const dotR = 5 * s;
+    const dotColors = ['#ff5f57', '#febc2e', '#28c840'];
+    dotColors.forEach((color, i) => {
+      cx.beginPath();
+      cx.arc(px + 18 * s + i * 18 * s, dotY, dotR, 0, Math.PI * 2);
+      cx.fillStyle = color;
+      cx.fill();
+    });
+
+    // Address bar
+    const barX = px + 75 * s;
+    const barW = cW - 100 * s;
+    const barH = 20 * s;
+    const barY = dotY - barH / 2;
+    cx.fillStyle = '#111320';
+    cx.beginPath();
+    cx.roundRect ? cx.roundRect(barX, barY, barW, barH, 10 * s)
+                 : roundRect(cx, barX, barY, barW, barH, 10 * s);
+    cx.fill();
+
+    // Lock icon text
+    cx.fillStyle = '#6b7280';
+    cx.font = `${11 * s}px -apple-system, sans-serif`;
+    cx.textAlign = 'center';
+    cx.textBaseline = 'middle';
+    cx.fillText('🔒 screensnap.app', barX + barW / 2, dotY);
+
+    // Image area border
+    cx.save();
+    roundRect(cx, px, py, cW, cH, bR);
+    cx.strokeStyle = 'rgba(255,255,255,0.06)';
+    cx.lineWidth = 1;
+    cx.stroke();
+    cx.restore();
+  }
+
+  // ─── iPhone frame ────────────────────────────────────────────
+  function drawIphoneFrame(cx, px, py, cW, cH, fTop, fLeft, imgW, imgH, s) {
+    const r = 36 * s;
+    // Body
+    cx.save();
+    roundRect(cx, px, py, cW, cH, r);
+    cx.fillStyle = '#1a1a1a';
+    cx.fill();
+    cx.strokeStyle = '#3a3a3a';
+    cx.lineWidth = 2 * s;
+    cx.stroke();
+    cx.restore();
+
+    // Screen bezel
+    cx.save();
+    roundRect(cx, px + fLeft - 4 * s, py + fTop - 4 * s, imgW + 8 * s, imgH + 8 * s, 6 * s);
+    cx.fillStyle = '#0a0a0a';
+    cx.fill();
+    cx.restore();
+
+    // Notch / Dynamic Island
+    const niW = 80 * s;
+    const niH = 20 * s;
+    const niX = px + cW / 2 - niW / 2;
+    const niY = py + 16 * s;
+    cx.beginPath();
+    cx.roundRect ? cx.roundRect(niX, niY, niW, niH, niH / 2)
+                 : roundRect(cx, niX, niY, niW, niH, niH / 2);
+    cx.fillStyle = '#0a0a0a';
+    cx.fill();
+
+    // Home indicator
+    const hiW = 80 * s;
+    const hiH = 4 * s;
+    const hiX = px + cW / 2 - hiW / 2;
+    const hiY = py + cH - 18 * s;
+    cx.fillStyle = '#555';
+    cx.beginPath();
+    cx.roundRect ? cx.roundRect(hiX, hiY, hiW, hiH, hiH / 2)
+                 : roundRect(cx, hiX, hiY, hiW, hiH, hiH / 2);
+    cx.fill();
+
+    // Outer gloss
+    cx.save();
+    roundRect(cx, px, py, cW, cH, r);
+    cx.strokeStyle = 'rgba(255,255,255,0.08)';
+    cx.lineWidth = 1;
+    cx.stroke();
+    cx.restore();
+  }
+
+  // ─── MacBook frame ───────────────────────────────────────────
+  function drawMacbookFrame(cx, px, py, cW, cH, fTop, fLeft, imgW, imgH, s) {
+    const screenR = 6 * s;
+
+    // Lid (screen surround)
+    cx.fillStyle = '#2a2a2a';
+    cx.beginPath();
+    cx.roundRect ? cx.roundRect(px, py, cW, cH - 24 * s, screenR)
+                 : roundRect(cx, px, py, cW, cH - 24 * s, screenR);
+    cx.fill();
+
+    // Screen bezel
+    cx.fillStyle = '#111';
+    roundRect(cx, px + fLeft - 2 * s, py + fTop - 2 * s, imgW + 4 * s, imgH + 4 * s, 2 * s);
+    cx.fill();
+
+    // Camera dot
+    cx.beginPath();
+    cx.arc(px + cW / 2, py + fTop / 2, 3 * s, 0, Math.PI * 2);
+    cx.fillStyle = '#333';
+    cx.fill();
+
+    // Base
+    const baseH = 16 * s;
+    const baseW = cW + 40 * s;
+    const baseX = px - 20 * s;
+    const baseY = py + cH - baseH;
+    cx.fillStyle = '#2a2a2a';
+    cx.beginPath();
+    if (cx.roundRect) {
+      cx.roundRect(baseX, baseY, baseW, baseH, [0, 0, 4 * s, 4 * s]);
+    } else {
+      cx.rect(baseX, baseY, baseW, baseH);
+    }
+    cx.fill();
+
+    // Hinge line
+    cx.fillStyle = '#1a1a1a';
+    cx.fillRect(baseX, baseY, baseW, 3 * s);
+
+    // Trackpad suggestion
+    const tpW = baseW * 0.28;
+    const tpH = baseH * 0.55;
+    const tpX = baseX + baseW / 2 - tpW / 2;
+    const tpY = baseY + (baseH - tpH) / 2;
+    cx.fillStyle = '#222';
+    cx.beginPath();
+    if (cx.roundRect) cx.roundRect(tpX, tpY, tpW, tpH, 2 * s);
+    else cx.rect(tpX, tpY, tpW, tpH);
+    cx.fill();
+
+    // Gloss
+    cx.save();
+    roundRect(cx, px, py, cW, cH - 24 * s, screenR);
+    cx.strokeStyle = 'rgba(255,255,255,0.1)';
+    cx.lineWidth = 1;
+    cx.stroke();
+    cx.restore();
+  }
+
+  // ─── Render to preview canvas ────────────────────────────────
+  function render() {
+    if (!state.image) return;
+    const offscreen = getCompositeCanvas(1);
+    if (!offscreen) return;
+
+    // Display at 1x but use devicePixelRatio for sharpness
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const maxW = document.getElementById('canvasArea').clientWidth - 64;
+    const maxH = document.getElementById('canvasArea').clientHeight - 64;
+    let displayW = offscreen.width;
+    let displayH = offscreen.height;
+    const ratio = displayW / displayH;
+    if (displayW > maxW) { displayW = maxW; displayH = displayW / ratio; }
+    if (displayH > maxH) { displayH = maxH; displayW = displayH * ratio; }
+
+    canvas.style.width = displayW + 'px';
+    canvas.style.height = displayH + 'px';
+    canvas.width = displayW * dpr;
+    canvas.height = displayH * dpr;
+
+    ctx.save();
+    ctx.scale(dpr, dpr);
+    ctx.drawImage(offscreen, 0, 0, displayW, displayH);
+    ctx.restore();
+  }
+
+  // ─── Export: Download ────────────────────────────────────────
+  btnDownload.addEventListener('click', () => {
+    const c = getCompositeCanvas(state.scale);
+    if (!c) return;
+    const link = document.createElement('a');
+    link.download = 'screensnap-' + Date.now() + '.png';
+    link.href = c.toDataURL('image/png');
+    link.click();
+    showToast('✅ Downloaded!');
+  });
+
+  // ─── Export: Copy ────────────────────────────────────────────
+  btnCopy.addEventListener('click', async () => {
+    const c = getCompositeCanvas(state.scale);
+    if (!c) return;
+    try {
+      c.toBlob(async blob => {
+        try {
+          await navigator.clipboard.write([
+            new ClipboardItem({ 'image/png': blob })
+          ]);
+          showToast('✅ Copied to clipboard!');
+        } catch (err) {
+          showToast('⚠️ Copy failed — try Chrome or Edge');
+        }
+      }, 'image/png');
+    } catch (err) {
+      showToast('⚠️ Clipboard not available');
+    }
+  });
+
+  // ─── Toast ───────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+  }
+
+  // ─── Resize observer ─────────────────────────────────────────
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(() => render()).observe(document.getElementById('canvasArea'));
+  }
+
+})();
+</script>
+</body>
+</html>

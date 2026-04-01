@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timestamp Converter — Unix, ISO 8601, Relative Time | Free Dev Tool</title>
+  <meta name="description" content="Convert Unix timestamps to human-readable dates and vice versa. ISO 8601, RFC 2822, relative time. Free, browser-based, no tracking." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://timestamp-devtools.vercel.app/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Timestamp Converter — Unix, ISO 8601, Relative Time" />
+  <meta property="og:description" content="Convert between Unix timestamps, ISO 8601, and human-readable dates. Free dev tool." />
+  <meta name="twitter:card" content="summary" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
+      --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+      --accent: #06b6d4; --radius: 16px;
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    body {
+      background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+      min-height: 100vh; line-height: 1.6; -webkit-font-smoothing: antialiased;
+    }
+    header {
+      text-align: center; padding: 60px 24px 40px;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(6,182,212,0.18) 0%, transparent 70%);
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 30%, #67e8f9 70%, #c4b5fd 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    header p { color: var(--text-muted); margin-top: 12px; max-width: 500px; margin-inline: auto; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px 80px; }
+
+    .now-bar {
+      text-align: center; margin: 32px 0; padding: 20px;
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+    }
+    .now-bar .label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
+    .now-bar .ts { font-size: 2rem; font-weight: 800; font-family: monospace; color: #67e8f9; margin: 4px 0; cursor: pointer; }
+    .now-bar .ts:hover { opacity: 0.8; }
+    .now-bar .human { font-size: 14px; color: var(--text-muted); }
+
+    .card {
+      background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; margin-top: 20px;
+    }
+    .card h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; }
+
+    .field-group { margin-bottom: 16px; }
+    .field-group label { display: block; font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .field-row { display: flex; gap: 8px; }
+    .field-row input, .field-row select {
+      flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 8px; color: var(--text); font-size: 14px; font-family: monospace; outline: none;
+      transition: border-color var(--transition);
+    }
+    .field-row input:focus { border-color: rgba(6,182,212,0.5); }
+    .btn {
+      padding: 10px 16px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 8px; color: #67e8f9; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: background var(--transition); white-space: nowrap;
+    }
+    .btn:hover { background: rgba(6,182,212,0.25); }
+
+    .results { margin-top: 20px; }
+    .result-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+    }
+    .result-row:last-child { border-bottom: none; }
+    .result-label { font-size: 13px; color: var(--text-muted); min-width: 120px; }
+    .result-value { font-family: monospace; font-size: 14px; color: var(--text); cursor: pointer; text-align: right; }
+    .result-value:hover { color: #67e8f9; }
+
+    footer {
+      text-align: center; padding: 40px 24px; border-top: 1px solid var(--border);
+      color: var(--text-dim); font-size: 13px;
+    }
+    footer a { color: #67e8f9; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>⏱️ Timestamp Converter</h1>
+    <p>Convert between Unix timestamps, ISO 8601, and human-readable dates. Live clock included.</p>
+  </header>
+
+  <div class="container">
+    <div class="now-bar">
+      <div class="label">Current Unix Timestamp</div>
+      <div class="ts" id="liveTs" title="Click to copy" onclick="copyText(this.textContent)">—</div>
+      <div class="human" id="liveHuman">—</div>
+    </div>
+
+    <div class="card">
+      <h2>Convert Timestamp → Date</h2>
+      <div class="field-group">
+        <label>Unix Timestamp (seconds or milliseconds)</label>
+        <div class="field-row">
+          <input type="text" id="tsInput" placeholder="e.g. 1711929600 or 1711929600000" spellcheck="false" />
+          <button class="btn" onclick="convertTs()">Convert</button>
+        </div>
+      </div>
+      <div class="results" id="tsResults" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Convert Date → Timestamp</h2>
+      <div class="field-group">
+        <label>Date &amp; Time</label>
+        <div class="field-row">
+          <input type="datetime-local" id="dateInput" step="1" />
+          <button class="btn" onclick="convertDate()">Convert</button>
+        </div>
+      </div>
+      <div class="results" id="dateResults" style="display:none;"></div>
+    </div>
+
+    <div class="card">
+      <h2>Parse Any Date String</h2>
+      <div class="field-group">
+        <label>Date string (ISO 8601, RFC 2822, or natural)</label>
+        <div class="field-row">
+          <input type="text" id="parseInput" placeholder="e.g. 2026-03-31T21:00:00Z or March 31, 2026" spellcheck="false" />
+          <button class="btn" onclick="parseDate()">Parse</button>
+        </div>
+      </div>
+      <div class="results" id="parseResults" style="display:none;"></div>
+    </div>
+  </div>
+
+  <footer>
+    Part of <a href="https://goosekit.dev/" target="_blank">GooseKit</a> — Free developer tools by <a href="https://github.com/arthurpierrey" target="_blank">Arthur Pierrey</a>
+  </footer>
+
+  <script>
+  (function(){
+    // Live clock
+    function tick() {
+      const now = new Date();
+      document.getElementById('liveTs').textContent = Math.floor(now.getTime()/1000);
+      document.getElementById('liveHuman').textContent = now.toUTCString();
+    }
+    tick(); setInterval(tick, 1000);
+
+    // Set default datetime-local to now
+    const now = new Date();
+    const local = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,19);
+    document.getElementById('dateInput').value = local;
+  })();
+
+  function relative(date) {
+    const diff = date.getTime() - Date.now();
+    const abs = Math.abs(diff);
+    const units = [
+      [31536000000,'year'],[2592000000,'month'],[86400000,'day'],
+      [3600000,'hour'],[60000,'minute'],[1000,'second']
+    ];
+    for(const [ms,name] of units) {
+      if(abs >= ms) {
+        const n = Math.floor(abs/ms);
+        return diff > 0 ? `in ${n} ${name}${n>1?'s':''}` : `${n} ${name}${n>1?'s':''} ago`;
+      }
+    }
+    return 'just now';
+  }
+
+  function renderResults(el, date) {
+    el.style.display = 'block';
+    const ts = Math.floor(date.getTime()/1000);
+    el.innerHTML = [
+      ['Unix (s)', ts],
+      ['Unix (ms)', date.getTime()],
+      ['ISO 8601', date.toISOString()],
+      ['UTC', date.toUTCString()],
+      ['Local', date.toLocaleString()],
+      ['RFC 2822', date.toUTCString()],
+      ['Relative', relative(date)],
+      ['Day of week', date.toLocaleDateString('en',{weekday:'long'})],
+    ].map(([l,v])=>`<div class="result-row"><span class="result-label">${l}</span><span class="result-value" onclick="copyText(this.textContent)" title="Click to copy">${v}</span></div>`).join('');
+  }
+
+  window.convertTs = function() {
+    let v = document.getElementById('tsInput').value.trim();
+    if(!v) return;
+    let n = Number(v);
+    if(isNaN(n)) return;
+    // Auto-detect seconds vs milliseconds
+    if(n < 1e12) n *= 1000;
+    renderResults(document.getElementById('tsResults'), new Date(n));
+  };
+
+  window.convertDate = function() {
+    const v = document.getElementById('dateInput').value;
+    if(!v) return;
+    renderResults(document.getElementById('dateResults'), new Date(v));
+  };
+
+  window.parseDate = function() {
+    const v = document.getElementById('parseInput').value.trim();
+    if(!v) return;
+    const d = new Date(v);
+    if(isNaN(d.getTime())) {
+      const el = document.getElementById('parseResults');
+      el.style.display = 'block';
+      el.innerHTML = '<div class="result-row"><span class="result-label" style="color:#ef4444;">Error</span><span class="result-value">Could not parse date string</span></div>';
+      return;
+    }
+    renderResults(document.getElementById('parseResults'), d);
+  };
+
+  window.copyText = function(text) {
+    navigator.clipboard.writeText(text);
+  };
+
+  // Convert on Enter
+  document.getElementById('tsInput').addEventListener('keydown', e => { if(e.key==='Enter') convertTs(); });
+  document.getElementById('parseInput').addEventListener('keydown', e => { if(e.key==='Enter') parseDate(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Text Case Converter — Transform Text to Any Case Instantly</title>
+  <meta name="description" content="Free text case converter. Transform text to UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, PascalCase and more. No signup, works offline."/>
+  <meta name="robots" content="index, follow"/>
+  <link rel="canonical" href="https://textcase-gamma.vercel.app/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="Text Case Converter — Transform Text Instantly"/>
+  <meta property="og:description" content="Free online text case converter. UPPERCASE, lowercase, Title Case, camelCase, snake_case, PascalCase and more."/>
+  <meta property="og:url" content="https://textcase-gamma.vercel.app/"/>
+  <meta name="twitter:card" content="summary"/>
+  <meta name="twitter:title" content="Text Case Converter — Free Online Tool"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#0a0a0f;color:#e0e0e0;min-height:100vh;display:flex;flex-direction:column}
+    .header{text-align:center;padding:2rem 1rem 1rem}
+    .header h1{font-size:1.8rem;background:linear-gradient(135deg,#00d2ff,#7b2ffc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+    .header p{color:#888;margin-top:.4rem;font-size:.95rem}
+    .container{max-width:900px;margin:0 auto;padding:1rem;flex:1;width:100%}
+    .input-area{margin-bottom:1.5rem}
+    .input-area textarea{width:100%;height:160px;background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:1rem;color:#e0e0e0;font-size:.95rem;resize:vertical;font-family:inherit;transition:border-color .2s}
+    .input-area textarea:focus{outline:none;border-color:#7b2ffc}
+    .input-area .meta{display:flex;justify-content:space-between;margin-top:.4rem;font-size:.8rem;color:#666}
+    .buttons{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:.6rem;margin-bottom:1.5rem}
+    .btn{background:#1a1a2e;border:1px solid #2a2a3a;color:#e0e0e0;padding:.7rem 1rem;border-radius:8px;cursor:pointer;font-size:.85rem;transition:all .2s;text-align:center}
+    .btn:hover{background:#252540;border-color:#7b2ffc;transform:translateY(-1px)}
+    .btn.active{background:#7b2ffc22;border-color:#7b2ffc;color:#b388ff}
+    .output-area{position:relative}
+    .output-area textarea{width:100%;height:160px;background:#12121a;border:1px solid #2a2a3a;border-radius:10px;padding:1rem;color:#00d2ff;font-size:.95rem;resize:vertical;font-family:inherit}
+    .copy-btn{position:absolute;top:.6rem;right:.6rem;background:#7b2ffc;color:#fff;border:none;padding:.4rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem;transition:all .2s}
+    .copy-btn:hover{background:#6622cc}
+    .copy-btn.copied{background:#22cc66}
+    .footer{text-align:center;padding:1.5rem;font-size:.8rem;color:#555}
+    .footer a{color:#7b2ffc;text-decoration:none}
+    .footer a:hover{text-decoration:underline}
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Aa Text Case Converter</h1>
+    <p>Transform text to any case — UPPER, lower, Title, camelCase, snake_case &amp; more</p>
+  </div>
+  <div class="container">
+    <div class="input-area">
+      <textarea id="input" placeholder="Paste or type your text here..." spellcheck="false"></textarea>
+      <div class="meta"><span id="charCount">0 characters</span><span id="wordCount">0 words</span></div>
+    </div>
+    <div class="buttons">
+      <button class="btn" onclick="convert('upper')">UPPERCASE</button>
+      <button class="btn" onclick="convert('lower')">lowercase</button>
+      <button class="btn" onclick="convert('title')">Title Case</button>
+      <button class="btn" onclick="convert('sentence')">Sentence case</button>
+      <button class="btn" onclick="convert('camel')">camelCase</button>
+      <button class="btn" onclick="convert('pascal')">PascalCase</button>
+      <button class="btn" onclick="convert('snake')">snake_case</button>
+      <button class="btn" onclick="convert('kebab')">kebab-case</button>
+      <button class="btn" onclick="convert('constant')">CONSTANT_CASE</button>
+      <button class="btn" onclick="convert('dot')">dot.case</button>
+      <button class="btn" onclick="convert('toggle')">tOGGLE cASE</button>
+      <button class="btn" onclick="convert('alternating')">aLtErNaTiNg</button>
+    </div>
+    <div class="output-area">
+      <textarea id="output" readonly placeholder="Converted text appears here..."></textarea>
+      <button class="copy-btn" id="copyBtn" onclick="copyOutput()">Copy</button>
+    </div>
+  </div>
+  <div class="footer">
+    Part of <a href="https://goosekit.dev/" target="_blank">GooseKit</a> — Free developer tools by
+    <a href="https://github.com/arthurpierrey" target="_blank">Arthur Pierrey</a>
+  </div>
+  <script>
+    const input=document.getElementById('input'),output=document.getElementById('output');
+    input.addEventListener('input',()=>{
+      const t=input.value;
+      document.getElementById('charCount').textContent=t.length+' characters';
+      document.getElementById('wordCount').textContent=(t.trim()?t.trim().split(/\s+/).length:0)+' words';
+    });
+    function toWords(s){return s.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/[_\-\.]+/g,' ').trim().split(/\s+/).filter(Boolean)}
+    function convert(type){
+      const t=input.value;if(!t)return;
+      document.querySelectorAll('.btn').forEach(b=>b.classList.remove('active'));
+      event.target.classList.add('active');
+      let r='';const w=toWords(t);
+      switch(type){
+        case'upper':r=t.toUpperCase();break;
+        case'lower':r=t.toLowerCase();break;
+        case'title':r=t.replace(/\w\S*/g,x=>x.charAt(0).toUpperCase()+x.substr(1).toLowerCase());break;
+        case'sentence':r=t.toLowerCase().replace(/(^\s*\w|[.!?]\s+\w)/g,c=>c.toUpperCase());break;
+        case'camel':r=w.map((x,i)=>i===0?x.toLowerCase():x.charAt(0).toUpperCase()+x.slice(1).toLowerCase()).join('');break;
+        case'pascal':r=w.map(x=>x.charAt(0).toUpperCase()+x.slice(1).toLowerCase()).join('');break;
+        case'snake':r=w.map(x=>x.toLowerCase()).join('_');break;
+        case'kebab':r=w.map(x=>x.toLowerCase()).join('-');break;
+        case'constant':r=w.map(x=>x.toUpperCase()).join('_');break;
+        case'dot':r=w.map(x=>x.toLowerCase()).join('.');break;
+        case'toggle':r=[...t].map(c=>c===c.toUpperCase()?c.toLowerCase():c.toUpperCase()).join('');break;
+        case'alternating':r=[...t].map((c,i)=>i%2===0?c.toLowerCase():c.toUpperCase()).join('');break;
+      }
+      output.value=r;
+    }
+    function copyOutput(){
+      if(!output.value)return;
+      navigator.clipboard.writeText(output.value);
+      const b=document.getElementById('copyBtn');b.textContent='Copied!';b.classList.add('copied');
+      setTimeout(()=>{b.textContent='Copy';b.classList.remove('copied')},1500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Code Generator — Free Online QR Code Maker</title>
+  <meta name="description" content="Generate QR codes instantly. Supports URLs, text, WiFi, email, phone. Download as PNG or SVG. Free, no signup, no tracking." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://arthurpierrey.github.io/qrcode/" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="QR Code Generator — Free Online QR Code Maker" />
+  <meta property="og:description" content="Generate QR codes instantly. Download as PNG or SVG. Free, no signup." />
+  <meta property="og:url" content="https://arthurpierrey.github.io/qrcode/" />
+  <meta name="twitter:card" content="summary" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QR Code Generator",
+    "url": "https://arthurpierrey.github.io/qrcode/",
+    "description": "Generate QR codes for URLs, text, WiFi, email, and phone. Download as PNG or SVG.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Web",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "author": { "@type": "Person", "name": "Arthur Pierrey" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg-primary: #0a0a0a; --bg-secondary: #1a1a1a; --bg-tertiary: #2a2a2a;
+      --accent: #3b82f6; --accent-hover: #2563eb; --accent-glow: rgba(59,130,246,0.15);
+      --text-primary: #e5e5e5; --text-secondary: #a3a3a3; --text-muted: #737373;
+      --border: #333; --radius: 12px; --radius-sm: 8px;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: var(--bg-primary); color: var(--text-primary); min-height: 100vh; }
+    .container { max-width: 800px; margin: 0 auto; padding: 2rem 1.5rem; }
+    h1 { font-size: 2rem; font-weight: 700; text-align: center; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .subtitle { text-align: center; color: var(--text-secondary); margin-bottom: 2rem; font-size: 0.95rem; }
+    .card { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem; }
+    .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+    .tab { padding: 0.5rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-tertiary); color: var(--text-secondary); cursor: pointer; font-size: 0.85rem; transition: all 0.2s; }
+    .tab:hover { border-color: var(--accent); color: var(--text-primary); }
+    .tab.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+    label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.4rem; font-weight: 500; }
+    input, textarea, select { width: 100%; padding: 0.75rem 1rem; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: var(--radius-sm); color: var(--text-primary); font-size: 0.95rem; font-family: inherit; transition: border-color 0.2s; }
+    input:focus, textarea:focus, select:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+    textarea { resize: vertical; min-height: 80px; }
+    .form-group { margin-bottom: 1rem; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.75rem 1.5rem; border-radius: var(--radius-sm); border: none; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); }
+    .btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border); }
+    .btn-secondary:hover { border-color: var(--accent); }
+    .btn-group { display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap; }
+    .qr-output { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    #qr-canvas { background: #fff; border-radius: var(--radius-sm); padding: 16px; }
+    .options-row { display: flex; gap: 1rem; align-items: end; flex-wrap: wrap; }
+    .options-row .form-group { flex: 1; min-width: 120px; }
+    .color-input-wrap { display: flex; align-items: center; gap: 0.5rem; }
+    .color-input-wrap input[type="color"] { width: 40px; height: 40px; padding: 2px; border-radius: 6px; cursor: pointer; }
+    .color-input-wrap input[type="text"] { flex: 1; }
+    .hidden { display: none; }
+    .badge { display: inline-block; background: var(--accent-glow); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 99px; font-size: 0.75rem; font-weight: 600; }
+    footer { text-align: center; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--border); }
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📱 QR Code Generator</h1>
+    <p class="subtitle">Generate QR codes for URLs, text, WiFi, email & more — download as PNG or SVG</p>
+
+    <div class="card">
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-type="url">🔗 URL</button>
+        <button class="tab" data-type="text">📝 Text</button>
+        <button class="tab" data-type="wifi">📶 WiFi</button>
+        <button class="tab" data-type="email">✉️ Email</button>
+        <button class="tab" data-type="phone">📞 Phone</button>
+        <button class="tab" data-type="vcard">👤 vCard</button>
+      </div>
+
+      <!-- URL -->
+      <div id="form-url" class="type-form">
+        <div class="form-group">
+          <label for="input-url">URL</label>
+          <input type="url" id="input-url" placeholder="https://example.com" value="https://goosekit.dev" />
+        </div>
+      </div>
+
+      <!-- Text -->
+      <div id="form-text" class="type-form hidden">
+        <div class="form-group">
+          <label for="input-text">Text</label>
+          <textarea id="input-text" placeholder="Enter any text..."></textarea>
+        </div>
+      </div>
+
+      <!-- WiFi -->
+      <div id="form-wifi" class="type-form hidden">
+        <div class="form-group"><label for="wifi-ssid">Network Name (SSID)</label><input id="wifi-ssid" placeholder="MyNetwork" /></div>
+        <div class="form-row">
+          <div class="form-group"><label for="wifi-pass">Password</label><input id="wifi-pass" type="password" placeholder="Password" /></div>
+          <div class="form-group"><label for="wifi-enc">Encryption</label>
+            <select id="wifi-enc"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">None</option></select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div id="form-email" class="type-form hidden">
+        <div class="form-group"><label for="email-to">To</label><input id="email-to" type="email" placeholder="hello@example.com" /></div>
+        <div class="form-group"><label for="email-subj">Subject</label><input id="email-subj" placeholder="Subject line" /></div>
+        <div class="form-group"><label for="email-body">Body</label><textarea id="email-body" placeholder="Message body..."></textarea></div>
+      </div>
+
+      <!-- Phone -->
+      <div id="form-phone" class="type-form hidden">
+        <div class="form-group"><label for="input-phone">Phone Number</label><input id="input-phone" type="tel" placeholder="+1234567890" /></div>
+      </div>
+
+      <!-- vCard -->
+      <div id="form-vcard" class="type-form hidden">
+        <div class="form-row">
+          <div class="form-group"><label for="vc-fn">First Name</label><input id="vc-fn" placeholder="John" /></div>
+          <div class="form-group"><label for="vc-ln">Last Name</label><input id="vc-ln" placeholder="Doe" /></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label for="vc-phone">Phone</label><input id="vc-phone" placeholder="+1234567890" /></div>
+          <div class="form-group"><label for="vc-email">Email</label><input id="vc-email" placeholder="john@example.com" /></div>
+        </div>
+        <div class="form-group"><label for="vc-org">Organization</label><input id="vc-org" placeholder="Company Inc." /></div>
+        <div class="form-group"><label for="vc-url">Website</label><input id="vc-url" placeholder="https://example.com" /></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="options-row">
+        <div class="form-group">
+          <label for="qr-size">Size</label>
+          <select id="qr-size">
+            <option value="200">200×200</option>
+            <option value="300" selected>300×300</option>
+            <option value="400">400×400</option>
+            <option value="600">600×600</option>
+            <option value="800">800×800</option>
+            <option value="1024">1024×1024</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="qr-ecl">Error Correction</label>
+          <select id="qr-ecl">
+            <option value="L">Low (7%)</option>
+            <option value="M" selected>Medium (15%)</option>
+            <option value="Q">Quartile (25%)</option>
+            <option value="H">High (30%)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Foreground</label>
+          <div class="color-input-wrap">
+            <input type="color" id="qr-fg" value="#000000" />
+            <input type="text" id="qr-fg-text" value="#000000" style="max-width:100px" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Background</label>
+          <div class="color-input-wrap">
+            <input type="color" id="qr-bg" value="#ffffff" />
+            <input type="text" id="qr-bg-text" value="#ffffff" style="max-width:100px" />
+          </div>
+        </div>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" id="generate-btn">⚡ Generate QR Code</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="qr-output">
+        <canvas id="qr-canvas" width="300" height="300"></canvas>
+        <div class="btn-group">
+          <button class="btn btn-primary" id="dl-png">📥 Download PNG</button>
+          <button class="btn btn-secondary" id="dl-svg">📥 Download SVG</button>
+          <button class="btn btn-secondary" id="copy-btn">📋 Copy to Clipboard</button>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <p style="color:var(--text-muted);font-size:0.85rem;">
+        Part of <a href="https://goosekit.dev">GooseKit</a> — Free developer tools, no signup, no tracking
+      </p>
+    </footer>
+  </div>
+
+  <script>
+  // QR Code generation library (embedded, MIT license - based on qrcode-generator by Kazuhiko Arase)
+  var qrcode=function(){var f=function(a,b){var c=a,d=g[b],e=null,h=0,i=null,j=[],k={isDark:function(a,b){if(0>a||a>=h||0>b||b>=h)throw Error(a+","+b);return e[a][b]},getModuleCount:function(){return h},make:function(){l(0,getBestMaskPattern())},createTableTag:function(a,b){a=a||2;var c="";c+='<table style="border:0;border-collapse:collapse;">';for(var d=0;d<h;d++){c+="<tr>";for(var f=0;f<h;f++)c+='<td style="border:0;padding:0;margin:0;width:'+a+"px;height:"+a+"px;background-color:"+(e[d][f]?"#000":"#fff")+';"></td>';c+="</tr>"}return c+"</table>"},createSvgTag:function(a,b,c,d){var f={};"object"==typeof arguments[0]&&(f=arguments[0],a=f.cellSize,b=f.margin,c=f.fg,d=f.bg),a=a||2,b=void 0===b?4*a:b,c=c||"#000",d=d||"#fff";var g="",i=h*a+2*b;g+='<svg xmlns="http://www.w3.org/2000/svg" width="'+i+'" height="'+i+'" viewBox="0 0 '+i+" "+i+'">';g+='<rect width="100%" height="100%" fill="'+d+'"/>';g+='<path d="';for(var j=0;j<h;j++)for(var k=0;k<h;k++)e[j][k]&&(g+="M"+(k*a+b)+","+(j*a+b)+"h"+a+"v"+a+"h-"+a+"z");g+='" fill="'+c+'"/>';return g+"</svg>"},createDataURL:function(a,b){a=a||5;b=void 0===b?4*a:b;var c=h*a+2*b,d=document.createElement("canvas");d.width=c;d.height=c;var f=d.getContext("2d");return this.renderTo2dContext(f,a,b),d.toDataURL("image/png")},renderTo2dContext:function(a,b,c){b=b||5;c=void 0===c?4*b:c;for(var d=0;d<h;d++)for(var f=0;f<h;f++)a.fillStyle=e[d][f]?"#000":"#fff",a.fillRect(f*b+c,d*b+c,b,b)}};k.make=function(){if(1>c){for(var a=1;a<41;a++){var b=p.getMaxLength(a,d.ordinal,getBitCharCountForVersion(a));if(b>=getDataLength())break}c=a}l(!1,getBestMaskPattern())};var l=function(a,b){h=4*c+17,e=[];for(var f=0;f<h;f++){e[f]=[];for(var g=0;g<h;g++)e[f][g]=null}setupPositionProbePattern(0,0),setupPositionProbePattern(h-7,0),setupPositionProbePattern(0,h-7),setupPositionAdjustPattern(),setupTimingPattern(),setupTypeInfo(a,b),c>=7&&setupTypeNumber(a),null==i&&(i=m(c,d,j)),mapData(i,b)};function getDataLength(){var a=0;for(var b=0;b<j.length;b++)a+=j[b].getLength();return a}function getBitCharCountForVersion(a){var b=0;if(1<=a&&a<10)b=0;else if(a<27)b=1;else if(a<41)b=2;return b}function getBestMaskPattern(){for(var a=0,b=0,c=0;c<8;c++){l(!0,c);var d=n.getLostPoint(k);(0==c||a>d)&&(a=d,b=c)}return b}function setupTimingPattern(){for(var a=8;a<h-8;a++)null==e[a][6]&&(e[a][6]=a%2==0),null==e[6][a]&&(e[6][a]=a%2==0)}function setupPositionAdjustPattern(){for(var a=n.getPatternPosition(c),b=0;b<a.length;b++)for(var d=0;d<a.length;d++){var f=a[b],g=a[d];if(null==e[f][g])for(var h=-2;h<=2;h++)for(var i=-2;i<=2;i++)e[f+h][g+i]=-2==h||2==h||-2==i||2==i||0==h&&0==i}}function setupPositionProbePattern(a,b){for(var c=-1;c<=7;c++)if(!(a+c<=-1||h<=a+c))for(var d=-1;d<=7;d++)b+d<=-1||h<=b+d||(e[a+c][b+d]=0<=c&&c<=6&&(0==d||6==d)||0<=d&&d<=6&&(0==c||6==c)||2<=c&&c<=4&&2<=d&&d<=4)}function setupTypeNumber(a){for(var b=n.getBCHTypeNumber(c),d=0;d<18;d++){var f=!a&&1==(b>>d&1);e[Math.floor(d/3)][d%3+h-8-3]=f;e[d%3+h-8-3][Math.floor(d/3)]=f}}function setupTypeInfo(a,b){for(var c=d.ordinal<<3|b,f=n.getBCHTypeInfo(c),g=0;g<15;g++){var i=!a&&1==(f>>g&1);g<6?e[g][8]=i:g<8?e[g+1][8]=i:e[h-15+g][8]=i;g<8?e[8][h-g-1]=i:g<9?e[8][15-g-1+1]=i:e[8][15-g-1]=i}e[h-8][8]=!a}function mapData(a,b){for(var c=-1,d=h-1,f=7,g=0,i=n.getMaskFunction(b),j=h-1;j>0;j-=2)for(6==j&&j--;;){for(var k=0;k<2;k++)if(null==e[d][j-k]){var l=!1;g<a.length&&(l=1==(a[g]>>>f&1)),i(d,j-k)&&(l=!l),e[d][j-k]=l,f--,-1==f&&(g++,f=7)}if(d+=c,0>d||h<=d){d-=c,c=-c;break}}}k.addData=function(a,b){b=b||"Byte";var c=null;switch(b){case"Numeric":c=q(a);break;case"Alphanumeric":c=r(a);break;case"Byte":c=s(a);break;default:throw"mode:"+b}j.push(c),i=null};k.getDataLength=getDataLength;return k};f.stringToBytes=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);if(d<128)b.push(d);else if(d<2048)b.push(192|d>>6),b.push(128|63&d);else if(d<55296||d>=57344)b.push(224|d>>12),b.push(128|d>>6&63),b.push(128|63&d);else{d=65536+((1023&d)<<10|1023&a.charCodeAt(++c));b.push(240|d>>18),b.push(128|d>>12&63),b.push(128|d>>6&63),b.push(128|63&d)}}return b};var g={L:{ordinal:1},M:{ordinal:0},Q:{ordinal:3},H:{ordinal:2}};var n=function(){var a=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]];var b=function(b){var c=a[4*(b-1)+0],d=0,e=0;for(var f=0;f<c.length;f+=3)d+=c[f],e+=c[f]*c[f+2];return{totalCount:d,dataCount:e}};var c=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]];var d={getPatternPosition:function(a){return c[a-1]},getMaxLength:function(a,c,d){var e=b(a);return 8*(e.dataCount-((1==a?0:2)+getCharCountSize(d)))/(1==c?10:2==c?9:3==c?8:8)},getMaskFunction:function(a){switch(a){case 0:return function(a,b){return(a+b)%2==0};case 1:return function(a){return a%2==0};case 2:return function(a,b){return b%3==0};case 3:return function(a,b){return(a+b)%3==0};case 4:return function(a,b){return(Math.floor(a/2)+Math.floor(b/3))%2==0};case 5:return function(a,b){return a*b%2+a*b%3==0};case 6:return function(a,b){return(a*b%2+a*b%3)%2==0};case 7:return function(a,b){return(a*b%3+(a+b)%2)%2==0};default:throw Error("bad maskPattern:"+a)}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(0>d+h||d+h>=b))for(var i=-1;i<=1;i++)0>e+i||e+i>=b||(0==h&&0==i||g==a.isDark(d+h,e+i)&&f++);f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,(0==j||4==j)&&(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=10*(Math.abs(100*k/b/b-50)/5)},getBCHTypeInfo:function(a){for(var b=a<<10;getBCHDigit(b)-getBCHDigit(1335)>=0;)b^=1335<<getBCHDigit(b)-getBCHDigit(1335);return 21522^(a<<10|b)},getBCHTypeNumber:function(a){for(var b=a<<12;getBCHDigit(b)-getBCHDigit(7973)>=0;)b^=7973<<getBCHDigit(b)-getBCHDigit(7973);return a<<12|b}};function getCharCountSize(a){return a}function getBCHDigit(a){for(var b=0;0!=a;)b++,a>>>=1;return b}return d}();var p={getMaxLength:function(a,b,c){return n.getMaxLength(a,b,c)}};function m(a,b,c){for(var d=new t,e=0;e<c.length;e++){var g=c[e];d.put(g.getMode(),4);var h=0;1<=a&&a<10?h=0:a<27?h=1:a<41&&(h=2);d.put(g.getLength(),g.getLengthInBits(h))}var i=function(a,c){var d=[];for(var e=4*(a-1)+c;e<1600;e+=4)d.push({totalCount:0,dataCount:0});return d}(a,b.ordinal);var j=0;for(e=0;e<i.length;e++)j+=i[e].dataCount;if(d.getLengthInBits()>8*j)throw Error("code length overflow. ("+d.getLengthInBits()+">"+8*j+")");d.getLengthInBits()+4<=8*j&&d.put(0,4);for(;d.getLengthInBits()%8!=0;)d.putBit(!1);for(;;){if(d.getLengthInBits()>=8*j)break;d.put(236,8);if(d.getLengthInBits()>=8*j)break;d.put(17,8)}return u(d,i)}function u(a,b){for(var c=0,d=0,e=0,f=new Array(b.length),g=new Array(b.length),h=0;h<b.length;h++){var i=b[h].dataCount,j=b[h].totalCount-i;d=Math.max(d,i);e=Math.max(e,j);f[h]=new Array(i);for(var k=0;k<f[h].length;k++)f[h][k]=255&a.getBuffer()[k+c];c+=i;var l=n.getBCHTypeInfo(j<<3|0)&255,m=new v(j,l);g[h]=new Array(m.getLength());var o=new v(f[h],0);for(;o.getLength()>=m.getLength();){var p=o.getAt(0),q=w.glog(p);for(k=0;k<m.getLength();k++)o.xor(k,w.gexp((q+m.getAt(k))%255));for(;o.getLength()>0&&0===o.getAt(0);)o.shift()}for(k=0;k<g[h].length;k++){var r=k+o.getLength()-g[h].length;g[h][k]=r>=0?o.getAt(r):0}}var s=0;for(h=0;h<b.length;h++)s+=b[h].totalCount;var t=new Array(s),x=0;for(k=0;k<d;k++)for(h=0;h<b.length;h++)k<f[h].length&&(t[x++]=f[h][k]);for(k=0;k<e;k++)for(h=0;h<b.length;h++)k<g[h].length&&(t[x++]=g[h][k]);return t}var q=function(a){this._data=a};q.prototype={getMode:function(){return 1},getLength:function(){return this._data.length},getLengthInBits:function(a){return[10,12,14][a]},write:function(a){for(var b=0;b<this._data.length-1;b+=2)a.put(parseInt(this._data.substring(b,b+2)),7*(b==this._data.length-2?1:0)+7);this._data.length%2==1&&a.put(parseInt(this._data.charAt(this._data.length-1)),4)}};var r=function(a){this._data=a};r.prototype={getMode:function(){return 2},getLength:function(){return this._data.length},getLengthInBits:function(a){return[9,11,13][a]},write:function(a){for(var b="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:",c=0;c+1<this._data.length;c+=2)a.put(45*b.indexOf(this._data.charAt(c))+b.indexOf(this._data.charAt(c+1)),11);this._data.length%2==1&&a.put(b.indexOf(this._data.charAt(this._data.length-1)),6)}};var s=function(a){this._data=a,this._bytes=f.stringToBytes(a)};s.prototype={getMode:function(){return 4},getLength:function(){return this._bytes.length},getLengthInBits:function(a){return[8,16,16][a]},write:function(a){for(var b=0;b<this._bytes.length;b++)a.put(this._bytes[b],8)}};var t=function(){var a=[],b=0;return{getBuffer:function(){return a},getAt:function(b){return a[Math.floor(b/8)]>>>(7-b%8)&1},put:function(a,c){for(var d=0;d<c;d++)this.putBit(1==(a>>>(c-d-1)&1))},getLengthInBits:function(){return b},putBit:function(c){var d=Math.floor(b/8);a.length<=d&&a.push(0),c&&(a[d]|=128>>>b%8),b++}}};var v=function(a,b){if(void 0===a.length)throw Error(a.length+"/"+b);for(var c=0;c<a.length&&0===a[c];)c++;this._num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this._num[d]=a[d+c]};v.prototype={getAt:function(a){return this._num[a]},getLength:function(){return this._num.length},shift:function(){this._num.shift()},xor:function(a,b){this._num[a]^=b}};var w=function(){for(var a=new Array(256),b=new Array(256),c=0;c<8;c++)a[c]=1<<c;for(c=8;c<256;c++)a[c]=a[c-4]^a[c-5]^a[c-6]^a[c-8];for(c=0;c<255;c++)b[a[c]]=c;return{glog:function(a){if(1>a)throw Error("glog("+a+")");return b[a]},gexp:function(b){for(;0>b;)b+=255;for(;b>=256;)b-=256;return a[b]}}}();return f}();
+
+  // App logic
+  const $ = s => document.querySelector(s);
+  let currentType = 'url';
+
+  // Tabs
+  $('#tabs').addEventListener('click', e => {
+    const tab = e.target.closest('.tab');
+    if (!tab) return;
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentType = tab.dataset.type;
+    document.querySelectorAll('.type-form').forEach(f => f.classList.add('hidden'));
+    $(`#form-${currentType}`).classList.remove('hidden');
+  });
+
+  // Color sync
+  function syncColor(colorId, textId) {
+    $(colorId).addEventListener('input', () => { $(textId).value = $(colorId).value; });
+    $(textId).addEventListener('input', () => { if (/^#[0-9a-f]{6}$/i.test($(textId).value)) $(colorId).value = $(textId).value; });
+  }
+  syncColor('#qr-fg', '#qr-fg-text');
+  syncColor('#qr-bg', '#qr-bg-text');
+
+  function getData() {
+    switch (currentType) {
+      case 'url': return $('#input-url').value || 'https://example.com';
+      case 'text': return $('#input-text').value || 'Hello World';
+      case 'wifi': {
+        const s = $('#wifi-ssid').value, p = $('#wifi-pass').value, e = $('#wifi-enc').value;
+        return `WIFI:T:${e};S:${s};P:${p};;`;
+      }
+      case 'email': {
+        const t = $('#email-to').value, s = $('#email-subj').value, b = $('#email-body').value;
+        return `mailto:${t}?subject=${encodeURIComponent(s)}&body=${encodeURIComponent(b)}`;
+      }
+      case 'phone': return `tel:${$('#input-phone').value}`;
+      case 'vcard': {
+        const fn = $('#vc-fn').value, ln = $('#vc-ln').value;
+        return `BEGIN:VCARD\nVERSION:3.0\nN:${ln};${fn}\nFN:${fn} ${ln}\nTEL:${$('#vc-phone').value}\nEMAIL:${$('#vc-email').value}\nORG:${$('#vc-org').value}\nURL:${$('#vc-url').value}\nEND:VCARD`;
+      }
+    }
+  }
+
+  function generate() {
+    const data = getData();
+    const size = parseInt($('#qr-size').value);
+    const ecl = $('#qr-ecl').value;
+    const fg = $('#qr-fg').value;
+    const bg = $('#qr-bg').value;
+
+    const qr = qrcode(0, ecl);
+    qr.addData(data);
+    qr.make();
+
+    const canvas = $('#qr-canvas');
+    canvas.width = size;
+    canvas.height = size;
+    const ctx = canvas.getContext('2d');
+    const mc = qr.getModuleCount();
+    const margin = 4;
+    const cellSize = (size - margin * 2) / mc;
+
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, size, size);
+    ctx.fillStyle = fg;
+
+    for (let r = 0; r < mc; r++) {
+      for (let c = 0; c < mc; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect(margin + c * cellSize, margin + r * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+  }
+
+  $('#generate-btn').addEventListener('click', generate);
+
+  // Auto-generate on input change
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', () => { clearTimeout(window._qrTimer); window._qrTimer = setTimeout(generate, 300); });
+  });
+
+  // Download PNG
+  $('#dl-png').addEventListener('click', () => {
+    const link = document.createElement('a');
+    link.download = 'qrcode.png';
+    link.href = $('#qr-canvas').toDataURL('image/png');
+    link.click();
+  });
+
+  // Download SVG
+  $('#dl-svg').addEventListener('click', () => {
+    const data = getData();
+    const ecl = $('#qr-ecl').value;
+    const fg = $('#qr-fg').value;
+    const bg = $('#qr-bg').value;
+    const size = parseInt($('#qr-size').value);
+
+    const qr = qrcode(0, ecl);
+    qr.addData(data);
+    qr.make();
+
+    const svg = qr.createSvgTag({ cellSize: Math.floor(size / (qr.getModuleCount() + 8)), margin: 4 * Math.floor(size / (qr.getModuleCount() + 8)), fg, bg });
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const link = document.createElement('a');
+    link.download = 'qrcode.svg';
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  });
+
+  // Copy to clipboard
+  $('#copy-btn').addEventListener('click', async () => {
+    try {
+      const canvas = $('#qr-canvas');
+      const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      const btn = $('#copy-btn');
+      btn.textContent = '✅ Copied!';
+      setTimeout(() => btn.textContent = '📋 Copy to Clipboard', 2000);
+    } catch { alert('Copy failed — try downloading instead'); }
+  });
+
+  // Initial generate
+  generate();
+  </script>
+</body>
+</html>

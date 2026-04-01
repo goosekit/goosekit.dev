@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OG Preview — Free Open Graph &amp; Social Card Checker</title>
+  <meta name="description" content="Preview how your website looks when shared on Twitter, LinkedIn, Discord, and Slack. Check Open Graph and Twitter Card meta tags for free." />
+
+  <!-- Open Graph for this page -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="OG Preview — Free Open Graph &amp; Social Card Checker" />
+  <meta property="og:description" content="Preview how your website looks when shared on Twitter, LinkedIn, Discord, and Slack. Check Open Graph and Twitter Card meta tags for free." />
+  <meta property="og:url" content="https://arthurpierrey.github.io/golden-goose/ogpreview/" />
+  <meta property="og:image" content="https://arthurpierrey.github.io/golden-goose/ogpreview/og-image.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="OG Preview — Free Open Graph &amp; Social Card Checker" />
+  <meta name="twitter:description" content="Preview how your website looks when shared on Twitter, LinkedIn, Discord, and Slack." />
+
+  <!-- Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "OG Preview",
+    "description": "Preview how your website looks when shared on Twitter, LinkedIn, Discord, and Slack. Check Open Graph and Twitter Card meta tags for free.",
+    "url": "https://arthurpierrey.github.io/golden-goose/ogpreview/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f1a;
+      --bg2: #161625;
+      --bg3: #1e1e30;
+      --border: #2a2a40;
+      --text: #e2e8f0;
+      --text-muted: #94a3b8;
+      --accent: #06b6d4;
+      --accent2: #22d3ee;
+      --accent-glow: rgba(6,182,212,0.15);
+      --warning: #f59e0b;
+      --error: #ef4444;
+      --success: #22c55e;
+      --radius: 12px;
+      --radius-sm: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 3rem 1rem 2rem;
+      background: linear-gradient(180deg, rgba(6,182,212,0.06) 0%, transparent 100%);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .logo svg { width: 28px; height: 28px; }
+
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── Main ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+    }
+
+    /* ── Input section ── */
+    .input-section {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .input-row {
+      display: flex;
+      gap: 0.75rem;
+      align-items: stretch;
+    }
+
+    .url-input {
+      flex: 1;
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-size: 1rem;
+      padding: 0.85rem 1.1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+
+    .url-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .url-input::placeholder { color: var(--text-muted); }
+
+    .btn-preview {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #0f172a;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 0.85rem 1.75rem;
+      transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap;
+    }
+
+    .btn-preview:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-preview:active { transform: translateY(0); }
+    .btn-preview:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .example-links {
+      margin-top: 0.85rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .example-label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .example-btn {
+      font-size: 0.78rem;
+      padding: 0.25rem 0.6rem;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .example-btn:hover { background: var(--accent-glow); }
+
+    /* ── Spinner ── */
+    .spinner-wrap {
+      display: none;
+      justify-content: center;
+      padding: 3rem 0;
+    }
+
+    .spinner-wrap.active { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .spinner-text { color: var(--text-muted); font-size: 0.9rem; }
+
+    /* ── Error ── */
+    .error-box {
+      display: none;
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: var(--radius-sm);
+      color: #fca5a5;
+      padding: 1rem 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .error-box.active { display: block; }
+
+    /* ── Validation warnings ── */
+    .warnings {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .warnings.active { display: flex; }
+
+    .warning-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      background: rgba(245,158,11,0.08);
+      border: 1px solid rgba(245,158,11,0.25);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 1rem;
+    }
+
+    .warning-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+
+    .warning-content { flex: 1; }
+    .warning-title { font-weight: 600; color: #fcd34d; font-size: 0.9rem; }
+    .warning-fix { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.2rem; font-family: 'SF Mono', 'Fira Code', monospace; }
+
+    /* ── Results grid ── */
+    .results {
+      display: none;
+    }
+    .results.active { display: block; }
+
+    .section-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      padding-left: 2px;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    @media (max-width: 700px) {
+      .platforms-grid { grid-template-columns: 1fr; }
+    }
+
+    .platform-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+
+    .platform-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg3);
+    }
+
+    .platform-icon {
+      width: 16px; height: 16px;
+      border-radius: 3px;
+    }
+
+    .platform-name {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .platform-body { padding: 0.9rem; }
+
+    /* ── Twitter/X Card ── */
+    .tw-card {
+      border: 1px solid #2f3640;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #15202b;
+    }
+
+    .tw-image {
+      width: 100%;
+      aspect-ratio: 1.91/1;
+      object-fit: cover;
+      display: block;
+      background: #1e2d3d;
+    }
+
+    .tw-image-placeholder {
+      width: 100%;
+      aspect-ratio: 1.91/1;
+      background: linear-gradient(135deg, #1e2d3d, #2a3f55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a6278;
+      font-size: 0.8rem;
+    }
+
+    .tw-meta {
+      padding: 0.65rem 0.85rem 0.75rem;
+    }
+
+    .tw-domain {
+      font-size: 0.72rem;
+      color: #8b98a5;
+      text-transform: lowercase;
+      margin-bottom: 0.2rem;
+    }
+
+    .tw-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #e7e9ea;
+      line-height: 1.3;
+      margin-bottom: 0.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tw-desc {
+      font-size: 0.78rem;
+      color: #8b98a5;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* ── LinkedIn Card ── */
+    .li-card {
+      border: 1px solid #38434f;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #1b1f23;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+
+    .li-image {
+      width: 100%;
+      aspect-ratio: 1.91/1;
+      object-fit: cover;
+      display: block;
+      background: #2a3540;
+    }
+
+    .li-image-placeholder {
+      width: 100%;
+      aspect-ratio: 1.91/1;
+      background: linear-gradient(135deg, #2a3540, #364555);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #5a7080;
+      font-size: 0.8rem;
+    }
+
+    .li-meta {
+      padding: 0.7rem 0.9rem 0.8rem;
+      border-top: 1px solid #38434f;
+    }
+
+    .li-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      line-height: 1.35;
+      margin-bottom: 0.2rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .li-desc {
+      font-size: 0.76rem;
+      color: #94a3b8;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 1;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.3rem;
+    }
+
+    .li-domain {
+      font-size: 0.7rem;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    /* ── Discord Card ── */
+    .dc-card {
+      border-left: 4px solid var(--accent);
+      background: #2b2d31;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .dc-content {
+      padding: 0.6rem 0.8rem 0.7rem;
+    }
+
+    .dc-site {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .dc-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: #00aff4;
+      margin-bottom: 0.3rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .dc-desc {
+      font-size: 0.78rem;
+      color: #dbdee1;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.5rem;
+    }
+
+    .dc-image {
+      width: 100%;
+      aspect-ratio: 16/9;
+      object-fit: cover;
+      display: block;
+      border-radius: 3px;
+      background: #1e2124;
+    }
+
+    .dc-image-placeholder {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: linear-gradient(135deg, #1e2124, #2a2d31);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #4a4d52;
+      font-size: 0.78rem;
+      border-radius: 3px;
+    }
+
+    /* ── Slack Card ── */
+    .sk-card {
+      border-left: 4px solid #e01e5a;
+      background: #1a1d21;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .sk-content {
+      padding: 0.6rem 0.8rem 0.7rem;
+    }
+
+    .sk-header {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .sk-favicon {
+      width: 14px; height: 14px;
+      border-radius: 2px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 8px;
+      font-weight: 700;
+      color: #0f172a;
+      flex-shrink: 0;
+    }
+
+    .sk-site {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #d1d2d3;
+    }
+
+    .sk-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #1164a3;
+      margin-bottom: 0.25rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .sk-desc {
+      font-size: 0.78rem;
+      color: #9e9ea6;
+      line-height: 1.45;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 0.45rem;
+    }
+
+    .sk-image {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
+      display: block;
+      border-radius: 3px;
+      background: #1e2124;
+    }
+
+    .sk-image-placeholder {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(135deg, #1e2124, #252830);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #44464d;
+      font-size: 0.78rem;
+      border-radius: 3px;
+    }
+
+    /* ── Raw metadata panel ── */
+    .meta-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .meta-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.25rem;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .meta-toggle:hover { background: var(--bg3); }
+
+    .meta-toggle-left {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .meta-badge {
+      background: var(--accent-glow);
+      border: 1px solid rgba(6,182,212,0.3);
+      color: var(--accent);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.15rem 0.5rem;
+      border-radius: 20px;
+    }
+
+    .chevron {
+      transition: transform 0.2s;
+      color: var(--text-muted);
+    }
+    .chevron.open { transform: rotate(180deg); }
+
+    .meta-table-wrap {
+      display: none;
+      border-top: 1px solid var(--border);
+    }
+    .meta-table-wrap.open { display: block; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.82rem;
+    }
+
+    thead th {
+      text-align: left;
+      padding: 0.6rem 1.25rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+    }
+
+    tbody tr:not(:last-child) { border-bottom: 1px solid var(--border); }
+
+    tbody td {
+      padding: 0.65rem 1.25rem;
+      vertical-align: top;
+    }
+
+    .tag-name {
+      font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+      color: var(--accent);
+      font-size: 0.8rem;
+      white-space: nowrap;
+    }
+
+    .tag-value {
+      color: var(--text);
+      word-break: break-word;
+      max-width: 400px;
+    }
+
+    .tag-status-ok { color: var(--success); font-size: 0.8rem; }
+    .tag-status-warn { color: var(--warning); font-size: 0.8rem; }
+
+    /* ── ScreenSnap banner ── */
+    .screensnap-banner {
+      background: linear-gradient(135deg, rgba(6,182,212,0.08), rgba(34,211,238,0.04));
+      border: 1px solid rgba(6,182,212,0.2);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .screensnap-banner:hover {
+      border-color: rgba(6,182,212,0.4);
+      background: linear-gradient(135deg, rgba(6,182,212,0.12), rgba(34,211,238,0.06));
+    }
+
+    .banner-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .banner-icon {
+      font-size: 1.5rem;
+    }
+
+    .banner-text strong {
+      display: block;
+      color: var(--text);
+      font-size: 0.95rem;
+      margin-bottom: 0.15rem;
+    }
+
+    .banner-text span {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+    }
+
+    .banner-cta {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.55rem 1.25rem;
+      border-radius: var(--radius-sm);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 1.5rem 1rem 2rem;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+
+    /* ── Utility ── */
+    .hidden { display: none !important; }
+
+    /* ── Placeholder state ── */
+    .placeholder-state {
+      text-align: center;
+      padding: 4rem 1rem;
+      color: var(--text-muted);
+    }
+
+    .placeholder-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.4; }
+    .placeholder-text { font-size: 1rem; }
+
+    @media (max-width: 480px) {
+      .input-row { flex-direction: column; }
+      .btn-preview { width: 100%; }
+      header { padding: 2rem 1rem 1.5rem; }
+      .screensnap-banner { padding: 1rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="logo">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="28" height="28" rx="6" fill="url(#grad)"/>
+        <circle cx="14" cy="12" r="4.5" stroke="white" stroke-width="1.8"/>
+        <rect x="6" y="19" width="16" height="2.5" rx="1.25" fill="white" opacity="0.5"/>
+        <defs>
+          <linearGradient id="grad" x1="0" y1="0" x2="28" y2="28">
+            <stop stop-color="#06b6d4"/>
+            <stop offset="1" stop-color="#22d3ee"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      OG Preview
+    </div>
+    <h1>Open Graph &amp; Social Card Checker</h1>
+    <p class="subtitle">See exactly how your URL looks when shared on Twitter, LinkedIn, Discord, and Slack — before you post.</p>
+  </header>
+
+  <main>
+    <!-- Input -->
+    <div class="input-section">
+      <div class="input-row">
+        <input
+          type="url"
+          id="urlInput"
+          class="url-input"
+          placeholder="https://example.com/your-page"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button class="btn-preview" id="previewBtn" onclick="fetchPreview()">
+          Preview →
+        </button>
+      </div>
+      <div class="example-links">
+        <span class="example-label">Try:</span>
+        <button class="example-btn" onclick="setExample('https://github.com/vercel/next.js')">github.com/vercel/next.js</button>
+        <button class="example-btn" onclick="setExample('https://openai.com')">openai.com</button>
+        <button class="example-btn" onclick="setExample('https://stripe.com')">stripe.com</button>
+        <button class="example-btn" onclick="setExample('https://linear.app')">linear.app</button>
+      </div>
+    </div>
+
+    <!-- Spinner -->
+    <div class="spinner-wrap" id="spinnerWrap">
+      <div class="spinner"></div>
+      <div class="spinner-text">Fetching metadata…</div>
+    </div>
+
+    <!-- Error -->
+    <div class="error-box" id="errorBox"></div>
+
+    <!-- Placeholder -->
+    <div class="placeholder-state" id="placeholderState">
+      <div class="placeholder-icon">🔍</div>
+      <div class="placeholder-text">Enter a URL above to preview its social cards</div>
+    </div>
+
+    <!-- Warnings -->
+    <div class="warnings" id="warningsBox"></div>
+
+    <!-- Results -->
+    <div class="results" id="resultsSection">
+      <div class="section-title">Platform Previews</div>
+
+      <div class="platforms-grid">
+
+        <!-- Twitter/X -->
+        <div class="platform-card">
+          <div class="platform-header">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="none">
+              <rect width="16" height="16" rx="3" fill="#000"/>
+              <path d="M9.3 7.15L12.9 3h-.9L8.95 6.6 6.55 3H3.5l3.77 5.49L3.5 13h.9l3.29-3.83L10.25 13h3.05L9.3 7.15ZM8.1 8.6l-.38-.55L4.75 3.7h1.3l2.45 3.5.38.55 3.19 4.56h-1.3L8.1 8.6Z" fill="white"/>
+            </svg>
+            <span class="platform-name">Twitter / X</span>
+          </div>
+          <div class="platform-body">
+            <div class="tw-card">
+              <div id="tw-image-wrap"></div>
+              <div class="tw-meta">
+                <div class="tw-domain" id="tw-domain">example.com</div>
+                <div class="tw-title" id="tw-title">Page Title</div>
+                <div class="tw-desc" id="tw-desc">Description goes here</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LinkedIn -->
+        <div class="platform-card">
+          <div class="platform-header">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="none">
+              <rect width="16" height="16" rx="3" fill="#0077B5"/>
+              <path d="M4 6H2v7h2V6ZM3 5a1 1 0 1 0 0-2 1 1 0 0 0 0 2ZM14 13h-2v-3.5c0-1-.7-1.5-1.5-1.5s-1.5.7-1.5 1.5V13H7V6h2v1a3 3 0 0 1 2-.8c1.7 0 3 1.2 3 3V13Z" fill="white"/>
+            </svg>
+            <span class="platform-name">LinkedIn</span>
+          </div>
+          <div class="platform-body">
+            <div class="li-card">
+              <div id="li-image-wrap"></div>
+              <div class="li-meta">
+                <div class="li-title" id="li-title">Page Title</div>
+                <div class="li-desc" id="li-desc">Description</div>
+                <div class="li-domain" id="li-domain">example.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Discord -->
+        <div class="platform-card">
+          <div class="platform-header">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="none">
+              <rect width="16" height="16" rx="3" fill="#5865F2"/>
+              <path d="M11.3 4.6A9.7 9.7 0 0 0 9 4c-.1.2-.2.5-.3.7A9 9 0 0 0 4.7 5c-.5.7-.9 2.3-.9 3.7v.2c.5.4 1.1.7 1.7.9.2-.2.3-.4.4-.7-.2-.1-.4-.2-.6-.3.1-.1.1-.1.2-.2a6.6 6.6 0 0 0 5.2 0l.2.2c-.2.1-.4.2-.6.3.1.3.3.5.4.7.6-.2 1.2-.5 1.7-.9 0-1.7-.4-3.3-1-4.3ZM6.4 8.3c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7Zm3.2 0c-.4 0-.7-.3-.7-.7s.3-.7.7-.7.7.3.7.7-.3.7-.7.7Z" fill="white"/>
+            </svg>
+            <span class="platform-name">Discord</span>
+          </div>
+          <div class="platform-body">
+            <div class="dc-card">
+              <div class="dc-content">
+                <div class="dc-site" id="dc-site">example.com</div>
+                <div class="dc-title" id="dc-title">Page Title</div>
+                <div class="dc-desc" id="dc-desc">Description</div>
+                <div id="dc-image-wrap"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slack -->
+        <div class="platform-card">
+          <div class="platform-header">
+            <svg class="platform-icon" viewBox="0 0 16 16" fill="none">
+              <rect width="16" height="16" rx="3" fill="#4A154B"/>
+              <path d="M5.5 2a1.5 1.5 0 0 0 0 3h1.5V3.5A1.5 1.5 0 0 0 5.5 2ZM5.5 6.5H2a1.5 1.5 0 0 0 0 3h3.5a1.5 1.5 0 0 0 0-3ZM14 8a1.5 1.5 0 0 0-1.5-1.5H11V8a1.5 1.5 0 0 0 3 0ZM9.5 5.5V2a1.5 1.5 0 0 0-3 0v3.5a1.5 1.5 0 0 0 3 0ZM11 9.5H9.5V11A1.5 1.5 0 0 0 11 9.5ZM9.5 14a1.5 1.5 0 0 0 3 0v-3.5H9.5V14ZM6 11v-1.5H4.5a1.5 1.5 0 0 0 0 3H6a1.5 1.5 0 0 0 0-3Z" fill="white"/>
+            </svg>
+            <span class="platform-name">Slack</span>
+          </div>
+          <div class="platform-body">
+            <div class="sk-card">
+              <div class="sk-content">
+                <div class="sk-header">
+                  <div class="sk-favicon" id="sk-favicon">S</div>
+                  <div class="sk-site" id="sk-site">example.com</div>
+                </div>
+                <div class="sk-title" id="sk-title">Page Title</div>
+                <div class="sk-desc" id="sk-desc">Description</div>
+                <div id="sk-image-wrap"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /.platforms-grid -->
+
+      <!-- Raw metadata -->
+      <div class="meta-panel" id="metaPanel">
+        <div class="meta-toggle" onclick="toggleMeta()">
+          <div class="meta-toggle-left">
+            <span>🏷️ Raw Metadata</span>
+            <span class="meta-badge" id="metaCount">0 tags</span>
+          </div>
+          <svg class="chevron" id="metaChevron" width="16" height="16" viewBox="0 0 16 16">
+            <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </div>
+        <div class="meta-table-wrap" id="metaTableWrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Tag</th>
+                <th>Value</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="metaTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /.results -->
+
+    <!-- ScreenSnap Banner -->
+    <a class="screensnap-banner" href="https://arthurpierrey.github.io/screensnap/" target="_blank" rel="noopener">
+      <div class="banner-left">
+        <div class="banner-icon">📸</div>
+        <div class="banner-text">
+          <strong>Need beautiful screenshots?</strong>
+          <span>Capture, annotate &amp; share stunning screen grabs — try ScreenSnap for free.</span>
+        </div>
+      </div>
+      <div class="banner-cta">Try ScreenSnap →</div>
+    </a>
+
+  </main>
+
+  <footer>
+    <p>Built with ♥ · Uses <a href="https://allorigins.win/" target="_blank" rel="noopener">AllOrigins</a> CORS proxy · No data stored</p>
+  </footer>
+
+  <script>
+    const PROXY = 'https://api.allorigins.win/get?url=';
+
+    const REQUIRED_TAGS = ['og:title', 'og:description', 'og:image'];
+    const FIX_TIPS = {
+      'og:title':       { label: 'Missing og:title', fix: '<meta property="og:title" content="Your Title Here" />' },
+      'og:description': { label: 'Missing og:description', fix: '<meta property="og:description" content="Your description (150–160 chars recommended)" />' },
+      'og:image':       { label: 'Missing og:image', fix: '<meta property="og:image" content="https://yourdomain.com/og-image.png" />\n<!-- Recommended size: 1200×630px -->' },
+    };
+
+    let metaOpen = false;
+
+    function setExample(url) {
+      document.getElementById('urlInput').value = url;
+      fetchPreview();
+    }
+
+    function toggleMeta() {
+      metaOpen = !metaOpen;
+      document.getElementById('metaTableWrap').classList.toggle('open', metaOpen);
+      document.getElementById('metaChevron').classList.toggle('open', metaOpen);
+    }
+
+    function getDomain(url) {
+      try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return url; }
+    }
+
+    function getSiteInitial(domain) {
+      return (domain || 'S').charAt(0).toUpperCase();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function makeImg(src, cls, placeholderText) {
+      if (src) {
+        return `<img class="${cls}" src="${escapeHtml(src)}" alt="" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+                <div class="${cls}-placeholder" style="display:none">🖼 Image failed to load</div>`;
+      }
+      const placeholderCls = cls.replace(/-image$/, '-image-placeholder');
+      return `<div class="${placeholderCls}">🖼 No og:image found</div>`;
+    }
+
+    function parseMeta(html) {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, 'text/html');
+      const data = {};
+
+      // og: properties
+      doc.querySelectorAll('meta[property^="og:"]').forEach(el => {
+        const prop = el.getAttribute('property');
+        const content = el.getAttribute('content');
+        if (prop && content) data[prop] = content;
+      });
+
+      // twitter: name
+      doc.querySelectorAll('meta[name^="twitter:"]').forEach(el => {
+        const name = el.getAttribute('name');
+        const content = el.getAttribute('content');
+        if (name && content) data[name] = content;
+      });
+
+      // fallback title
+      if (!data['og:title']) {
+        const t = doc.querySelector('title');
+        if (t) data['_title_fallback'] = t.textContent.trim();
+      }
+
+      // fallback description
+      if (!data['og:description']) {
+        const d = doc.querySelector('meta[name="description"]');
+        if (d) data['_desc_fallback'] = d.getAttribute('content');
+      }
+
+      return data;
+    }
+
+    function showError(msg) {
+      const box = document.getElementById('errorBox');
+      box.textContent = msg;
+      box.classList.add('active');
+    }
+
+    function clearError() {
+      document.getElementById('errorBox').classList.remove('active');
+    }
+
+    function showSpinner(on) {
+      document.getElementById('spinnerWrap').classList.toggle('active', on);
+    }
+
+    function showResults(on) {
+      document.getElementById('resultsSection').classList.toggle('active', on);
+    }
+
+    function showPlaceholder(on) {
+      document.getElementById('placeholderState').classList.toggle('hidden', !on);
+    }
+
+    function renderWarnings(data) {
+      const box = document.getElementById('warningsBox');
+      box.innerHTML = '';
+      const missing = REQUIRED_TAGS.filter(t => !data[t]);
+      if (missing.length === 0) {
+        box.classList.remove('active');
+        return;
+      }
+      box.classList.add('active');
+      missing.forEach(tag => {
+        const tip = FIX_TIPS[tag];
+        box.insertAdjacentHTML('beforeend', `
+          <div class="warning-item">
+            <span class="warning-icon">⚠️</span>
+            <div class="warning-content">
+              <div class="warning-title">${tip.label}</div>
+              <div class="warning-fix">${escapeHtml(tip.fix)}</div>
+            </div>
+          </div>
+        `);
+      });
+    }
+
+    function renderPlatforms(data, inputUrl) {
+      const domain = getDomain(data['og:url'] || inputUrl);
+      const title = data['og:title'] || data['twitter:title'] || data['_title_fallback'] || '(no title found)';
+      const desc  = data['og:description'] || data['twitter:description'] || data['_desc_fallback'] || '(no description found)';
+      const image = data['og:image'] || data['twitter:image'] || '';
+
+      // Twitter/X
+      document.getElementById('tw-domain').textContent = domain;
+      document.getElementById('tw-title').textContent = title;
+      document.getElementById('tw-desc').textContent = desc;
+      document.getElementById('tw-image-wrap').innerHTML = makeImg(image, 'tw-image', 'No og:image found');
+
+      // LinkedIn
+      document.getElementById('li-title').textContent = title;
+      document.getElementById('li-desc').textContent = desc;
+      document.getElementById('li-domain').textContent = domain.toUpperCase();
+      document.getElementById('li-image-wrap').innerHTML = makeImg(image, 'li-image', 'No og:image found');
+
+      // Discord
+      document.getElementById('dc-site').textContent = domain;
+      document.getElementById('dc-title').textContent = title;
+      document.getElementById('dc-desc').textContent = desc;
+      document.getElementById('dc-image-wrap').innerHTML = image ? makeImg(image, 'dc-image', '') : '';
+
+      // Slack
+      document.getElementById('sk-site').textContent = domain;
+      document.getElementById('sk-favicon').textContent = getSiteInitial(domain);
+      document.getElementById('sk-title').textContent = title;
+      document.getElementById('sk-desc').textContent = desc;
+      document.getElementById('sk-image-wrap').innerHTML = image ? makeImg(image, 'sk-image', '') : '';
+    }
+
+    function renderMetaTable(data) {
+      const DISPLAY_TAGS = [
+        'og:title','og:description','og:image','og:url','og:type','og:site_name',
+        'twitter:card','twitter:title','twitter:description','twitter:image',
+        'twitter:site','twitter:creator',
+      ];
+      const body = document.getElementById('metaTableBody');
+      body.innerHTML = '';
+
+      const allTags = [...new Set([...DISPLAY_TAGS, ...Object.keys(data).filter(k => !k.startsWith('_'))])];
+      let count = 0;
+
+      allTags.forEach(tag => {
+        if (tag.startsWith('_')) return;
+        const val = data[tag];
+        if (!val) return;
+        count++;
+        const isRequired = REQUIRED_TAGS.includes(tag);
+        body.insertAdjacentHTML('beforeend', `
+          <tr>
+            <td><span class="tag-name">${escapeHtml(tag)}</span></td>
+            <td class="tag-value">${escapeHtml(val)}</td>
+            <td>${isRequired ? '<span class="tag-status-ok">✓ key tag</span>' : ''}</td>
+          </tr>
+        `);
+      });
+
+      // Also show missing required tags in table
+      REQUIRED_TAGS.forEach(tag => {
+        if (!data[tag]) {
+          body.insertAdjacentHTML('beforeend', `
+            <tr>
+              <td><span class="tag-name">${escapeHtml(tag)}</span></td>
+              <td class="tag-value" style="color:var(--text-muted);font-style:italic;">not found</td>
+              <td><span class="tag-status-warn">⚠ missing</span></td>
+            </tr>
+          `);
+        }
+      });
+
+      document.getElementById('metaCount').textContent = `${count} tag${count !== 1 ? 's' : ''}`;
+    }
+
+    async function fetchPreview() {
+      const inputEl = document.getElementById('urlInput');
+      let url = inputEl.value.trim();
+
+      if (!url) { inputEl.focus(); return; }
+      if (!/^https?:\/\//i.test(url)) url = 'https://' + url;
+
+      clearError();
+      showPlaceholder(false);
+      showResults(false);
+      document.getElementById('warningsBox').classList.remove('active');
+      showSpinner(true);
+      document.getElementById('previewBtn').disabled = true;
+
+      try {
+        const proxyUrl = PROXY + encodeURIComponent(url);
+        const res = await fetch(proxyUrl, { signal: AbortSignal.timeout(15000) });
+
+        if (!res.ok) throw new Error(`Proxy returned ${res.status}`);
+
+        const json = await res.json();
+
+        if (!json.contents) throw new Error('No content returned from proxy. The target site may block crawlers.');
+
+        const data = parseMeta(json.contents);
+        renderWarnings(data);
+        renderPlatforms(data, url);
+        renderMetaTable(data);
+        showResults(true);
+        // Auto-open metadata table
+        if (!metaOpen) toggleMeta();
+      } catch (err) {
+        let msg = '⚠️ Could not fetch that URL. ';
+        if (err.name === 'TimeoutError') {
+          msg += 'The request timed out. Try again or check if the URL is accessible.';
+        } else if (err.message.includes('Failed to fetch') || err.message.includes('NetworkError')) {
+          msg += 'Network error. Make sure you\'re online and the URL is valid.';
+        } else {
+          msg += err.message;
+        }
+        showError(msg);
+        showPlaceholder(true);
+      } finally {
+        showSpinner(false);
+        document.getElementById('previewBtn').disabled = false;
+      }
+    }
+
+    // Enter key support
+    document.getElementById('urlInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') fetchPreview();
+    });
+  </script>
+</body>
+</html>
