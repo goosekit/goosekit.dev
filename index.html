@@ -600,7 +600,23 @@
       overflow: hidden;
       transition: transform var(--transition), border-color var(--transition), box-shadow var(--transition), background var(--transition);
       animation: fadeInUp 0.5s ease both;
-      cursor: default;
+      cursor: pointer;
+    }
+
+    .card-clickable-overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+    }
+
+    .card-link {
+      position: relative;
+      z-index: 2;
+    }
+
+    .card .tags {
+      position: relative;
+      z-index: 2;
     }
 
     .card::before {
@@ -1666,6 +1682,17 @@
         }
       });
     })();
+
+    // Make entire cards clickable
+    document.querySelectorAll('article.card').forEach(function(card) {
+      var link = card.querySelector('.card-link');
+      if (link) {
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('.card-link, .tag')) return;
+          window.open(link.href, '_blank', 'noopener,noreferrer');
+        });
+      }
+    });
   </script>
 
 </body>
