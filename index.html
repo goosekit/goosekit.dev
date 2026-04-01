@@ -386,6 +386,30 @@
             "applicationCategory": "DeveloperApplication",
             "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
           }
+        },
+        {
+          "@type": "ListItem",
+          "position": 30,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "HTML Entity Encoder/Decoder",
+            "url": "https://htmlentity.vercel.app/",
+            "description": "Encode text to HTML entities and decode entities back to text. Named, decimal, and hex entities supported.",
+            "applicationCategory": "DeveloperApplication",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 31,
+          "item": {
+            "@type": "SoftwareApplication",
+            "name": "Chmod Calculator",
+            "url": "https://chmod-xi.vercel.app/",
+            "description": "Interactive Unix file permissions calculator. Checkbox grid, numeric and symbolic notation, common presets.",
+            "applicationCategory": "DeveloperApplication",
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+          }
         }
       ]
     }
@@ -1480,7 +1504,68 @@
         </a>
       </article>
 
+      <!-- HTML Entity Encoder/Decoder -->
+      <article
+        class="card"
+        data-accent="htmlentity"
+        data-search="html entity encoder decoder encode decode amp lt gt entities named numeric hex"
+        role="listitem"
+      >
+        <div class="card-header">
+          <span class="card-icon" aria-hidden="true">&amp;</span>
+          <span class="card-title">HTML Entity Encoder</span>
+        </div>
+        <p class="card-desc">Encode text to HTML entities &amp; decode them back. Named, decimal, and hex entities with live preview.</p>
+        <div class="tags">
+          <span class="tag">HTML</span>
+          <span class="tag">Encoder</span>
+          <span class="tag">Entities</span>
+        </div>
+        <a class="card-link" href="https://htmlentity.vercel.app/" target="_blank" rel="noopener noreferrer">
+          Open tool →
+        </a>
+      </article>
+
+      <!-- Chmod Calculator -->
+      <article
+        class="card"
+        data-accent="chmod"
+        data-search="chmod calculator unix permissions file permissions rwx octal symbolic setuid setgid sticky bit 755 644"
+        role="listitem"
+      >
+        <div class="card-header">
+          <span class="card-icon" aria-hidden="true">🔐</span>
+          <span class="card-title">Chmod Calculator</span>
+        </div>
+        <p class="card-desc">Interactive Unix file permissions calculator. Checkbox grid, numeric &amp; symbolic notation, common presets, special permissions.</p>
+        <div class="tags">
+          <span class="tag">Unix</span>
+          <span class="tag">Permissions</span>
+          <span class="tag">CLI</span>
+        </div>
+        <a class="card-link" href="https://chmod-xi.vercel.app/" target="_blank" rel="noopener noreferrer">
+          Open tool →
+        </a>
+      </article>
+
     </div>
+
+    <!-- DevTools API promo -->
+    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
+      <div style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(124,58,237,0.12));border:1px solid rgba(52,211,153,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+        <div style="flex:1;min-width:250px;">
+          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">⚡ DevTools API</div>
+          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Need these tools as an API? Hash generation, UUIDs, JSON formatting, passwords & more — all as REST endpoints. 100 free requests/day, no signup.</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,0.15);color:#86efac;border:1px solid rgba(52,211,153,0.25);">REST API</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(124,58,237,0.15);color:#c4b5fd;border:1px solid rgba(124,58,237,0.25);">Free tier</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">CORS</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);">Pro $4.99/mo</span>
+          </div>
+        </div>
+        <a href="https://devtools-api-eosin.vercel.app" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#34d399,#7c3aed);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore API →</a>
+      </div>
+    </section>
 
     <!-- Ship It Kit promo -->
     <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
