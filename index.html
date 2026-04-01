@@ -621,7 +621,8 @@
 
     .card .tags {
       position: relative;
-      z-index: 2;
+      z-index: 0;
+      pointer-events: none;
     }
 
     .card::before {
@@ -721,7 +722,7 @@
       border: 1px solid rgba(255,255,255,0.08);
     }
 
-    .tag:hover { opacity: 0.7; }
+    .tag:hover { opacity: 1; }
 
     /* Accent tag color */
     .card[data-accent="screensnap"] .tag { color: #c4b5fd; background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.2); }
@@ -900,6 +901,7 @@
         data-search="screensnap screenshot beautify gradients shadows device frames screenshot visual design"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/screenshot/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🖼️</span>
           <span class="card-title">ScreenSnap</span>
@@ -922,6 +924,7 @@
         data-search="og preview open graph twitter linkedin discord slack social seo meta tags preview share"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/og-preview/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔗</span>
           <span class="card-title">OG Preview</span>
@@ -944,6 +947,7 @@
         data-search="devformat json format beautify validate minify pretty print formatter"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/json/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📋</span>
           <span class="card-title">DevFormat</span>
@@ -966,6 +970,7 @@
         data-search="base64 encode decode text images binary crypto encoding"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/base64/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔐</span>
           <span class="card-title">Base64 Tool</span>
@@ -988,6 +993,7 @@
         data-search="regexlab regex regular expression test live highlighting capture groups pattern match"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/regex/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔤</span>
           <span class="card-title">RegexLab</span>
@@ -1010,6 +1016,7 @@
         data-search="diffview diff compare text side by side highlight changes difference checker"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/diff/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📝</span>
           <span class="card-title">DiffView</span>
@@ -1032,6 +1039,7 @@
         data-search="hashgen hash generate md5 sha-256 sha-512 checksum crypto hashing"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/hash/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">#️⃣</span>
           <span class="card-title">HashGen</span>
@@ -1054,6 +1062,7 @@
         data-search="jwt decoder json web token parser debugger inspector claims payload header"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/jwt/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔐</span>
           <span class="card-title">JWT Decoder</span>
@@ -1076,6 +1085,7 @@
         data-search="url encoder decoder percent encoding encodeURIComponent escape query string parameter"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/url-encode/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔗</span>
           <span class="card-title">URL Encode/Decode</span>
@@ -1098,6 +1108,7 @@
         data-search="markdown preview editor live renderer gfm github flavored table code block task list"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/markdown/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📝</span>
           <span class="card-title">Markdown Preview</span>
@@ -1120,6 +1131,7 @@
         data-search="css gradient generator maker linear radial conic background color picker visual"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/css-gradient/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🎨</span>
           <span class="card-title">CSS Gradient</span>
@@ -1142,6 +1154,7 @@
         data-search="lorem ipsum generator placeholder text dummy content paragraphs sentences words filler"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/lorem/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📄</span>
           <span class="card-title">Lorem Ipsum</span>
@@ -1164,6 +1177,7 @@
         data-search="password generator secure random strong passphrase crypto entropy symbols uppercase lowercase"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/password/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔑</span>
           <span class="card-title">Password Gen</span>
@@ -1186,6 +1200,7 @@
         data-search="color picker hex rgb hsl converter palette harmony contrast checker complementary triadic"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/color-picker/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🎨</span>
           <span class="card-title">Color Picker</span>
@@ -1208,6 +1223,7 @@
         data-search="timestamp converter unix epoch iso 8601 rfc 2822 date time relative seconds milliseconds"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/timestamp/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">⏱️</span>
           <span class="card-title">Timestamp</span>
@@ -1230,6 +1246,7 @@
         data-search="placeholder image generator mockup prototype wireframe custom size dimensions png jpeg webp"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/placeholder-image/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🖼️</span>
           <span class="card-title">Placeholder Image</span>
@@ -1252,6 +1269,7 @@
         data-search="json yaml converter transform config kubernetes docker compose configuration markup data"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/json-yaml/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔄</span>
           <span class="card-title">JSON ↔ YAML</span>
@@ -1274,6 +1292,7 @@
         data-search="cron crontab expression parser scheduler job schedule next run time explain plain english"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/cron/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">⏰</span>
           <span class="card-title">Cron Parser</span>
@@ -1296,6 +1315,7 @@
         data-search="json csv convert converter array table export download delimiter flatten nested"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/json-csv/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📊</span>
           <span class="card-title">JSON ↔ CSV</span>
@@ -1318,6 +1338,7 @@
         data-search="http status code codes reference 200 301 302 400 401 403 404 500 502 503 api rest web"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/http-status/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🌐</span>
           <span class="card-title">HTTP Status Codes</span>
@@ -1340,6 +1361,7 @@
         data-search="svg png convert image export vector raster retina 2x 3x 4x scale"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/svg-to-png/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🖼️</span>
           <span class="card-title">SVG to PNG</span>
@@ -1362,6 +1384,7 @@
         data-search="box shadow css generator visual editor layers presets inset neon neumorphic card elevated"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/box-shadow/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🎨</span>
           <span class="card-title">Box Shadow Generator</span>
@@ -1384,6 +1407,7 @@
         data-search="text case converter uppercase lowercase title camelcase pascalcase snake kebab constant toggle alternating transform"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/text-case/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">Aa</span>
           <span class="card-title">Text Case Converter</span>
@@ -1406,6 +1430,7 @@
         data-search="meta tag generator seo open graph twitter card robots html head description title canonical keywords author"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/meta-tag/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🏷️</span>
           <span class="card-title">Meta Tag Generator</span>
@@ -1428,6 +1453,7 @@
         data-search="css minifier minify beautify compress optimize stylesheet whitespace comments format"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/css-minifier/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🗜️</span>
           <span class="card-title">CSS Minifier</span>
@@ -1450,6 +1476,7 @@
         data-search="qr code generator qrcode url text wifi email phone vcard png svg barcode scan"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/qr-code/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">📱</span>
           <span class="card-title">QR Code Generator</span>
@@ -1472,6 +1499,7 @@
         data-search="favicon generator ico png apple touch icon emoji text image upload website browser tab"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/favicon-gen/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🎨</span>
           <span class="card-title">Favicon Generator</span>
@@ -1494,6 +1522,7 @@
         data-search="uuid generator guid unique identifier v1 v4 random bulk generate"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/uuid/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔑</span>
           <span class="card-title">UUID Generator</span>
@@ -1516,6 +1545,7 @@
         data-search="ip address lookup what is my ip geolocation isp timezone location finder"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/ip-lookup/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🌐</span>
           <span class="card-title">IP Address Lookup</span>
@@ -1538,6 +1568,7 @@
         data-search="html entity encoder decoder encode decode amp lt gt entities named numeric hex"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/html-entity/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">&amp;</span>
           <span class="card-title">HTML Entity Encoder</span>
@@ -1560,6 +1591,7 @@
         data-search="chmod calculator unix permissions file permissions rwx octal symbolic setuid setgid sticky bit 755 644"
         role="listitem"
       >
+        <a class="card-clickable-overlay" href="/chmod/" aria-hidden="true"></a>
         <div class="card-header">
           <span class="card-icon" aria-hidden="true">🔐</span>
           <span class="card-title">Chmod Calculator</span>
