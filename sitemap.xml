@@ -47,4 +47,8 @@
   <url><loc>https://goosekit.dev/image-cropper/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/color-palette/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/percentage-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/text-to-speech/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/pomodoro/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/notepad/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/stopwatch/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stopwatch & Timer Online — Free Countdown Timer | Goosekit</title>
+<meta name="description" content="Free online stopwatch and countdown timer with lap times, hours/minutes/seconds input, and audio alert. Fast, clean, no ads.">
+<link rel="canonical" href="https://goosekit.dev/stopwatch/">
+<meta property="og:title" content="Stopwatch & Timer Online — Free Countdown Timer | Goosekit">
+<meta property="og:description" content="Free online stopwatch and countdown timer with lap times, hours/minutes/seconds input, and audio alert.">
+<meta property="og:url" content="https://goosekit.dev/stopwatch/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⏱️</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'SF Mono','Cascadia Code','Consolas','Fira Mono',monospace;background:#0f0f19;color:#e4e4ef;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+a{color:#7b8cff;text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Banner */
+.banner{width:100%;background:linear-gradient(135deg,#16162a 0%,#1e1e38 100%);border-bottom:1px solid #2a2a4a;padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:10px}
+.banner svg{width:28px;height:28px}
+.banner span{font-size:1.05rem;font-weight:700;letter-spacing:.5px;color:#c8c8e0}
+.banner a{color:#7b8cff;font-size:.85rem;font-weight:400;margin-left:8px}
+
+/* Main */
+.container{max-width:520px;width:100%;padding:32px 20px;flex:1;display:flex;flex-direction:column;align-items:center}
+
+/* Mode Tabs */
+.tabs{display:flex;gap:4px;background:#1a1a2e;border-radius:12px;padding:4px;margin-bottom:32px;width:100%;max-width:320px}
+.tab{flex:1;text-align:center;padding:10px 0;border-radius:10px;cursor:pointer;font-size:.95rem;font-weight:600;color:#888;transition:all .2s;border:none;background:none;font-family:inherit}
+.tab.active{background:#2a2a4a;color:#e4e4ef;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+.tab:hover:not(.active){color:#bbb}
+
+/* Display */
+.display{font-size:clamp(3rem,12vw,5.5rem);font-weight:700;letter-spacing:2px;text-align:center;padding:24px 0 28px;font-variant-numeric:tabular-nums;color:#fff;line-height:1.1;user-select:all}
+.display .ms{font-size:.55em;opacity:.55}
+
+/* Timer Input */
+.timer-input{display:none;align-items:center;justify-content:center;gap:6px;margin-bottom:24px}
+.timer-input.visible{display:flex}
+.time-field{display:flex;flex-direction:column;align-items:center;gap:4px}
+.time-field input{width:72px;text-align:center;font-size:1.8rem;font-family:inherit;font-weight:700;background:#1a1a2e;border:2px solid #2a2a4a;border-radius:10px;color:#fff;padding:10px 4px;outline:none;font-variant-numeric:tabular-nums;transition:border-color .2s}
+.time-field input:focus{border-color:#7b8cff}
+.time-field label{font-size:.7rem;color:#666;text-transform:uppercase;letter-spacing:1px}
+.time-sep{font-size:1.8rem;color:#555;padding-top:4px}
+
+/* Buttons */
+.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:24px}
+.btn{border:none;border-radius:12px;padding:14px 28px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s;min-width:100px}
+.btn:active{transform:scale(.96)}
+.btn-start{background:#22c55e;color:#0f0f19}
+.btn-start:hover{background:#16a34a}
+.btn-stop{background:#ef4444;color:#fff}
+.btn-stop:hover{background:#dc2626}
+.btn-reset{background:#2a2a4a;color:#aaa}
+.btn-reset:hover{background:#3a3a5a;color:#ddd}
+.btn-lap{background:#3b82f6;color:#fff}
+.btn-lap:hover{background:#2563eb}
+.btn-set{background:#7b8cff;color:#0f0f19}
+.btn-set:hover{background:#6570e0}
+
+/* Laps */
+.laps{width:100%;max-width:400px;margin-top:8px}
+.laps h3{font-size:.8rem;color:#666;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;text-align:center}
+.lap-list{list-style:none;max-height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#2a2a4a transparent}
+.lap-list::-webkit-scrollbar{width:6px}
+.lap-list::-webkit-scrollbar-thumb{background:#2a2a4a;border-radius:3px}
+.lap-item{display:flex;justify-content:space-between;padding:8px 14px;border-radius:8px;font-size:.88rem;color:#bbb;font-variant-numeric:tabular-nums}
+.lap-item:nth-child(odd){background:#14142a}
+.lap-item .num{color:#666;min-width:40px}
+.lap-item .delta{color:#7b8cff;font-size:.82rem}
+
+/* Alert overlay */
+.alert-overlay{display:none;position:fixed;inset:0;background:rgba(15,15,25,.92);z-index:100;align-items:center;justify-content:center;flex-direction:column;gap:20px}
+.alert-overlay.show{display:flex}
+.alert-overlay .emoji{font-size:4rem;animation:pulse 1s infinite}
+.alert-overlay .msg{font-size:1.5rem;font-weight:700;color:#fff}
+.alert-overlay .btn{font-size:1.1rem}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+
+/* Footer */
+footer{padding:20px;text-align:center;font-size:.78rem;color:#555}
+footer a{color:#666}
+
+@media(max-width:400px){
+  .btn{padding:12px 20px;min-width:80px;font-size:.85rem}
+  .time-field input{width:60px;font-size:1.4rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="#7b8cff"/>
+    <path d="M30 65V40l20 12.5L30 65Z" fill="#0f0f19"/>
+    <rect x="55" y="38" width="18" height="5" rx="2.5" fill="#0f0f19"/>
+    <rect x="55" y="48" width="18" height="5" rx="2.5" fill="#0f0f19"/>
+    <rect x="55" y="58" width="12" height="5" rx="2.5" fill="#0f0f19"/>
+  </svg>
+  <span>Goosekit</span>
+  <a href="https://goosekit.dev/">← All Tools</a>
+</div>
+
+<div class="container">
+  <h1 style="font-size:1.4rem;font-weight:700;margin-bottom:6px;text-align:center">Stopwatch & Timer</h1>
+  <p style="font-size:.85rem;color:#666;margin-bottom:24px;text-align:center">Accurate timing with lap support and countdown alerts</p>
+
+  <!-- Tabs -->
+  <div class="tabs" role="tablist">
+    <button class="tab active" role="tab" data-mode="stopwatch" aria-selected="true">⏱ Stopwatch</button>
+    <button class="tab" role="tab" data-mode="timer" aria-selected="false">⏳ Timer</button>
+  </div>
+
+  <!-- Timer Input -->
+  <div class="timer-input" id="timerInput">
+    <div class="time-field">
+      <input type="number" id="inH" min="0" max="99" value="0" aria-label="Hours">
+      <label>Hours</label>
+    </div>
+    <span class="time-sep">:</span>
+    <div class="time-field">
+      <input type="number" id="inM" min="0" max="59" value="5" aria-label="Minutes">
+      <label>Min</label>
+    </div>
+    <span class="time-sep">:</span>
+    <div class="time-field">
+      <input type="number" id="inS" min="0" max="59" value="0" aria-label="Seconds">
+      <label>Sec</label>
+    </div>
+  </div>
+
+  <!-- Display -->
+  <div class="display" id="display" aria-live="polite">00:00<span class="ms">.00</span></div>
+
+  <!-- Controls -->
+  <div class="controls" id="controls">
+    <button class="btn btn-start" id="btnStart">Start</button>
+    <button class="btn btn-reset" id="btnReset">Reset</button>
+    <button class="btn btn-lap" id="btnLap" style="display:none">Lap</button>
+  </div>
+
+  <!-- Laps -->
+  <div class="laps" id="lapsSection" style="display:none">
+    <h3>Lap Times</h3>
+    <ul class="lap-list" id="lapList"></ul>
+  </div>
+</div>
+
+<!-- Alert Overlay -->
+<div class="alert-overlay" id="alertOverlay">
+  <div class="emoji">🔔</div>
+  <div class="msg">Time's Up!</div>
+  <button class="btn btn-start" id="btnDismiss">Dismiss</button>
+</div>
+
+<footer>
+  <a href="https://goosekit.dev/">Goosekit</a> — Free developer & productivity tools
+</footer>
+
+<script>
+(function(){
+  // --- State ---
+  let mode = 'stopwatch';
+  let running = false;
+  let elapsed = 0;        // ms for stopwatch
+  let remaining = 0;      // ms for timer
+  let timerTotal = 0;
+  let startTs = 0;
+  let rafId = null;
+  let laps = [];
+  let lastLapElapsed = 0;
+  let audioCtx = null;
+
+  // --- DOM ---
+  const display = document.getElementById('display');
+  const btnStart = document.getElementById('btnStart');
+  const btnReset = document.getElementById('btnReset');
+  const btnLap = document.getElementById('btnLap');
+  const timerInput = document.getElementById('timerInput');
+  const lapsSection = document.getElementById('lapsSection');
+  const lapList = document.getElementById('lapList');
+  const alertOverlay = document.getElementById('alertOverlay');
+  const btnDismiss = document.getElementById('btnDismiss');
+  const tabs = document.querySelectorAll('.tab');
+  const inH = document.getElementById('inH');
+  const inM = document.getElementById('inM');
+  const inS = document.getElementById('inS');
+
+  // --- Format ---
+  function fmt(ms, showMs){
+    const totalSec = Math.floor(ms / 1000);
+    const h = Math.floor(totalSec / 3600);
+    const m = Math.floor((totalSec % 3600) / 60);
+    const s = totalSec % 60;
+    const cs = Math.floor((ms % 1000) / 10);
+    let str = '';
+    if(h > 0) str += String(h).padStart(2,'0') + ':';
+    str += String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+    if(showMs) str += '<span class="ms">.' + String(cs).padStart(2,'0') + '</span>';
+    return str;
+  }
+
+  // --- Render ---
+  function render(){
+    if(mode === 'stopwatch'){
+      display.innerHTML = fmt(elapsed, true);
+    } else {
+      display.innerHTML = fmt(Math.max(0, remaining), remaining > 60000 ? false : true);
+    }
+  }
+
+  // --- Tick ---
+  function tick(){
+    const now = performance.now();
+    if(mode === 'stopwatch'){
+      elapsed = elapsed + (now - startTs);
+      startTs = now;
+      render();
+      rafId = requestAnimationFrame(tick);
+    } else {
+      remaining = remaining - (now - startTs);
+      startTs = now;
+      if(remaining <= 0){
+        remaining = 0;
+        render();
+        stop();
+        triggerAlert();
+        return;
+      }
+      render();
+      rafId = requestAnimationFrame(tick);
+    }
+  }
+
+  // --- Start / Stop ---
+  function start(){
+    if(mode === 'timer' && !running && remaining <= 0){
+      const h = Math.max(0, parseInt(inH.value)||0);
+      const m = Math.max(0, parseInt(inM.value)||0);
+      const s = Math.max(0, parseInt(inS.value)||0);
+      timerTotal = (h*3600 + m*60 + s) * 1000;
+      if(timerTotal <= 0) return;
+      remaining = timerTotal;
+    }
+    running = true;
+    startTs = performance.now();
+    btnStart.textContent = 'Stop';
+    btnStart.className = 'btn btn-stop';
+    if(mode === 'stopwatch') btnLap.style.display = '';
+    if(mode === 'timer') timerInput.classList.remove('visible');
+    rafId = requestAnimationFrame(tick);
+  }
+
+  function stop(){
+    running = false;
+    if(rafId) cancelAnimationFrame(rafId);
+    rafId = null;
+    btnStart.textContent = 'Start';
+    btnStart.className = 'btn btn-start';
+    if(mode === 'stopwatch') btnLap.style.display = 'none';
+    render();
+  }
+
+  function reset(){
+    stop();
+    elapsed = 0;
+    remaining = 0;
+    lastLapElapsed = 0;
+    laps = [];
+    lapList.innerHTML = '';
+    lapsSection.style.display = 'none';
+    if(mode === 'timer') timerInput.classList.add('visible');
+    render();
+  }
+
+  // --- Lap ---
+  function addLap(){
+    if(!running || mode !== 'stopwatch') return;
+    const delta = elapsed - lastLapElapsed;
+    lastLapElapsed = elapsed;
+    laps.push({ total: elapsed, delta });
+    lapsSection.style.display = '';
+    const li = document.createElement('li');
+    li.className = 'lap-item';
+    li.innerHTML = '<span class="num">#' + laps.length + '</span><span>' + fmt(elapsed, true).replace(/<[^>]*>/g,'') + '</span><span class="delta">+' + fmt(delta, true).replace(/<[^>]*>/g,'') + '</span>';
+    lapList.prepend(li);
+  }
+
+  // --- Alert ---
+  function triggerAlert(){
+    alertOverlay.classList.add('show');
+    playBeep();
+  }
+
+  function dismissAlert(){
+    alertOverlay.classList.remove('show');
+    stopBeep();
+    reset();
+  }
+
+  // --- Audio ---
+  let beepInterval = null;
+  function playBeep(){
+    try {
+      if(!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      function singleBeep(){
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.frequency.value = 880;
+        osc.type = 'square';
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      }
+      singleBeep();
+      beepInterval = setInterval(singleBeep, 600);
+      setTimeout(stopBeep, 10000);
+    } catch(e){}
+  }
+
+  function stopBeep(){
+    if(beepInterval){ clearInterval(beepInterval); beepInterval = null; }
+  }
+
+  // --- Mode Switch ---
+  function switchMode(m){
+    if(m === mode) return;
+    reset();
+    mode = m;
+    tabs.forEach(t => {
+      const isActive = t.dataset.mode === m;
+      t.classList.toggle('active', isActive);
+      t.setAttribute('aria-selected', isActive);
+    });
+    btnLap.style.display = 'none';
+    if(m === 'timer'){
+      timerInput.classList.add('visible');
+      display.innerHTML = '00:00<span class="ms">.00</span>';
+    } else {
+      timerInput.classList.remove('visible');
+      display.innerHTML = '00:00<span class="ms">.00</span>';
+    }
+  }
+
+  // --- Events ---
+  btnStart.addEventListener('click', () => running ? stop() : start());
+  btnReset.addEventListener('click', reset);
+  btnLap.addEventListener('click', addLap);
+  btnDismiss.addEventListener('click', dismissAlert);
+  tabs.forEach(t => t.addEventListener('click', () => switchMode(t.dataset.mode)));
+
+  // Select all on input focus
+  [inH, inM, inS].forEach(inp => {
+    inp.addEventListener('focus', () => inp.select());
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){ e.preventDefault(); start(); }
+    });
+  });
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if(e.target.tagName === 'INPUT') return;
+    if(e.code === 'Space'){ e.preventDefault(); running ? stop() : start(); }
+    if(e.key === 'r' || e.key === 'R') reset();
+    if(e.key === 'l' || e.key === 'L') addLap();
+  });
+
+  render();
+})();
+</script>
+
+<!-- SEO structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Stopwatch & Timer Online",
+  "url": "https://goosekit.dev/stopwatch/",
+  "description": "Free online stopwatch and countdown timer with lap times, hours/minutes/seconds input, and audio alert when done.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+</body>
+</html>

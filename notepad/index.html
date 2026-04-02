@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Online Notepad — Free Text Editor | Goosekit</title>
+<meta name="description" content="Free online notepad with auto-save, markdown preview, find & replace, dark mode, and download as .txt. No sign-up required.">
+<meta name="keywords" content="online notepad, text editor, free notepad, markdown editor, auto-save notepad">
+<link rel="canonical" href="https://goosekit.dev/notepad/">
+<meta property="og:title" content="Online Notepad — Free Text Editor | Goosekit">
+<meta property="og:description" content="Free online notepad with auto-save, markdown preview, find & replace, and dark/light mode. No sign-up required.">
+<meta property="og:url" content="https://goosekit.dev/notepad/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Goosekit">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Online Notepad — Free Text Editor | Goosekit">
+<meta name="twitter:description" content="Free online notepad with auto-save, markdown preview, find & replace, and dark/light mode.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📝</text></svg>">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f19;--surface:#181825;--surface2:#1e1e2e;--border:#2a2a3d;--text:#cdd6f4;--text-muted:#6c7086;--accent:#89b4fa;--accent-hover:#74a8f7;--toolbar-bg:#11111b;--input-bg:#1e1e2e;--shadow:0 2px 12px rgba(0,0,0,.4);--radius:8px;--font-mono:'SF Mono','Cascadia Code','Fira Code',monospace}
+[data-theme="light"]{--bg:#f5f5f5;--surface:#ffffff;--surface2:#eee;--border:#d0d0d0;--text:#1e1e2e;--text-muted:#666;--accent:#2563eb;--accent-hover:#1d4ed8;--toolbar-bg:#fff;--input-bg:#fff;--shadow:0 2px 12px rgba(0,0,0,.08)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;transition:background .25s,color .25s}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Banner */
+.banner{background:var(--toolbar-bg);border-bottom:1px solid var(--border);padding:10px 20px;display:flex;align-items:center;gap:10px}
+.banner svg{width:28px;height:28px}
+.banner-title{font-size:1.1rem;font-weight:700;letter-spacing:-.02em}
+.banner-title span{color:var(--accent)}
+.banner-sep{color:var(--text-muted);font-weight:300;margin:0 4px}
+.banner-page{color:var(--text-muted);font-size:.85rem;font-weight:500}
+
+/* Toolbar */
+.toolbar{background:var(--toolbar-bg);border-bottom:1px solid var(--border);padding:6px 14px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.toolbar-group{display:flex;align-items:center;gap:4px}
+.toolbar-divider{width:1px;height:22px;background:var(--border);margin:0 6px}
+.btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:.8rem;cursor:pointer;display:inline-flex;align-items:center;gap:5px;transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn svg{width:15px;height:15px;fill:currentColor}
+.font-size-ctrl{display:flex;align-items:center;gap:2px}
+.font-size-ctrl .btn{padding:4px 7px;font-size:.75rem;min-width:26px;justify-content:center}
+.font-size-label{font-size:.75rem;color:var(--text-muted);min-width:32px;text-align:center}
+
+/* Find & Replace */
+.find-bar{background:var(--toolbar-bg);border-bottom:1px solid var(--border);padding:6px 14px;display:none;align-items:center;gap:6px;flex-wrap:wrap}
+.find-bar.open{display:flex}
+.find-bar input{background:var(--input-bg);border:1px solid var(--border);color:var(--text);padding:5px 10px;border-radius:6px;font-size:.8rem;outline:none;width:180px}
+.find-bar input:focus{border-color:var(--accent)}
+.find-bar .match-info{font-size:.75rem;color:var(--text-muted);min-width:60px}
+
+/* Editor */
+.editor-wrap{flex:1;display:flex;position:relative;overflow:hidden}
+#editor{flex:1;background:var(--surface);color:var(--text);border:none;outline:none;resize:none;padding:20px;font-family:var(--font-mono);font-size:15px;line-height:1.7;tab-size:2}
+#editor::placeholder{color:var(--text-muted)}
+#preview{flex:1;display:none;background:var(--surface);color:var(--text);padding:20px;overflow-y:auto;font-size:15px;line-height:1.7}
+#preview h1,#preview h2,#preview h3,#preview h4,#preview h5,#preview h6{margin:1em 0 .5em;font-weight:700}
+#preview h1{font-size:1.8em;border-bottom:1px solid var(--border);padding-bottom:.3em}
+#preview h2{font-size:1.4em;border-bottom:1px solid var(--border);padding-bottom:.2em}
+#preview h3{font-size:1.15em}
+#preview p{margin:.6em 0}
+#preview code{background:var(--surface2);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:.9em}
+#preview pre{background:var(--surface2);padding:14px;border-radius:var(--radius);overflow-x:auto;margin:1em 0}
+#preview pre code{background:none;padding:0}
+#preview blockquote{border-left:3px solid var(--accent);padding-left:14px;color:var(--text-muted);margin:1em 0}
+#preview ul,#preview ol{padding-left:1.8em;margin:.6em 0}
+#preview a{color:var(--accent)}
+#preview hr{border:none;border-top:1px solid var(--border);margin:1.5em 0}
+#preview img{max-width:100%;border-radius:var(--radius)}
+#preview table{border-collapse:collapse;margin:1em 0;width:100%}
+#preview th,#preview td{border:1px solid var(--border);padding:6px 12px;text-align:left}
+#preview th{background:var(--surface2)}
+
+/* Status */
+.status-bar{background:var(--toolbar-bg);border-top:1px solid var(--border);padding:5px 14px;display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:var(--text-muted);gap:10px;flex-wrap:wrap}
+.status-left,.status-right{display:flex;align-items:center;gap:12px}
+.save-indicator{display:inline-flex;align-items:center;gap:4px}
+.save-dot{width:7px;height:7px;border-radius:50%;background:#a6e3a1;transition:background .3s}
+.save-dot.saving{background:#f9e2af}
+
+/* Toast */
+.toast{position:fixed;bottom:60px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:8px 18px;border-radius:var(--radius);font-size:.82rem;opacity:0;transition:all .3s;pointer-events:none;z-index:100;box-shadow:var(--shadow)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media(max-width:600px){
+  .toolbar{padding:6px 8px;gap:4px}
+  .find-bar input{width:120px}
+  .btn{padding:4px 7px;font-size:.73rem}
+  #editor,#preview{padding:14px;font-size:14px}
+  .banner{padding:8px 12px}
+}
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<header class="banner">
+  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="46" fill="var(--accent)" opacity=".12"/>
+    <text x="50" y="62" text-anchor="middle" font-size="48" fill="var(--accent)">🪿</text>
+  </svg>
+  <div class="banner-title"><span>Goose</span>kit</div>
+  <span class="banner-sep">/</span>
+  <span class="banner-page">Notepad</span>
+</header>
+
+<!-- Toolbar -->
+<nav class="toolbar" role="toolbar" aria-label="Editor toolbar">
+  <div class="toolbar-group">
+    <button class="btn" id="btnTheme" title="Toggle dark/light mode">
+      <svg viewBox="0 0 24 24"><path id="themeIcon" d="M12 3a9 9 0 100 18 9 9 0 000-18zm0 16a7 7 0 010-14v14z"/></svg>
+      <span id="themeLabel">Light</span>
+    </button>
+  </div>
+  <div class="toolbar-divider"></div>
+  <div class="toolbar-group font-size-ctrl">
+    <button class="btn" id="btnFontDec" title="Decrease font size">A−</button>
+    <span class="font-size-label" id="fontSizeLabel">15px</span>
+    <button class="btn" id="btnFontInc" title="Increase font size">A+</button>
+  </div>
+  <div class="toolbar-divider"></div>
+  <div class="toolbar-group">
+    <button class="btn" id="btnFind" title="Find & Replace (Ctrl+H)">
+      <svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0016 9.5 6.5 6.5 0 109.5 16a6.47 6.47 0 004.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+      Find
+    </button>
+    <button class="btn" id="btnPreview" title="Toggle Markdown Preview">
+      <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+      Preview
+    </button>
+  </div>
+  <div class="toolbar-divider"></div>
+  <div class="toolbar-group">
+    <button class="btn" id="btnDownload" title="Download as .txt">
+      <svg viewBox="0 0 24 24"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+      Download
+    </button>
+    <button class="btn" id="btnClear" title="Clear notepad">
+      <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+      Clear
+    </button>
+  </div>
+</nav>
+
+<!-- Find & Replace Bar -->
+<div class="find-bar" id="findBar" role="search" aria-label="Find and replace">
+  <input type="text" id="findInput" placeholder="Find..." aria-label="Find text">
+  <input type="text" id="replaceInput" placeholder="Replace..." aria-label="Replace text">
+  <button class="btn" id="btnReplaceOne">Replace</button>
+  <button class="btn" id="btnReplaceAll">All</button>
+  <span class="match-info" id="matchInfo"></span>
+  <button class="btn" id="btnCloseFind" title="Close">✕</button>
+</div>
+
+<!-- Editor Area -->
+<main class="editor-wrap">
+  <textarea id="editor" placeholder="Start typing... Your notes auto-save to this browser.&#10;&#10;Tip: Use Ctrl+S to save, Ctrl+H for find & replace." aria-label="Notepad editor" spellcheck="true"></textarea>
+  <div id="preview" role="document" aria-label="Markdown preview"></div>
+</main>
+
+<!-- Status Bar -->
+<footer class="status-bar">
+  <div class="status-left">
+    <span class="save-indicator"><span class="save-dot" id="saveDot"></span> <span id="saveStatus">Saved</span></span>
+    <span id="wordCount">0 words</span>
+    <span id="charCount">0 chars</span>
+  </div>
+  <div class="status-right">
+    <span>Ctrl+S save · Ctrl+H find</span>
+    <a href="https://goosekit.dev" target="_blank" rel="noopener">goosekit.dev</a>
+  </div>
+</footer>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const editor = $('editor');
+  const preview = $('preview');
+  const findBar = $('findBar');
+  const findInput = $('findInput');
+  const replaceInput = $('replaceInput');
+  const matchInfo = $('matchInfo');
+  const saveDot = $('saveDot');
+  const saveStatus = $('saveStatus');
+  const toast = $('toast');
+
+  const STORAGE_KEY = 'goosekit-notepad-content';
+  const THEME_KEY = 'goosekit-notepad-theme';
+  const FONT_KEY = 'goosekit-notepad-fontsize';
+
+  let fontSize = parseInt(localStorage.getItem(FONT_KEY)) || 15;
+  let saveTimer = null;
+  let previewMode = false;
+
+  // Init
+  function init(){
+    // Load saved content
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if(saved !== null) editor.value = saved;
+
+    // Load theme
+    const savedTheme = localStorage.getItem(THEME_KEY) || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeButton(savedTheme);
+
+    // Apply font size
+    applyFontSize();
+    updateCounts();
+  }
+
+  // Auto-save
+  function scheduleSave(){
+    saveDot.classList.add('saving');
+    saveStatus.textContent = 'Saving...';
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => {
+      localStorage.setItem(STORAGE_KEY, editor.value);
+      saveDot.classList.remove('saving');
+      saveStatus.textContent = 'Saved';
+    }, 400);
+  }
+
+  function manualSave(){
+    localStorage.setItem(STORAGE_KEY, editor.value);
+    saveDot.classList.remove('saving');
+    saveStatus.textContent = 'Saved';
+    showToast('Saved ✓');
+  }
+
+  // Word/char count
+  function updateCounts(){
+    const text = editor.value;
+    const chars = text.length;
+    const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+    $('wordCount').textContent = words + ' word' + (words !== 1 ? 's' : '');
+    $('charCount').textContent = chars.toLocaleString() + ' char' + (chars !== 1 ? 's' : '');
+  }
+
+  // Theme
+  function toggleTheme(){
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem(THEME_KEY, next);
+    updateThemeButton(next);
+  }
+
+  function updateThemeButton(theme){
+    const icon = $('themeIcon');
+    const label = $('themeLabel');
+    if(theme === 'dark'){
+      icon.setAttribute('d','M12 3a9 9 0 100 18 9 9 0 000-18zm0 16a7 7 0 010-14v14z');
+      label.textContent = 'Light';
+    } else {
+      icon.setAttribute('d','M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37a.996.996 0 00-1.41 0 .996.996 0 000 1.41l1.06 1.06c.39.39 1.03.39 1.41 0a.996.996 0 000-1.41l-1.06-1.06zm1.06-10.96a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36a.996.996 0 000-1.41.996.996 0 00-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z');
+      label.textContent = 'Dark';
+    }
+  }
+
+  // Font size
+  function applyFontSize(){
+    fontSize = Math.max(10, Math.min(28, fontSize));
+    editor.style.fontSize = fontSize + 'px';
+    preview.style.fontSize = fontSize + 'px';
+    $('fontSizeLabel').textContent = fontSize + 'px';
+    localStorage.setItem(FONT_KEY, fontSize);
+  }
+
+  // Find & Replace
+  function toggleFindBar(){
+    findBar.classList.toggle('open');
+    if(findBar.classList.contains('open')){
+      findInput.focus();
+      const sel = window.getSelection().toString() || getEditorSelection();
+      if(sel) findInput.value = sel;
+      highlightMatches();
+    } else {
+      matchInfo.textContent = '';
+    }
+  }
+
+  function getEditorSelection(){
+    const s = editor.selectionStart, e = editor.selectionEnd;
+    return s !== e ? editor.value.substring(s, e) : '';
+  }
+
+  function highlightMatches(){
+    const q = findInput.value;
+    if(!q){ matchInfo.textContent = ''; return; }
+    const text = editor.value;
+    let count = 0, idx = -1;
+    const lq = q.toLowerCase(), lt = text.toLowerCase();
+    while((idx = lt.indexOf(lq, idx + 1)) !== -1) count++;
+    matchInfo.textContent = count + ' match' + (count !== 1 ? 'es' : '');
+  }
+
+  function replaceOne(){
+    const q = findInput.value;
+    if(!q) return;
+    const text = editor.value;
+    const idx = text.toLowerCase().indexOf(q.toLowerCase());
+    if(idx === -1){ showToast('No match found'); return; }
+    editor.value = text.substring(0, idx) + replaceInput.value + text.substring(idx + q.length);
+    scheduleSave(); updateCounts(); highlightMatches();
+  }
+
+  function replaceAll(){
+    const q = findInput.value;
+    if(!q) return;
+    const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+    const before = editor.value;
+    editor.value = editor.value.replace(re, replaceInput.value);
+    const diff = (before.match(re) || []).length;
+    if(diff === 0){ showToast('No matches found'); return; }
+    showToast('Replaced ' + diff + ' match' + (diff !== 1 ? 'es' : ''));
+    scheduleSave(); updateCounts(); highlightMatches();
+  }
+
+  // Markdown Preview (simple parser)
+  function togglePreview(){
+    previewMode = !previewMode;
+    $('btnPreview').classList.toggle('active', previewMode);
+    if(previewMode){
+      preview.innerHTML = renderMarkdown(editor.value);
+      editor.style.display = 'none';
+      preview.style.display = 'block';
+    } else {
+      editor.style.display = '';
+      preview.style.display = 'none';
+    }
+  }
+
+  function renderMarkdown(src){
+    let html = src;
+    // Escape HTML
+    html = html.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    // Code blocks
+    html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (m,lang,code) => '<pre><code>'+code+'</code></pre>');
+    // Inline code
+    html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+    // Headings
+    html = html.replace(/^######\s+(.+)$/gm, '<h6>$1</h6>');
+    html = html.replace(/^#####\s+(.+)$/gm, '<h5>$1</h5>');
+    html = html.replace(/^####\s+(.+)$/gm, '<h4>$1</h4>');
+    html = html.replace(/^###\s+(.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^##\s+(.+)$/gm, '<h2>$1</h2>');
+    html = html.replace(/^#\s+(.+)$/gm, '<h1>$1</h1>');
+    // HR
+    html = html.replace(/^---+$/gm, '<hr>');
+    // Bold & italic
+    html = html.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+    html = html.replace(/\*(.+?)\*/g, '<em>$1</em>');
+    // Links
+    html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+    // Images
+    html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
+    // Blockquotes
+    html = html.replace(/^&gt;\s+(.+)$/gm, '<blockquote>$1</blockquote>');
+    // Unordered lists
+    html = html.replace(/^[\-\*]\s+(.+)$/gm, '<li>$1</li>');
+    html = html.replace(/(<li>.*<\/li>\n?)+/g, m => '<ul>'+m+'</ul>');
+    // Ordered lists
+    html = html.replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>');
+    // Paragraphs
+    html = html.replace(/\n{2,}/g, '</p><p>');
+    html = '<p>' + html + '</p>';
+    html = html.replace(/<p>\s*(<h[1-6]|<pre|<blockquote|<ul|<ol|<hr)/g, '$1');
+    html = html.replace(/(<\/h[1-6]>|<\/pre>|<\/blockquote>|<\/ul>|<\/ol>|<hr>)\s*<\/p>/g, '$1');
+    html = html.replace(/<p>\s*<\/p>/g, '');
+    return html;
+  }
+
+  // Download
+  function downloadTxt(){
+    const blob = new Blob([editor.value], {type:'text/plain'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const firstLine = editor.value.split('\n')[0].trim().substring(0,30).replace(/[^a-zA-Z0-9\s-]/g,'').trim();
+    a.download = (firstLine || 'notepad') + '.txt';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Downloaded ✓');
+  }
+
+  // Clear
+  function clearEditor(){
+    if(editor.value && !confirm('Clear all text? This cannot be undone.')) return;
+    editor.value = '';
+    scheduleSave();
+    updateCounts();
+    if(previewMode) togglePreview();
+    showToast('Cleared');
+  }
+
+  // Toast
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 1800);
+  }
+
+  // Events
+  editor.addEventListener('input', () => { scheduleSave(); updateCounts(); });
+  $('btnTheme').addEventListener('click', toggleTheme);
+  $('btnFontDec').addEventListener('click', () => { fontSize -= 1; applyFontSize(); });
+  $('btnFontInc').addEventListener('click', () => { fontSize += 1; applyFontSize(); });
+  $('btnFind').addEventListener('click', toggleFindBar);
+  $('btnCloseFind').addEventListener('click', toggleFindBar);
+  $('btnPreview').addEventListener('click', togglePreview);
+  $('btnDownload').addEventListener('click', downloadTxt);
+  $('btnClear').addEventListener('click', clearEditor);
+  $('btnReplaceOne').addEventListener('click', replaceOne);
+  $('btnReplaceAll').addEventListener('click', replaceAll);
+  findInput.addEventListener('input', highlightMatches);
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', e => {
+    if((e.ctrlKey || e.metaKey) && e.key === 's'){
+      e.preventDefault();
+      manualSave();
+    }
+    if((e.ctrlKey || e.metaKey) && e.key === 'h'){
+      e.preventDefault();
+      toggleFindBar();
+    }
+    if(e.key === 'Escape' && findBar.classList.contains('open')){
+      toggleFindBar();
+    }
+  });
+
+  // Tab key support in editor
+  editor.addEventListener('keydown', e => {
+    if(e.key === 'Tab'){
+      e.preventDefault();
+      const start = editor.selectionStart;
+      const end = editor.selectionEnd;
+      editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+      editor.selectionStart = editor.selectionEnd = start + 2;
+      scheduleSave();
+    }
+  });
+
+  init();
+})();
+</script>
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Online Notepad",
+  "url": "https://goosekit.dev/notepad/",
+  "description": "Free online notepad with auto-save, markdown preview, find & replace, dark/light mode, and download as .txt.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": { "@type": "Organization", "name": "Goosekit", "url": "https://goosekit.dev" }
+}
+</script>
+</body>
+</html>

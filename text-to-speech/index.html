@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text to Speech Online — Free TTS Tool | Goosekit</title>
+<meta name="description" content="Convert text to speech online for free. Choose from dozens of voices, adjust speed, pitch and volume, and hear your text read aloud instantly — no signup required.">
+<link rel="canonical" href="https://goosekit.dev/text-to-speech/">
+<meta property="og:title" content="Text to Speech Online — Free TTS Tool | Goosekit">
+<meta property="og:description" content="Convert text to speech online for free. Choose voices, adjust speed/pitch/volume, and hear your text read aloud instantly.">
+<meta property="og:url" content="https://goosekit.dev/text-to-speech/">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;background:#0f0f19;color:#e0e0e8;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+a{color:#7c8aff;text-decoration:none}
+a:hover{text-decoration:underline}
+
+.banner{width:100%;padding:16px 24px;display:flex;align-items:center;gap:16px;border-bottom:1px solid #1e1e2e}
+.banner img{height:32px}
+.banner a{font-size:14px;color:#888}
+.banner a:hover{color:#bbb}
+
+.container{width:100%;max-width:720px;padding:24px 20px;flex:1}
+
+h1{font-size:1.6rem;font-weight:700;margin-bottom:6px;color:#fff}
+.subtitle{color:#888;font-size:.95rem;margin-bottom:24px}
+
+textarea{width:100%;min-height:160px;background:#181825;border:1px solid #2a2a3d;border-radius:10px;padding:14px 16px;color:#e0e0e8;font-size:15px;resize:vertical;line-height:1.6;font-family:inherit}
+textarea:focus{outline:none;border-color:#7c8aff}
+
+.highlight-area{position:relative;margin-bottom:20px}
+
+.controls{display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
+
+.voice-row{display:flex;gap:12px;flex-wrap:wrap}
+.voice-row select{flex:1;min-width:200px;background:#181825;border:1px solid #2a2a3d;border-radius:8px;padding:10px 12px;color:#e0e0e8;font-size:14px;cursor:pointer}
+.voice-row select:focus{outline:none;border-color:#7c8aff}
+
+.sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.slider-group{display:flex;flex-direction:column;gap:4px}
+.slider-group label{font-size:13px;color:#999;display:flex;justify-content:space-between}
+.slider-group label span{color:#bbb;font-weight:600}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;background:#2a2a3d;border-radius:3px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:#7c8aff;border-radius:50%;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;border-radius:50%;cursor:pointer;border:none}
+
+.buttons{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:10px 22px;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;transition:background .15s,opacity .15s;display:flex;align-items:center;gap:6px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-play{background:#7c8aff;color:#fff}
+.btn-play:hover:not(:disabled){background:#6b79ee}
+.btn-pause{background:#3a3a50;color:#e0e0e8}
+.btn-pause:hover:not(:disabled){background:#4a4a60}
+.btn-stop{background:#ff5c5c;color:#fff}
+.btn-stop:hover:not(:disabled){background:#e04a4a}
+
+.word-highlight{background:#7c8aff33;color:#fff;border-radius:3px;padding:0 2px}
+
+.info{margin-top:32px;padding:20px;background:#181825;border-radius:10px;border:1px solid #2a2a3d}
+.info h2{font-size:1.1rem;margin-bottom:10px;color:#fff}
+.info p{font-size:.9rem;color:#999;line-height:1.6;margin-bottom:8px}
+
+.status-bar{font-size:13px;color:#666;margin-top:8px;min-height:20px}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <a href="/"><img src="/logo-dark.png" alt="Goosekit"></a>
+  <a href="/">← Explore 50 free tools</a>
+</div>
+
+<div class="container">
+  <h1>Text to Speech</h1>
+  <p class="subtitle">Paste or type text below and listen to it spoken aloud — works entirely in your browser.</p>
+
+  <div class="highlight-area">
+    <textarea id="textInput" placeholder="Type or paste your text here…">The quick brown fox jumps over the lazy dog. This is a free text-to-speech tool powered by your browser.</textarea>
+  </div>
+
+  <div class="controls">
+    <div class="voice-row">
+      <select id="voiceSelect" aria-label="Voice"><option>Loading voices…</option></select>
+    </div>
+
+    <div class="sliders">
+      <div class="slider-group">
+        <label>Speed <span id="rateVal">1.0×</span></label>
+        <input type="range" id="rate" min="0.25" max="3" step="0.05" value="1">
+      </div>
+      <div class="slider-group">
+        <label>Pitch <span id="pitchVal">1.0</span></label>
+        <input type="range" id="pitch" min="0" max="2" step="0.05" value="1">
+      </div>
+      <div class="slider-group">
+        <label>Volume <span id="volVal">100%</span></label>
+        <input type="range" id="volume" min="0" max="1" step="0.05" value="1">
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-play" id="btnPlay">▶ Play</button>
+      <button class="btn btn-pause" id="btnPause" disabled>⏸ Pause</button>
+      <button class="btn btn-stop" id="btnStop" disabled>⏹ Stop</button>
+    </div>
+
+    <div class="status-bar" id="status"></div>
+  </div>
+
+  <div class="info">
+    <h2>How it works</h2>
+    <p>This tool uses the <strong>Web Speech API</strong> built into modern browsers — your text never leaves your device. Choose from all voices installed on your system, tweak speed, pitch, and volume, then press Play.</p>
+    <p>Works best in Chrome, Edge, and Safari. Firefox supports basic voices. On mobile, tap Play to begin.</p>
+  </div>
+</div>
+
+<script>
+(() => {
+  const synth = window.speechSynthesis;
+  const textInput = document.getElementById('textInput');
+  const voiceSelect = document.getElementById('voiceSelect');
+  const rateInput = document.getElementById('rate');
+  const pitchInput = document.getElementById('pitch');
+  const volumeInput = document.getElementById('volume');
+  const rateVal = document.getElementById('rateVal');
+  const pitchVal = document.getElementById('pitchVal');
+  const volVal = document.getElementById('volVal');
+  const btnPlay = document.getElementById('btnPlay');
+  const btnPause = document.getElementById('btnPause');
+  const btnStop = document.getElementById('btnStop');
+  const status = document.getElementById('status');
+
+  let voices = [];
+  let isPaused = false;
+
+  // Slider display updates
+  rateInput.addEventListener('input', () => rateVal.textContent = parseFloat(rateInput.value).toFixed(2) + '×');
+  pitchInput.addEventListener('input', () => pitchVal.textContent = parseFloat(pitchInput.value).toFixed(2));
+  volumeInput.addEventListener('input', () => volVal.textContent = Math.round(volumeInput.value * 100) + '%');
+
+  // Load voices
+  function loadVoices() {
+    voices = synth.getVoices();
+    if (!voices.length) return;
+    voiceSelect.innerHTML = '';
+    voices.forEach((v, i) => {
+      const opt = document.createElement('option');
+      opt.value = i;
+      opt.textContent = `${v.name} (${v.lang})${v.default ? ' — default' : ''}`;
+      voiceSelect.appendChild(opt);
+    });
+    // Select first English voice by default
+    const enIdx = voices.findIndex(v => v.lang.startsWith('en'));
+    if (enIdx > -1) voiceSelect.value = enIdx;
+  }
+
+  loadVoices();
+  if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+
+  // Word highlighting
+  function highlightWord(charIndex, charLen) {
+    const text = textInput.value;
+    if (charIndex < 0 || charIndex >= text.length) return;
+    textInput.focus();
+    textInput.setSelectionRange(charIndex, charIndex + charLen);
+  }
+
+  function clearHighlight() {
+    textInput.setSelectionRange(0, 0);
+    textInput.blur();
+  }
+
+  function setButtonState(playing) {
+    btnPlay.disabled = playing && !isPaused;
+    btnPause.disabled = !playing;
+    btnStop.disabled = !playing;
+    btnPlay.textContent = isPaused ? '▶ Resume' : '▶ Play';
+  }
+
+  // Play
+  btnPlay.addEventListener('click', () => {
+    if (synth.paused && isPaused) {
+      synth.resume();
+      isPaused = false;
+      setButtonState(true);
+      status.textContent = 'Speaking…';
+      return;
+    }
+
+    const text = textInput.value.trim();
+    if (!text) { status.textContent = 'Please enter some text.'; return; }
+
+    synth.cancel();
+
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.voice = voices[voiceSelect.value] || null;
+    utter.rate = parseFloat(rateInput.value);
+    utter.pitch = parseFloat(pitchInput.value);
+    utter.volume = parseFloat(volumeInput.value);
+
+    utter.onboundary = (e) => {
+      if (e.name === 'word') highlightWord(e.charIndex, e.charLength || 1);
+    };
+
+    utter.onstart = () => {
+      isPaused = false;
+      setButtonState(true);
+      status.textContent = 'Speaking…';
+    };
+
+    utter.onend = () => {
+      isPaused = false;
+      setButtonState(false);
+      clearHighlight();
+      status.textContent = 'Done.';
+    };
+
+    utter.onerror = (e) => {
+      if (e.error === 'canceled') return;
+      isPaused = false;
+      setButtonState(false);
+      clearHighlight();
+      status.textContent = 'Error: ' + e.error;
+    };
+
+    synth.speak(utter);
+  });
+
+  // Pause
+  btnPause.addEventListener('click', () => {
+    if (synth.speaking && !synth.paused) {
+      synth.pause();
+      isPaused = true;
+      setButtonState(true);
+      status.textContent = 'Paused.';
+    }
+  });
+
+  // Stop
+  btnStop.addEventListener('click', () => {
+    synth.cancel();
+    isPaused = false;
+    setButtonState(false);
+    clearHighlight();
+    status.textContent = 'Stopped.';
+  });
+
+  // Chrome bug: long texts stop after ~15s. Workaround: keep-alive timer.
+  let keepAlive;
+  const origSpeak = synth.speak.bind(synth);
+  synth.speak = function(u) {
+    clearInterval(keepAlive);
+    keepAlive = setInterval(() => {
+      if (synth.speaking && !synth.paused) { synth.pause(); synth.resume(); }
+    }, 10000);
+    const origEnd = u.onend;
+    u.onend = function(e) {
+      clearInterval(keepAlive);
+      if (origEnd) origEnd(e);
+    };
+    const origErr = u.onerror;
+    u.onerror = function(e) {
+      clearInterval(keepAlive);
+      if (origErr) origErr(e);
+    };
+    origSpeak(u);
+  };
+})();
+</script>
+</body>
+</html>

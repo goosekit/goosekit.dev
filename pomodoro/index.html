@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pomodoro Timer Online — Free Focus Timer | Goosekit</title>
+<meta name="description" content="Free online Pomodoro timer to boost your productivity. Customizable work and break durations, session tracking, notifications, and a beautiful dark UI.">
+<link rel="canonical" href="https://goosekit.dev/pomodoro/">
+<meta property="og:title" content="Pomodoro Timer Online — Free Focus Timer | Goosekit">
+<meta property="og:description" content="Free online Pomodoro timer with customizable durations, session tracking, and browser notifications.">
+<meta property="og:url" content="https://goosekit.dev/pomodoro/">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f19;--surface:#181825;--surface2:#1e1e2e;--border:#2a2a3d;--text:#cdd6f4;--subtext:#a6adc8;--accent:#f38ba8;--accent2:#fab387;--green:#a6e3a1;--blue:#89b4fa;--mauve:#cba6f7;--ring-bg:#2a2a3d;--shadow:0 8px 32px rgba(0,0,0,.4)}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Banner */
+.banner{width:100%;background:linear-gradient(135deg,#1e1e2e 0%,#181825 100%);border-bottom:1px solid var(--border);padding:12px 0;text-align:center}
+.banner span{font-size:1.1rem;font-weight:700;letter-spacing:.5px}
+.banner a{color:var(--mauve);font-weight:700}
+
+/* Main */
+.container{max-width:480px;width:100%;padding:24px 20px;flex:1;display:flex;flex-direction:column;align-items:center;gap:28px}
+h1{font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--accent),var(--mauve));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.subtitle{color:var(--subtext);font-size:.9rem;text-align:center;margin-top:-12px}
+
+/* Mode tabs */
+.modes{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.mode-btn{padding:8px 18px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--subtext);font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.mode-btn:hover{border-color:var(--accent);color:var(--text)}
+.mode-btn.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+
+/* Timer ring */
+.timer-wrap{position:relative;width:280px;height:280px;display:flex;align-items:center;justify-content:center}
+.timer-wrap svg{position:absolute;width:100%;height:100%;transform:rotate(-90deg)}
+.ring-bg{fill:none;stroke:var(--ring-bg);stroke-width:10}
+.ring-progress{fill:none;stroke:var(--accent);stroke-width:10;stroke-linecap:round;transition:stroke .4s}
+.timer-inner{text-align:center;z-index:1}
+.time-display{font-size:3.4rem;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:2px}
+.timer-label{font-size:.85rem;color:var(--subtext);margin-top:4px;font-weight:600}
+
+/* Controls */
+.controls{display:flex;gap:12px;align-items:center}
+.ctrl-btn{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .2s;background:var(--surface2);color:var(--text);border:1px solid var(--border)}
+.ctrl-btn:hover{transform:scale(1.08);border-color:var(--accent)}
+.ctrl-btn.primary{width:68px;height:68px;background:var(--accent);color:var(--bg);border:none;font-size:1.5rem}
+.ctrl-btn.primary:hover{background:var(--mauve)}
+
+/* Session counter */
+.sessions{display:flex;align-items:center;gap:8px;color:var(--subtext);font-size:.9rem;font-weight:600}
+.sessions .dots{display:flex;gap:6px}
+.dot{width:12px;height:12px;border-radius:50%;background:var(--border);transition:background .3s}
+.dot.filled{background:var(--accent)}
+
+/* Settings */
+.settings-toggle{background:none;border:1px solid var(--border);color:var(--subtext);padding:8px 16px;border-radius:10px;cursor:pointer;font-size:.85rem;font-weight:600;transition:all .2s}
+.settings-toggle:hover{border-color:var(--accent);color:var(--text)}
+.settings-panel{display:none;width:100%;background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;gap:14px;flex-direction:column}
+.settings-panel.open{display:flex}
+.setting-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.setting-row label{font-size:.85rem;color:var(--subtext);font-weight:600}
+.setting-row input{width:72px;padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:.9rem;text-align:center;font-weight:600}
+.setting-row input:focus{outline:none;border-color:var(--accent)}
+.settings-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
+.save-btn{padding:8px 20px;border-radius:10px;border:none;background:var(--accent);color:var(--bg);font-weight:700;cursor:pointer;font-size:.85rem;transition:all .2s}
+.save-btn:hover{background:var(--mauve)}
+
+/* Notification toggle */
+.notif-row{display:flex;align-items:center;gap:8px;color:var(--subtext);font-size:.85rem;cursor:pointer}
+.notif-row input{accent-color:var(--accent)}
+
+/* Footer */
+footer{padding:20px;text-align:center;color:var(--subtext);font-size:.78rem;border-top:1px solid var(--border);width:100%}
+
+@media(max-width:400px){
+  .timer-wrap{width:240px;height:240px}
+  .time-display{font-size:2.8rem}
+  h1{font-size:1.3rem}
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <span>🪿 <a href="https://goosekit.dev">Goosekit</a> — Free Developer Tools</span>
+</div>
+
+<div class="container">
+  <h1>🍅 Pomodoro Timer</h1>
+  <p class="subtitle">Stay focused, take breaks, get things done.</p>
+
+  <!-- Mode Tabs -->
+  <div class="modes">
+    <button class="mode-btn active" data-mode="work">Work</button>
+    <button class="mode-btn" data-mode="short">Short Break</button>
+    <button class="mode-btn" data-mode="long">Long Break</button>
+  </div>
+
+  <!-- Timer Ring -->
+  <div class="timer-wrap">
+    <svg viewBox="0 0 300 300">
+      <circle class="ring-bg" cx="150" cy="150" r="130"/>
+      <circle class="ring-progress" cx="150" cy="150" r="130" id="progressRing"/>
+    </svg>
+    <div class="timer-inner">
+      <div class="time-display" id="timeDisplay">25:00</div>
+      <div class="timer-label" id="timerLabel">WORK SESSION</div>
+    </div>
+  </div>
+
+  <!-- Controls -->
+  <div class="controls">
+    <button class="ctrl-btn" id="resetBtn" title="Reset">↺</button>
+    <button class="ctrl-btn primary" id="startBtn" title="Start">▶</button>
+    <button class="ctrl-btn" id="skipBtn" title="Skip">⏭</button>
+  </div>
+
+  <!-- Sessions -->
+  <div class="sessions">
+    <span>Sessions:</span>
+    <div class="dots" id="sessionDots"></div>
+    <span id="sessionCount">0 / 4</span>
+  </div>
+
+  <!-- Notification toggle -->
+  <label class="notif-row">
+    <input type="checkbox" id="notifToggle"> Enable browser notifications
+  </label>
+
+  <!-- Settings -->
+  <button class="settings-toggle" id="settingsToggle">⚙ Customize Durations</button>
+  <div class="settings-panel" id="settingsPanel">
+    <div class="setting-row">
+      <label>Work (min)</label>
+      <input type="number" id="setWork" min="1" max="120" value="25">
+    </div>
+    <div class="setting-row">
+      <label>Short Break (min)</label>
+      <input type="number" id="setShort" min="1" max="60" value="5">
+    </div>
+    <div class="setting-row">
+      <label>Long Break (min)</label>
+      <input type="number" id="setLong" min="1" max="60" value="15">
+    </div>
+    <div class="setting-row">
+      <label>Sessions before long break</label>
+      <input type="number" id="setSessions" min="1" max="12" value="4">
+    </div>
+    <div class="settings-actions">
+      <button class="save-btn" id="saveSettings">Save</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <a href="https://goosekit.dev">Goosekit</a> — Free, open tools for developers.
+</footer>
+
+<script>
+(function(){
+  // Config
+  let config = {
+    work: 25, short: 5, long: 15, sessionsBeforeLong: 4
+  };
+
+  // State
+  let mode = 'work'; // work | short | long
+  let totalSeconds = config.work * 60;
+  let remaining = totalSeconds;
+  let running = false;
+  let interval = null;
+  let completedSessions = 0;
+
+  // Elements
+  const display = document.getElementById('timeDisplay');
+  const label = document.getElementById('timerLabel');
+  const ring = document.getElementById('progressRing');
+  const startBtn = document.getElementById('startBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const skipBtn = document.getElementById('skipBtn');
+  const dots = document.getElementById('sessionDots');
+  const countEl = document.getElementById('sessionCount');
+  const settingsToggle = document.getElementById('settingsToggle');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const notifToggle = document.getElementById('notifToggle');
+  const modeBtns = document.querySelectorAll('.mode-btn');
+
+  // Ring setup
+  const circumference = 2 * Math.PI * 130;
+  ring.style.strokeDasharray = circumference;
+  ring.style.strokeDashoffset = '0';
+
+  const modeColors = { work: '#f38ba8', short: '#a6e3a1', long: '#89b4fa' };
+  const modeLabels = { work: 'WORK SESSION', short: 'SHORT BREAK', long: 'LONG BREAK' };
+
+  function formatTime(s) {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return String(m).padStart(2,'0') + ':' + String(sec).padStart(2,'0');
+  }
+
+  function updateDisplay() {
+    display.textContent = formatTime(remaining);
+    const progress = 1 - remaining / totalSeconds;
+    ring.style.strokeDashoffset = circumference * (1 - progress);
+    ring.style.stroke = modeColors[mode];
+    label.textContent = modeLabels[mode];
+    document.title = formatTime(remaining) + ' — Pomodoro | Goosekit';
+  }
+
+  function updateDots() {
+    dots.innerHTML = '';
+    for (let i = 0; i < config.sessionsBeforeLong; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i < completedSessions ? ' filled' : '');
+      dots.appendChild(d);
+    }
+    countEl.textContent = completedSessions + ' / ' + config.sessionsBeforeLong;
+  }
+
+  function setMode(m, autoStart) {
+    mode = m;
+    totalSeconds = config[m] * 60;
+    remaining = totalSeconds;
+    modeBtns.forEach(b => b.classList.toggle('active', b.dataset.mode === m));
+    updateDisplay();
+    if (running) { clearInterval(interval); running = false; }
+    startBtn.textContent = '▶';
+    if (autoStart) toggleTimer();
+  }
+
+  function playBeep() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.type = 'sine';
+      osc.frequency.value = 680;
+      gain.gain.setValueAtTime(0.3, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.8);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.8);
+      // Second beep
+      setTimeout(() => {
+        const o2 = ctx.createOscillator();
+        const g2 = ctx.createGain();
+        o2.connect(g2); g2.connect(ctx.destination);
+        o2.type = 'sine'; o2.frequency.value = 880;
+        g2.gain.setValueAtTime(0.3, ctx.currentTime);
+        g2.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+        o2.start(ctx.currentTime);
+        o2.stop(ctx.currentTime + 0.6);
+      }, 300);
+    } catch(e) {}
+  }
+
+  function sendNotification(title, body) {
+    if (notifToggle.checked && Notification.permission === 'granted') {
+      new Notification(title, { body, icon: '🍅' });
+    }
+  }
+
+  function timerComplete() {
+    clearInterval(interval);
+    running = false;
+    startBtn.textContent = '▶';
+    playBeep();
+
+    if (mode === 'work') {
+      completedSessions++;
+      updateDots();
+      sendNotification('Work session complete!', 'Time for a break 🎉');
+      if (completedSessions % config.sessionsBeforeLong === 0) {
+        setMode('long', true);
+      } else {
+        setMode('short', true);
+      }
+    } else {
+      sendNotification('Break is over!', 'Time to focus 💪');
+      setMode('work', true);
+    }
+  }
+
+  function tick() {
+    remaining--;
+    if (remaining <= 0) {
+      remaining = 0;
+      updateDisplay();
+      timerComplete();
+      return;
+    }
+    updateDisplay();
+  }
+
+  function toggleTimer() {
+    if (running) {
+      clearInterval(interval);
+      running = false;
+      startBtn.textContent = '▶';
+    } else {
+      running = true;
+      startBtn.textContent = '⏸';
+      interval = setInterval(tick, 1000);
+    }
+  }
+
+  // Event listeners
+  startBtn.addEventListener('click', toggleTimer);
+
+  resetBtn.addEventListener('click', () => {
+    clearInterval(interval);
+    running = false;
+    remaining = totalSeconds;
+    startBtn.textContent = '▶';
+    updateDisplay();
+  });
+
+  skipBtn.addEventListener('click', () => {
+    clearInterval(interval);
+    running = false;
+    remaining = 0;
+    timerComplete();
+  });
+
+  modeBtns.forEach(b => b.addEventListener('click', () => {
+    if (running) { clearInterval(interval); running = false; startBtn.textContent = '▶'; }
+    setMode(b.dataset.mode, false);
+  }));
+
+  settingsToggle.addEventListener('click', () => {
+    settingsPanel.classList.toggle('open');
+  });
+
+  document.getElementById('saveSettings').addEventListener('click', () => {
+    config.work = Math.max(1, parseInt(document.getElementById('setWork').value) || 25);
+    config.short = Math.max(1, parseInt(document.getElementById('setShort').value) || 5);
+    config.long = Math.max(1, parseInt(document.getElementById('setLong').value) || 15);
+    config.sessionsBeforeLong = Math.max(1, parseInt(document.getElementById('setSessions').value) || 4);
+    settingsPanel.classList.remove('open');
+    setMode(mode, false);
+    updateDots();
+  });
+
+  notifToggle.addEventListener('change', () => {
+    if (notifToggle.checked && Notification.permission !== 'granted') {
+      Notification.requestPermission().then(p => {
+        if (p !== 'granted') notifToggle.checked = false;
+      });
+    }
+  });
+
+  // Keyboard shortcut
+  document.addEventListener('keydown', e => {
+    if (e.target.tagName === 'INPUT') return;
+    if (e.code === 'Space') { e.preventDefault(); toggleTimer(); }
+  });
+
+  // Init
+  updateDisplay();
+  updateDots();
+})();
+</script>
+</body>
+</html>
