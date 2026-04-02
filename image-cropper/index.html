@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Cropper Online — Crop Images Free | Goosekit</title>
+<meta name="description" content="Crop images online for free. Visual crop area with drag handles, preset aspect ratios, rotate, flip, and download as PNG or JPEG. No upload — 100% client-side.">
+<meta name="keywords" content="image cropper, crop image online, free image crop, resize image, aspect ratio crop, rotate image, flip image">
+<link rel="canonical" href="https://goosekit.dev/image-cropper/">
+<meta property="og:title" content="Image Cropper Online — Crop Images Free | Goosekit">
+<meta property="og:description" content="Crop, rotate, and flip images in your browser. Free, private, no uploads.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://goosekit.dev/image-cropper/">
+<meta name="twitter:card" content="summary">
+<meta name="robots" content="index, follow">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f19;--surface:#1a1a2e;--surface2:#252540;--border:#333358;--text:#e2e2f0;--text2:#9999b8;--accent:#6c63ff;--accent2:#8b83ff;--danger:#ff6b6b;--success:#51cf66;--radius:10px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* Banner */
+.banner{background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;gap:12px}
+.banner svg{width:32px;height:32px;flex-shrink:0}
+.banner-title{font-size:1.15rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.banner-dot{color:var(--accent)}
+.banner-nav{margin-left:auto;display:flex;gap:18px;font-size:.85rem}
+.banner-nav a{color:var(--text2);transition:color .2s}
+.banner-nav a:hover{color:var(--accent);text-decoration:none}
+
+/* Layout */
+.app{flex:1;display:flex;flex-direction:column;max-width:1200px;width:100%;margin:0 auto;padding:24px 20px}
+h1{font-size:1.5rem;font-weight:700;margin-bottom:4px}
+.subtitle{color:var(--text2);font-size:.9rem;margin-bottom:20px}
+
+/* Upload area */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;background:var(--surface);margin-bottom:20px}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--accent);background:rgba(108,99,255,.06)}
+.upload-zone svg{width:48px;height:48px;color:var(--text2);margin-bottom:12px}
+.upload-zone p{color:var(--text2);font-size:.95rem}
+.upload-zone .cta{color:var(--accent);font-weight:600}
+
+/* Toolbar */
+.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:var(--surface);color:var(--text);font-size:.82rem;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{border-color:var(--accent);background:var(--surface2)}
+.btn.active{border-color:var(--accent);background:rgba(108,99,255,.15);color:var(--accent2)}
+.btn svg{width:16px;height:16px}
+.btn-accent{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent2);border-color:var(--accent2)}
+.sep{width:1px;height:28px;background:var(--border);margin:0 4px}
+
+/* Canvas area */
+.editor{display:none;flex-direction:column;gap:16px}
+.editor.show{display:flex}
+.canvas-wrap{position:relative;background:var(--surface);border-radius:var(--radius);overflow:hidden;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;min-height:300px;max-height:70vh;cursor:crosshair;user-select:none;-webkit-user-select:none}
+.canvas-wrap canvas{display:block;max-width:100%;max-height:70vh}
+
+/* Crop overlay is drawn on a separate canvas */
+.crop-canvas{position:absolute;top:0;left:0;width:100%;height:100%}
+
+/* Preview / Download */
+.output-section{display:none;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.output-section.show{display:flex}
+.preview-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;flex:1;min-width:260px}
+.preview-box h3{font-size:.9rem;margin-bottom:10px;color:var(--text2)}
+.preview-box canvas{max-width:100%;border-radius:6px;background:repeating-conic-gradient(#1a1a2e 0% 25%,#252540 0% 50%) 50%/16px 16px}
+.download-opts{display:flex;flex-direction:column;gap:10px;min-width:200px}
+.download-opts label{font-size:.82rem;color:var(--text2)}
+.download-opts select,.download-opts input[type=range]{width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--surface2);color:var(--text);font-size:.85rem}
+.download-opts input[type=range]{padding:4px 0;accent-color:var(--accent)}
+.quality-val{font-size:.8rem;color:var(--text2)}
+
+/* Footer */
+.footer{text-align:center;padding:20px;color:var(--text2);font-size:.78rem;border-top:1px solid var(--border);margin-top:auto}
+
+@media(max-width:600px){
+  .app{padding:16px 12px}
+  h1{font-size:1.2rem}
+  .toolbar{gap:6px}
+  .btn{padding:6px 10px;font-size:.78rem}
+  .banner-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<header class="banner">
+  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="#6c63ff"/>
+    <path d="M30 65 L50 30 L70 65 Z" fill="#fff" opacity=".9"/>
+    <circle cx="50" cy="58" r="8" fill="#1a1a2e"/>
+  </svg>
+  <span class="banner-title">Goosekit<span class="banner-dot">.dev</span></span>
+  <nav class="banner-nav">
+    <a href="https://goosekit.dev/">Home</a>
+    <a href="https://goosekit.dev/image-cropper/" aria-current="page">Image Cropper</a>
+  </nav>
+</header>
+
+<main class="app">
+  <h1>Image Cropper</h1>
+  <p class="subtitle">Crop, rotate &amp; flip images right in your browser — free, private, no uploads.</p>
+
+  <!-- Upload -->
+  <div class="upload-zone" id="uploadZone">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0 3 3m-3-3-3 3M6.75 19.5a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.32 0A4.5 4.5 0 0 1 17.25 19.5H6.75Z"/></svg>
+    <p><span class="cta">Click to upload</span> or drag &amp; drop an image</p>
+    <p style="font-size:.8rem;margin-top:6px;color:var(--text2)">PNG, JPG, WebP, GIF — processed locally</p>
+    <input type="file" id="fileInput" accept="image/*" hidden>
+  </div>
+
+  <!-- Editor -->
+  <div class="editor" id="editor">
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <button class="btn" id="btnNewImage" title="Upload new image">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"/></svg>
+        New
+      </button>
+      <div class="sep"></div>
+      <button class="btn active" data-ratio="free">Free</button>
+      <button class="btn" data-ratio="1:1">1:1</button>
+      <button class="btn" data-ratio="4:3">4:3</button>
+      <button class="btn" data-ratio="16:9">16:9</button>
+      <div class="sep"></div>
+      <button class="btn" id="btnRotateL" title="Rotate left 90°">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/></svg>
+        Rotate L
+      </button>
+      <button class="btn" id="btnRotateR" title="Rotate right 90°">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m15 15 6-6m0 0-6-6m6 6H9a6 6 0 0 0 0 12h3"/></svg>
+        Rotate R
+      </button>
+      <button class="btn" id="btnFlipH" title="Flip horizontal">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5"/></svg>
+        Flip H
+      </button>
+      <button class="btn" id="btnFlipV" title="Flip vertical">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7.5 7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"/></svg>
+        Flip V
+      </button>
+      <div class="sep"></div>
+      <button class="btn btn-accent" id="btnCrop">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5"/></svg>
+        Crop
+      </button>
+    </div>
+
+    <!-- Canvas -->
+    <div class="canvas-wrap" id="canvasWrap">
+      <canvas id="imgCanvas"></canvas>
+      <canvas class="crop-canvas" id="cropCanvas"></canvas>
+    </div>
+
+    <!-- Output -->
+    <div class="output-section" id="outputSection">
+      <div class="preview-box">
+        <h3>Cropped Preview</h3>
+        <canvas id="previewCanvas"></canvas>
+      </div>
+      <div class="download-opts">
+        <label>Format
+          <select id="dlFormat">
+            <option value="png">PNG</option>
+            <option value="jpeg">JPEG</option>
+          </select>
+        </label>
+        <label>JPEG Quality <span class="quality-val" id="qualVal">92%</span>
+          <input type="range" id="dlQuality" min="10" max="100" value="92">
+        </label>
+        <button class="btn btn-accent" id="btnDownload" style="width:100%;justify-content:center">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:16px;height:16px"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+          Download
+        </button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2025 Goosekit.dev — All processing happens in your browser. No data leaves your device.</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ---- State ---- */
+let img = null;           // original Image object
+let rotation = 0;         // 0,90,180,270
+let flipH = false, flipV = false;
+let ratioMode = "free";   // "free"|"1:1"|"4:3"|"16:9"
+let crop = {x:0,y:0,w:0,h:0}; // in displayed-image coords
+let dragging = null;      // null | "move" | handle name
+let dragStart = {mx:0,my:0,cx:0,cy:0,cw:0,ch:0};
+
+const HANDLE_SIZE = 10;
+const MIN_CROP = 20;
+
+/* ---- DOM ---- */
+const uploadZone = document.getElementById("uploadZone");
+const fileInput = document.getElementById("fileInput");
+const editor = document.getElementById("editor");
+const imgCanvas = document.getElementById("imgCanvas");
+const cropCanvas = document.getElementById("cropCanvas");
+const canvasWrap = document.getElementById("canvasWrap");
+const previewCanvas = document.getElementById("previewCanvas");
+const outputSection = document.getElementById("outputSection");
+const btnCrop = document.getElementById("btnCrop");
+const btnDownload = document.getElementById("btnDownload");
+const btnNewImage = document.getElementById("btnNewImage");
+const btnRotateL = document.getElementById("btnRotateL");
+const btnRotateR = document.getElementById("btnRotateR");
+const btnFlipH = document.getElementById("btnFlipH");
+const btnFlipV = document.getElementById("btnFlipV");
+const dlFormat = document.getElementById("dlFormat");
+const dlQuality = document.getElementById("dlQuality");
+const qualVal = document.getElementById("qualVal");
+const ctx = imgCanvas.getContext("2d");
+const cctx = cropCanvas.getContext("2d");
+
+/* ---- Upload ---- */
+uploadZone.addEventListener("click", ()=> fileInput.click());
+uploadZone.addEventListener("dragover", e=>{e.preventDefault();uploadZone.classList.add("drag")});
+uploadZone.addEventListener("dragleave", ()=>uploadZone.classList.remove("drag"));
+uploadZone.addEventListener("drop", e=>{e.preventDefault();uploadZone.classList.remove("drag");if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0])});
+fileInput.addEventListener("change", ()=>{if(fileInput.files[0])loadFile(fileInput.files[0])});
+btnNewImage.addEventListener("click",()=>{fileInput.value="";fileInput.click()});
+
+function loadFile(file){
+  const reader = new FileReader();
+  reader.onload = e=>{
+    const i = new Image();
+    i.onload = ()=>{ img=i; rotation=0; flipH=false; flipV=false; initEditor(); };
+    i.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+/* ---- Editor init ---- */
+function initEditor(){
+  uploadZone.style.display="none";
+  editor.classList.add("show");
+  outputSection.classList.remove("show");
+  drawImage();
+  resetCrop();
+  drawCropOverlay();
+}
+
+/* ---- Compute displayed size ---- */
+function getTransformedSize(){
+  const swap = rotation===90||rotation===270;
+  return { w: swap?img.height:img.width, h: swap?img.width:img.height };
+}
+
+function drawImage(){
+  const {w,h} = getTransformedSize();
+  // fit in container
+  const maxW = canvasWrap.clientWidth;
+  const maxH = window.innerHeight*0.7;
+  let scale = Math.min(maxW/w, maxH/h, 1);
+  const dw = Math.round(w*scale), dh = Math.round(h*scale);
+  imgCanvas.width=dw; imgCanvas.height=dh;
+  cropCanvas.width=dw; cropCanvas.height=dh;
+  cropCanvas.style.width=dw+"px"; cropCanvas.style.height=dh+"px";
+
+  ctx.save();
+  ctx.clearRect(0,0,dw,dh);
+  ctx.translate(dw/2,dh/2);
+  ctx.rotate(rotation*Math.PI/180);
+  ctx.scale(flipH?-1:1, flipV?-1:1);
+  const sw = (rotation===90||rotation===270)?dh:dw;
+  const sh = (rotation===90||rotation===270)?dw:dh;
+  ctx.drawImage(img,-sw/2,-sh/2,sw,sh);
+  ctx.restore();
+}
+
+function resetCrop(){
+  const margin = 0.1;
+  const cw = imgCanvas.width, ch = imgCanvas.height;
+  let w,h;
+  if(ratioMode==="free"){
+    w=cw*(1-2*margin); h=ch*(1-2*margin);
+  } else {
+    const [rw,rh] = ratioMode.split(":").map(Number);
+    const ratio = rw/rh;
+    w=cw*(1-2*margin); h=w/ratio;
+    if(h>ch*(1-2*margin)){h=ch*(1-2*margin);w=h*ratio;}
+  }
+  crop.x=Math.round((cw-w)/2);
+  crop.y=Math.round((ch-h)/2);
+  crop.w=Math.round(w);
+  crop.h=Math.round(h);
+}
+
+/* ---- Crop overlay ---- */
+function drawCropOverlay(){
+  const W=cropCanvas.width, H=cropCanvas.height;
+  cctx.clearRect(0,0,W,H);
+  // dim outside
+  cctx.fillStyle="rgba(0,0,0,0.55)";
+  cctx.fillRect(0,0,W,H);
+  // clear inside
+  cctx.clearRect(crop.x,crop.y,crop.w,crop.h);
+  // border
+  cctx.strokeStyle="#fff";
+  cctx.lineWidth=2;
+  cctx.strokeRect(crop.x,crop.y,crop.w,crop.h);
+  // rule of thirds
+  cctx.strokeStyle="rgba(255,255,255,0.3)";
+  cctx.lineWidth=1;
+  for(let i=1;i<3;i++){
+    const x=crop.x+crop.w*i/3, y=crop.y+crop.h*i/3;
+    cctx.beginPath();cctx.moveTo(x,crop.y);cctx.lineTo(x,crop.y+crop.h);cctx.stroke();
+    cctx.beginPath();cctx.moveTo(crop.x,y);cctx.lineTo(crop.x+crop.w,y);cctx.stroke();
+  }
+  // handles
+  const hs=HANDLE_SIZE;
+  cctx.fillStyle="#fff";
+  const handles=getHandles();
+  for(const k in handles){
+    const p=handles[k];
+    cctx.fillRect(p.x-hs/2,p.y-hs/2,hs,hs);
+  }
+  // size label
+  const scale = getTransformedSize().w / imgCanvas.width;
+  const realW = Math.round(crop.w*scale), realH = Math.round(crop.h*scale);
+  cctx.fillStyle="rgba(0,0,0,0.7)";
+  const txt=`${realW} × ${realH}`;
+  cctx.font="12px sans-serif";
+  const tm=cctx.measureText(txt);
+  const lx=crop.x+crop.w/2-tm.width/2-6, ly=crop.y+crop.h+4;
+  cctx.fillRect(lx,ly,tm.width+12,20);
+  cctx.fillStyle="#fff";
+  cctx.fillText(txt,lx+6,ly+14);
+}
+
+function getHandles(){
+  const cx=crop.x,cy=crop.y,cw=crop.w,ch=crop.h;
+  return {
+    tl:{x:cx,y:cy}, tm:{x:cx+cw/2,y:cy}, tr:{x:cx+cw,y:cy},
+    ml:{x:cx,y:cy+ch/2}, mr:{x:cx+cw,y:cy+ch/2},
+    bl:{x:cx,y:cy+ch}, bm:{x:cx+cw/2,y:cy+ch}, br:{x:cx+cw,y:cy+ch}
+  };
+}
+
+/* ---- Mouse / Touch interaction on crop overlay ---- */
+function getPos(e){
+  const r=cropCanvas.getBoundingClientRect();
+  const t=e.touches?e.touches[0]:e;
+  return {x:t.clientX-r.left, y:t.clientY-r.top};
+}
+
+function hitTest(mx,my){
+  const handles=getHandles();
+  const hs=HANDLE_SIZE+4;
+  for(const k in handles){
+    const p=handles[k];
+    if(Math.abs(mx-p.x)<hs&&Math.abs(my-p.y)<hs) return k;
+  }
+  if(mx>crop.x&&mx<crop.x+crop.w&&my>crop.y&&my<crop.y+crop.h) return "move";
+  return null;
+}
+
+function cursorForHandle(h){
+  if(!h) return "crosshair";
+  if(h==="move") return "move";
+  const map={tl:"nwse-resize",br:"nwse-resize",tr:"nesw-resize",bl:"nesw-resize",tm:"ns-resize",bm:"ns-resize",ml:"ew-resize",mr:"ew-resize"};
+  return map[h]||"crosshair";
+}
+
+cropCanvas.addEventListener("mousemove",e=>{
+  if(!dragging){
+    const p=getPos(e);
+    cropCanvas.style.cursor=cursorForHandle(hitTest(p.x,p.y));
+  }
+});
+
+function onDown(e){
+  e.preventDefault();
+  const p=getPos(e);
+  const h=hitTest(p.x,p.y);
+  if(!h){
+    // start new crop from click point
+    dragging="br";
+    crop.x=p.x; crop.y=p.y; crop.w=MIN_CROP; crop.h=MIN_CROP;
+    dragStart={mx:p.x,my:p.y,cx:p.x,cy:p.y,cw:MIN_CROP,ch:MIN_CROP};
+    return;
+  }
+  dragging=h;
+  dragStart={mx:p.x,my:p.y,cx:crop.x,cy:crop.y,cw:crop.w,ch:crop.h};
+}
+
+function onMove(e){
+  if(!dragging) return;
+  e.preventDefault();
+  const p=getPos(e);
+  const dx=p.x-dragStart.mx, dy=p.y-dragStart.my;
+  const W=cropCanvas.width, H=cropCanvas.height;
+
+  if(dragging==="move"){
+    crop.x=clamp(dragStart.cx+dx,0,W-crop.w);
+    crop.y=clamp(dragStart.cy+dy,0,H-crop.h);
+  } else {
+    let nx=dragStart.cx, ny=dragStart.cy, nw=dragStart.cw, nh=dragStart.ch;
+    const h=dragging;
+    // resize
+    if(h.includes("r")){nw=dragStart.cw+dx;}
+    if(h.includes("l")){nx=dragStart.cx+dx;nw=dragStart.cw-dx;}
+    if(h.includes("b")){nh=dragStart.ch+dy;}
+    if(h.includes("t")){ny=dragStart.cy+dy;nh=dragStart.ch-dy;}
+    // min size
+    if(nw<MIN_CROP){if(h.includes("l")){nx=dragStart.cx+dragStart.cw-MIN_CROP;}nw=MIN_CROP;}
+    if(nh<MIN_CROP){if(h.includes("t")){ny=dragStart.cy+dragStart.ch-MIN_CROP;}nh=MIN_CROP;}
+    // enforce ratio
+    if(ratioMode!=="free"){
+      const [rw,rh]=ratioMode.split(":").map(Number);
+      const ratio=rw/rh;
+      if(h==="ml"||h==="mr"){nh=nw/ratio;}
+      else if(h==="tm"||h==="bm"){nw=nh*ratio;}
+      else{nh=nw/ratio;}
+      if(h.includes("t")){ny=dragStart.cy+dragStart.ch-nh;}
+    }
+    // clamp to canvas
+    if(nx<0){nw+=nx;nx=0;}
+    if(ny<0){nh+=ny;ny=0;}
+    if(nx+nw>W) nw=W-nx;
+    if(ny+nh>H) nh=H-ny;
+    crop.x=nx;crop.y=ny;crop.w=Math.max(nw,MIN_CROP);crop.h=Math.max(nh,MIN_CROP);
+  }
+  drawCropOverlay();
+}
+
+function onUp(){dragging=null;}
+
+cropCanvas.addEventListener("mousedown",onDown);
+window.addEventListener("mousemove",onMove);
+window.addEventListener("mouseup",onUp);
+cropCanvas.addEventListener("touchstart",onDown,{passive:false});
+window.addEventListener("touchmove",onMove,{passive:false});
+window.addEventListener("touchend",onUp);
+
+function clamp(v,min,max){return Math.max(min,Math.min(max,v));}
+
+/* ---- Ratio buttons ---- */
+document.querySelectorAll("[data-ratio]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("[data-ratio]").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    ratioMode=btn.dataset.ratio;
+    resetCrop();
+    drawCropOverlay();
+  });
+});
+
+/* ---- Rotate / Flip ---- */
+btnRotateL.addEventListener("click",()=>{rotation=(rotation+270)%360;redraw();});
+btnRotateR.addEventListener("click",()=>{rotation=(rotation+90)%360;redraw();});
+btnFlipH.addEventListener("click",()=>{flipH=!flipH;redraw();});
+btnFlipV.addEventListener("click",()=>{flipV=!flipV;redraw();});
+
+function redraw(){
+  drawImage();resetCrop();drawCropOverlay();
+  outputSection.classList.remove("show");
+}
+
+/* ---- Crop action ---- */
+btnCrop.addEventListener("click",()=>{
+  if(!img) return;
+  const scale = getTransformedSize().w / imgCanvas.width;
+  const sx=Math.round(crop.x*scale), sy=Math.round(crop.y*scale);
+  const sw=Math.round(crop.w*scale), sh=Math.round(crop.h*scale);
+
+  // build a full-res transformed canvas
+  const {w:tw,h:th}=getTransformedSize();
+  const tmpC=document.createElement("canvas");
+  tmpC.width=tw;tmpC.height=th;
+  const tctx=tmpC.getContext("2d");
+  tctx.translate(tw/2,th/2);
+  tctx.rotate(rotation*Math.PI/180);
+  tctx.scale(flipH?-1:1,flipV?-1:1);
+  const iw=img.width,ih=img.height;
+  tctx.drawImage(img,-iw/2,-ih/2,iw,ih);
+
+  // extract crop region
+  previewCanvas.width=sw;previewCanvas.height=sh;
+  const pctx=previewCanvas.getContext("2d");
+  pctx.drawImage(tmpC,sx,sy,sw,sh,0,0,sw,sh);
+
+  outputSection.classList.add("show");
+  outputSection.scrollIntoView({behavior:"smooth",block:"nearest"});
+});
+
+/* ---- Download ---- */
+dlQuality.addEventListener("input",()=>{qualVal.textContent=dlQuality.value+"%";});
+btnDownload.addEventListener("click",()=>{
+  const fmt=dlFormat.value;
+  const q=parseInt(dlQuality.value)/100;
+  const mime=fmt==="png"?"image/png":"image/jpeg";
+  const url=previewCanvas.toDataURL(mime,q);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download="cropped-image."+fmt;
+  a.click();
+});
+
+/* ---- Resize observer ---- */
+new ResizeObserver(()=>{
+  if(!img) return;
+  const oldW=imgCanvas.width, oldH=imgCanvas.height;
+  drawImage();
+  if(oldW>0){
+    const sx=imgCanvas.width/oldW, sy=imgCanvas.height/oldH;
+    crop.x*=sx;crop.y*=sy;crop.w*=sx;crop.h*=sy;
+  }
+  drawCropOverlay();
+}).observe(canvasWrap);
+
+})();
+</script>
+</body>
+</html>

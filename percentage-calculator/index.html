@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator Online — Free &amp; Easy | Goosekit</title>
+<meta name="description" content="Free online percentage calculator. Instantly calculate percentages, percentage change, tips, and discounts. Real-time results as you type.">
+<link rel="canonical" href="https://goosekit.dev/percentage-calculator/">
+<meta property="og:title" content="Percentage Calculator Online — Free & Easy | Goosekit">
+<meta property="og:description" content="Free online percentage calculator with 4 modes plus tip & discount calculator. Instant results as you type.">
+<meta property="og:url" content="https://goosekit.dev/percentage-calculator/">
+<meta property="og:type" content="website">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0f0f19;--card:#1a1a2e;--card2:#16162a;--border:#2a2a4a;--text:#e2e2f0;--muted:#8888aa;--accent:#6c63ff;--accent2:#ff6b9d;--accent-glow:rgba(108,99,255,.15);--green:#22c55e;--red:#ef4444;--radius:14px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.5}
+a{color:var(--accent);text-decoration:none}
+
+/* Banner */
+.banner{display:flex;align-items:center;gap:14px;padding:16px 24px;background:var(--card2);border-bottom:1px solid var(--border)}
+.banner img{height:32px}
+.banner a.back{color:var(--muted);font-size:.92rem;transition:color .2s}
+.banner a.back:hover{color:var(--text)}
+
+/* Layout */
+.container{max-width:820px;margin:0 auto;padding:32px 20px 60px}
+h1{font-size:2rem;font-weight:700;text-align:center;margin-bottom:6px}
+.subtitle{text-align:center;color:var(--muted);margin-bottom:32px;font-size:1.05rem}
+
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:28px;flex-wrap:wrap;justify-content:center}
+.tab{padding:10px 18px;border-radius:10px;background:var(--card);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:.9rem;font-weight:500;transition:all .2s}
+.tab:hover{border-color:var(--accent);color:var(--text)}
+.tab.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:28px 28px 24px;margin-bottom:20px;display:none}
+.card.visible{display:block}
+.card h2{font-size:1.15rem;font-weight:600;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.card h2 .icon{font-size:1.3rem}
+
+/* Inputs */
+.row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.row label{color:var(--muted);font-size:.95rem;min-width:fit-content}
+.input-wrap{position:relative;flex:1;min-width:100px}
+.input-wrap input{width:100%;padding:12px 16px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;color:var(--text);font-size:1.15rem;font-weight:600;outline:none;transition:border-color .2s}
+.input-wrap input:focus{border-color:var(--accent)}
+.input-wrap .suffix{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.95rem;pointer-events:none}
+
+/* Result */
+.result-box{background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:20px 24px;text-align:center;margin-top:8px;transition:border-color .3s}
+.result-box.has-value{border-color:var(--accent)}
+.result-label{color:var(--muted);font-size:.85rem;margin-bottom:4px}
+.result-value{font-size:2.6rem;font-weight:800;letter-spacing:-.02em;color:var(--text);transition:color .3s}
+.result-value.positive{color:var(--green)}
+.result-value.negative{color:var(--red)}
+.result-detail{color:var(--muted);font-size:.9rem;margin-top:4px}
+
+/* Tip/Discount */
+.split-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+@media(max-width:560px){.split-grid{grid-template-columns:1fr}}
+.mini-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+.mini-card .mini-label{color:var(--muted);font-size:.8rem;margin-bottom:2px}
+.mini-card .mini-value{font-size:1.6rem;font-weight:700}
+
+/* Tip presets */
+.presets{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.preset{padding:8px 16px;border-radius:8px;background:var(--bg);border:1px solid var(--border);color:var(--muted);cursor:pointer;font-size:.88rem;font-weight:500;transition:all .2s}
+.preset:hover{border-color:var(--accent);color:var(--text)}
+.preset.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+
+/* People split */
+.people-row{display:flex;align-items:center;gap:12px;margin-top:14px}
+.people-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--card);color:var(--text);font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.people-btn:hover{border-color:var(--accent);background:var(--accent-glow)}
+.people-count{font-size:1.1rem;font-weight:600;min-width:24px;text-align:center}
+
+/* Footer */
+.footer{text-align:center;color:var(--muted);font-size:.82rem;margin-top:40px;padding-top:20px;border-top:1px solid var(--border)}
+
+@media(max-width:500px){
+  h1{font-size:1.5rem}
+  .result-value{font-size:2rem}
+  .card{padding:20px 18px 18px}
+  .banner{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <a href="/"><img src="/logo-dark.png" alt="Goosekit" loading="lazy"></a>
+  <a href="/" class="back">← Explore 46 free tools</a>
+</div>
+
+<div class="container">
+  <h1>Percentage Calculator</h1>
+  <p class="subtitle">Instantly calculate percentages, changes, tips &amp; discounts</p>
+
+  <div class="tabs">
+    <div class="tab active" data-tab="pct-of">% of Number</div>
+    <div class="tab" data-tab="what-pct">What %?</div>
+    <div class="tab" data-tab="pct-change">% Change</div>
+    <div class="tab" data-tab="inc-dec">Increase / Decrease</div>
+    <div class="tab" data-tab="tip">Tip &amp; Discount</div>
+  </div>
+
+  <!-- Mode 1: What is X% of Y? -->
+  <div class="card visible" id="pct-of">
+    <h2><span class="icon">🔢</span> What is X% of Y?</h2>
+    <div class="row">
+      <label>What is</label>
+      <div class="input-wrap" style="max-width:120px"><input type="number" id="p1-pct" placeholder="25"><span class="suffix">%</span></div>
+      <label>of</label>
+      <div class="input-wrap"><input type="number" id="p1-val" placeholder="200"></div>
+    </div>
+    <div class="result-box" id="p1-result-box">
+      <div class="result-label">Result</div>
+      <div class="result-value" id="p1-result">—</div>
+    </div>
+  </div>
+
+  <!-- Mode 2: X is what % of Y? -->
+  <div class="card" id="what-pct">
+    <h2><span class="icon">📊</span> X is what % of Y?</h2>
+    <div class="row">
+      <div class="input-wrap"><input type="number" id="p2-x" placeholder="50"></div>
+      <label>is what % of</label>
+      <div class="input-wrap"><input type="number" id="p2-y" placeholder="200"></div>
+    </div>
+    <div class="result-box" id="p2-result-box">
+      <div class="result-label">Percentage</div>
+      <div class="result-value" id="p2-result">—</div>
+    </div>
+  </div>
+
+  <!-- Mode 3: Percentage change -->
+  <div class="card" id="pct-change">
+    <h2><span class="icon">📈</span> Percentage Change</h2>
+    <div class="row">
+      <label>From</label>
+      <div class="input-wrap"><input type="number" id="p3-from" placeholder="80"></div>
+      <label>to</label>
+      <div class="input-wrap"><input type="number" id="p3-to" placeholder="120"></div>
+    </div>
+    <div class="result-box" id="p3-result-box">
+      <div class="result-label">Change</div>
+      <div class="result-value" id="p3-result">—</div>
+      <div class="result-detail" id="p3-detail"></div>
+    </div>
+  </div>
+
+  <!-- Mode 4: Increase / Decrease -->
+  <div class="card" id="inc-dec">
+    <h2><span class="icon">↕️</span> Increase or Decrease by %</h2>
+    <div class="row">
+      <label>Value</label>
+      <div class="input-wrap"><input type="number" id="p4-val" placeholder="150"></div>
+    </div>
+    <div class="row">
+      <label>Increase by</label>
+      <div class="input-wrap" style="max-width:120px"><input type="number" id="p4-inc" placeholder="20"><span class="suffix">%</span></div>
+      <span style="color:var(--muted);font-size:.9rem">or decrease by</span>
+      <div class="input-wrap" style="max-width:120px"><input type="number" id="p4-dec" placeholder="10"><span class="suffix">%</span></div>
+    </div>
+    <div class="split-grid">
+      <div class="result-box" id="p4-inc-box">
+        <div class="result-label">After Increase</div>
+        <div class="result-value positive" id="p4-inc-result">—</div>
+      </div>
+      <div class="result-box" id="p4-dec-box">
+        <div class="result-label">After Decrease</div>
+        <div class="result-value negative" id="p4-dec-result">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mode 5: Tip & Discount -->
+  <div class="card" id="tip">
+    <h2><span class="icon">💰</span> Tip &amp; Discount Calculator</h2>
+    <div class="row">
+      <label>Bill amount</label>
+      <div class="input-wrap"><input type="number" id="p5-bill" placeholder="85.00"><span class="suffix">$</span></div>
+    </div>
+
+    <label style="color:var(--muted);font-size:.88rem;display:block;margin-bottom:8px">Quick tip %</label>
+    <div class="presets" id="tip-presets">
+      <div class="preset" data-val="10">10%</div>
+      <div class="preset" data-val="15">15%</div>
+      <div class="preset active" data-val="18">18%</div>
+      <div class="preset" data-val="20">20%</div>
+      <div class="preset" data-val="25">25%</div>
+    </div>
+    <div class="row">
+      <label>Custom tip</label>
+      <div class="input-wrap" style="max-width:110px"><input type="number" id="p5-tip" placeholder="18" value="18"><span class="suffix">%</span></div>
+      <label style="margin-left:8px">Discount</label>
+      <div class="input-wrap" style="max-width:110px"><input type="number" id="p5-disc" placeholder="0"><span class="suffix">%</span></div>
+    </div>
+
+    <div class="people-row">
+      <label style="color:var(--muted);font-size:.88rem">Split between</label>
+      <button class="people-btn" id="p5-minus">−</button>
+      <span class="people-count" id="p5-people">1</span>
+      <button class="people-btn" id="p5-plus">+</button>
+      <span style="color:var(--muted);font-size:.88rem">people</span>
+    </div>
+
+    <div class="split-grid" style="margin-top:16px">
+      <div class="mini-card">
+        <div class="mini-label">Tip Amount</div>
+        <div class="mini-value" id="p5-tip-amt">—</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">Discount Saved</div>
+        <div class="mini-value" id="p5-disc-amt">—</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">Total</div>
+        <div class="mini-value" id="p5-total" style="color:var(--accent)">—</div>
+      </div>
+      <div class="mini-card">
+        <div class="mini-label">Per Person</div>
+        <div class="mini-value" id="p5-per" style="color:var(--accent2)">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Percentage Calculator — a free tool by <a href="/">Goosekit</a></p>
+  </div>
+</div>
+
+<script>
+// Tab switching
+const tabs = document.querySelectorAll('.tab');
+const cards = document.querySelectorAll('.card');
+tabs.forEach(t => t.addEventListener('click', () => {
+  tabs.forEach(x => x.classList.remove('active'));
+  cards.forEach(x => x.classList.remove('visible'));
+  t.classList.add('active');
+  document.getElementById(t.dataset.tab).classList.add('visible');
+}));
+
+function fmt(n) {
+  if (isNaN(n) || !isFinite(n)) return '—';
+  return parseFloat(n.toFixed(6)).toLocaleString('en-US', {maximumFractionDigits: 4});
+}
+function fmtMoney(n) {
+  if (isNaN(n) || !isFinite(n)) return '—';
+  return '$' + n.toFixed(2);
+}
+function val(id) { return parseFloat(document.getElementById(id).value); }
+
+// Mode 1
+function calc1() {
+  const p = val('p1-pct'), v = val('p1-val');
+  const r = (p / 100) * v;
+  const el = document.getElementById('p1-result');
+  el.textContent = (!isNaN(r) && isFinite(r)) ? fmt(r) : '—';
+  document.getElementById('p1-result-box').classList.toggle('has-value', !isNaN(r));
+}
+document.getElementById('p1-pct').addEventListener('input', calc1);
+document.getElementById('p1-val').addEventListener('input', calc1);
+
+// Mode 2
+function calc2() {
+  const x = val('p2-x'), y = val('p2-y');
+  const r = (x / y) * 100;
+  const el = document.getElementById('p2-result');
+  el.textContent = (!isNaN(r) && isFinite(r)) ? fmt(r) + '%' : '—';
+  document.getElementById('p2-result-box').classList.toggle('has-value', !isNaN(r) && isFinite(r));
+}
+document.getElementById('p2-x').addEventListener('input', calc2);
+document.getElementById('p2-y').addEventListener('input', calc2);
+
+// Mode 3
+function calc3() {
+  const f = val('p3-from'), t = val('p3-to');
+  const r = ((t - f) / Math.abs(f)) * 100;
+  const el = document.getElementById('p3-result');
+  const box = document.getElementById('p3-result-box');
+  const detail = document.getElementById('p3-detail');
+  if (!isNaN(r) && isFinite(r)) {
+    const sign = r >= 0 ? '+' : '';
+    el.textContent = sign + fmt(r) + '%';
+    el.className = 'result-value ' + (r >= 0 ? 'positive' : 'negative');
+    detail.textContent = r >= 0 ? `Increased by ${fmt(Math.abs(t-f))}` : `Decreased by ${fmt(Math.abs(t-f))}`;
+    box.classList.add('has-value');
+  } else {
+    el.textContent = '—';
+    el.className = 'result-value';
+    detail.textContent = '';
+    box.classList.remove('has-value');
+  }
+}
+document.getElementById('p3-from').addEventListener('input', calc3);
+document.getElementById('p3-to').addEventListener('input', calc3);
+
+// Mode 4
+function calc4() {
+  const v = val('p4-val'), inc = val('p4-inc'), dec = val('p4-dec');
+  const ri = v * (1 + (inc || 0) / 100);
+  const rd = v * (1 - (dec || 0) / 100);
+  document.getElementById('p4-inc-result').textContent = (!isNaN(ri) && isFinite(ri) && !isNaN(v)) ? fmt(ri) : '—';
+  document.getElementById('p4-dec-result').textContent = (!isNaN(rd) && isFinite(rd) && !isNaN(v)) ? fmt(rd) : '—';
+  document.getElementById('p4-inc-box').classList.toggle('has-value', !isNaN(ri) && !isNaN(v));
+  document.getElementById('p4-dec-box').classList.toggle('has-value', !isNaN(rd) && !isNaN(v));
+}
+['p4-val','p4-inc','p4-dec'].forEach(id => document.getElementById(id).addEventListener('input', calc4));
+
+// Mode 5 - Tip & Discount
+let people = 1;
+function calc5() {
+  const bill = val('p5-bill');
+  const tipPct = val('p5-tip') || 0;
+  const discPct = val('p5-disc') || 0;
+  if (isNaN(bill)) {
+    ['p5-tip-amt','p5-disc-amt','p5-total','p5-per'].forEach(id => document.getElementById(id).textContent = '—');
+    return;
+  }
+  const disc = bill * (discPct / 100);
+  const afterDisc = bill - disc;
+  const tip = afterDisc * (tipPct / 100);
+  const total = afterDisc + tip;
+  const per = total / people;
+  document.getElementById('p5-tip-amt').textContent = fmtMoney(tip);
+  document.getElementById('p5-disc-amt').textContent = fmtMoney(disc);
+  document.getElementById('p5-total').textContent = fmtMoney(total);
+  document.getElementById('p5-per').textContent = fmtMoney(per);
+}
+
+['p5-bill','p5-tip','p5-disc'].forEach(id => document.getElementById(id).addEventListener('input', function() {
+  // Clear preset highlight when custom tip changes
+  if (id === 'p5-tip') {
+    document.querySelectorAll('#tip-presets .preset').forEach(p => {
+      p.classList.toggle('active', p.dataset.val === this.value);
+    });
+  }
+  calc5();
+}));
+
+// Tip presets
+document.querySelectorAll('#tip-presets .preset').forEach(p => {
+  p.addEventListener('click', () => {
+    document.querySelectorAll('#tip-presets .preset').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    document.getElementById('p5-tip').value = p.dataset.val;
+    calc5();
+  });
+});
+
+// People split
+document.getElementById('p5-minus').addEventListener('click', () => { if (people > 1) { people--; document.getElementById('p5-people').textContent = people; calc5(); }});
+document.getElementById('p5-plus').addEventListener('click', () => { people++; document.getElementById('p5-people').textContent = people; calc5(); });
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Percentage Calculator",
+  "url": "https://goosekit.dev/percentage-calculator/",
+  "description": "Free online percentage calculator with 4 calculation modes plus tip & discount calculator. Real-time results as you type.",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "All",
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}
+}
+</script>
+</body>
+</html>

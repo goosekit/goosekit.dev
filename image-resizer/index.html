@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Image Resizer Online — Resize Images Free | Goosekit</title>
+<meta name="description" content="Resize images online for free. Scale by pixels or percentage, maintain aspect ratio, preview results, and download in JPEG, PNG, or WebP. No upload needed — runs in your browser.">
+<link rel="canonical" href="https://goosekit.dev/image-resizer/">
+<meta property="og:title" content="Image Resizer Online — Resize Images Free | Goosekit">
+<meta property="og:description" content="Resize images online for free. Scale by pixels or percentage, maintain aspect ratio, preview and download in JPEG, PNG, or WebP.">
+<meta property="og:url" content="https://goosekit.dev/image-resizer/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Goosekit">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Image Resizer Online — Resize Images Free | Goosekit">
+<meta name="twitter:description" content="Resize images online for free. Scale by pixels or percentage, maintain aspect ratio, preview and download in JPEG, PNG, or WebP.">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0f0f19;color:#e0e4f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+.container{max-width:960px;margin:0 auto;padding:32px 20px;flex:1;width:100%}
+h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.subtitle{text-align:center;color:#8890b5;font-size:15px;margin-bottom:32px}
+.drop-zone{border:2px dashed rgba(167,139,250,0.35);border-radius:16px;padding:60px 24px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(167,139,250,0.04);margin-bottom:28px}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#a78bfa;background:rgba(167,139,250,0.1)}
+.drop-zone .icon{font-size:48px;margin-bottom:12px}
+.drop-zone p{color:#8890b5;font-size:15px}
+.drop-zone .browse{color:#a78bfa;text-decoration:underline;cursor:pointer}
+#fileInput{display:none}
+.editor{display:none;gap:24px}
+.editor.active{display:grid;grid-template-columns:1fr 320px}
+.preview-panel{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:360px;position:relative;overflow:hidden}
+.preview-panel img{max-width:100%;max-height:400px;border-radius:8px;object-fit:contain}
+.img-info{margin-top:10px;font-size:12px;color:#6b7194}
+.controls{display:flex;flex-direction:column;gap:16px}
+.control-group{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:18px}
+.control-group h3{font-size:13px;font-weight:600;color:#a8b0d3;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px}
+.radio-group{display:flex;gap:8px;margin-bottom:14px}
+.radio-group label{flex:1;text-align:center;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:all .15s;color:#8890b5}
+.radio-group input{display:none}
+.radio-group input:checked+span{background:rgba(167,139,250,0.2);border-color:#a78bfa;color:#e0e4f0}
+.radio-group label:has(input:checked){background:rgba(167,139,250,0.15);border-color:#a78bfa;color:#e0e4f0}
+.dim-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dim-inputs.single{grid-template-columns:1fr}
+.field label{display:block;font-size:12px;color:#6b7194;margin-bottom:4px}
+.field input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#e0e4f0;font-size:14px;outline:none;transition:border-color .15s}
+.field input:focus{border-color:#a78bfa}
+.aspect-toggle{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:#8890b5}
+.toggle{position:relative;width:40px;height:22px;cursor:pointer}
+.toggle input{display:none}
+.toggle .slider{position:absolute;inset:0;background:rgba(255,255,255,0.1);border-radius:11px;transition:all .2s}
+.toggle .slider::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#6b7194;top:3px;left:3px;transition:all .2s}
+.toggle input:checked+.slider{background:rgba(167,139,250,0.4)}
+.toggle input:checked+.slider::before{transform:translateX(18px);background:#a78bfa}
+.format-group{display:flex;gap:8px}
+.format-group label{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:all .15s;color:#8890b5}
+.format-group input{display:none}
+.format-group label:has(input:checked){background:rgba(96,165,250,0.15);border-color:#60a5fa;color:#e0e4f0}
+.quality-row{margin-top:14px;display:none}
+.quality-row.visible{display:block}
+.quality-row label{font-size:12px;color:#6b7194;display:flex;justify-content:space-between;margin-bottom:6px}
+.quality-row input[type=range]{width:100%;accent-color:#a78bfa;cursor:pointer}
+.actions{display:flex;gap:10px;margin-top:4px}
+.btn{flex:1;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
+.btn-primary{background:linear-gradient(135deg,#a78bfa,#7c5fcf);color:#fff}
+.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
+.btn-secondary{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#a8b0d3}
+.btn-secondary:hover{background:rgba(255,255,255,0.1)}
+.output-section{display:none;margin-top:28px;text-align:center}
+.output-section.active{display:block}
+.output-section h3{font-size:15px;color:#a8b0d3;margin-bottom:12px}
+.output-preview{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;display:inline-block}
+.output-preview img{max-width:100%;max-height:360px;border-radius:8px}
+.output-info{margin-top:10px;font-size:13px;color:#6b7194}
+.download-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+.download-btn:hover{opacity:.9;transform:translateY(-1px)}
+footer{text-align:center;padding:20px;color:#4a5070;font-size:12px;border-top:1px solid rgba(255,255,255,0.05)}
+@media(max-width:700px){
+  .editor.active{grid-template-columns:1fr}
+  h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;"><div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;"><a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;"><img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;"></a><a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;">← Explore 46 free tools</a></div></div>
+
+<div class="container">
+  <h1>Image Resizer</h1>
+  <p class="subtitle">Resize images by pixels or percentage — free, private, runs in your browser</p>
+
+  <div class="drop-zone" id="dropZone">
+    <div class="icon">🖼️</div>
+    <p>Drop an image here or <span class="browse">browse files</span></p>
+    <p style="margin-top:6px;font-size:12px;color:#4a5070">JPEG, PNG, WebP, GIF, BMP, SVG</p>
+  </div>
+  <input type="file" id="fileInput" accept="image/*">
+
+  <div class="editor" id="editor">
+    <div class="preview-panel">
+      <img id="previewImg" alt="Preview">
+      <div class="img-info" id="imgInfo"></div>
+    </div>
+    <div class="controls">
+      <div class="control-group">
+        <h3>Resize Mode</h3>
+        <div class="radio-group">
+          <label><input type="radio" name="mode" value="pixels" checked><span>Pixels</span></label>
+          <label><input type="radio" name="mode" value="percentage"><span>Percentage</span></label>
+        </div>
+        <div class="dim-inputs" id="dimInputs">
+          <div class="field"><label for="widthInput">Width</label><input type="number" id="widthInput" min="1" max="10000" placeholder="Width"></div>
+          <div class="field"><label for="heightInput">Height</label><input type="number" id="heightInput" min="1" max="10000" placeholder="Height"></div>
+        </div>
+        <div class="dim-inputs single" id="pctInputs" style="display:none">
+          <div class="field"><label for="pctInput">Scale (%)</label><input type="number" id="pctInput" min="1" max="1000" value="100" placeholder="100"></div>
+        </div>
+        <div class="aspect-toggle">
+          <label class="toggle"><input type="checkbox" id="aspectLock" checked><span class="slider"></span></label>
+          <span>Lock aspect ratio</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <h3>Output Format</h3>
+        <div class="format-group">
+          <label><input type="radio" name="format" value="png" checked>PNG</label>
+          <label><input type="radio" name="format" value="jpeg">JPEG</label>
+          <label><input type="radio" name="format" value="webp">WebP</label>
+        </div>
+        <div class="quality-row" id="qualityRow">
+          <label>Quality <span id="qualityVal">92</span>%</label>
+          <input type="range" id="qualitySlider" min="10" max="100" value="92">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-primary" id="resizeBtn">Resize Image</button>
+        <button class="btn btn-secondary" id="resetBtn">New Image</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="output-section" id="outputSection">
+    <h3>Resized Image</h3>
+    <div class="output-preview"><img id="outputImg" alt="Resized"></div>
+    <div class="output-info" id="outputInfo"></div>
+    <a class="download-btn" id="downloadBtn" download>⬇ Download</a>
+  </div>
+</div>
+
+<footer>Goosekit — Free browser tools. No data leaves your device.</footer>
+
+<script>
+(function(){
+  const dropZone=document.getElementById('dropZone');
+  const fileInput=document.getElementById('fileInput');
+  const editor=document.getElementById('editor');
+  const previewImg=document.getElementById('previewImg');
+  const imgInfo=document.getElementById('imgInfo');
+  const widthInput=document.getElementById('widthInput');
+  const heightInput=document.getElementById('heightInput');
+  const pctInput=document.getElementById('pctInput');
+  const aspectLock=document.getElementById('aspectLock');
+  const qualitySlider=document.getElementById('qualitySlider');
+  const qualityVal=document.getElementById('qualityVal');
+  const qualityRow=document.getElementById('qualityRow');
+  const dimInputs=document.getElementById('dimInputs');
+  const pctInputs=document.getElementById('pctInputs');
+  const resizeBtn=document.getElementById('resizeBtn');
+  const resetBtn=document.getElementById('resetBtn');
+  const outputSection=document.getElementById('outputSection');
+  const outputImg=document.getElementById('outputImg');
+  const outputInfo=document.getElementById('outputInfo');
+  const downloadBtn=document.getElementById('downloadBtn');
+
+  let originalImg=null;
+  let origW=0,origH=0;
+  let aspectRatio=1;
+  let updatingDim=false;
+
+  dropZone.addEventListener('click',()=>fileInput.click());
+  dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over')});
+  dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');if(e.dataTransfer.files[0])loadFile(e.dataTransfer.files[0])});
+  fileInput.addEventListener('change',()=>{if(fileInput.files[0])loadFile(fileInput.files[0])});
+
+  function loadFile(file){
+    if(!file.type.startsWith('image/')){alert('Please select an image file.');return}
+    const reader=new FileReader();
+    reader.onload=function(e){
+      const img=new Image();
+      img.onload=function(){
+        originalImg=img;
+        origW=img.naturalWidth;
+        origH=img.naturalHeight;
+        aspectRatio=origW/origH;
+        previewImg.src=e.target.result;
+        imgInfo.textContent=`Original: ${origW} × ${origH} px — ${(file.size/1024).toFixed(1)} KB`;
+        widthInput.value=origW;
+        heightInput.value=origH;
+        pctInput.value=100;
+        dropZone.style.display='none';
+        editor.classList.add('active');
+        outputSection.classList.remove('active');
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Mode switching
+  document.querySelectorAll('input[name="mode"]').forEach(r=>{
+    r.addEventListener('change',()=>{
+      if(r.value==='pixels'){dimInputs.style.display='';pctInputs.style.display='none'}
+      else{dimInputs.style.display='none';pctInputs.style.display=''}
+    });
+  });
+
+  // Format switching — show quality for jpeg/webp
+  document.querySelectorAll('input[name="format"]').forEach(r=>{
+    r.addEventListener('change',()=>{
+      qualityRow.classList.toggle('visible',r.value!=='png');
+    });
+  });
+  qualitySlider.addEventListener('input',()=>{qualityVal.textContent=qualitySlider.value});
+
+  // Aspect ratio lock
+  widthInput.addEventListener('input',()=>{
+    if(aspectLock.checked&&!updatingDim&&originalImg){
+      updatingDim=true;
+      heightInput.value=Math.round(widthInput.value/aspectRatio)||'';
+      updatingDim=false;
+    }
+  });
+  heightInput.addEventListener('input',()=>{
+    if(aspectLock.checked&&!updatingDim&&originalImg){
+      updatingDim=true;
+      widthInput.value=Math.round(heightInput.value*aspectRatio)||'';
+      updatingDim=false;
+    }
+  });
+
+  // Resize
+  resizeBtn.addEventListener('click',()=>{
+    if(!originalImg)return;
+    const mode=document.querySelector('input[name="mode"]:checked').value;
+    let w,h;
+    if(mode==='percentage'){
+      const pct=parseFloat(pctInput.value)||100;
+      w=Math.round(origW*pct/100);
+      h=Math.round(origH*pct/100);
+    }else{
+      w=parseInt(widthInput.value)||origW;
+      h=parseInt(heightInput.value)||origH;
+    }
+    if(w<1)w=1;if(h<1)h=1;if(w>10000)w=10000;if(h>10000)h=10000;
+
+    const canvas=document.createElement('canvas');
+    canvas.width=w;canvas.height=h;
+    const ctx=canvas.getContext('2d');
+    ctx.imageSmoothingEnabled=true;
+    ctx.imageSmoothingQuality='high';
+    ctx.drawImage(originalImg,0,0,w,h);
+
+    const format=document.querySelector('input[name="format"]:checked').value;
+    const mime=format==='jpeg'?'image/jpeg':format==='webp'?'image/webp':'image/png';
+    const quality=(format==='png')?undefined:parseFloat(qualitySlider.value)/100;
+    const dataUrl=canvas.toDataURL(mime,quality);
+
+    outputImg.src=dataUrl;
+    const bytes=Math.round((dataUrl.length-dataUrl.indexOf(',')-1)*3/4);
+    const sizeStr=bytes>1048576?(bytes/1048576).toFixed(2)+' MB':(bytes/1024).toFixed(1)+' KB';
+    outputInfo.textContent=`${w} × ${h} px — ${format.toUpperCase()} — ${sizeStr}`;
+    downloadBtn.href=dataUrl;
+    downloadBtn.download=`resized-${w}x${h}.${format==='jpeg'?'jpg':format}`;
+    outputSection.classList.add('active');
+    outputSection.scrollIntoView({behavior:'smooth',block:'start'});
+  });
+
+  // Reset
+  resetBtn.addEventListener('click',()=>{
+    originalImg=null;
+    editor.classList.remove('active');
+    outputSection.classList.remove('active');
+    dropZone.style.display='';
+    fileInput.value='';
+  });
+})();
+</script>
+</body>
+</html>

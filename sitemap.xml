@@ -41,4 +41,10 @@
   <url><loc>https://goosekit.dev/word-counter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/background-remover/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/invoice-generator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/image-resizer/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/image-to-pdf/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/chart-maker/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/image-cropper/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/color-palette/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/percentage-calculator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

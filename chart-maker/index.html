@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chart Maker Online — Create Bar, Line, Pie Charts Free | Goosekit</title>
+<meta name="description" content="Free online chart maker. Create beautiful bar, line, pie, and doughnut charts instantly. Customize colors, labels, and export as PNG. No signup required.">
+<meta name="keywords" content="chart maker, graph maker, bar chart, line chart, pie chart, doughnut chart, free chart tool, online chart creator">
+<link rel="canonical" href="https://goosekit.dev/chart-maker/">
+<meta property="og:title" content="Chart Maker Online — Create Bar, Line, Pie Charts Free | Goosekit">
+<meta property="og:description" content="Create beautiful bar, line, pie, and doughnut charts instantly. Customize colors, labels, and export as PNG.">
+<meta property="og:url" content="https://goosekit.dev/chart-maker/">
+<meta property="og:type" content="website">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0f0f19;
+    color: #e0e0e0;
+    min-height: 100vh;
+    line-height: 1.5;
+  }
+
+  /* Banner */
+  .banner {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-bottom: 1px solid #2a2a4a;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .banner svg { flex-shrink: 0; }
+  .banner-text { display: flex; flex-direction: column; }
+  .banner-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.01em;
+  }
+  .banner-title span { color: #a78bfa; }
+  .banner-sub {
+    font-size: 0.8rem;
+    color: #8888aa;
+    margin-top: 2px;
+  }
+
+  /* Layout */
+  .app {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+  }
+
+  /* Panels */
+  .panel {
+    background: #161625;
+    border: 1px solid #2a2a4a;
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .panel-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #c0c0d0;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .panel-title::before {
+    content: '';
+    width: 4px;
+    height: 18px;
+    background: #a78bfa;
+    border-radius: 2px;
+  }
+
+  /* Form elements */
+  label {
+    display: block;
+    font-size: 0.82rem;
+    color: #9999bb;
+    margin-bottom: 4px;
+    font-weight: 500;
+  }
+  input[type="text"], select {
+    width: 100%;
+    padding: 9px 12px;
+    background: #0f0f19;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    color: #e0e0e0;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus, select:focus {
+    border-color: #a78bfa;
+  }
+  select { cursor: pointer; }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .form-group { margin-bottom: 14px; }
+
+  /* Data Table */
+  .data-table-wrap {
+    max-height: 320px;
+    overflow-y: auto;
+    border: 1px solid #2a2a4a;
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  .data-table-wrap::-webkit-scrollbar { width: 6px; }
+  .data-table-wrap::-webkit-scrollbar-track { background: #0f0f19; }
+  .data-table-wrap::-webkit-scrollbar-thumb { background: #3a3a5a; border-radius: 3px; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  th {
+    background: #1a1a30;
+    color: #9999bb;
+    font-weight: 600;
+    padding: 8px 10px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  td {
+    padding: 4px 6px;
+    border-top: 1px solid #1e1e35;
+  }
+  td input[type="text"], td input[type="number"] {
+    width: 100%;
+    padding: 6px 8px;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    color: #e0e0e0;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  td input:focus {
+    border-color: #a78bfa;
+    background: #0f0f19;
+  }
+  td input[type="color"] {
+    width: 32px;
+    height: 28px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 4px;
+  }
+  .td-color { text-align: center; width: 50px; }
+  .td-action { text-align: center; width: 40px; }
+
+  .btn-remove {
+    background: none;
+    border: none;
+    color: #ff6b6b;
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 4px;
+    border-radius: 4px;
+    transition: background 0.2s;
+    line-height: 1;
+  }
+  .btn-remove:hover { background: rgba(255,107,107,0.15); }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-primary {
+    background: #a78bfa;
+    color: #0f0f19;
+  }
+  .btn-primary:hover { background: #b9a0ff; }
+  .btn-secondary {
+    background: #1e1e35;
+    color: #c0c0d0;
+    border: 1px solid #2a2a4a;
+  }
+  .btn-secondary:hover { background: #2a2a45; }
+  .btn-export {
+    background: linear-gradient(135deg, #34d399, #059669);
+    color: #fff;
+  }
+  .btn-export:hover { opacity: 0.9; }
+  .btn-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Chart area */
+  .chart-area {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .chart-container {
+    background: #161625;
+    border: 1px solid #2a2a4a;
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 420px;
+    position: relative;
+  }
+  .chart-container canvas {
+    max-width: 100%;
+    max-height: 500px;
+  }
+
+  /* Chart type selector */
+  .chart-types {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .chart-type-btn {
+    padding: 10px 8px;
+    background: #0f0f19;
+    border: 2px solid #2a2a4a;
+    border-radius: 10px;
+    color: #9999bb;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .chart-type-btn:hover { border-color: #5a5a7a; color: #e0e0e0; }
+  .chart-type-btn.active {
+    border-color: #a78bfa;
+    color: #a78bfa;
+    background: rgba(167,139,250,0.08);
+  }
+  .chart-type-btn svg { width: 24px; height: 24px; }
+
+  .empty-state {
+    color: #5a5a7a;
+    text-align: center;
+    padding: 40px;
+  }
+  .empty-state svg { margin-bottom: 12px; opacity: 0.4; }
+
+  /* Footer area for export */
+  .export-bar {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  h1.seo-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+  p.seo-desc {
+    font-size: 0.88rem;
+    color: #7777aa;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">
+  <svg width="36" height="36" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect width="100" height="100" rx="20" fill="#a78bfa"/>
+    <text x="50" y="66" text-anchor="middle" font-size="50" font-weight="bold" fill="#0f0f19" font-family="system-ui">G</text>
+  </svg>
+  <div class="banner-text">
+    <div class="banner-title">Goose<span>kit</span></div>
+    <div class="banner-sub">Free developer & creator tools</div>
+  </div>
+</div>
+
+<!-- App -->
+<div class="app">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h1 class="seo-title">Chart Maker</h1>
+    <p class="seo-desc">Create bar, line, pie &amp; doughnut charts. Customize and export as PNG.</p>
+
+    <!-- Chart Type -->
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="panel-title">Chart Type</div>
+      <div class="chart-types">
+        <button class="chart-type-btn active" data-type="bar" title="Bar Chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="6" width="4" height="15" rx="1"/><rect x="17" y="9" width="4" height="12" rx="1"/></svg>
+          Bar
+        </button>
+        <button class="chart-type-btn" data-type="line" title="Line Chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3,17 8,11 13,14 21,6"/><circle cx="3" cy="17" r="1.5" fill="currentColor"/><circle cx="8" cy="11" r="1.5" fill="currentColor"/><circle cx="13" cy="14" r="1.5" fill="currentColor"/><circle cx="21" cy="6" r="1.5" fill="currentColor"/></svg>
+          Line
+        </button>
+        <button class="chart-type-btn" data-type="pie" title="Pie Chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 1 0 20 10 10 0 0 1 0-20z"/><path d="M12 2v10l8.66 5"/></svg>
+          Pie
+        </button>
+        <button class="chart-type-btn" data-type="doughnut" title="Doughnut Chart">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+          Doughnut
+        </button>
+      </div>
+    </div>
+
+    <!-- Settings -->
+    <div class="panel" style="margin-bottom:16px;">
+      <div class="panel-title">Settings</div>
+      <div class="form-group">
+        <label for="chartTitle">Chart Title</label>
+        <input type="text" id="chartTitle" value="My Chart" placeholder="Enter chart title">
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="xLabel">X-Axis Label</label>
+          <input type="text" id="xLabel" placeholder="e.g. Months">
+        </div>
+        <div>
+          <label for="yLabel">Y-Axis Label</label>
+          <input type="text" id="yLabel" placeholder="e.g. Sales">
+        </div>
+      </div>
+      <div class="form-row">
+        <div>
+          <label for="legendPos">Legend Position</label>
+          <select id="legendPos">
+            <option value="top">Top</option>
+            <option value="bottom">Bottom</option>
+            <option value="left">Left</option>
+            <option value="right">Right</option>
+            <option value="none">Hidden</option>
+          </select>
+        </div>
+        <div>
+          <label for="bgColor">Background</label>
+          <select id="bgColor">
+            <option value="#161625">Dark (default)</option>
+            <option value="#ffffff">White</option>
+            <option value="transparent">Transparent</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Data -->
+    <div class="panel">
+      <div class="panel-title">Data</div>
+      <div class="data-table-wrap">
+        <table id="dataTable">
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th>Value</th>
+              <th class="td-color">Color</th>
+              <th class="td-action"></th>
+            </tr>
+          </thead>
+          <tbody id="dataBody"></tbody>
+        </table>
+      </div>
+      <div class="btn-group">
+        <button class="btn btn-primary" onclick="addRow()">+ Add Row</button>
+        <button class="btn btn-secondary" onclick="loadSample()">Sample Data</button>
+        <button class="btn btn-secondary" onclick="clearData()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart Display -->
+  <div class="chart-area">
+    <div class="chart-container" id="chartContainer">
+      <canvas id="chartCanvas"></canvas>
+    </div>
+    <div class="export-bar">
+      <button class="btn btn-export" onclick="exportPNG()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export as PNG
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS = [
+  '#a78bfa','#34d399','#f472b6','#fbbf24','#60a5fa',
+  '#f87171','#2dd4bf','#fb923c','#a3e635','#e879f9',
+  '#38bdf8','#facc15','#4ade80','#f43f5e','#818cf8'
+];
+
+let chartInstance = null;
+let currentType = 'bar';
+let rowData = [];
+
+function getColor(i) { return COLORS[i % COLORS.length]; }
+
+function addRow(label, value, color) {
+  const idx = rowData.length;
+  rowData.push({
+    label: label || '',
+    value: value ?? '',
+    color: color || getColor(idx)
+  });
+  renderTable();
+  updateChart();
+}
+
+function removeRow(i) {
+  rowData.splice(i, 1);
+  renderTable();
+  updateChart();
+}
+
+function renderTable() {
+  const tbody = document.getElementById('dataBody');
+  tbody.innerHTML = '';
+  rowData.forEach((r, i) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" value="${esc(r.label)}" data-i="${i}" data-f="label" placeholder="Label ${i+1}"></td>
+      <td><input type="number" value="${r.value}" data-i="${i}" data-f="value" step="any" placeholder="0"></td>
+      <td class="td-color"><input type="color" value="${r.color}" data-i="${i}" data-f="color"></td>
+      <td class="td-action"><button class="btn-remove" onclick="removeRow(${i})" title="Remove">×</button></td>
+    `;
+    tbody.appendChild(tr);
+  });
+  tbody.querySelectorAll('input').forEach(inp => {
+    inp.addEventListener('input', (e) => {
+      const idx = +e.target.dataset.i;
+      const field = e.target.dataset.f;
+      rowData[idx][field] = field === 'value' ? parseFloat(e.target.value) || 0 : e.target.value;
+      updateChart();
+    });
+  });
+}
+
+function esc(s) { return String(s).replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+
+function clearData() {
+  rowData = [];
+  renderTable();
+  updateChart();
+}
+
+function loadSample() {
+  rowData = [];
+  const samples = [
+    ['January', 65], ['February', 42], ['March', 78],
+    ['April', 91], ['May', 55], ['June', 70]
+  ];
+  samples.forEach(([l,v], i) => {
+    rowData.push({ label: l, value: v, color: getColor(i) });
+  });
+  renderTable();
+  updateChart();
+}
+
+function updateChart() {
+  const labels = rowData.map(r => r.label || '(empty)');
+  const values = rowData.map(r => parseFloat(r.value) || 0);
+  const colors = rowData.map(r => r.color);
+
+  const title = document.getElementById('chartTitle').value;
+  const xLabel = document.getElementById('xLabel').value;
+  const yLabel = document.getElementById('yLabel').value;
+  const legendPos = document.getElementById('legendPos').value;
+  const isPolar = currentType === 'pie' || currentType === 'doughnut';
+
+  if (chartInstance) chartInstance.destroy();
+
+  const ctx = document.getElementById('chartCanvas').getContext('2d');
+
+  const config = {
+    type: currentType,
+    data: {
+      labels: labels,
+      datasets: [{
+        label: title || 'Dataset',
+        data: values,
+        backgroundColor: isPolar ? colors : colors.map(c => c + 'cc'),
+        borderColor: isPolar ? '#161625' : colors,
+        borderWidth: isPolar ? 2 : 2,
+        tension: 0.3,
+        fill: currentType === 'line' ? false : undefined,
+        pointBackgroundColor: colors,
+        pointRadius: currentType === 'line' ? 5 : undefined,
+        pointHoverRadius: currentType === 'line' ? 7 : undefined,
+        borderRadius: currentType === 'bar' ? 6 : undefined,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      animation: { duration: 400 },
+      plugins: {
+        title: {
+          display: !!title,
+          text: title,
+          color: '#e0e0e0',
+          font: { size: 18, weight: '600' },
+          padding: { bottom: 16 }
+        },
+        legend: {
+          display: legendPos !== 'none',
+          position: legendPos === 'none' ? 'top' : legendPos,
+          labels: { color: '#9999bb', padding: 12, usePointStyle: true, pointStyle: 'circle' }
+        },
+        tooltip: {
+          backgroundColor: '#1a1a30',
+          titleColor: '#e0e0e0',
+          bodyColor: '#c0c0d0',
+          borderColor: '#2a2a4a',
+          borderWidth: 1,
+          cornerRadius: 8,
+          padding: 10
+        }
+      },
+      scales: isPolar ? {} : {
+        x: {
+          title: { display: !!xLabel, text: xLabel, color: '#9999bb', font: { size: 13 } },
+          ticks: { color: '#7777aa' },
+          grid: { color: '#1e1e35' }
+        },
+        y: {
+          title: { display: !!yLabel, text: yLabel, color: '#9999bb', font: { size: 13 } },
+          ticks: { color: '#7777aa' },
+          grid: { color: '#1e1e35' },
+          beginAtZero: true
+        }
+      }
+    }
+  };
+
+  chartInstance = new Chart(ctx, config);
+}
+
+function exportPNG() {
+  if (!chartInstance) return;
+  const bgColor = document.getElementById('bgColor').value;
+  const canvas = document.getElementById('chartCanvas');
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = canvas.width;
+  tempCanvas.height = canvas.height;
+  const tempCtx = tempCanvas.getContext('2d');
+  if (bgColor !== 'transparent') {
+    tempCtx.fillStyle = bgColor;
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+  }
+  tempCtx.drawImage(canvas, 0, 0);
+  const link = document.createElement('a');
+  link.download = 'chart.png';
+  link.href = tempCanvas.toDataURL('image/png');
+  link.click();
+}
+
+// Chart type buttons
+document.querySelectorAll('.chart-type-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.chart-type-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentType = btn.dataset.type;
+    updateChart();
+  });
+});
+
+// Live settings update
+['chartTitle','xLabel','yLabel','legendPos','bgColor'].forEach(id => {
+  document.getElementById(id).addEventListener('input', updateChart);
+  document.getElementById(id).addEventListener('change', updateChart);
+});
+
+// Init with sample data
+loadSample();
+</script>
+</body>
+</html>
