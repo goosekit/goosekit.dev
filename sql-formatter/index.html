@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQL Formatter — Goosekit</title>
+<meta name="description" content="Free online SQL formatter and beautifier. Format, minify, and syntax-highlight SQL queries instantly. Supports MySQL, PostgreSQL, SQL Server, Oracle, and SQLite.">
+<meta name="keywords" content="sql formatter, sql beautifier, sql minifier, format sql online, sql pretty print, sql syntax highlight">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="SQL Formatter — Goosekit">
+<meta property="og:description" content="Free online SQL formatter and beautifier. Format, minify, and syntax-highlight SQL queries instantly.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="/favicon.ico">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0f0f19;
+  --bg-card: #161625;
+  --bg-input: #1a1a2e;
+  --border: rgba(255,255,255,0.08);
+  --border-focus: rgba(139,92,246,0.5);
+  --text: #f5f7ff;
+  --text-dim: #a8b0d3;
+  --text-muted: #6b7280;
+  --accent: #8b5cf6;
+  --accent-hover: #a78bfa;
+  --accent-glow: rgba(139,92,246,0.15);
+  --blue: #60a5fa;
+  --green: #34d399;
+  --red: #f87171;
+  --orange: #fb923c;
+  --pink: #f472b6;
+  --yellow: #fbbf24;
+  --cyan: #22d3ee;
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* Banner */
+#gk-banner { position: relative; z-index: 9999; width: 100%; background: rgba(15,15,25,0.95); border-bottom: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(8px); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+header {
+  text-align: center;
+  padding: 48px 20px 32px;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #f5f7ff 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 8px;
+}
+
+header p {
+  color: var(--text-dim);
+  font-size: 1.05rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.toolbar-group {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.toolbar-spacer { flex: 1; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+.btn:hover { border-color: var(--border-focus); background: var(--accent-glow); }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+
+.btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+.btn-success { border-color: var(--green); color: var(--green); }
+
+select.toolbar-select {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text);
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+select.toolbar-select:focus { border-color: var(--border-focus); }
+
+/* Editor Grid */
+.editor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .editor-grid { grid-template-columns: 1fr; }
+  header h1 { font-size: 1.6rem; }
+  header { padding: 32px 20px 24px; }
+  .toolbar { gap: 6px; }
+}
+
+.editor-panel {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+  overflow: hidden;
+  min-height: 420px;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255,255,255,0.02);
+}
+
+.panel-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+
+.panel-actions { display: flex; gap: 4px; }
+
+.btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-icon:hover { background: rgba(255,255,255,0.06); color: var(--text); }
+.btn-icon svg { width: 15px; height: 15px; }
+
+textarea#sql-input {
+  flex: 1;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  background: transparent;
+  color: var(--text);
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+}
+
+textarea#sql-input::placeholder { color: var(--text-muted); }
+
+.output-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 16px;
+}
+
+pre.output-code {
+  font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', Consolas, monospace;
+  font-size: 13px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+  color: var(--text);
+  margin: 0;
+}
+
+/* Syntax highlighting */
+.sql-keyword { color: #c084fc; font-weight: 600; }
+.sql-function { color: #60a5fa; }
+.sql-string { color: #34d399; }
+.sql-number { color: #fb923c; }
+.sql-operator { color: #f472b6; }
+.sql-comment { color: #6b7280; font-style: italic; }
+.sql-paren { color: #fbbf24; }
+.sql-identifier { color: #f5f7ff; }
+.sql-type { color: #22d3ee; }
+.sql-comma { color: #9ca3af; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  padding: 10px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--green);
+  border-radius: var(--radius-sm);
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 500;
+  z-index: 10000;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: all 0.3s;
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Footer info */
+.info-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.info-card {
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg-card);
+}
+
+.info-card h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--accent-hover);
+}
+
+.info-card p {
+  font-size: 13px;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+footer {
+  text-align: center;
+  padding: 24px 20px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;"><div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;"><a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;"><img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;"></a><a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">← Explore 31 free tools</a></div></div>
+
+<header>
+  <h1>SQL Formatter</h1>
+  <p>Format, beautify, and minify SQL queries instantly. Supports MySQL, PostgreSQL, SQL Server, Oracle &amp; SQLite.</p>
+</header>
+
+<div class="app">
+  <div class="toolbar">
+    <div class="toolbar-group">
+      <button class="btn btn-primary" onclick="formatSQL()" id="btn-format">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10H7"/><path d="M21 6H3"/><path d="M21 14H3"/><path d="M21 18H7"/></svg>
+        Format
+      </button>
+      <button class="btn" onclick="minifySQL()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 6H3"/><path d="M21 18H3"/></svg>
+        Minify
+      </button>
+    </div>
+    <div class="toolbar-group">
+      <select class="toolbar-select" id="indent-select" onchange="formatSQL()">
+        <option value="2">2 spaces</option>
+        <option value="4" selected>4 spaces</option>
+        <option value="tab">Tab</option>
+      </select>
+      <select class="toolbar-select" id="case-select" onchange="formatSQL()">
+        <option value="upper" selected>UPPER keywords</option>
+        <option value="lower">lower keywords</option>
+        <option value="preserve">Preserve case</option>
+      </select>
+    </div>
+    <div class="toolbar-spacer"></div>
+    <div class="toolbar-group">
+      <button class="btn" onclick="loadSample()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Sample
+      </button>
+      <button class="btn" onclick="clearAll()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        Clear
+      </button>
+    </div>
+  </div>
+
+  <div class="editor-grid">
+    <div class="editor-panel">
+      <div class="panel-header">
+        <span class="panel-label">Input</span>
+        <div class="panel-actions">
+          <button class="btn-icon" onclick="pasteFromClipboard()" title="Paste">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          </button>
+        </div>
+      </div>
+      <textarea id="sql-input" placeholder="Paste your SQL query here..." spellcheck="false"></textarea>
+    </div>
+
+    <div class="editor-panel">
+      <div class="panel-header">
+        <span class="panel-label">Output</span>
+        <div class="panel-actions">
+          <button class="btn-icon" onclick="copyOutput()" title="Copy" id="btn-copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="output-wrapper">
+        <pre class="output-code" id="sql-output"><span style="color:var(--text-muted)">Formatted SQL will appear here…</span></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="info-section">
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>✨ Smart Formatting</h3>
+      <p>Automatically indents subqueries, aligns JOIN clauses, and structures complex queries for maximum readability.</p>
+    </div>
+    <div class="info-card">
+      <h3>🗜️ Minification</h3>
+      <p>Compress SQL into a single line for embedding in code, APIs, or config files. Removes comments and extra whitespace.</p>
+    </div>
+    <div class="info-card">
+      <h3>🎨 Syntax Highlighting</h3>
+      <p>Color-coded output makes it easy to distinguish keywords, strings, numbers, functions, and comments at a glance.</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>SQL Formatter — Part of <a href="/" style="color:var(--accent);text-decoration:none;">Goosekit</a>, a collection of free developer tools.</p>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── SQL Keywords & Functions ───
+const KEYWORDS = new Set([
+  'SELECT','FROM','WHERE','AND','OR','NOT','IN','ON','AS','JOIN','LEFT','RIGHT','INNER','OUTER',
+  'FULL','CROSS','NATURAL','USING','ORDER','BY','GROUP','HAVING','LIMIT','OFFSET','UNION','ALL',
+  'INTERSECT','EXCEPT','INSERT','INTO','VALUES','UPDATE','SET','DELETE','CREATE','TABLE','ALTER',
+  'DROP','INDEX','VIEW','TRIGGER','PROCEDURE','FUNCTION','IF','EXISTS','REPLACE','TRUNCATE',
+  'BEGIN','END','COMMIT','ROLLBACK','SAVEPOINT','GRANT','REVOKE','WITH','RECURSIVE','CASE','WHEN',
+  'THEN','ELSE','IS','NULL','LIKE','ILIKE','BETWEEN','DISTINCT','TOP','FETCH','FIRST','NEXT',
+  'ROWS','ONLY','ASC','DESC','CASCADE','RESTRICT','REFERENCES','FOREIGN','KEY','PRIMARY','UNIQUE',
+  'CHECK','DEFAULT','CONSTRAINT','ADD','COLUMN','RENAME','TO','DATABASE','SCHEMA','TEMPORARY',
+  'TEMP','EXPLAIN','ANALYZE','OVER','PARTITION','WINDOW','RANGE','PRECEDING','FOLLOWING',
+  'UNBOUNDED','CURRENT','ROW','LATERAL','RETURNING','CONFLICT','DO','NOTHING','EXCLUDE',
+  'INCLUDE','MATERIALIZED','VACUUM','REINDEX','CLUSTER','COMMENT','COPY','LOCK','UNLOCK',
+  'DECLARE','CURSOR','FOR','OPEN','CLOSE','DEALLOCATE','PREPARE','EXECUTE','CALL','SIGNAL',
+  'RESIGNAL','CONDITION','HANDLER','CONTINUE','EXIT','UNDO','ITERATE','LEAVE','LOOP','REPEAT',
+  'UNTIL','WHILE','RETURN','RETURNS','LANGUAGE','SECURITY','DEFINER','INVOKER','DETERMINISTIC',
+  'CONTAINS','READS','MODIFIES','SQL','DATA','NO','EACH','STATEMENT','BEFORE','AFTER','INSTEAD',
+  'OF','NEW','OLD','RAISE','EXCEPTION','NOTICE','PERFORM','FOUND','ROWTYPE','RECORD','TYPE',
+  'ENUM','DOMAIN','SEQUENCE','OWNED','NONE','SOME','ANY','SIMILAR','ESCAPE','COLLATE','VARYING',
+  'ZONE','WITHOUT','TIME','INTERVAL','AT','EXTRACT','EPOCH','YEAR','MONTH','DAY','HOUR','MINUTE',
+  'SECOND','TRUE','FALSE','NULLS','LAST','FILTER','WITHIN','CUBE','ROLLUP','GROUPING','SETS',
+  'TABLESAMPLE','SYSTEM','BERNOULLI','VERBOSE','COSTS','BUFFERS','TIMING','SUMMARY','FORMAT',
+  'TEXT','XML','JSON','YAML','ENABLE','DISABLE','FORCE','NOWAIT','SKIP','LOCKED','SHARE','MODE',
+  'ADVISORY','EXCLUSIVE','ACCESS','CONCURRENTLY','UNLOGGED','LOGGED','INHERIT','NOINHERIT',
+  'LOGIN','NOLOGIN','SUPERUSER','NOSUPERUSER','CREATEROLE','NOCREATEROLE','CREATEDB','NOCREATEDB',
+  'REPLICATION','NOREPLICATION','BYPASSRLS','NOBYPASSRLS','PASSWORD','VALID','CONNECTION',
+  'ENCODING','LC_COLLATE','LC_CTYPE','TEMPLATE','TABLESPACE','OWNER','STORAGE','PLAIN',
+  'EXTERNAL','EXTENDED','MAIN','STATISTICS','PUBLICATION','SUBSCRIPTION','POLICY','PERMISSIVE',
+  'RESTRICTIVE','PARALLEL','SAFE','UNSAFE','COST','SUPPORT','TRANSFORM','STRICT','IMMUTABLE',
+  'STABLE','VOLATILE','LEAKPROOF','CALLED','INPUT','AGGREGATE','OPERATOR','CAST','CONVERSION',
+  'COLLATION','EXTENSION','SERVER','WRAPPER','MAPPING','OPTIONS','OPTION','HANDLER','VALIDATOR',
+  'EVENT','CONFIGURATION','DICTIONARY','PARSER','TEMPLATE','RULE','ABORT','ABSOLUTE','RELATIVE',
+  'FORWARD','BACKWARD','MOVE','FETCH','HOLD','SCROLL','INSENSITIVE','ASENSITIVE','SENSITIVE',
+  'ATOMIC','OVERRIDING','VALUE','GENERATED','ALWAYS','IDENTITY','RESTART','INCREMENT','MINVALUE',
+  'MAXVALUE','CACHE','CYCLE','NOCYCLE','NOMINVALUE','NOMAXVALUE','START','GO','USE','EXEC','PRINT',
+  'RAISERROR','THROW','TRY','CATCH','MERGE','MATCHED','OUTPUT','INSERTED','DELETED','PIVOT',
+  'UNPIVOT','APPLY','OUTER','CROSS','OPENROWSET','OPENQUERY','OPENDATASOURCE','OPENXML','BULK',
+  'FORMATFILE','FIELDTERMINATOR','ROWTERMINATOR','TABLOCK','HOLDLOCK','UPDLOCK','XLOCK','ROWLOCK',
+  'PAGLOCK','READPAST','READUNCOMMITTED','READCOMMITTED','REPEATABLEREAD','SERIALIZABLE',
+  'SNAPSHOT','NOLOCK','ROWCOUNT','IDENTITY_INSERT','QUOTED_IDENTIFIER','ANSI_NULLS','NOCOUNT',
+  'XACT_ABORT','CONCAT_NULL_YIELDS_NULL','ARITHABORT','LIMIT','OFFSET','SHOW','DESCRIBE',
+  'DATABASES','TABLES','COLUMNS','PROCESSLIST','STATUS','VARIABLES','WARNINGS','ERRORS','ENGINE',
+  'CHARSET','CHARACTER','COLLATE','AUTO_INCREMENT','UNSIGNED','SIGNED','ZEROFILL','BINARY',
+  'VARBINARY','BLOB','TINYBLOB','MEDIUMBLOB','LONGBLOB','TINYTEXT','MEDIUMTEXT','LONGTEXT',
+  'GEOMETRY','POINT','LINESTRING','POLYGON','MULTIPOINT','MULTILINESTRING','MULTIPOLYGON',
+  'GEOMETRYCOLLECTION','SPATIAL','FULLTEXT','MATCH','AGAINST','BOOLEAN','EXPANSION',
+  'NATURAL','LANGUAGE','QUERY'
+]);
+
+const FUNCTIONS = new Set([
+  'COUNT','SUM','AVG','MIN','MAX','ABS','CEIL','CEILING','FLOOR','ROUND','POWER','SQRT','MOD',
+  'SIGN','TRUNC','TRUNCATE','LOG','LOG2','LOG10','LN','EXP','RANDOM','RAND','GREATEST','LEAST',
+  'COALESCE','NULLIF','IFNULL','NVL','NVL2','IIF','DECODE','LENGTH','LEN','CHAR_LENGTH',
+  'CHARACTER_LENGTH','OCTET_LENGTH','BIT_LENGTH','UPPER','LOWER','TRIM','LTRIM','RTRIM','LPAD',
+  'RPAD','LEFT','RIGHT','SUBSTRING','SUBSTR','REPLACE','TRANSLATE','REVERSE','REPEAT','SPACE',
+  'CONCAT','CONCAT_WS','FORMAT','PRINTF','INSTR','LOCATE','POSITION','CHARINDEX','PATINDEX',
+  'STUFF','STRING_AGG','GROUP_CONCAT','LISTAGG','ARRAY_AGG','JSON_AGG','JSONB_AGG','JSON_BUILD_OBJECT',
+  'JSONB_BUILD_OBJECT','JSON_BUILD_ARRAY','JSONB_BUILD_ARRAY','JSON_OBJECT','JSON_ARRAY',
+  'JSON_EXTRACT','JSON_VALUE','JSON_QUERY','JSON_TABLE','JSON_EXISTS','JSON_ARRAYAGG',
+  'JSON_OBJECTAGG','ROW_NUMBER','RANK','DENSE_RANK','NTILE','LAG','LEAD','FIRST_VALUE',
+  'LAST_VALUE','NTH_VALUE','PERCENT_RANK','CUME_DIST','NOW','CURRENT_TIMESTAMP','CURRENT_DATE',
+  'CURRENT_TIME','LOCALTIME','LOCALTIMESTAMP','GETDATE','GETUTCDATE','SYSDATETIME',
+  'SYSUTCDATETIME','DATEADD','DATEDIFF','DATEDIFF_BIG','DATEPART','DATENAME','DATEFROMPARTS',
+  'TIMEFROMPARTS','DATETIMEFROMPARTS','EOMONTH','SWITCHOFFSET','TODATETIMEOFFSET',
+  'DATE_TRUNC','DATE_PART','DATE_ADD','DATE_SUB','TO_DATE','TO_CHAR','TO_NUMBER','TO_TIMESTAMP',
+  'AGE','MAKE_DATE','MAKE_TIME','MAKE_TIMESTAMP','MAKE_INTERVAL','CAST','CONVERT','TRY_CAST',
+  'TRY_CONVERT','PARSE','TRY_PARSE','ISNUMERIC','ISDATE','ISNULL','UNICODE','ASCII','CHAR',
+  'NCHAR','STR','QUOTENAME','SOUNDEX','DIFFERENCE','NEWID','NEWSEQUENTIALID','UUID',
+  'GEN_RANDOM_UUID','MD5','SHA1','SHA2','SHA256','SHA512','HASHBYTES','COMPRESS','DECOMPRESS',
+  'ENCODE','DECODE','BASE64_ENCODE','BASE64_DECODE','HEX','UNHEX','OBJECT_ID','OBJECT_NAME',
+  'DB_ID','DB_NAME','SCHEMA_ID','SCHEMA_NAME','TYPE_ID','TYPE_NAME','COL_NAME','COL_LENGTH',
+  'COLUMNPROPERTY','DATABASEPROPERTYEX','OBJECTPROPERTY','SERVERPROPERTY','EXISTS','ROW',
+  'UNNEST','GENERATE_SERIES','GENERATE_SUBSCRIPTS','ARRAY','ARRAY_LENGTH','ARRAY_UPPER',
+  'ARRAY_LOWER','ARRAY_POSITION','ARRAY_REMOVE','ARRAY_REPLACE','ARRAY_APPEND','ARRAY_PREPEND',
+  'ARRAY_CAT','ARRAY_TO_STRING','STRING_TO_ARRAY','REGEXP_MATCHES','REGEXP_REPLACE',
+  'REGEXP_SPLIT_TO_TABLE','REGEXP_SPLIT_TO_ARRAY','REGEXP_SUBSTR','REGEXP_COUNT','REGEXP_INSTR',
+  'REGEXP_LIKE','SPLIT_PART','INITCAP','CHR','ORD','BIN','OCT','CONV','FIELD','FIND_IN_SET',
+  'MAKE_SET','EXPORT_SET','INSERT','ELT','STRCMP','WEIGHT_STRING','CRC32','BENCHMARK','SLEEP',
+  'IF','INTERVAL','TIMESTAMPDIFF','TIMESTAMPADD','UNIX_TIMESTAMP','FROM_UNIXTIME','UTC_DATE',
+  'UTC_TIME','UTC_TIMESTAMP','STR_TO_DATE','DATE_FORMAT','TIME_FORMAT','WEEK','WEEKDAY',
+  'DAYOFWEEK','DAYOFMONTH','DAYOFYEAR','MONTHNAME','DAYNAME','LAST_DAY','ADDDATE','SUBDATE',
+  'ADDTIME','SUBTIME','TIMEDIFF','PERIOD_ADD','PERIOD_DIFF','SEC_TO_TIME','TIME_TO_SEC',
+  'MICROSECOND','QUARTER','YEARWEEK','INET_ATON','INET_NTOA','INET6_ATON','INET6_NTOA',
+  'IS_IPV4','IS_IPV6','UUID_SHORT','BIN_TO_UUID','UUID_TO_BIN','ANY_VALUE','VALUES',
+  'CONNECTION_ID','CURRENT_USER','SESSION_USER','SYSTEM_USER','USER','VERSION','DATABASE',
+  'FOUND_ROWS','LAST_INSERT_ID','ROW_COUNT','RELEASE_ALL_SAVEPOINTS','SCHEMA','TABLE'
+]);
+
+const TYPES = new Set([
+  'INT','INTEGER','SMALLINT','BIGINT','TINYINT','MEDIUMINT','FLOAT','REAL','DOUBLE','DECIMAL',
+  'NUMERIC','NUMBER','MONEY','SMALLMONEY','BIT','BOOLEAN','BOOL','SERIAL','BIGSERIAL',
+  'SMALLSERIAL','CHAR','VARCHAR','NCHAR','NVARCHAR','TEXT','NTEXT','CLOB','BLOB','BYTEA',
+  'DATE','TIME','TIMESTAMP','DATETIME','DATETIME2','SMALLDATETIME','DATETIMEOFFSET',
+  'INTERVAL','YEAR','UUID','UNIQUEIDENTIFIER','XML','JSON','JSONB','HSTORE','ARRAY',
+  'INET','CIDR','MACADDR','MACADDR8','TSQUERY','TSVECTOR','POINT','LINE','LSEG','BOX',
+  'PATH','POLYGON','CIRCLE','INT2','INT4','INT8','FLOAT4','FLOAT8','REGCLASS','REGTYPE',
+  'OID','XID','CID','TID','NAME','VARBIT','MONEY','ENUM','SET','BINARY','VARBINARY','IMAGE',
+  'ROWVERSION','SQL_VARIANT','TABLE','CURSOR','HIERARCHYID','GEOGRAPHY','GEOMETRY','SYSNAME',
+  'PRECISION'
+]);
+
+// ─── Tokenizer ───
+function tokenize(sql) {
+  const tokens = [];
+  let i = 0;
+  const len = sql.length;
+
+  while (i < len) {
+    // Whitespace
+    if (/\s/.test(sql[i])) {
+      let start = i;
+      while (i < len && /\s/.test(sql[i])) i++;
+      tokens.push({ type: 'whitespace', value: sql.slice(start, i) });
+      continue;
+    }
+    // Single-line comment --
+    if (sql[i] === '-' && sql[i+1] === '-') {
+      let start = i;
+      while (i < len && sql[i] !== '\n') i++;
+      tokens.push({ type: 'comment', value: sql.slice(start, i) });
+      continue;
+    }
+    // Multi-line comment /* */
+    if (sql[i] === '/' && sql[i+1] === '*') {
+      let start = i;
+      i += 2;
+      while (i < len && !(sql[i-1] === '*' && sql[i] === '/')) i++;
+      i++;
+      tokens.push({ type: 'comment', value: sql.slice(start, i) });
+      continue;
+    }
+    // Single-line comment # (MySQL)
+    if (sql[i] === '#') {
+      let start = i;
+      while (i < len && sql[i] !== '\n') i++;
+      tokens.push({ type: 'comment', value: sql.slice(start, i) });
+      continue;
+    }
+    // String (single quote)
+    if (sql[i] === "'") {
+      let start = i; i++;
+      while (i < len) {
+        if (sql[i] === "'" && sql[i+1] === "'") { i += 2; continue; }
+        if (sql[i] === "'") { i++; break; }
+        if (sql[i] === '\\') { i += 2; continue; }
+        i++;
+      }
+      tokens.push({ type: 'string', value: sql.slice(start, i) });
+      continue;
+    }
+    // String (double quote - identifier in standard SQL)
+    if (sql[i] === '"') {
+      let start = i; i++;
+      while (i < len) {
+        if (sql[i] === '"' && sql[i+1] === '"') { i += 2; continue; }
+        if (sql[i] === '"') { i++; break; }
+        i++;
+      }
+      tokens.push({ type: 'identifier', value: sql.slice(start, i) });
+      continue;
+    }
+    // Backtick identifier (MySQL)
+    if (sql[i] === '`') {
+      let start = i; i++;
+      while (i < len && sql[i] !== '`') i++;
+      i++;
+      tokens.push({ type: 'identifier', value: sql.slice(start, i) });
+      continue;
+    }
+    // Bracket identifier [name] (SQL Server)
+    if (sql[i] === '[') {
+      let start = i; i++;
+      while (i < len && sql[i] !== ']') i++;
+      i++;
+      tokens.push({ type: 'identifier', value: sql.slice(start, i) });
+      continue;
+    }
+    // Numbers
+    if (/[0-9]/.test(sql[i]) || (sql[i] === '.' && /[0-9]/.test(sql[i+1]))) {
+      let start = i;
+      if (sql[i] === '0' && (sql[i+1] === 'x' || sql[i+1] === 'X')) {
+        i += 2;
+        while (i < len && /[0-9a-fA-F]/.test(sql[i])) i++;
+      } else {
+        while (i < len && /[0-9]/.test(sql[i])) i++;
+        if (i < len && sql[i] === '.') { i++; while (i < len && /[0-9]/.test(sql[i])) i++; }
+        if (i < len && (sql[i] === 'e' || sql[i] === 'E')) { i++; if (sql[i] === '+' || sql[i] === '-') i++; while (i < len && /[0-9]/.test(sql[i])) i++; }
+      }
+      tokens.push({ type: 'number', value: sql.slice(start, i) });
+      continue;
+    }
+    // Operators (multi-char)
+    if ('<>=!|'.includes(sql[i])) {
+      let start = i;
+      const two = sql.slice(i, i+2);
+      if (['<>', '<=', '>=', '!=', '||', '::'].includes(two)) { i += 2; }
+      else { i++; }
+      tokens.push({ type: 'operator', value: sql.slice(start, i) });
+      continue;
+    }
+    // :: cast operator (PostgreSQL)
+    if (sql[i] === ':' && sql[i+1] === ':') {
+      tokens.push({ type: 'operator', value: '::' }); i += 2; continue;
+    }
+    // Parentheses
+    if (sql[i] === '(' || sql[i] === ')') {
+      tokens.push({ type: 'paren', value: sql[i] }); i++; continue;
+    }
+    // Comma
+    if (sql[i] === ',') {
+      tokens.push({ type: 'comma', value: ',' }); i++; continue;
+    }
+    // Semicolon
+    if (sql[i] === ';') {
+      tokens.push({ type: 'semicolon', value: ';' }); i++; continue;
+    }
+    // Dot, asterisk, plus, minus, etc.
+    if ('.+-%&~^'.includes(sql[i])) {
+      tokens.push({ type: 'operator', value: sql[i] }); i++; continue;
+    }
+    if (sql[i] === '*') {
+      tokens.push({ type: 'operator', value: '*' }); i++; continue;
+    }
+    // Parameter placeholders ($1, :name, @name, ?)
+    if (sql[i] === '$' && /[0-9]/.test(sql[i+1])) {
+      let start = i; i++;
+      while (i < len && /[0-9]/.test(sql[i])) i++;
+      tokens.push({ type: 'identifier', value: sql.slice(start, i) });
+      continue;
+    }
+    if ((sql[i] === ':' || sql[i] === '@') && /[a-zA-Z_]/.test(sql[i+1])) {
+      let start = i; i++;
+      while (i < len && /[a-zA-Z0-9_]/.test(sql[i])) i++;
+      tokens.push({ type: 'identifier', value: sql.slice(start, i) });
+      continue;
+    }
+    if (sql[i] === '?') {
+      tokens.push({ type: 'identifier', value: '?' }); i++; continue;
+    }
+    // Word (keyword, function, type, or identifier)
+    if (/[a-zA-Z_]/.test(sql[i])) {
+      let start = i;
+      while (i < len && /[a-zA-Z0-9_]/.test(sql[i])) i++;
+      const word = sql.slice(start, i);
+      const upper = word.toUpperCase();
+      if (KEYWORDS.has(upper)) tokens.push({ type: 'keyword', value: word });
+      else if (FUNCTIONS.has(upper)) tokens.push({ type: 'function', value: word });
+      else if (TYPES.has(upper)) tokens.push({ type: 'type', value: word });
+      else tokens.push({ type: 'word', value: word });
+      continue;
+    }
+    // Anything else
+    tokens.push({ type: 'other', value: sql[i] }); i++;
+  }
+  return tokens;
+}
+
+// ─── Formatter ───
+const MAJOR_CLAUSES = new Set([
+  'SELECT','FROM','WHERE','GROUP','ORDER','HAVING','LIMIT','OFFSET',
+  'UNION','INTERSECT','EXCEPT','INSERT','INTO','VALUES','UPDATE','SET',
+  'DELETE','CREATE','ALTER','DROP','WITH','RETURNING','FETCH','JOIN',
+  'LEFT','RIGHT','INNER','OUTER','FULL','CROSS','NATURAL','ON','USING',
+  'MERGE','MATCHED','WHEN','CASE','END'
+]);
+
+const NEWLINE_BEFORE = new Set([
+  'SELECT','FROM','WHERE','GROUP','ORDER','HAVING','LIMIT','OFFSET',
+  'UNION','INTERSECT','EXCEPT','SET','VALUES','RETURNING','FETCH',
+  'JOIN','LEFT','RIGHT','INNER','OUTER','FULL','CROSS','NATURAL',
+  'ON','USING','AND','OR','WHEN','THEN','ELSE','END','MERGE','MATCHED',
+  'INSERT','UPDATE','DELETE','CREATE','ALTER','DROP','WITH','INTO'
+]);
+
+const INDENT_AFTER = new Set([
+  'SELECT','SET','VALUES','WHERE','HAVING','ON','USING','WHEN','CASE'
+]);
+
+function formatTokens(tokens, indentStr, keywordCase) {
+  let result = '';
+  let indent = 0;
+  let prevSignificant = null;
+  const parenStack = [];
+  let lineStart = true;
+  let afterComma = false;
+
+  function applyCase(word) {
+    if (keywordCase === 'upper') return word.toUpperCase();
+    if (keywordCase === 'lower') return word.toLowerCase();
+    return word;
+  }
+
+  function nl() { return '\n' + indentStr.repeat(indent); }
+
+  function lastNonWS() { return prevSignificant; }
+
+  const significantTokens = tokens.filter(t => t.type !== 'whitespace');
+
+  for (let idx = 0; idx < significantTokens.length; idx++) {
+    const tok = significantTokens[idx];
+    const next = significantTokens[idx + 1];
+    const upper = (tok.value || '').toUpperCase();
+
+    if (tok.type === 'comment') {
+      if (result && !lineStart) result += ' ';
+      result += tok.value;
+      result += nl();
+      lineStart = true;
+      prevSignificant = tok;
+      continue;
+    }
+
+    // Handle keywords
+    if (tok.type === 'keyword') {
+      const kw = upper;
+
+      // Compound keywords: GROUP BY, ORDER BY, LEFT JOIN, etc.
+      const nextUpper = next ? next.value.toUpperCase() : '';
+      let compound = false;
+
+      if ((kw === 'GROUP' || kw === 'ORDER' || kw === 'PARTITION') && nextUpper === 'BY') compound = true;
+      if ((kw === 'LEFT' || kw === 'RIGHT' || kw === 'FULL' || kw === 'CROSS' || kw === 'NATURAL' || kw === 'INNER' || kw === 'OUTER') &&
+          (nextUpper === 'JOIN' || nextUpper === 'OUTER' || nextUpper === 'INNER')) compound = true;
+      if (kw === 'INSERT' && nextUpper === 'INTO') compound = true;
+      if (kw === 'NOT' && (nextUpper === 'NULL' || nextUpper === 'IN' || nextUpper === 'EXISTS' || nextUpper === 'LIKE' || nextUpper === 'BETWEEN')) compound = true;
+      if (kw === 'IS' && (nextUpper === 'NULL' || nextUpper === 'NOT')) compound = true;
+      if (kw === 'UNION' && nextUpper === 'ALL') compound = true;
+
+      // Decide newline before this keyword
+      const needsNewline = NEWLINE_BEFORE.has(kw) && prevSignificant;
+
+      // Don't newline for AND/OR inside parentheses at deep nesting
+      const inParen = parenStack.length > 0;
+
+      if (needsNewline && !(inParen && (kw === 'AND' || kw === 'OR'))) {
+        // Dedent for major clause starts
+        if (['FROM','WHERE','GROUP','ORDER','HAVING','LIMIT','OFFSET','SET',
+             'UNION','INTERSECT','EXCEPT','RETURNING','FETCH','INTO','VALUES'].includes(kw)) {
+          indent = parenStack.length > 0 ? parenStack[parenStack.length - 1] + 1 : 0;
+          result += nl();
+        } else if (['JOIN','LEFT','RIGHT','INNER','OUTER','FULL','CROSS','NATURAL'].includes(kw)) {
+          indent = parenStack.length > 0 ? parenStack[parenStack.length - 1] + 1 : 0;
+          result += nl();
+        } else if (kw === 'ON' || kw === 'USING') {
+          indent = (parenStack.length > 0 ? parenStack[parenStack.length - 1] + 1 : 0) + 1;
+          result += nl();
+        } else if (kw === 'AND' || kw === 'OR') {
+          result += nl();
+        } else if (kw === 'WHEN' || kw === 'THEN' || kw === 'ELSE') {
+          result += nl();
+        } else if (kw === 'END') {
+          indent = Math.max(0, indent - 1);
+          result += nl();
+        } else {
+          result += nl();
+        }
+        lineStart = true;
+      } else if (!lineStart && prevSignificant) {
+        result += ' ';
+      }
+
+      result += applyCase(tok.value);
+      lineStart = false;
+
+      if (compound && next) {
+        result += ' ' + applyCase(next.value);
+        idx++;
+        prevSignificant = next;
+
+        // Handle triple: LEFT OUTER JOIN
+        const next2 = significantTokens[idx + 1];
+        if (next2 && (next.value.toUpperCase() === 'OUTER' || next.value.toUpperCase() === 'INNER') &&
+            next2.value.toUpperCase() === 'JOIN') {
+          result += ' ' + applyCase(next2.value);
+          idx++;
+          prevSignificant = next2;
+        }
+      }
+
+      // Indent after certain keywords
+      if (INDENT_AFTER.has(kw) || (kw === 'CASE')) {
+        indent = (parenStack.length > 0 ? parenStack[parenStack.length - 1] + 1 : 0) + 1;
+        if (kw === 'CASE') indent++;
+      }
+
+      prevSignificant = tok;
+      continue;
+    }
+
+    // Parentheses
+    if (tok.type === 'paren') {
+      if (tok.value === '(') {
+        if (!lineStart && prevSignificant) result += ' ';
+        result += '(';
+        parenStack.push(indent);
+        indent++;
+        // Check if this is a subquery
+        if (next && next.type === 'keyword' && ['SELECT','WITH','INSERT','UPDATE','DELETE'].includes(next.value.toUpperCase())) {
+          result += nl();
+          lineStart = true;
+        }
+      } else {
+        if (parenStack.length > 0) indent = parenStack.pop();
+        result += nl() + ')';
+        lineStart = false;
+      }
+      prevSignificant = tok;
+      continue;
+    }
+
+    // Comma
+    if (tok.type === 'comma') {
+      result += ',';
+      result += nl();
+      lineStart = true;
+      prevSignificant = tok;
+      continue;
+    }
+
+    // Semicolon
+    if (tok.type === 'semicolon') {
+      result += ';';
+      indent = 0;
+      result += '\n';
+      lineStart = true;
+      prevSignificant = tok;
+      continue;
+    }
+
+    // Everything else
+    if (!lineStart && prevSignificant) result += ' ';
+    if (tok.type === 'function') {
+      result += applyCase(tok.value);
+    } else if (tok.type === 'type') {
+      result += applyCase(tok.value);
+    } else {
+      result += tok.value;
+    }
+    lineStart = false;
+    prevSignificant = tok;
+  }
+
+  return result.trim();
+}
+
+// ─── Syntax Highlighting ───
+function highlightSQL(formatted) {
+  const tokens = tokenize(formatted);
+  let html = '';
+  for (const tok of tokens) {
+    const esc = escapeHtml(tok.value);
+    switch (tok.type) {
+      case 'keyword': html += `<span class="sql-keyword">${esc}</span>`; break;
+      case 'function': html += `<span class="sql-function">${esc}</span>`; break;
+      case 'string': html += `<span class="sql-string">${esc}</span>`; break;
+      case 'number': html += `<span class="sql-number">${esc}</span>`; break;
+      case 'operator': html += `<span class="sql-operator">${esc}</span>`; break;
+      case 'comment': html += `<span class="sql-comment">${esc}</span>`; break;
+      case 'paren': html += `<span class="sql-paren">${esc}</span>`; break;
+      case 'comma': html += `<span class="sql-comma">${esc}</span>`; break;
+      case 'type': html += `<span class="sql-type">${esc}</span>`; break;
+      case 'identifier': html += `<span class="sql-identifier">${esc}</span>`; break;
+      default: html += esc;
+    }
+  }
+  return html;
+}
+
+function escapeHtml(str) {
+  return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ─── Minifier ───
+function minifyTokens(tokens) {
+  let result = '';
+  let prev = null;
+  for (const tok of tokens) {
+    if (tok.type === 'whitespace' || tok.type === 'comment') continue;
+    if (prev) {
+      const needsSpace = (
+        (prev.type === 'keyword' || prev.type === 'word' || prev.type === 'function' || prev.type === 'type' || prev.type === 'number' || prev.type === 'identifier') &&
+        (tok.type === 'keyword' || tok.type === 'word' || tok.type === 'function' || tok.type === 'type' || tok.type === 'number' || tok.type === 'identifier' || tok.type === 'string')
+      );
+      const needsSpaceOp = (
+        (prev.type === 'string' || prev.type === 'number' || prev.type === 'word' || prev.type === 'identifier') &&
+        tok.type === 'operator' && tok.value !== '.' && tok.value !== ',' && tok.value !== '(' && tok.value !== ')' && tok.value !== '::'
+      );
+      if (needsSpace || needsSpaceOp) result += ' ';
+    }
+    result += tok.value;
+    prev = tok;
+  }
+  return result;
+}
+
+// ─── UI State ───
+let lastFormatted = '';
+
+function getIndent() {
+  const v = document.getElementById('indent-select').value;
+  return v === 'tab' ? '\t' : ' '.repeat(parseInt(v));
+}
+
+function getCase() {
+  return document.getElementById('case-select').value;
+}
+
+function formatSQL() {
+  const input = document.getElementById('sql-input').value.trim();
+  if (!input) {
+    document.getElementById('sql-output').innerHTML = '<span style="color:var(--text-muted)">Formatted SQL will appear here…</span>';
+    lastFormatted = '';
+    return;
+  }
+  const tokens = tokenize(input);
+  const formatted = formatTokens(tokens, getIndent(), getCase());
+  lastFormatted = formatted;
+  document.getElementById('sql-output').innerHTML = highlightSQL(formatted);
+}
+
+function minifySQL() {
+  const input = document.getElementById('sql-input').value.trim();
+  if (!input) return;
+  const tokens = tokenize(input);
+  const minified = minifyTokens(tokens);
+  lastFormatted = minified;
+  document.getElementById('sql-output').innerHTML = highlightSQL(minified);
+}
+
+function copyOutput() {
+  if (!lastFormatted) return;
+  navigator.clipboard.writeText(lastFormatted).then(() => {
+    showToast('Copied to clipboard!');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = lastFormatted;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('Copied to clipboard!');
+  });
+}
+
+async function pasteFromClipboard() {
+  try {
+    const text = await navigator.clipboard.readText();
+    document.getElementById('sql-input').value = text;
+    formatSQL();
+  } catch(e) {}
+}
+
+function clearAll() {
+  document.getElementById('sql-input').value = '';
+  document.getElementById('sql-output').innerHTML = '<span style="color:var(--text-muted)">Formatted SQL will appear here…</span>';
+  lastFormatted = '';
+}
+
+function loadSample() {
+  document.getElementById('sql-input').value = `SELECT u.id, u.name, u.email, COUNT(o.id) AS order_count, SUM(o.total) AS total_spent, COALESCE(a.city, 'Unknown') AS city FROM users u LEFT JOIN orders o ON u.id = o.user_id AND o.status = 'completed' LEFT JOIN addresses a ON u.id = a.user_id AND a.is_primary = true WHERE u.created_at >= '2024-01-01' AND u.active = true AND (u.role = 'customer' OR u.role = 'vip') GROUP BY u.id, u.name, u.email, a.city HAVING COUNT(o.id) > 5 ORDER BY total_spent DESC LIMIT 50 OFFSET 0;`;
+  formatSQL();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+// Auto-format on input with debounce
+let debounceTimer;
+document.getElementById('sql-input').addEventListener('input', () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(formatSQL, 300);
+});
+
+// Tab key support in textarea
+document.getElementById('sql-input').addEventListener('keydown', (e) => {
+  if (e.key === 'Tab') {
+    e.preventDefault();
+    const ta = e.target;
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    ta.value = ta.value.substring(0, start) + '  ' + ta.value.substring(end);
+    ta.selectionStart = ta.selectionEnd = start + 2;
+  }
+});
+
+// Ctrl+Enter to format
+document.addEventListener('keydown', (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+    e.preventDefault();
+    formatSQL();
+  }
+});
+</script>
+</body>
+</html>
