@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://goosekit.dev/word-counter/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Word Counter — Free Character, Word & Reading Time Calculator</title>
+  <meta name="description" content="Count words, characters, sentences, paragraphs and estimate reading time instantly. Free online word counter with keyword density and text statistics." />
+  <meta property="og:title" content="Word Counter — Free Character, Word & Reading Time Calculator" />
+  <meta property="og:description" content="Count words, characters, sentences, paragraphs. Estimate reading time. Free, instant, no signup." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://goosekit.dev/word-counter/" />
+  <meta property="og:image" content="https://goosekit.dev/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Word Counter",
+    "description": "Free online word counter. Count characters, words, sentences, paragraphs and estimate reading time.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f19; --surface: #161625; --border: #2a2a3d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --purple: #a78bfa; --radius: 10px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+    main { flex: 1; max-width: 900px; margin: 0 auto; padding: 24px 20px; width: 100%; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+    .stats-bar {
+      display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px;
+    }
+    .stat-card {
+      flex: 1; min-width: 110px; background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px; text-align: center;
+    }
+    .stat-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .stat-card .val { font-size: 1.5rem; font-weight: 700; margin-top: 4px; }
+    .stat-card .val.green { color: var(--green); }
+    .stat-card .val.cyan { color: var(--cyan); }
+    .stat-card .val.orange { color: var(--orange); }
+    .stat-card .val.purple { color: var(--purple); }
+    textarea {
+      width: 100%; min-height: 300px; background: var(--surface); color: var(--text);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; font-size: 15px; line-height: 1.7; resize: vertical;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      outline: none; transition: border-color .2s;
+    }
+    textarea:focus { border-color: var(--green); }
+    textarea::placeholder { color: #4a4a6a; }
+    .bottom-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;
+    }
+    @media (max-width: 600px) { .bottom-stats { grid-template-columns: 1fr; } }
+    .panel {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+    }
+    .panel h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .kw-list { display: flex; flex-direction: column; gap: 6px; }
+    .kw-item { display: flex; justify-content: space-between; align-items: center; }
+    .kw-item .word { font-size: 13px; }
+    .kw-item .count { font-size: 12px; color: var(--cyan); font-family: monospace; }
+    .kw-bar { flex: 1; margin: 0 12px; height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+    .kw-bar .fill { height: 100%; background: var(--green); border-radius: 2px; }
+    .detail-row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid var(--border); }
+    .detail-row:last-child { border: none; }
+    .detail-row .dl { font-size: 13px; color: var(--muted); }
+    .detail-row .dv { font-size: 13px; font-family: monospace; }
+    .btn-row { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 8px 16px; font-size: 13px; cursor: pointer;
+    }
+    button:hover { background: #1c1c30; }
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<!-- Goosekit Banner -->
+<div style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 40 free tools
+    </a>
+  </div>
+</div>
+
+<main>
+  <h1>📝 Word Counter</h1>
+  <p class="subtitle">Count words, characters, sentences & estimate reading time.</p>
+
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-card"><div class="label">Words</div><div class="val green" id="wordCount">0</div></div>
+    <div class="stat-card"><div class="label">Characters</div><div class="val cyan" id="charCount">0</div></div>
+    <div class="stat-card"><div class="label">Sentences</div><div class="val orange" id="sentenceCount">0</div></div>
+    <div class="stat-card"><div class="label">Paragraphs</div><div class="val purple" id="paraCount">0</div></div>
+    <div class="stat-card"><div class="label">Reading Time</div><div class="val" id="readTime">0s</div></div>
+  </div>
+
+  <textarea id="textInput" placeholder="Start typing or paste your text here…" oninput="analyze()" autofocus></textarea>
+
+  <div class="btn-row">
+    <button onclick="document.getElementById('textInput').value='';analyze()">✕ Clear</button>
+    <button onclick="navigator.clipboard.writeText(document.getElementById('textInput').value)">⎘ Copy</button>
+    <button onclick="document.getElementById('textInput').select()">Select All</button>
+  </div>
+
+  <div class="bottom-stats">
+    <div class="panel">
+      <h3>Top Keywords</h3>
+      <div class="kw-list" id="keywords">
+        <div style="color:var(--muted);font-size:13px;">Type something to see keywords</div>
+      </div>
+    </div>
+    <div class="panel">
+      <h3>Details</h3>
+      <div id="details">
+        <div class="detail-row"><span class="dl">Characters (no spaces)</span><span class="dv" id="charNoSpace">0</span></div>
+        <div class="detail-row"><span class="dl">Avg word length</span><span class="dv" id="avgWordLen">0</span></div>
+        <div class="detail-row"><span class="dl">Avg sentence length</span><span class="dv" id="avgSentLen">0 words</span></div>
+        <div class="detail-row"><span class="dl">Speaking time</span><span class="dv" id="speakTime">0s</span></div>
+        <div class="detail-row"><span class="dl">Lines</span><span class="dv" id="lineCount">0</span></div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>Word Counter · <a href="/">Goosekit — 40 free tools</a></footer>
+
+<script>
+function analyze() {
+  const text = document.getElementById('textInput').value;
+
+  // Basic counts
+  const chars = text.length;
+  const charsNoSpace = text.replace(/\s/g, '').length;
+  const words = text.trim() ? text.trim().split(/\s+/) : [];
+  const wordCount = words.length;
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentenceCount = sentences.length;
+  const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+  const paraCount = text.trim() ? paragraphs.length : 0;
+  const lines = text.split('\n').length;
+
+  // Reading / speaking time
+  const readMin = wordCount / 238; // avg adult reading speed
+  const speakMin = wordCount / 150; // avg speaking speed
+
+  document.getElementById('wordCount').textContent = wordCount.toLocaleString();
+  document.getElementById('charCount').textContent = chars.toLocaleString();
+  document.getElementById('sentenceCount').textContent = sentenceCount;
+  document.getElementById('paraCount').textContent = paraCount;
+  document.getElementById('readTime').textContent = formatTime(readMin);
+  document.getElementById('charNoSpace').textContent = charsNoSpace.toLocaleString();
+  document.getElementById('avgWordLen').textContent = wordCount > 0 ? (charsNoSpace / wordCount).toFixed(1) : '0';
+  document.getElementById('avgSentLen').textContent = sentenceCount > 0 ? Math.round(wordCount / sentenceCount) + ' words' : '0 words';
+  document.getElementById('speakTime').textContent = formatTime(speakMin);
+  document.getElementById('lineCount').textContent = lines;
+
+  // Keywords
+  const kwEl = document.getElementById('keywords');
+  if (wordCount === 0) {
+    kwEl.innerHTML = '<div style="color:var(--muted);font-size:13px;">Type something to see keywords</div>';
+    return;
+  }
+
+  const stopWords = new Set(['the','be','to','of','and','a','in','that','have','i','it','for','not','on','with','he','as','you','do','at','this','but','his','by','from','they','we','her','she','or','an','will','my','one','all','would','there','their','what','so','up','out','if','about','who','get','which','go','me','when','make','can','like','time','no','just','him','know','take','people','into','year','your','good','some','could','them','see','other','than','then','now','look','only','come','its','over','think','also','back','after','use','two','how','our','work','first','well','way','even','new','want','because','any','these','give','day','most','us','is','are','was','were','been','being','has','had','did','does','done','am','may','might','shall','should','must','need','dare','ought','used','going','got']);
+  const freq = {};
+  words.forEach(w => {
+    const lw = w.toLowerCase().replace(/[^a-z0-9'-]/g, '');
+    if (lw.length > 1 && !stopWords.has(lw)) freq[lw] = (freq[lw] || 0) + 1;
+  });
+
+  const sorted = Object.entries(freq).sort((a, b) => b[1] - a[1]).slice(0, 10);
+  const max = sorted.length > 0 ? sorted[0][1] : 1;
+
+  kwEl.innerHTML = sorted.length === 0
+    ? '<div style="color:var(--muted);font-size:13px;">No significant keywords found</div>'
+    : sorted.map(([word, count]) => {
+        const pct = Math.round((count / wordCount) * 100 * 10) / 10;
+        return `<div class="kw-item">
+          <span class="word">${word}</span>
+          <div class="kw-bar"><div class="fill" style="width:${(count/max)*100}%"></div></div>
+          <span class="count">${count} (${pct}%)</span>
+        </div>`;
+      }).join('');
+}
+
+function formatTime(min) {
+  if (min < 1/60) return '0s';
+  if (min < 1) return Math.round(min * 60) + 's';
+  const m = Math.floor(min);
+  const s = Math.round((min - m) * 60);
+  return s > 0 ? `${m}m ${s}s` : `${m}m`;
+}
+
+analyze();
+</script>
+</body>
+</html>

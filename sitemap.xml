@@ -35,4 +35,10 @@
   <url><loc>https://goosekit.dev/sql-formatter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/curl-converter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/json-to-typescript/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/image-compressor/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/pdf-merge/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/unit-converter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/word-counter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/background-remover/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/invoice-generator/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>

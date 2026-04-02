@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://goosekit.dev/image-compressor/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Image Compressor — Free Browser-Based Image Compression</title>
+  <meta name="description" content="Compress images instantly in your browser. Reduce JPEG, PNG, WebP file sizes without uploading to any server. Adjust quality, compare before/after. 100% private." />
+  <meta property="og:title" content="Image Compressor — Free Browser-Based Image Compression" />
+  <meta property="og:description" content="Compress images in your browser. No upload, no server, no signup. Adjust quality and compare results." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://goosekit.dev/image-compressor/" />
+  <meta property="og:image" content="https://goosekit.dev/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Image Compressor — Goosekit" />
+  <meta name="twitter:description" content="Compress images in your browser. No upload, no server, no signup." />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Image Compressor",
+    "description": "Free browser-based image compressor. Reduce file sizes without uploading to any server.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f19; --surface: #161625; --border: #2a2a3d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --red: #ef4444;
+      --purple: #a78bfa; --radius: 10px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+    main { flex: 1; max-width: 900px; margin: 0 auto; padding: 24px 20px; width: 100%; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 60px 20px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s; background: var(--surface);
+    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--green); background: rgba(34,197,94,0.05); }
+    .drop-zone .icon { font-size: 3rem; margin-bottom: 12px; }
+    .drop-zone p { color: var(--muted); }
+    .drop-zone input { display: none; }
+    .controls {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; margin-top: 20px; display: none; flex-direction: column; gap: 16px;
+    }
+    .controls.show { display: flex; }
+    .control-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .control-row label { font-size: 13px; color: var(--muted); min-width: 80px; }
+    .control-row input[type="range"] { flex: 1; accent-color: var(--green); min-width: 150px; }
+    .control-row .value { font-family: monospace; font-size: 14px; color: var(--cyan); min-width: 40px; text-align: center; }
+    .control-row select {
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 6px 12px; font-size: 13px;
+    }
+    .results { margin-top: 20px; display: none; flex-direction: column; gap: 16px; }
+    .results.show { display: flex; }
+    .compare {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+    }
+    @media (max-width: 600px) { .compare { grid-template-columns: 1fr; } }
+    .compare-side { text-align: center; }
+    .compare-side h3 { font-size: 13px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+    .compare-side img { max-width: 100%; max-height: 300px; border-radius: 6px; object-fit: contain; background: #0a0a12; }
+    .stats {
+      display: flex; flex-wrap: wrap; gap: 16px; justify-content: center;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px;
+    }
+    .stat { text-align: center; min-width: 100px; }
+    .stat .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .stat .val { font-size: 1.3rem; font-weight: 700; margin-top: 4px; }
+    .stat .val.green { color: var(--green); }
+    .stat .val.cyan { color: var(--cyan); }
+    .stat .val.orange { color: var(--orange); }
+    .btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+    button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 20px; font-size: 13px; cursor: pointer;
+      transition: background .15s;
+    }
+    button:hover { background: #1c1c30; }
+    button.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+    button.primary:hover { background: #16a34a; }
+    /* Batch list */
+    .batch-list { display: flex; flex-direction: column; gap: 8px; }
+    .batch-item {
+      display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .batch-item .name { flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .batch-item .info { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .batch-item .saving { font-size: 12px; font-weight: 600; }
+    .batch-item .saving.green { color: var(--green); }
+    .batch-item button { padding: 4px 12px; font-size: 12px; }
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--green); color: #000; padding: 8px 20px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; opacity: 0; transition: all .3s; pointer-events: none; z-index: 999;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Goosekit Banner -->
+<div style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 40 free tools
+    </a>
+  </div>
+</div>
+
+<main>
+  <h1>🖼️ Image Compressor</h1>
+  <p class="subtitle">Compress images in your browser. Nothing leaves your device.</p>
+
+  <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">📁</div>
+    <p><strong>Drop images here</strong> or click to browse</p>
+    <p style="font-size:12px;margin-top:8px;">Supports JPEG, PNG, WebP • Multiple files OK</p>
+    <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" multiple />
+  </div>
+
+  <div class="controls" id="controls">
+    <div class="control-row">
+      <label>Quality</label>
+      <input type="range" id="quality" min="1" max="100" value="75" oninput="document.getElementById('qualityVal').textContent=this.value+'%'; compressAll()" />
+      <span class="value" id="qualityVal">75%</span>
+    </div>
+    <div class="control-row">
+      <label>Output</label>
+      <select id="outputFormat" onchange="compressAll()">
+        <option value="image/jpeg">JPEG</option>
+        <option value="image/webp">WebP</option>
+        <option value="image/png">PNG</option>
+      </select>
+    </div>
+    <div class="control-row">
+      <label>Max Width</label>
+      <input type="range" id="maxWidth" min="100" max="4000" value="4000" step="100" oninput="document.getElementById('maxWidthVal').textContent=this.value=='4000'?'Original':this.value+'px'; compressAll()" />
+      <span class="value" id="maxWidthVal">Original</span>
+    </div>
+    <div class="btn-row">
+      <button class="primary" onclick="downloadAll()">⬇ Download All</button>
+      <button onclick="reset()">✕ Clear</button>
+    </div>
+  </div>
+
+  <div class="results" id="results">
+    <div class="stats" id="stats"></div>
+    <div class="compare" id="compare"></div>
+    <div class="batch-list" id="batchList"></div>
+  </div>
+</main>
+
+<footer>Image Compressor · 100% client-side. <a href="/">Goosekit — 40 free tools</a></footer>
+<div id="toast"></div>
+
+<script>
+let files = [];
+let compressed = [];
+
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+['dragenter','dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('dragover'); }));
+['dragleave','drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('dragover'); }));
+
+dropZone.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+fileInput.addEventListener('change', e => handleFiles(e.target.files));
+
+function handleFiles(fileList) {
+  files = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  if (!files.length) return;
+  document.getElementById('controls').classList.add('show');
+  document.getElementById('results').classList.add('show');
+  compressAll();
+}
+
+async function compressAll() {
+  const quality = parseInt(document.getElementById('quality').value) / 100;
+  const format = document.getElementById('outputFormat').value;
+  const maxW = parseInt(document.getElementById('maxWidth').value);
+  compressed = [];
+  let totalOrig = 0, totalComp = 0;
+
+  for (const file of files) {
+    const result = await compressOne(file, quality, format, maxW);
+    compressed.push(result);
+    totalOrig += result.originalSize;
+    totalComp += result.compressedSize;
+  }
+
+  // Stats
+  const saved = totalOrig - totalComp;
+  const pct = totalOrig > 0 ? Math.round((saved / totalOrig) * 100) : 0;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="label">Original</div><div class="val cyan">${formatBytes(totalOrig)}</div></div>
+    <div class="stat"><div class="label">Compressed</div><div class="val green">${formatBytes(totalComp)}</div></div>
+    <div class="stat"><div class="label">Saved</div><div class="val orange">${pct}% (${formatBytes(saved)})</div></div>
+    <div class="stat"><div class="label">Files</div><div class="val">${files.length}</div></div>
+  `;
+
+  // Compare (first image)
+  if (compressed.length > 0) {
+    const c = compressed[0];
+    document.getElementById('compare').innerHTML = `
+      <div class="compare-side"><h3>Original (${formatBytes(c.originalSize)})</h3><img src="${c.originalUrl}"></div>
+      <div class="compare-side"><h3>Compressed (${formatBytes(c.compressedSize)})</h3><img src="${c.compressedUrl}"></div>
+    `;
+  }
+
+  // Batch list
+  const list = document.getElementById('batchList');
+  list.innerHTML = compressed.map((c, i) => {
+    const s = c.originalSize - c.compressedSize;
+    const p = c.originalSize > 0 ? Math.round((s / c.originalSize) * 100) : 0;
+    return `<div class="batch-item">
+      <span class="name">${c.name}</span>
+      <span class="info">${formatBytes(c.originalSize)} → ${formatBytes(c.compressedSize)}</span>
+      <span class="saving green">-${p}%</span>
+      <button onclick="downloadOne(${i})">⬇</button>
+    </div>`;
+  }).join('');
+}
+
+function compressOne(file, quality, format, maxW) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const originalUrl = URL.createObjectURL(file);
+    img.onload = () => {
+      let w = img.width, h = img.height;
+      if (w > maxW) { h = Math.round(h * (maxW / w)); w = maxW; }
+      const canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      canvas.toBlob(blob => {
+        const ext = format === 'image/webp' ? '.webp' : format === 'image/png' ? '.png' : '.jpg';
+        const name = file.name.replace(/\.[^.]+$/, '') + '_compressed' + ext;
+        resolve({
+          name, originalSize: file.size, compressedSize: blob.size,
+          originalUrl, compressedUrl: URL.createObjectURL(blob), blob
+        });
+      }, format, quality);
+    };
+    img.src = originalUrl;
+  });
+}
+
+function downloadOne(i) {
+  const c = compressed[i];
+  const a = document.createElement('a');
+  a.href = c.compressedUrl; a.download = c.name; a.click();
+}
+
+function downloadAll() {
+  compressed.forEach((_, i) => downloadOne(i));
+  toast('Downloaded!');
+}
+
+function reset() {
+  files = []; compressed = [];
+  document.getElementById('controls').classList.remove('show');
+  document.getElementById('results').classList.remove('show');
+  fileInput.value = '';
+}
+
+function formatBytes(b) {
+  if (b === 0) return '0 B';
+  const k = 1024, s = ['B','KB','MB','GB'];
+  const i = Math.floor(Math.log(b) / Math.log(k));
+  return parseFloat((b / Math.pow(k, i)).toFixed(1)) + ' ' + s[i];
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://goosekit.dev/unit-converter/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit Converter — Free Online Length, Weight, Temperature & More</title>
+  <meta name="description" content="Convert between units of length, weight, temperature, area, volume, speed, and data storage instantly. Free, accurate, and works offline." />
+  <meta property="og:title" content="Unit Converter — Free Online Unit Conversion Tool" />
+  <meta property="og:description" content="Convert length, weight, temperature, area, volume, speed, and data units instantly. Free and works offline." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://goosekit.dev/unit-converter/" />
+  <meta property="og:image" content="https://goosekit.dev/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Unit Converter",
+    "description": "Free online unit converter for length, weight, temperature, area, volume, speed, and data storage.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f19; --surface: #161625; --border: #2a2a3d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --radius: 10px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+    main { flex: 1; max-width: 700px; margin: 0 auto; padding: 24px 20px; width: 100%; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+    .categories {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px;
+    }
+    .cat-btn {
+      background: var(--surface); color: var(--muted); border: 1px solid var(--border);
+      border-radius: 20px; padding: 6px 14px; font-size: 13px; cursor: pointer;
+      transition: all .15s;
+    }
+    .cat-btn:hover { border-color: #484f58; color: var(--text); }
+    .cat-btn.active { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; }
+    .converter {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px; display: flex; flex-direction: column; gap: 20px;
+    }
+    .input-group { display: flex; flex-direction: column; gap: 8px; }
+    .input-group label { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; }
+    .input-row { display: flex; gap: 10px; }
+    .input-row input {
+      flex: 1; background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 12px 14px; font-size: 18px; font-family: monospace;
+      outline: none; transition: border-color .2s;
+    }
+    .input-row input:focus { border-color: var(--green); }
+    .input-row select {
+      background: var(--bg); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 12px; font-size: 13px; min-width: 120px;
+    }
+    .swap-btn {
+      align-self: center; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 50%; width: 40px; height: 40px; font-size: 18px;
+      cursor: pointer; color: var(--text); transition: all .2s; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .swap-btn:hover { background: #1c1c30; border-color: var(--green); }
+    .formula {
+      font-size: 12px; color: var(--muted); text-align: center;
+      padding: 8px; background: var(--bg); border-radius: 6px;
+      font-family: monospace;
+    }
+    .all-results {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; margin-top: 16px;
+    }
+    .all-results h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 10px; }
+    .result-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 8px; }
+    .result-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 8px 12px; background: var(--bg); border-radius: 6px;
+      cursor: pointer; transition: background .15s;
+    }
+    .result-item:hover { background: #1a1a2e; }
+    .result-item .unit { font-size: 12px; color: var(--muted); }
+    .result-item .val { font-family: monospace; font-size: 13px; color: var(--cyan); }
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--green); color: #000; padding: 8px 20px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; opacity: 0; transition: all .3s; pointer-events: none; z-index: 999;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Goosekit Banner -->
+<div style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 40 free tools
+    </a>
+  </div>
+</div>
+
+<main>
+  <h1>📐 Unit Converter</h1>
+  <p class="subtitle">Convert between units of length, weight, temperature, area, volume, speed & data.</p>
+
+  <div class="categories" id="categories"></div>
+
+  <div class="converter">
+    <div class="input-group">
+      <label>From</label>
+      <div class="input-row">
+        <input type="number" id="fromValue" value="1" oninput="convert()" />
+        <select id="fromUnit" onchange="convert()"></select>
+      </div>
+    </div>
+    <button class="swap-btn" onclick="swap()" title="Swap">⇅</button>
+    <div class="input-group">
+      <label>To</label>
+      <div class="input-row">
+        <input type="number" id="toValue" readonly />
+        <select id="toUnit" onchange="convert()"></select>
+      </div>
+    </div>
+    <div class="formula" id="formula"></div>
+  </div>
+
+  <div class="all-results">
+    <h3>All Conversions</h3>
+    <div class="result-grid" id="allResults"></div>
+  </div>
+</main>
+
+<footer>Unit Converter · Works offline. <a href="/">Goosekit — 40 free tools</a></footer>
+<div id="toast"></div>
+
+<script>
+const UNITS = {
+  Length: {
+    meter: 1, kilometer: 1000, centimeter: 0.01, millimeter: 0.001,
+    mile: 1609.344, yard: 0.9144, foot: 0.3048, inch: 0.0254,
+    nautical_mile: 1852, micrometer: 1e-6
+  },
+  Weight: {
+    kilogram: 1, gram: 0.001, milligram: 1e-6, metric_ton: 1000,
+    pound: 0.453592, ounce: 0.0283495, stone: 6.35029, short_ton: 907.185
+  },
+  Temperature: { celsius: 'C', fahrenheit: 'F', kelvin: 'K' },
+  Area: {
+    sq_meter: 1, sq_kilometer: 1e6, sq_mile: 2589988.11, sq_yard: 0.836127,
+    sq_foot: 0.092903, sq_inch: 0.00064516, hectare: 10000, acre: 4046.86
+  },
+  Volume: {
+    liter: 1, milliliter: 0.001, cubic_meter: 1000, gallon_us: 3.78541,
+    quart_us: 0.946353, pint_us: 0.473176, cup_us: 0.236588,
+    fl_oz_us: 0.0295735, tablespoon: 0.0147868, teaspoon: 0.00492892
+  },
+  Speed: {
+    m_per_s: 1, km_per_h: 0.277778, mph: 0.44704, knot: 0.514444, ft_per_s: 0.3048
+  },
+  Data: {
+    byte: 1, kilobyte: 1024, megabyte: 1048576, gigabyte: 1073741824,
+    terabyte: 1099511627776, petabyte: 1125899906842624,
+    bit: 0.125, kilobit: 128, megabit: 131072, gigabit: 134217728
+  }
+};
+
+let currentCat = 'Length';
+
+function initCategories() {
+  const el = document.getElementById('categories');
+  el.innerHTML = Object.keys(UNITS).map(c =>
+    `<button class="cat-btn${c === currentCat ? ' active' : ''}" onclick="switchCategory('${c}')">${getCatIcon(c)} ${c}</button>`
+  ).join('');
+}
+
+function getCatIcon(c) {
+  return { Length:'📏', Weight:'⚖️', Temperature:'🌡️', Area:'📐', Volume:'🧪', Speed:'🏎️', Data:'💾' }[c] || '';
+}
+
+function switchCategory(cat) {
+  currentCat = cat;
+  initCategories();
+  populateSelects();
+  convert();
+}
+
+function populateSelects() {
+  const units = Object.keys(UNITS[currentCat]);
+  const fromSel = document.getElementById('fromUnit');
+  const toSel = document.getElementById('toUnit');
+  const opts = units.map(u => `<option value="${u}">${formatUnitName(u)}</option>`).join('');
+  fromSel.innerHTML = opts;
+  toSel.innerHTML = opts;
+  if (units.length > 1) toSel.selectedIndex = 1;
+}
+
+function formatUnitName(u) {
+  return u.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+}
+
+function convertTemp(val, from, to) {
+  // Convert to celsius first
+  let c;
+  if (from === 'celsius') c = val;
+  else if (from === 'fahrenheit') c = (val - 32) * 5/9;
+  else c = val - 273.15;
+  // Convert from celsius
+  if (to === 'celsius') return c;
+  if (to === 'fahrenheit') return c * 9/5 + 32;
+  return c + 273.15;
+}
+
+function convertValue(val, from, to) {
+  if (currentCat === 'Temperature') return convertTemp(val, from, to);
+  const factors = UNITS[currentCat];
+  return val * factors[from] / factors[to];
+}
+
+function convert() {
+  const val = parseFloat(document.getElementById('fromValue').value) || 0;
+  const from = document.getElementById('fromUnit').value;
+  const to = document.getElementById('toUnit').value;
+  const result = convertValue(val, from, to);
+  document.getElementById('toValue').value = smartFormat(result);
+
+  // Formula
+  if (currentCat === 'Temperature') {
+    document.getElementById('formula').textContent = `${val} ${formatUnitName(from)} = ${smartFormat(result)} ${formatUnitName(to)}`;
+  } else {
+    const factor = UNITS[currentCat][from] / UNITS[currentCat][to];
+    document.getElementById('formula').textContent = `1 ${formatUnitName(from)} = ${smartFormat(factor)} ${formatUnitName(to)}`;
+  }
+
+  // All conversions
+  const units = Object.keys(UNITS[currentCat]);
+  const grid = document.getElementById('allResults');
+  grid.innerHTML = units.map(u => {
+    const r = convertValue(val, from, u);
+    return `<div class="result-item" onclick="copyVal('${smartFormat(r)} ${formatUnitName(u)}')">
+      <span class="unit">${formatUnitName(u)}</span>
+      <span class="val">${smartFormat(r)}</span>
+    </div>`;
+  }).join('');
+}
+
+function swap() {
+  const fromSel = document.getElementById('fromUnit');
+  const toSel = document.getElementById('toUnit');
+  const tmp = fromSel.value;
+  fromSel.value = toSel.value;
+  toSel.value = tmp;
+  convert();
+}
+
+function smartFormat(n) {
+  if (Math.abs(n) === 0) return '0';
+  if (Math.abs(n) >= 1e12) return n.toExponential(4);
+  if (Math.abs(n) < 0.0001) return n.toExponential(4);
+  return parseFloat(n.toPrecision(10)).toString();
+}
+
+function copyVal(text) {
+  navigator.clipboard.writeText(text);
+  const t = document.getElementById('toast');
+  t.textContent = 'Copied!'; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1200);
+}
+
+initCategories();
+populateSelects();
+convert();
+</script>
+</body>
+</html>

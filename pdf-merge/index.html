@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="canonical" href="https://goosekit.dev/pdf-merge/" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PDF Merge — Free Browser-Based PDF Combiner</title>
+  <meta name="description" content="Merge multiple PDF files into one instantly in your browser. No upload, no server, no signup. Drag to reorder, then download. 100% private and free." />
+  <meta property="og:title" content="PDF Merge — Free Browser-Based PDF Combiner" />
+  <meta property="og:description" content="Merge PDFs in your browser. No upload, no server, no signup. Drag to reorder." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://goosekit.dev/pdf-merge/" />
+  <meta property="og:image" content="https://goosekit.dev/logo.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PDF Merge",
+    "description": "Free browser-based PDF merger. Combine multiple PDFs without uploading to any server.",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f0f19; --surface: #161625; --border: #2a2a3d;
+      --text: #e6edf3; --muted: #8b949e; --green: #22c55e;
+      --cyan: #06b6d4; --orange: #f59e0b; --red: #ef4444;
+      --purple: #a78bfa; --radius: 10px;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text);
+      display: flex; flex-direction: column; min-height: 100vh; font-size: 14px;
+    }
+    main { flex: 1; max-width: 800px; margin: 0 auto; padding: 24px 20px; width: 100%; }
+    h1 { font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+    .subtitle { color: var(--muted); margin-bottom: 24px; font-size: 14px; }
+    .drop-zone {
+      border: 2px dashed var(--border); border-radius: var(--radius);
+      padding: 60px 20px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s; background: var(--surface);
+    }
+    .drop-zone:hover, .drop-zone.dragover { border-color: var(--green); background: rgba(34,197,94,0.05); }
+    .drop-zone .icon { font-size: 3rem; margin-bottom: 12px; }
+    .drop-zone p { color: var(--muted); }
+    .drop-zone input { display: none; }
+    .file-list { margin-top: 20px; display: flex; flex-direction: column; gap: 8px; }
+    .file-item {
+      display: flex; align-items: center; gap: 12px; padding: 12px 16px;
+      background: var(--surface); border: 1px solid var(--border); border-radius: 8px;
+      cursor: grab; user-select: none; transition: background .15s;
+    }
+    .file-item:hover { background: #1c1c30; }
+    .file-item.dragging { opacity: 0.5; }
+    .file-item .grip { color: var(--muted); font-size: 18px; cursor: grab; }
+    .file-item .name { flex: 1; font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .file-item .pages { font-size: 12px; color: var(--cyan); white-space: nowrap; }
+    .file-item .size { font-size: 12px; color: var(--muted); white-space: nowrap; }
+    .file-item .remove {
+      background: none; border: none; color: var(--red); cursor: pointer;
+      font-size: 16px; padding: 2px 6px; border-radius: 4px;
+    }
+    .file-item .remove:hover { background: rgba(239,68,68,0.15); }
+    .actions { margin-top: 20px; display: none; flex-direction: column; gap: 12px; align-items: center; }
+    .actions.show { display: flex; }
+    .summary { font-size: 13px; color: var(--muted); }
+    .summary strong { color: var(--text); }
+    button {
+      background: var(--surface); color: var(--text); border: 1px solid var(--border);
+      border-radius: 6px; padding: 10px 24px; font-size: 14px; cursor: pointer;
+      transition: background .15s;
+    }
+    button:hover { background: #1c1c30; }
+    button.primary { background: var(--green); color: #000; border-color: var(--green); font-weight: 600; font-size: 15px; padding: 12px 32px; }
+    button.primary:hover { background: #16a34a; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .progress {
+      width: 100%; max-width: 400px; height: 6px; background: var(--border);
+      border-radius: 3px; overflow: hidden; display: none;
+    }
+    .progress.show { display: block; }
+    .progress .bar { height: 100%; background: var(--green); transition: width .3s; width: 0%; }
+    footer {
+      padding: 12px 20px; border-top: 1px solid var(--border);
+      text-align: center; font-size: 12px; color: var(--muted);
+    }
+    footer a { color: var(--cyan); text-decoration: none; }
+    #toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--green); color: #000; padding: 8px 20px; border-radius: 20px;
+      font-size: 13px; font-weight: 600; opacity: 0; transition: all .3s; pointer-events: none; z-index: 999;
+    }
+    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<!-- Goosekit Banner -->
+<div style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit" style="height:28px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 40 free tools
+    </a>
+  </div>
+</div>
+
+<main>
+  <h1>📄 PDF Merge</h1>
+  <p class="subtitle">Combine multiple PDFs into one. Everything stays in your browser.</p>
+
+  <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
+    <div class="icon">📁</div>
+    <p><strong>Drop PDF files here</strong> or click to browse</p>
+    <p style="font-size:12px;margin-top:8px;">Select multiple files • Drag to reorder</p>
+    <input type="file" id="fileInput" accept="application/pdf" multiple />
+  </div>
+
+  <div class="file-list" id="fileList"></div>
+
+  <div class="actions" id="actions">
+    <div class="summary" id="summary"></div>
+    <div class="progress" id="progress"><div class="bar" id="progressBar"></div></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+      <button class="primary" id="mergeBtn" onclick="mergePDFs()">🔗 Merge PDFs</button>
+      <button onclick="clearAll()">✕ Clear All</button>
+    </div>
+  </div>
+</main>
+
+<footer>PDF Merge · 100% client-side using pdf-lib. <a href="/">Goosekit — 40 free tools</a></footer>
+<div id="toast"></div>
+
+<script>
+let pdfFiles = [];
+
+const dropZone = document.getElementById('dropZone');
+const fileInput = document.getElementById('fileInput');
+
+['dragenter','dragover'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.add('dragover'); }));
+['dragleave','drop'].forEach(e => dropZone.addEventListener(e, ev => { ev.preventDefault(); dropZone.classList.remove('dragover'); }));
+
+dropZone.addEventListener('drop', e => addFiles(e.dataTransfer.files));
+fileInput.addEventListener('change', e => { addFiles(e.target.files); fileInput.value = ''; });
+
+async function addFiles(fileList) {
+  const newFiles = Array.from(fileList).filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
+  for (const file of newFiles) {
+    try {
+      const bytes = await file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(bytes);
+      pdfFiles.push({ name: file.name, size: file.size, pages: pdf.getPageCount(), bytes });
+    } catch (err) {
+      toast('Failed to load: ' + file.name);
+    }
+  }
+  renderList();
+}
+
+function renderList() {
+  const list = document.getElementById('fileList');
+  if (pdfFiles.length === 0) {
+    list.innerHTML = '';
+    document.getElementById('actions').classList.remove('show');
+    return;
+  }
+
+  list.innerHTML = pdfFiles.map((f, i) => `
+    <div class="file-item" draggable="true" data-index="${i}">
+      <span class="grip">⠿</span>
+      <span class="name">📄 ${escHtml(f.name)}</span>
+      <span class="pages">${f.pages} page${f.pages !== 1 ? 's' : ''}</span>
+      <span class="size">${formatBytes(f.size)}</span>
+      <button class="remove" onclick="removeFile(${i})">✕</button>
+    </div>
+  `).join('');
+
+  // Drag reorder
+  const items = list.querySelectorAll('.file-item');
+  let dragIdx = null;
+  items.forEach(item => {
+    item.addEventListener('dragstart', e => { dragIdx = +item.dataset.index; item.classList.add('dragging'); });
+    item.addEventListener('dragend', () => { item.classList.remove('dragging'); });
+    item.addEventListener('dragover', e => e.preventDefault());
+    item.addEventListener('drop', e => {
+      e.preventDefault();
+      const dropIdx = +item.dataset.index;
+      if (dragIdx !== null && dragIdx !== dropIdx) {
+        const [moved] = pdfFiles.splice(dragIdx, 1);
+        pdfFiles.splice(dropIdx, 0, moved);
+        renderList();
+      }
+    });
+  });
+
+  const totalPages = pdfFiles.reduce((s, f) => s + f.pages, 0);
+  const totalSize = pdfFiles.reduce((s, f) => s + f.size, 0);
+  document.getElementById('summary').innerHTML = `<strong>${pdfFiles.length}</strong> files · <strong>${totalPages}</strong> pages · <strong>${formatBytes(totalSize)}</strong> total`;
+  document.getElementById('actions').classList.add('show');
+}
+
+function removeFile(i) { pdfFiles.splice(i, 1); renderList(); }
+function clearAll() { pdfFiles = []; renderList(); }
+
+async function mergePDFs() {
+  if (pdfFiles.length < 2) { toast('Need at least 2 PDFs'); return; }
+  const btn = document.getElementById('mergeBtn');
+  btn.disabled = true; btn.textContent = '⏳ Merging…';
+  const prog = document.getElementById('progress');
+  const bar = document.getElementById('progressBar');
+  prog.classList.add('show');
+
+  try {
+    const merged = await PDFLib.PDFDocument.create();
+    for (let i = 0; i < pdfFiles.length; i++) {
+      const src = await PDFLib.PDFDocument.load(pdfFiles[i].bytes);
+      const pages = await merged.copyPages(src, src.getPageIndices());
+      pages.forEach(p => merged.addPage(p));
+      bar.style.width = Math.round(((i + 1) / pdfFiles.length) * 100) + '%';
+    }
+    const pdfBytes = await merged.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'merged.pdf'; a.click();
+    URL.revokeObjectURL(url);
+    toast('Merged! Downloading…');
+  } catch (err) {
+    toast('Error: ' + err.message);
+  }
+
+  btn.disabled = false; btn.textContent = '🔗 Merge PDFs';
+  setTimeout(() => prog.classList.remove('show'), 1000);
+}
+
+function formatBytes(b) {
+  if (b === 0) return '0 B';
+  const k = 1024, s = ['B','KB','MB','GB'];
+  const i = Math.floor(Math.log(b) / Math.log(k));
+  return parseFloat((b / Math.pow(k, i)).toFixed(1)) + ' ' + s[i];
+}
+
+function escHtml(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+</script>
+</body>
+</html>
