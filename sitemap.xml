@@ -32,4 +32,7 @@
   <url><loc>https://goosekit.dev/ip-lookup/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://goosekit.dev/html-entity/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
   <url><loc>https://goosekit.dev/chmod/</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://goosekit.dev/sql-formatter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/curl-converter/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/json-to-typescript/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
 </urlset>
