@@ -444,14 +444,14 @@
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
       /* Accent colors */
-      --accent-screensnap: #7c3aed;
+      --accent-screensnap: #f97316;
       --accent-ogpreview: #06b6d4;
       --accent-devformat: #22c55e;
       --accent-base64: #3b82f6;
       --accent-regexlab: #f59e0b;
       --accent-diffview-a: #ef4444;
       --accent-diffview-b: #22c55e;
-      --accent-hashgen: #a78bfa;
+      --accent-hashgen: #f97316;
     }
 
     html {
@@ -480,9 +480,9 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.18) 0%, transparent 70%),
         radial-gradient(ellipse 60% 40% at 80% 60%, rgba(6,182,212,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 30% at 20% 80%, rgba(167,139,250,0.07) 0%, transparent 60%);
+        radial-gradient(ellipse 50% 30% at 20% 80%, rgba(251,146,60,0.07) 0%, transparent 60%);
       pointer-events: none;
     }
 
@@ -490,9 +490,9 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(124,58,237,0.15);
-      border: 1px solid rgba(124,58,237,0.3);
-      color: #c4b5fd;
+      background: rgba(249,115,22,0.15);
+      border: 1px solid rgba(249,115,22,0.3);
+      color: #fed7aa;
       font-size: 12px;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -509,7 +509,7 @@
       letter-spacing: -0.03em;
       line-height: 1.1;
       margin-bottom: 20px;
-      background: linear-gradient(135deg, #fff 30%, #c4b5fd 70%, #67e8f9 100%);
+      background: linear-gradient(135deg, #fff 30%, #fed7aa 70%, #67e8f9 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -559,9 +559,9 @@
     #search::placeholder { color: var(--text-dim); }
 
     #search:focus {
-      border-color: rgba(124,58,237,0.5);
+      border-color: rgba(249,115,22,0.5);
       background: rgba(255,255,255,0.07);
-      box-shadow: 0 0 0 3px rgba(124,58,237,0.12);
+      box-shadow: 0 0 0 3px rgba(249,115,22,0.12);
     }
 
     /* ── MAIN ── */
@@ -645,8 +645,8 @@
     .card:hover::before { opacity: 1; }
 
     /* Accent glow per card */
-    .card[data-accent="screensnap"]:hover { box-shadow: 0 8px 40px rgba(124,58,237,0.2); }
-    .card[data-accent="screensnap"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(124,58,237,0.08) 0%, transparent 70%); }
+    .card[data-accent="screensnap"]:hover { box-shadow: 0 8px 40px rgba(249,115,22,0.2); }
+    .card[data-accent="screensnap"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(249,115,22,0.08) 0%, transparent 70%); }
 
     .card[data-accent="ogpreview"]:hover { box-shadow: 0 8px 40px rgba(6,182,212,0.2); }
     .card[data-accent="ogpreview"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(6,182,212,0.08) 0%, transparent 70%); }
@@ -663,8 +663,8 @@
     .card[data-accent="diffview"]:hover { box-shadow: 0 8px 40px rgba(239,68,68,0.15), 0 8px 40px rgba(34,197,94,0.15); }
     .card[data-accent="diffview"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(239,68,68,0.06) 0%, rgba(34,197,94,0.06) 60%, transparent 80%); }
 
-    .card[data-accent="hashgen"]:hover { box-shadow: 0 8px 40px rgba(167,139,250,0.2); }
-    .card[data-accent="hashgen"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(167,139,250,0.08) 0%, transparent 70%); }
+    .card[data-accent="hashgen"]:hover { box-shadow: 0 8px 40px rgba(251,146,60,0.2); }
+    .card[data-accent="hashgen"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(251,146,60,0.08) 0%, transparent 70%); }
 
     /* Card delay for stagger */
     .card:nth-child(1) { animation-delay: 0.05s; }
@@ -726,13 +726,13 @@
     .tag:hover { opacity: 1; }
 
     /* Accent tag color */
-    .card[data-accent="screensnap"] .tag { color: #c4b5fd; background: rgba(124,58,237,0.12); border-color: rgba(124,58,237,0.2); }
+    .card[data-accent="screensnap"] .tag { color: #fed7aa; background: rgba(249,115,22,0.12); border-color: rgba(249,115,22,0.2); }
     .card[data-accent="ogpreview"] .tag { color: #67e8f9; background: rgba(6,182,212,0.12); border-color: rgba(6,182,212,0.2); }
     .card[data-accent="devformat"] .tag { color: #86efac; background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.2); }
     .card[data-accent="base64"] .tag { color: #93c5fd; background: rgba(59,130,246,0.12); border-color: rgba(59,130,246,0.2); }
     .card[data-accent="regexlab"] .tag { color: #fde68a; background: rgba(245,158,11,0.12); border-color: rgba(245,158,11,0.2); }
     .card[data-accent="diffview"] .tag { color: #fca5a5; background: rgba(239,68,68,0.1); border-color: rgba(239,68,68,0.15); }
-    .card[data-accent="hashgen"] .tag { color: #ddd6fe; background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.2); }
+    .card[data-accent="hashgen"] .tag { color: #ddd6fe; background: rgba(251,146,60,0.12); border-color: rgba(251,146,60,0.2); }
 
     /* Link */
     .card-link {
@@ -749,7 +749,7 @@
 
     .card-link:hover { color: #fff; gap: 10px; }
 
-    .card[data-accent="screensnap"] .card-link:hover { color: #c4b5fd; }
+    .card[data-accent="screensnap"] .card-link:hover { color: #fed7aa; }
     .card[data-accent="ogpreview"] .card-link:hover { color: #67e8f9; }
     .card[data-accent="devformat"] .card-link:hover { color: #86efac; }
     .card[data-accent="base64"] .card-link:hover { color: #93c5fd; }
@@ -770,13 +770,13 @@
       pointer-events: none;
     }
     .card:hover::after { opacity: 1; }
-    .card[data-accent="screensnap"]::after { background: linear-gradient(90deg, transparent, #7c3aed, transparent); }
+    .card[data-accent="screensnap"]::after { background: linear-gradient(90deg, transparent, #f97316, transparent); }
     .card[data-accent="ogpreview"]::after { background: linear-gradient(90deg, transparent, #06b6d4, transparent); }
     .card[data-accent="devformat"]::after { background: linear-gradient(90deg, transparent, #22c55e, transparent); }
     .card[data-accent="base64"]::after { background: linear-gradient(90deg, transparent, #3b82f6, transparent); }
     .card[data-accent="regexlab"]::after { background: linear-gradient(90deg, transparent, #f59e0b, transparent); }
     .card[data-accent="diffview"]::after { background: linear-gradient(90deg, transparent, #ef4444, #22c55e, transparent); }
-    .card[data-accent="hashgen"]::after { background: linear-gradient(90deg, transparent, #a78bfa, transparent); }
+    .card[data-accent="hashgen"]::after { background: linear-gradient(90deg, transparent, #f97316, transparent); }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -889,15 +889,15 @@
     </div>
   
     <div style="text-align:center;margin-top:16px;">
-      <a href="/blog/" style="color:#a78bfa;text-decoration:none;font-size:0.9rem;font-weight:500;">📝 Blog</a>
+      <a href="/blog/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">📝 Blog</a>
       <span style="color:#333;margin:0 8px;">·</span>
-      <a href="/pro/" style="color:#a78bfa;text-decoration:none;font-size:0.9rem;font-weight:500;">⚡ Goosekit Pro</a>
+      <a href="/pro/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">⚡ Goosekit Pro</a>
       <span style="color:#333;margin:0 8px;">·</span>
-      <a href="/api/" style="color:#a78bfa;text-decoration:none;font-size:0.9rem;font-weight:500;">🔌 API</a>
+      <a href="/api/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🔌 API</a>
       <span style="color:#333;margin:0 8px;">·</span>
-      <a href="/ship-it-kit/" style="color:#a78bfa;text-decoration:none;font-size:0.9rem;font-weight:500;">🚀 Ship It Kit</a>
+      <a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🚀 Ship It Kit</a>
       <span style="color:#333;margin:0 8px;">·</span>
-      <a href="https://chromewebstore.google.com/detail/goosekit/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener" style="color:#a78bfa;text-decoration:none;font-size:0.9rem;font-weight:500;">🧩 Chrome Extension</a>
+      <a href="https://chromewebstore.google.com/detail/goosekit/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🧩 Chrome Extension</a>
     </div>
 
   </header>
@@ -1921,35 +1921,35 @@
 
     <!-- DevTools API promo -->
     <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(124,58,237,0.12));border:1px solid rgba(52,211,153,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+      <div style="background:linear-gradient(135deg,rgba(52,211,153,0.12),rgba(249,115,22,0.12));border:1px solid rgba(52,211,153,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
         <div style="flex:1;min-width:250px;">
           <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">⚡ Goosekit API</div>
           <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Need these tools as an API? Hash generation, UUIDs, JSON formatting, passwords & more — all as REST endpoints. 100 free requests/day, no signup.</p>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(52,211,153,0.15);color:#86efac;border:1px solid rgba(52,211,153,0.25);">REST API</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(124,58,237,0.15);color:#c4b5fd;border:1px solid rgba(124,58,237,0.25);">Free tier</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(249,115,22,0.15);color:#fed7aa;border:1px solid rgba(249,115,22,0.25);">Free tier</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">CORS</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);">Pro $4.99/mo</span>
           </div>
         </div>
-        <a href="https://goosekit-json.goosekit.workers.dev" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#34d399,#7c3aed);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore API →</a>
+        <a href="https://goosekit-json.goosekit.workers.dev" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#34d399,#f97316);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore API →</a>
       </div>
     </section>
 
     <!-- Ship It Kit promo -->
     <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(59,130,246,0.15));border:1px solid rgba(124,58,237,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+      <div style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(59,130,246,0.15));border:1px solid rgba(249,115,22,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
         <div style="flex:1;min-width:250px;">
           <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">🚀 Ship It Kit</div>
           <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">The SaaS starter template built for AI-assisted development. Next.js 15, Supabase auth, Stripe payments, Tailwind — all wired up. Stop configuring, start shipping.</p>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(124,58,237,0.15);color:#c4b5fd;border:1px solid rgba(124,58,237,0.25);">Next.js 15</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(249,115,22,0.15);color:#fed7aa;border:1px solid rgba(249,115,22,0.25);">Next.js 15</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">Supabase</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(34,197,94,0.15);color:#86efac;border:1px solid rgba(34,197,94,0.25);">Stripe</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);">AI-Ready</span>
           </div>
         </div>
-        <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/a48ab188-2bd0-4587-bba3-141aabc95366" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#7c3aed,#3b82f6);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Get it — €29</a>
+        <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/a48ab188-2bd0-4587-bba3-141aabc95366" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#f97316,#3b82f6);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Get it — €49</a>
       </div>
     </section>
   </main>
@@ -1966,15 +1966,15 @@
       </div>
       <span class="footer-note"><span class="dot"></span> 50 free tools and counting</span>
       <div style="margin-top:8px;font-size:0.8rem;">
-        <a href="/ship-it-kit/" style="color:#a78bfa;">Ship It Kit</a>
+        <a href="/ship-it-kit/" style="color:#f97316;">Ship It Kit</a>
         <span style="color:#333;margin:0 6px;">·</span>
-        <a href="/api/" style="color:#a78bfa;">API</a>
+        <a href="/api/" style="color:#f97316;">API</a>
         <span style="color:#333;margin:0 6px;">·</span>
-        <a href="/blog/" style="color:#a78bfa;">Blog</a>
+        <a href="/blog/" style="color:#f97316;">Blog</a>
         <span style="color:#333;margin:0 6px;">·</span>
-        <a href="/pro/" style="color:#a78bfa;">Pro</a>
+        <a href="/pro/" style="color:#f97316;">Pro</a>
         <span style="color:#333;margin:0 6px;">·</span>
-        <a href="https://chromewebstore.google.com/detail/goosekit/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener" style="color:#a78bfa;">Chrome Extension</a>
+        <a href="https://chromewebstore.google.com/detail/goosekit/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener" style="color:#f97316;">Chrome Extension</a>
       </div>
     </div>
   </footer>
