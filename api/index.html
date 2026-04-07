@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Goosekit API — Free Developer REST API for JSON, Hash, UUID, Password & More</title>
-  <meta name="description" content="Free REST API for developers. JSON formatting, hash generation, UUID creation, password generation, and lorem ipsum. 100 free requests/day, Pro for $5/mo.">
+  <meta name="description" content="Free REST API for developers. JSON formatting, hash generation, UUID creation, password generation, and QR codes. 100 free requests/day, no signup, CORS enabled.">
   <link rel="canonical" href="https://goosekit.dev/api/">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 
@@ -25,8 +25,7 @@
     "url": "https://goosekit.dev/api/",
     "provider": { "@type": "Organization", "name": "Goosekit", "url": "https://goosekit.dev" },
     "offers": [
-      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "100 requests/day" },
-      { "@type": "Offer", "name": "Pro", "price": "5", "priceCurrency": "USD", "description": "Unlimited requests" }
+      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "100 requests/day per IP, all endpoints" }
     ]
   }
   </script>
@@ -161,41 +160,32 @@
 <div class="container">
 
   <!-- Pricing -->
-  <div class="pricing">
+  <div class="pricing" style="grid-template-columns: 1fr; max-width: 480px; margin: 0 auto 40px;">
     <div class="plan">
-      <h3>Free</h3>
+      <h3>Free Forever</h3>
       <div class="price">$0 <span>/forever</span></div>
       <ul>
         <li>100 requests/day per IP</li>
         <li>All 5 endpoints</li>
         <li>CORS enabled</li>
-        <li>No API key needed</li>
+        <li>No signup, no API key</li>
         <li>Community support</li>
       </ul>
       <a href="#endpoints" class="plan-btn free">Start Using →</a>
     </div>
-    <div class="plan pro">
-      <div class="plan-badge">POPULAR</div>
-      <h3>Pro</h3>
-      <div class="price">$5 <span>/month</span></div>
-      <ul>
-        <li>Unlimited requests</li>
-        <li>All 5 endpoints</li>
-        <li>CORS enabled</li>
-        <li>API key authentication</li>
-        <li>Priority support</li>
-        <li>99.9% uptime SLA</li>
-      </ul>
-      <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20Pro" class="plan-btn pro-btn">Get Pro Access →</a>
-    </div>
+  </div>
+
+  <div style="background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 40px; max-width: 640px; text-align: center;">
+    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or dedicated SLAs?</strong> <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#fb923c; text-decoration: underline;">Get in touch</a> — we'll work something out.</p>
   </div>
 
   <!-- Auth -->
   <div class="auth">
     <h2>🔑 Authentication</h2>
-    <p><strong>Free tier:</strong> No authentication needed. Rate limited to 100 requests/day per IP address.</p>
-    <p style="margin-top:8px;"><strong>Pro tier:</strong> Include your API key in the <code>X-API-Key</code> header with every request. No rate limits.</p>
-    <pre>curl -H "X-API-Key: your-api-key" https://goosekit-json.goosekit.workers.dev/format</pre>
+    <p>None required. Just call the endpoints directly from your app. Rate limited to <strong>100 requests/day per IP address</strong>. CORS is enabled, so you can call these endpoints straight from a browser.</p>
+    <pre>curl -X POST https://goosekit-json.goosekit.workers.dev/format \
+  -H "Content-Type: application/json" \
+  -d '{"json":"{\"hello\":\"world\"}"}'</pre>
   </div>
 
   <!-- Endpoints -->
@@ -247,7 +237,7 @@ Content-Type: application/json
     <h2>📊 Rate Limits</h2>
     <p>Free tier: <strong>100 requests/day</strong> per IP address across all endpoints. Rate limit resets daily at midnight UTC.</p>
     <p style="margin-top:8px;">When you hit the limit, you'll receive a <code>429 Too Many Requests</code> response with a <code>Retry-After</code> header.</p>
-    <p style="margin-top:8px;">Need more? Upgrade to Pro for unlimited requests with your personal API key.</p>
+    <p style="margin-top:8px;">Need higher limits for production use? <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#fb923c;">Get in touch</a>.</p>
   </div>
 
 </div>
