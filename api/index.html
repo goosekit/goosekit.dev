@@ -217,7 +217,10 @@ Content-Type: application/json
     <div class="endpoint">
       <h3><span class="method get">GET</span> Hash Generator</h3>
       <p>Generate MD5, SHA-1, SHA-256, SHA-512 hashes.</p>
-      <pre>GET https://goosekit-hash.goosekit.workers.dev/?text=hello&algo=sha256</pre>
+      <pre>POST https://goosekit-hash.goosekit.workers.dev/hash
+Content-Type: application/json
+
+{"text": "hello", "algorithm": "SHA-256"}</pre>
     </div>
 
     <div class="endpoint">
