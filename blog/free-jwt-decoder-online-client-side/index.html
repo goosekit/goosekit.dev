@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online JWT Decoder — Decode &amp; Verify Tokens In Your Browser</title>
+  <meta name="description" content="Decode and verify JWT tokens 100% client-side — no uploads, no server, no data risk. Free online JWT decoder supporting HS256, RS256, ES256, and more.">
+  <link rel="canonical" href="https://goosekit.dev/blog/free-jwt-decoder-online-client-side/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <meta property="og:title" content="Free Online JWT Decoder — Decode & Verify Tokens In Your Browser">
+  <meta property="og:description" content="Decode and verify JWT tokens 100% client-side. Free, no signup, no uploads. Supports HS256, RS256, ES256, and more.">
+  <meta property="og:url" content="https://goosekit.dev/blog/free-jwt-decoder-online-client-side/">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a JWT token?",
+        "acceptedAnswer": {"@type": "Answer", "text": "A JWT (JSON Web Token) is a compact, self-contained token used to securely transmit information between parties. It consists of three parts: a header (algorithm and type), a payload (claims like user ID and expiration), and a signature (proof of authenticity). JWTs are commonly used for authentication and authorization in web applications."}
+      },
+      {
+        "@type": "Question",
+        "name": "Is it safe to use an online JWT decoder?",
+        "acceptedAnswer": {"@type": "Answer", "text": "It depends on where decoding happens. Server-side JWT decoders require you to upload your token to their servers, which means tokens containing user IDs, email addresses, and tenant data leave your machine. A client-side JWT decoder that runs entirely in your browser is safe — the token never leaves your device."}
+      },
+      {
+        "@type": "Question",
+        "name": "Can I decode a JWT without a secret key?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. The header and payload of a JWT are base64url-encoded, not encrypted. Anyone can decode them with a click. The signature is what prevents tampering — verifying the signature requires the secret (HS256) or public key (RS256, ES256)."}
+      },
+      {
+        "@type": "Question",
+        "name": "What's the difference between HS256 and RS256?",
+        "acceptedAnswer": {"@type": "Answer", "text": "HS256 uses a symmetric secret key — the same key signs and verifies the token. RS256 uses asymmetric key pairs — a private key signs the token and a public key verifies it. RS256 is preferred for distributed systems because the public key can be shared freely while the private key stays secret."}
+      },
+      {
+        "@type": "Question",
+        "name": "How do I verify a JWT token is valid?",
+        "acceptedAnswer": {"@type": "Answer", "text": "To verify a JWT token, you need to: (1) decode the header to identify the algorithm, (2) verify the signature using the secret (HS256) or public key (RS256/ES256), (3) check the exp claim has not expired, (4) validate the iss and aud claims match your expected values, and (5) ensure no tokens have been revoked."}
+      }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; }
+    a { color: #7b8cff; }
+    .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
+    .banner a { display: inline-flex; align-items: center; gap: 8px; color: #f5f7ff; font-weight: 600; font-size: 14px; text-decoration: none; }
+    .banner img { height: 28px; border-radius: 4px; }
+    .container { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; line-height: 1.3; }
+    h2 { font-size: 1.4rem; color: #fff; margin: 2rem 0 0.8rem; }
+    h3 { color: #c8c8e0; margin: 1.5rem 0 0.5rem; }
+    p, li { color: #b8b8cc; margin-bottom: 0.8rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #86efac; }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.6rem; font-size: 0.9rem; background: #16162a; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a40; color: #cfcfdd; }
+    th { background: #1d1d33; color: #fff; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .warning { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); border-radius: 10px; padding: 20px; margin: 1.5rem 0; }
+    .warning strong { color: #f97316; }
+    .cta { background: linear-gradient(135deg,rgba(249,115,22,0.15),rgba(239,68,68,0.15)); border: 1px solid rgba(249,115,22,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
+    .cta a { display: inline-block; background: linear-gradient(135deg,#f97316,#ef4444); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
+    footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<header class="banner"><a href="/"><img src="/logo-dark.png" alt="Goosekit"> Goosekit</a></header>
+
+<main class="container">
+  <p class="meta">📅 April 9, 2026 · 10 min read · <a href="/blog/">← All posts</a></p>
+
+  <h1>Free Online JWT Decoder — Decode &amp; Verify Tokens In Your Browser</h1>
+
+  <p>You're stuck debugging an authentication flow. Your frontend gets a 401, the backend says the token is expired, and you have a wall of base64-looking gibberish staring back at you. You need to see inside that JWT <em>now</em> — but here's the thing most developers don't think about: <strong>every time you paste a production JWT into a random website, you might be leaking user credentials, email addresses, tenant IDs, and session secrets to an unknown third party.</strong></p>
+
+  <p>This guide explains how JWTs work, why server-side JWT decoders are a real security risk, and why a <strong>free online JWT decoder that runs 100% client-side</strong> — like the one on <a href="https://goosekit.dev/jwt/">Goosekit</a> — is the only safe way to decode JWT tokens in your browser.</p>
+
+  <h2>What is a JWT?</h2>
+
+  <p><strong>JSON Web Token (JWT)</strong>, defined in <a href="https://datatracker.ietf.org/doc/html/rfc7519">RFC 7519</a>, is a compact, URL-safe token format used to securely transmit claims between two parties. Every JWT has three parts separated by dots:</p>
+
+  <pre><code style="display:block;overflow-x:auto;white-space:pre-wrap;word-break:break-all;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;line-height:1.6;">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9    .   eyJzdWIiOiIxMjM0NTY3ODkwIn0   .   SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+<span style="color:#f97316;">← HEADER (base64url)          →</span>   <span style="color:#3b82f6;">← PAYLOAD (base64url)                  →</span>   <span style="color:#86efac;">← SIGNATURE (binary data, base64url-encoded) →</span></code></pre>
+
+  <p>Each part is base64url-encoded JSON (except the signature, which is raw binary data encoded as base64url). Let's look at each piece in detail.</p>
+
+  <h3>1. The Header</h3>
+  <p>The header is a JSON object that declares two things:</p>
+  <ul>
+    <li><code>alg</code> — the signing algorithm (e.g., <code>HS256</code>, <code>RS256</code>, <code>ES256</code>)</li>
+    <li><code>typ</code> — the token type, always <code>"JWT"</code></li>
+  </ul>
+  <p>Typical decoded header:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code></pre>
+  <p>The algorithm field is critical. It tells the verifier <strong>how</strong> to validate the signature. Mismatches between the declared algorithm and the key material are a common source of vulnerabilities and debugging headaches.</p>
+
+  <h3>2. The Payload (Claims)</h3>
+  <p>The payload contains <strong>claims</strong> — statements about an entity (usually the user). There are three types:</p>
+  <ul>
+    <li><strong>Registered claims</strong>: standard fields like <code>iss</code> (issuer), <code>sub</code> (subject), <code>aud</code> (audience), <code>exp</code> (expiration time), <code>nbf</code> (not before), <code>iat</code> (issued at), <code>jti</code> (unique token ID).</li>
+    <li><strong>Public claims</strong>: custom fields you define, like <code>email</code>, <code>role</code>, <code>tenant_id</code>.</li>
+    <li><strong>Private claims</strong>: application-specific data agreed between parties.</li>
+  </ul>
+  <p>Typical decoded payload:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">{
+  "sub": "1234567890",
+  "email": "user@example.com",
+  "role": "admin",
+  "tenant_id": "acme-corp",
+  "iat": 1712620800,
+  "exp": 1712707200
+}</code></pre>
+  <div class="warning">
+    <strong>⚠️ Critical security note:</strong> The JWT payload is <strong>NOT encrypted</strong>. It's only base64url-encoded. Anyone who obtains the token can read every claim inside it. Never put sensitive data (passwords, credit card numbers, SSNs) in a JWT payload.
+  </div>
+
+  <h3>3. The Signature</h3>
+  <p>The signature is computed by signing the encoded header and encoded payload with a secret key or private key. For <code>HS256</code>:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">HMACSHA256(
+  base64UrlEncode(header) + "." + base64UrlEncode(payload),
+  your-256-bit-secret
+)</code></pre>
+  <p>The signature proves that the token was created by someone who knows the signing key and that nobody has modified it since. If even one character in the payload changes, the signature verification fails.</p>
+
+  <h2>HS256 vs RS256 vs ES256 — What's the difference?</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Algorithm</th>
+        <th>Type</th>
+        <th>Key Material</th>
+        <th>Best For</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>HS256</strong></td>
+        <td>Symmetric</td>
+        <td>Single shared secret</td>
+        <td>Single-service apps, quick prototypes</td>
+      </tr>
+      <tr>
+        <td><strong>RS256</strong></td>
+        <td>Asymmetric (RSA)</td>
+        <td>Private key (sign) + public key (verify)</td>
+        <td>Microservices, OIDC, Auth0, AWS Cognito</td>
+      </tr>
+      <tr>
+        <td><strong>ES256</strong></td>
+        <td>Asymmetric (ECDSA)</td>
+        <td>ECDSA private/public key pair</td>
+        <td>Apple Sign-In, mobile apps, smaller keys</td>
+      </tr>
+      <tr>
+        <td>None</td>
+        <td>Unsigned</td>
+        <td>No key</td>
+        <td>⚠️ Not for authentication</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>HS256</strong> is the simplest — one secret signs and verifies. But that same secret must live on every server that validates tokens, which makes key rotation a pain at scale.</p>
+
+  <p><strong>RS256</strong> separates concerns. The auth server holds the private key (used to sign), and every service only needs the public key (used to verify). That's why Auth0, Okta, AWS Cognito, and Firebase all default to RS256 for OIDC flows.</p>
+
+  <p><strong>ES256</strong> uses elliptic curve cryptography. Shorter signatures, smaller keys, and faster verification than RSA. Apple's Sign-In implementation uses ES256 by default.</p>
+
+  <p>Regardless of which algorithm your JWT uses, the <strong>decode process is identical</strong> — the headers and payloads are always just base64url-encoded JSON. The algorithm only matters when you want to <strong>verify the signature</strong>.</p>
+
+  <h2>Why Decoding JWT Tokens Online Is a Security Risk</h2>
+
+  <p>Here's the uncomfortable truth: most free online JWT decoders are server-side tools. You paste your token, it gets <strong>uploaded to their server</strong>, decoded there, and the results sent back. That means:</p>
+
+  <ul>
+    <li><strong>Your production tokens leave your machine.</strong> They travel to someone else's infrastructure, sit in their server memory, and quite possibly get written to their logs.</li>
+    <li><strong>JWTs contain identifiable data.</strong> User IDs, email addresses, tenant IDs, roles, session scopes — often directly from your production environment.</li>
+    <li><strong>Some tools store tokens "for convenience."</strong> Browser history, server-side databases, analytics pipelines — it's all plausible, and most tools don't disclose what they do with the data.</li>
+    <li><strong>A data breach turns your tokens into attack vectors.</strong> Even unexpired tokens that contain session identifiers can be replayed. Even expired tokens leak information about your infrastructure.</li>
+    <li><strong>Compliance violations.</strong> If your JWTs contain any data covered by GDPR, HIPAA, or SOC 2, sending them to a third-party server without a DPA is a compliance failure.</li>
+  </ul>
+
+  <div class="warning">
+    <strong>The rule of thumb:</strong> If a JWT decoder requires your browser to make a network call with the token data, it is <em>not</em> safe to use with production tokens. A client-side JWT decoder runs the decoding logic in JavaScript inside your browser — the token never makes a round-trip to any server.
+  </div>
+
+  <h2>The Safe Way: 100% Client-Side JWT Decoding</h2>
+
+  <p><a href="https://goosekit.dev/jwt/">The Goosekit JWT Decoder</a> runs entirely in your browser using standard Web APIs. Here's how it works:</p>
+
+  <ol>
+    <li><strong>Input</strong>: You paste or upload your JWT token into a text field.</li>
+    <li><strong>Decode</strong>: JavaScript splits the token on <code>.</code>, decodes each segment with <code>atob()</code> (base64url), and parses the resulting JSON.</li>
+    <li><strong>Display</strong>: The header, payload, and signature validity are displayed as formatted JSON with color-coding — no network request made.</li>
+    <li><strong>Verify</strong> (optional): You can paste a secret key (HS256) or public key (RS256/ES256) and the signature is verified locally using the <a href="https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto">Web Crypto API</a> (SubtleCrypto).</li>
+  </ol>
+
+  <p><strong>Zero data leaves your browser.</strong> No fetch calls, no webhooks, no analytics payloads with your token. The tool is a self-contained web application that works offline once loaded.</p>
+
+  <h3>Security comparison: client-side vs server-side JWT decoders</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Feature</th>
+        <th>Client-Side (Goosekit ✅)</th>
+        <th>Server-Side Tools</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Token stays in your browser</td>
+        <td>✅ Yes</td>
+        <td>❌ Uploaded to server</td>
+      </tr>
+      <tr>
+        <td>Works offline</td>
+        <td>✅ Yes</td>
+        <td>❌ Requires internet</td>
+      </tr>
+      <tr>
+        <td>No data stored on servers</td>
+        <td>✅ Guaranteed</td>
+        <td>❓ Depends on provider</td>
+      </tr>
+      <tr>
+        <td>No signup required</td>
+        <td>✅ Yes</td>
+        <td>Often no (but many gate features)</td>
+      </tr>
+      <tr>
+        <td>HS256 / RS256 / ES256 verify</td>
+        <td>✅ Yes (SubtleCrypto)</td>
+        <td>✅ Yes</td>
+      </tr>
+      <tr>
+        <td>GDPR / SOC 2 safe</td>
+        <td>✅ Yes — no data leaves device</td>
+        <td>⚠️ Only if provider has a DPA</td>
+      </tr>
+      <tr>
+        <td>Free without account</td>
+        <td>✅ Yes</td>
+        <td>⚠️ Some features paywalled</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>When Do You Need to Decode a JWT?</h2>
+
+  <h3>Debugging Authentication Flows</h3>
+  <p>You're building an app with NextAuth, Auth0, or custom JWT middleware. Something's broken — maybe the <code>Authorization: Bearer &lt;token&gt;</code> header isn't getting the right claims, or a role-based middleware is rejecting admin users. Dropping the token into a decoder instantly shows you exactly what claims are being issued, what the expiration time is, and whether the <code>iss</code> and <code>aud</code> values match what your backend expects.</p>
+
+  <h3>Troubleshooting "401 Unauthorized" Errors</h3>
+  <p>The single most common production support ticket. The user is logged in but getting 401s. When you decode the JWT, you'll usually find one of these:</p>
+  <ul>
+    <li><strong>Expired token</strong>: the <code>exp</code> claim is in the past — the refresh token flow isn't working properly.</li>
+    <li><strong>Wrong issuer</strong>: the <code>iss</code> claim doesn't match — you changed auth providers or domains without updating validation.</li>
+    <li><strong>Missing claims</strong>: a new backend check is looking for a <code>tenant_id</code> that old tokens don't have.</li>
+    <li><strong>Algorithm mismatch</strong>: the backend switched from HS256 to RS256 and some service is using the old config.</li>
+  </ul>
+
+  <h3>Security Audits</h3>
+  <p>During a security review, auditors need to verify JWT configuration:</p>
+  <ul>
+    <li>Are tokens short-lived? (check <code>exp</code>)</li>
+    <li>Are there <code>nbf</code> (not before) claims preventing replay?</li>
+    <li>Do tokens carry more data than necessary? (PII in JWT payloads)</li>
+    <li>Is the signing algorithm appropriate? (RS256 or ES256 preferred over HS256 for multi-tenant apps)</li>
+    <li>Are <code>aud</code> and <code>iss</code> claims validated server-side?</li>
+  </ul>
+
+  <h3>Interoperability Testing</h3>
+  <p>When integrating with a third-party identity provider (Auth0, Okta, Firebase, AWS Cognito), you'll receive JWTs from their token endpoint. Decoding them lets you confirm that the claims match your expectations before writing the validation logic.</p>
+
+  <h3>Education and Learning</h3>
+  <p>There's no better way to understand JWT structure than to actually decode real tokens. Seeing the header's <code>alg</code> value, the payload's claims, and understanding how the signature ties them together cements the concept far better than any diagram.</p>
+
+  <h2>Common JWT Vulnerabilities to Watch For</h2>
+
+  <h3>The <code>alg: none</code> Attack</h3>
+  <p>An attacker crafts a JWT with <code>"alg": "none"</code> in the header and an empty signature. If your backend accepts <code>none</code> as a valid algorithm (which many did before this became well-known), the token passes verification without any signature check. <strong>Always explicitly reject the "none" algorithm in your JWT validation library.</strong></p>
+
+  <h3>Algorithm Confusion (RS256 → HS256)</h3>
+  <p>An attacker changes the algorithm from RS256 to HS256 and signs the token using the RSA public key (which is often publicly available). If the backend naively uses the "key" from the header to decide the algorithm, it will use the public key as an HMAC secret — which the attacker knows. <strong>Always fix the expected algorithm server-side, never trust the token's header.</strong></p>
+
+  <h3>Token Expiration Not Checked</h3>
+  <p>A common misconfiguration: the backend validates the signature but forgets to check the <code>exp</code> claim. This means a captured token is valid <em>forever</em>. Always validate expiration, and use short-lived access tokens (5-15 minutes) with separate refresh tokens.</p>
+
+  <h3>Storing Sensitive Data in JWTs</h3>
+  <p>Remember: JWT payloads are <strong>visible to anyone</strong>. Storing passwords, API keys, or PII inside a JWT is equivalent to publishing them in plain text. Use JWTs for identity claims, not secrets.</p>
+
+  <h2>How to Use the Free JWT Decoder on Goosekit</h2>
+
+  <p>The <a href="https://goosekit.dev/jwt/">JWT Decoder on Goosekit</a> is designed to be the fastest, safest way to decode JWT tokens online. Here's the workflow:</p>
+
+  <ol>
+    <li><strong>Paste your JWT</strong> into the input field — it auto-detects valid JWT format.</li>
+    <li><strong>View decoded header, payload, and signature info</strong> instantly — formatted JSON with collapsible sections.</li>
+    <li><strong>Verify the signature</strong> (optional) by selecting the algorithm and pasting your secret (HS256) or public key (RS256/ES256).</li>
+    <li><strong>Export or copy</strong> individual sections for use in documentation, bug reports, or security tickets.</li>
+  </ol>
+
+  <p>Everything runs in your browser. The token never leaves your device. No account needed, no email to provide, no tracking beyond basic privacy-respecting analytics.</p>
+
+  <div class="cta">
+    <p style="color:#fff;font-weight:600;font-size:1.1rem;margin:0;">Decode JWT tokens — 100% in your browser</p>
+    <p style="margin:6px 0 0;">Free. No signup. No server uploads. Supports HS256, RS256, ES256, and more.</p>
+    <a href="https://goosekit.dev/jwt/">Open JWT Decoder →</a>
+  </div>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>What is a JWT token?</h3>
+  <p>A JWT (JSON Web Token) is a compact, self-contained token composed of a header (signing algorithm), a payload (claims like user ID and expiration), and a cryptographic signature. It's used for authentication and authorization across web applications and APIs.</p>
+
+  <h3>Is it safe to use a free online JWT decoder?</h3>
+  <p>Only if the decoder runs entirely client-side. Server-side tools require you to upload your token to their servers, exposing potentially sensitive data. A browser-based decoder like <a href="https://goosekit.dev/jwt/">Goosekit's JWT Decoder</a> keeps everything local — your token never leaves your device.</p>
+
+  <h3>Can I decode a JWT without a secret key?</h3>
+  <p>Yes. The header and payload are base64url-encoded, not encrypted. Anyone can read them. The signature requires a secret (HS256) or public key (RS256/ES256) to verify, but reading the claims requires only decoding.</p>
+
+  <h3>What's the difference between HS256 and RS256?</h3>
+  <p>HS256 uses a symmetric shared secret — the same key signs and verifies. RS256 uses asymmetric RSA key pairs — a private key signs, a public key verifies. RS256 is preferred for distributed systems and identity providers like Auth0 and Firebase because the public key can be shared openly.</p>
+
+  <h3>How do I verify a JWT token is valid?</h3>
+  <p>Validation requires: (1) checking the signature with the correct key, (2) verifying the <code>exp</code> (expiration) hasn't passed, (3) confirming the <code>iss</code> (issuer) matches your auth provider, (4) validating the <code>aud</code> (audience) includes your application, and (5) checking that the token hasn't been revoked via a blocklist.</p>
+
+  <h3>Do JWT decoders need an internet connection?</h3>
+  <p>A client-side decoder works completely offline once the page is loaded. No token data needs to be sent over the network. A server-side decoder, on the other hand, requires an active connection to transmit and return results.</p>
+
+  <h3>Can I decode a JWT in the browser console?</h3>
+  <p>Yes. You can manually decode a JWT in any browser's DevTools console:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">const jwt = "your.token.here";
+const [header, payload] = jwt.split('.').map(
+  part => JSON.parse(atob(part.replace(/-/g,'+').replace(/_/g,'/')))
+);
+console.log(header, payload);</code></pre>
+  <p>This works because JWT headers and payloads are simply base64url-encoded JSON. But it doesn't verify the signature, doesn't validate expiration, and doesn't detect tampering — which is exactly why a dedicated tool like <a href="https://goosekit.dev/jwt/">Goosekit's JWT Decoder</a> is more practical for real-world debugging.</p>
+
+  <h2>Conclusion</h2>
+  <p>JWTs are everywhere in modern web development — authentication, API authorization, microservice-to-microservice communication. Being able to decode and inspect them quickly is a core debugging skill. The key insight: <strong>your decoding tool should never see your token over the network.</strong></p>
+  <p>Choose a client-side JWT decoder, keep your production tokens on your own machine, and use the right tool for the job. <a href="https://goosekit.dev/jwt/">Goosekit's free JWT Decoder</a> does exactly that — no uploads, no signups, no risk. Just open the page, paste the token, and see what's inside.</p>
+
+  <div class="cta">
+    <p style="color:#fff;font-weight:600;font-size:1.1rem;margin:0;">Decode &amp; verify JWT tokens — safely</p>
+    <p style="margin:6px 0 0;">100% client-side. Free. No signup. Supports HS256, RS256, ES256.</p>
+    <a href="https://goosekit.dev/jwt/">Try the JWT Decoder →</a>
+  </div>
+</main>
+
+<footer>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/jwt/">JWT Decoder</a></p>
+</footer>
+</body>
+</html>

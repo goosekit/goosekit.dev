@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>What Is a Cron Job? A Beginner's Guide (Plus Free Visual Builder)</title>
+  <meta name="description" content="What is a cron job? Learn cron syntax, common expressions, frequent mistakes, and how to use a free visual cron builder to schedule any task without guessing.">
+  <link rel="canonical" href="https://goosekit.dev/blog/what-is-a-cron-job-beginner-guide/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <meta property="og:title" content="What Is a Cron Job? A Beginner's Guide (Plus Free Visual Builder)">
+  <meta property="og:description" content="Learn cron syntax from scratch — what a cron job is, common expressions, mistakes to avoid, and a free visual cron schedule generator.">
+  <meta property="og:url" content="https://goosekit.dev/blog/what-is-a-cron-job-beginner-guide/">
+  <meta property="og:type" content="article">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is a cron job?",
+        "acceptedAnswer": {"@type": "Answer", "text": "A cron job is a time-based task scheduler on Unix-like operating systems. It lets you run commands or scripts automatically at specified intervals — daily, hourly, weekly, or on any custom schedule — without human intervention. The name comes from the Greek word 'chronos' meaning time."}
+      },
+      {
+        "@type": "Question",
+        "name": "What does the cron syntax * * * * * mean?",
+        "acceptedAnswer": {"@type": "Answer", "text": "A cron expression has five fields: minute (0-59), hour (0-23), day of month (1-31), month (1-12), and day of week (0-7, where 0 and 7 are Sunday). Each asterisk means 'every'. So * * * * * means 'every minute of every hour of every day of every month on every day of the week.'"}
+      },
+      {
+        "@type": "Question",
+        "name": "How do I run a cron job every 5 minutes?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Use the expression: */5 * * * *. The */5 syntax means 'every value divisible by 5' — so 0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55 — giving you 12 executions per hour."}
+      },
+      {
+        "@type": "Question",
+        "name": "What are common cron job mistakes?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Common mistakes include: confusing day-of-month and day-of-week (* and * together means 'either match'), forgetting UTC timezones (servers often run UTC, not your local time), not handling concurrent runs (jobs that take longer than their interval overlap), and using 7 for Monday instead of 1."}
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a visual way to create cron expressions?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes — a visual cron builder like the one on Goosekit lets you click and select schedule options instead of memorizing syntax. You pick the interval (every N minutes, daily, weekly, monthly), set the time, and it generates the correct cron expression for you with a next-run preview."}
+      }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; }
+    a { color: #7b8cff; }
+    .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
+    .banner a { display: inline-flex; align-items: center; gap: 8px; color: #f5f7ff; font-weight: 600; font-size: 14px; text-decoration: none; }
+    .banner img { height: 28px; border-radius: 4px; }
+    .container { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; line-height: 1.3; }
+    h2 { font-size: 1.4rem; color: #fff; margin: 2rem 0 0.8rem; }
+    h3 { color: #c8c8e0; margin: 1.5rem 0 0.5rem; }
+    p, li { color: #b8b8cc; margin-bottom: 0.8rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #86efac; }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.6rem; font-size: 0.9rem; background: #16162a; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a40; color: #cfcfdd; }
+    th { background: #1d1d33; color: #fff; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .expr { background: rgba(255,255,255,0.04); border: 1px solid #2a2a40; border-radius: 8px; padding: 12px 16px; margin: 0.8rem 0; font-family: 'SF Mono', 'Fira Code', monospace; font-size: 0.95rem; color: #f97316; }
+    .tip { background: rgba(134,239,172,0.08); border: 1px solid rgba(134,239,172,0.2); border-radius: 10px; padding: 20px; margin: 1.5rem 0; }
+    .tip strong { color: #86efac; }
+    .warn { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2); border-radius: 10px; padding: 20px; margin: 1.5rem 0; }
+    .warn strong { color: #ef4444; }
+    .cta { background: linear-gradient(135deg,rgba(249,115,22,0.15),rgba(251,146,60,0.15)); border: 1px solid rgba(249,115,22,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
+    .cta a { display: inline-block; background: linear-gradient(135deg,#f97316,#fb923c); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
+    footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+<header class="banner"><a href="/"><img src="/logo-dark.png" alt="Goosekit"> Goosekit</a></header>
+
+<main class="container">
+  <p class="meta">📅 April 9, 2026 · 10 min read · <a href="/blog/">← All posts</a></p>
+
+  <h1>What Is a Cron Job? A Beginner's Guide (Plus Free Visual Builder)</h1>
+
+  <p>You need to send a daily digest email at 8am. Or back up your database every Sunday at midnight. Or purge expired sessions every hour. You could set an alarm on your phone, drink a coffee, open a terminal, and run the command manually. Or you could teach your server to handle it automatically.</p>
+
+  <p>That's what a <strong>cron job</strong> does. It's the simplest, most reliable scheduling tool Linux has offered for over forty years — and it remains the backbone of task automation on millions of servers worldwide.</p>
+
+  <p>This guide explains everything: what cron jobs are, how the syntax works (without the usual confusion), common mistakes that cost developers hours of debugging, real-world examples you can copy, and how to use a <strong>free visual cron builder</strong> so you never have to memorize the syntax again.</p>
+
+  <h2>What is a cron job?</h2>
+
+  <p>A <strong>cron job</strong> is a scheduled task on Unix-like operating systems (Linux, macOS, BSD). It's managed by <code>cron</code>, a background daemon (system service) that wakes up every minute, checks a file called a <em>crontab</em> (short for <strong>cron table</strong>), and runs any commands whose scheduled time matches the current minute.</p>
+
+  <p>The name "cron" comes from the Greek word <em>chronos</em> (χρόνος), meaning <strong>time</strong>. It was created by <strong>Paul Vixie</strong> in 1987, building on a concept that dates back to Version 7 Unix in 1979. Despite predating the World Wide Web by several years, cron remains the most widely used task scheduler on servers today.</p>
+
+  <p>Every user on a Unix system can have their own crontab — a simple text file where each line defines one scheduled task. You edit it with <code>crontab -e</code>, list it with <code>crontab -l</code>, and delete it with <code>crontab -r</code>.</p>
+
+  <div class="tip">
+    <strong>💡 Quick example:</strong> This crontab entry runs a database backup every day at 3:30am:
+    <div class="expr">30 3 * * * /usr/local/bin/db-backup.sh > /var/log/db-backup.log 2>&1</div>
+    Five cryptic characters, then a command. In sixty years, it's never stopped working reliably.
+  </div>
+
+  <h2>Cron syntax explained: the five fields</h2>
+
+  <p>Every cron expression has <strong>five space-separated fields</strong> followed by the command to execute:</p>
+
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">┌───────────── minute (0 - 59)
+│ ┌───────────── hour (0 - 23)
+│ │ ┌───────────── day of month (1 - 31)
+│ │ │ ┌───────────── month (1 - 12)
+│ │ │ │ ┌───────────── day of week (0 - 7)
+│ │ │ │ │
+* * * * * command-to-execute</code></pre>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Field</th>
+        <th>Range</th>
+        <th>Special values</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Minute</td><td>0–59</td><td>—</td></tr>
+      <tr><td>Hour</td><td>0–23</td><td>—</td></tr>
+      <tr><td>Day of month</td><td>1–31</td><td>—</td></tr>
+      <tr><td>Month</td><td>1–12</td><td>Jan – Dec names</td></tr>
+      <tr><td>Day of week</td><td>0–7</td><td>0 = Sun, 1 = Mon, …, 7 = Sun. Mon–Sun names accepted.</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Special characters you can use</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Character</th>
+        <th>Meaning</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>*</code></td>
+        <td>Any value — "every"</td>
+        <td><code>*</code> in minute = every minute</td>
+      </tr>
+      <tr>
+        <td><code>,</code></td>
+        <td>List separator</td>
+        <td><code>0,30</code> in minute = at minute 0 and 30</td>
+      </tr>
+      <tr>
+        <td><code>-</code></td>
+        <td>Range</td>
+        <td><code>9-17</code> in hour = from 9am to 5pm</td>
+      </tr>
+      <tr>
+        <td><code>/</code></td>
+        <td>Step values</td>
+        <td><code>*/15</code> in minute = every 15 minutes</td>
+      </tr>
+      <tr>
+        <td><code>@reboot</code></td>
+        <td>Run once at boot</td>
+        <td><code>@reboot /path/to/script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>@daily</code> (or <code>@midnight</code>)</td>
+        <td>Shorthand for <code>0 0 * * *</code></td>
+        <td><code>@daily /path/to/script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>@hourly</code></td>
+        <td>Shorthand for <code>0 * * * *</code></td>
+        <td><code>@hourly /path/to/script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>@weekly</code></td>
+        <td>Shorthand for <code>0 0 * * 0</code></td>
+        <td><code>@weekly /path/to/script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>@monthly</code></td>
+        <td>Shorthand for <code>0 0 1 * *</code></td>
+        <td><code>@monthly /path/to/script.sh</code></td>
+      </tr>
+      <tr>
+        <td><code>@yearly</code> (or <code>@annually</code>)</td>
+        <td>Shorthand for <code>0 0 1 1 *</code></td>
+        <td><code>@yearly /path/to/script.sh</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Common cron expressions with explanations</h2>
+
+  <p>Here are the most useful cron expressions you'll encounter in the wild. Each one includes a breakdown of exactly what it does:</p>
+
+  <div class="expr">* * * * *</div>
+  <p><strong>Every minute.</strong> Each field is <code>*</code>, meaning every possible value. This runs 1,440 times per day. Usually a mistake — you rarely need something running 1,440 times a day.</p>
+
+  <div class="expr">*/5 * * * *</div>
+  <p><strong>Every 5 minutes.</strong> The <code>*/5</code> in the minute field means "every value divisible by 5" — 0, 5, 10, 15, … 55. Useful for health checks, monitoring, and queue processors. Runs 288 times per day.</p>
+
+  <div class="expr">0 * * * *</div>
+  <p><strong>Every hour, on the hour.</strong> The <code>0</code> in the minute field means "at minute 0", and <code>*</code> in the hour field means "every hour." Runs 24 times per day.</p>
+
+  <div class="expr">0 */2 * * *</div>
+  <p><strong>Every 2 hours.</strong> Runs at 12:00am, 2:00am, 4:00am, 6:00am, etc. (every even-numbered hour). Runs 12 times per day.</p>
+
+  <div class="expr">0 8 * * *</div>
+  <p><strong>Every day at 8:00 AM.</strong> This is the classic "daily job" pattern — minute 0, hour 8, every day, every month, every weekday.</p>
+
+  <div class="expr">0 */6 * * *</div>
+  <p><strong>Every 6 hours.</strong> Runs at 12:00am, 6:00am, 12:00pm, 6:00pm. Four times per day. Perfect for rotating logs or syncing data from external sources.</p>
+
+  <div class="expr">0 9-17 * * 1-5</div>
+  <p><strong>Every hour from 9am to 5pm, Monday through Friday.</strong> The <code>9-17</code> range covers business hours, and <code>1-5</code> covers weekdays (1=Monday, 5=Friday). The classic "only during work hours" schedule.</p>
+
+  <div class="expr">30 4 * * 0</div>
+  <p><strong>Every Sunday at 4:30 AM.</strong> Minute 30, hour 4, day of week 0 (Sunday).</p>
+
+  <div class="expr">0 0 1 * *</div>
+  <p><strong>First day of every month at midnight.</strong> The <code>1</code> in day-of-month means "the first", and <code>*</code> in month means "every month."</p>
+
+  <div class="expr">0 2 15 * *</div>
+  <p><strong>15th of every month at 2:00 AM.</strong> Useful for monthly billing runs, invoice generation, or subscription renewals.</p>
+
+  <div class="expr">0 3 * * 1,4</div>
+  <p><strong>Monday and Thursday at 3:00 AM.</strong> The list <code>1,4</code> in the day-of-week field picks specific days. Great for weekly backup rotations.</p>
+
+  <h2>Cron job mistakes that will bite you</h2>
+
+  <p>Cron seems simple until it doesn't. Here are the mistakes that waste the most developer time:</p>
+
+  <h3>1. The "AND vs OR" trap (most dangerous!)</h3>
+  <p>When both <strong>day-of-month</strong> and <strong>day-of-week</strong> fields contain specific values (not <code>*</code>), cron uses <strong>OR logic</strong> — not AND. The job runs if <em>either</em> condition is true, not <em>both</em>.</p>
+  <div class="warn">
+    <strong>⚠️ Example:</strong> <code>0 8 15 * 5</code> does NOT mean "the 15th when it's a Friday." It means "every 15th of the month OR every Friday at 8am." To get "only the 15th when it's a Friday," you'd need a wrapper script that checks the date inside the command.
+  </div>
+
+  <h3>2. Timezone confusion</h3>
+  <p>Cron uses the <strong>system timezone</strong>. Most cloud servers (AWS EC2, DigitalOcean Droplets, Vercel, Render) default to <strong>UTC</strong>, not your local time. If you schedule "8 AM" thinking it's your local 8 AM but your server is on UTC, your job might run at midnight your time. Always verify with <code>date</code> on the server and add UTC offsets to your expressions.</p>
+
+  <h3>3. No PATH environment</h3>
+  <p>Cron runs with a minimal environment. The <code>PATH</code> variable is often just <code>/usr/bin:/bin</code>. Commands that work fine in your shell (like <code>node</code>, <code>npm</code>, <code>python3</code>, or <code>docker</code>) may fail with "command not found." Always use <strong>absolute paths</strong> or set PATH at the top of your crontab:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">PATH=/usr/local/bin:/usr/bin:/bin
+0 8 * * * /usr/local/bin/node /opt/app/daily-report.js</code></pre>
+
+  <h3>4. Concurrent overlapping runs</h3>
+  <p>If a cron job takes longer than its interval, cron starts another instance anyway. A job scheduled every 5 minutes that sometimes takes 7 minutes will accumulate overlapping processes. Use a <strong>lock file</strong> or <code>flock</code> to prevent duplication:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">*/5 * * * * flock -n /tmp/myjob.lock /path/to/script.sh</code></pre>
+
+  <h3>5. Silent failures (no output)</h3>
+  <p>By default, cron emails output to the user's local mailbox. If you haven't set up mail delivery, errors go into a void. Always redirect output to a log file:</p>
+  <pre><code style="display:block;overflow-x:auto;white-space:pre;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;">0 3 * * * /path/to/script.sh > /var/log/myjob.log 2>&1</code></pre>
+  <p>The <code>2>&1</code> ensures both stdout and stderr go to the same file.</p>
+
+  <h3>6. Missing the trailing newline</h3>
+  <p>A crontab file <strong>must end with a newline character</strong>. If you hand-edit the file and forget, the last entry will be silently ignored. <code>crontab -e</code> usually handles this, but if you deploy crontabs via scripts, it's a common trap.</p>
+
+  <h3>7. Day-of-week numbering confusion</h3>
+  <p>Sunday is both <code>0</code> and <code>7</code>. Monday is <code>1</code>. But some cron implementations (like busybox cron) or other schedulers (like GitHub Actions cron, AWS EventBridge) use different conventions. Always double-check your platform's documentation.</p>
+
+  <h2>Cron alternatives: when NOT to use cron</h2>
+
+  <p>Cron is great, but not always the right tool:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Cron OK?</th>
+        <th>Better Alternative</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Single server, simple schedule</td><td>✅ Yes</td><td>—</td></tr>
+      <tr><td>Multiple servers, no duplication wanted</td><td>❌ No</td><td>Distributed scheduler, leader election</td></tr>
+      <tr><td>Precise sub-minute scheduling</td><td>❌ No</td><td>Systemd timers, custom daemon</td></tr>
+      <tr><td>Cloud-native, auto-scaling</td><td>❌ No</td><td>GitHub Actions cron, AWS EventBridge, GCP Cloud Scheduler</td></tr>
+      <tr><td>Containerized ephemeral servers</td><td>❌ No</td><td>Kubernetes CronJobs, ECS Scheduled Tasks</td></tr>
+      <tr><td>Queue-based job processing</td><td>❌ No</td><td>BullMQ, Celery, Sidekiq</td></tr>
+    </tbody>
+  </table>
+
+  <h2>The visual cron schedule generator you actually need</h2>
+
+  <p>Memorizing cron syntax is pointless. You don't need it in your head — you need a tool that translates your intent ("every Tuesday at 10pm") into the correct expression (<code>0 22 * * 2</code>) without second-guessing.</p>
+
+  <p>The <a href="https://goosekit.dev/cron/">Cron Expression Builder on Goosekit</a> is exactly that — a free, client-side visual cron builder that lets you:</p>
+
+  <ul>
+    <li><strong>Click to build</strong> your schedule — pick the frequency (minute, hourly, daily, weekly, monthly), set the values, and watch the expression appear in real time.</li>
+    <li><strong>See the next 10 run dates</strong> before you commit. The tool shows exactly when the job will execute so you catch timezone issues and OR-logic surprises <em>before</em> deploying.</li>
+    <li><strong>Copy the expression</strong> with one click — paste it straight into your crontab, your deployment config, or your GitHub Actions workflow.</li>
+    <li><strong>Everything runs in your browser</strong> — no data sent to any server, no signup, no account. Just open the page and use it.</li>
+  </ul>
+
+  <h3>How to use it</h3>
+
+  <ol>
+    <li><strong>Open the Cron Builder</strong> at <a href="https://goosekit.dev/cron/">goosekit.dev/cron</a>.</li>
+    <li><strong>Pick your frequency</strong> — choose between every minute, every hour, daily, weekly, monthly, or "every N" (every 5 minutes, every 3 hours, etc.).</li>
+    <li><strong>Set the values</strong> — pick the specific minute, hour, day, or weekday using dropdown menus and checkboxes.</li>
+    <li><strong>Check the preview</strong> — the next 10 scheduled run times appear instantly. This is where you catch bugs like "oh, that runs on Saturday too?"</li>
+    <li><strong>Copy the expression</strong> — click copy and paste it wherever you need it.</li>
+  </ol>
+
+  <div class="tip">
+    <strong>💡 Pro tip:</strong> Always check the next run preview. If you write <code>0 0 * * *</code> thinking it runs at midnight your time but your server is on UTC, the preview will immediately show you the mismatch.
+  </div>
+
+  <p>You can also paste an existing cron expression into the tool to decode it — perfect for figuring out what an inherited crontab entry actually does.</p>
+
+  <div class="cta">
+    <p style="color:#fff;font-weight:600;font-size:1.1rem;margin:0;">Visual Cron Builder — free, no signup</p>
+    <p style="margin:6px 0 0;">Build cron expressions visually. Preview next run dates. 100% in your browser.</p>
+    <a href="https://goosekit.dev/cron/">Open Cron Builder →</a>
+  </div>
+
+  <h2>Cron in the modern stack</h2>
+
+  <p>Cron isn't going anywhere. Even in 2026, it's the default scheduler on cloud VMs, CI/CD pipelines, and serverless platforms — but the syntax remains the same:</p>
+
+  <ul>
+    <li><strong>GitHub Actions</strong>: <code>cron</code> triggers in workflows use standard Unix cron syntax (UTC only, 6-field with optional year).</li>
+    <li><strong>AWS EventBridge Scheduler</strong>: uses both cron and rate expressions, with timezone support.</li>
+    <li><strong>Kubernetes CronJobs</strong>: native cron syntax, plus <code>schedule:</code> and <code>successfulJobsHistoryLimit</code>.</li>
+    <li><strong>Vercel Cron Jobs</strong>: cron-like schedules in <code>vercel.json</code> for serverless functions.</li>
+    <li><strong>Render, Railway, Fly.io</strong>: all support cron-based scheduled tasks with the classic five-field syntax.</li>
+    <li><strong>Systemd timers</strong>: the modern Linux alternative to cron with dependency management and calendar-style scheduling.</li>
+  </ul>
+
+  <p>Learn once, deploy everywhere. That's why understanding the cron expression format matters more than memorizing any one platform's wrapper around it.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>What is a cron job?</h3>
+  <p>A cron job is an automated, time-based task on Unix-like systems that runs commands or scripts at scheduled intervals. It's managed by the cron daemon, which checks a user's crontab every minute and executes matching tasks.</p>
+
+  <h3>What does * * * * * mean in cron?</h3>
+  <p>It means "every minute of every hour of every day of every month on every day of the week." Each <code>*</code> wildcard matches all possible values in that field. It's rarely needed in practice.</p>
+
+  <h3>How do I run a cron job every 10 minutes?</h3>
+  <p>Use <code>*/10 * * * *</code>. The step value <code>/10</code> runs at minutes 0, 10, 20, 30, 40, and 50 — six times per hour, 144 times per day.</p>
+
+  <h3>What are the most common cron job mistakes?</h3>
+  <p>The big ones: (1) the OR logic trap when both day-of-month and day-of-week are set, (2) timezone confusion (server in UTC != your timezone), (3) missing PATH variable causing "command not found", (4) overlapping concurrent runs, and (5) silent failures with no output redirection.</p>
+
+  <h3>Is there a free visual cron expression builder?</h3>
+  <p>Yes. <a href="https://goosekit.dev/cron/">Goosekit's Cron Builder</a> lets you click and select your schedule visually, see the next 10 run dates before committing, and copy the expression — all 100% in your browser, completely free, no signup required.</p>
+
+  <h3>Can cron jobs run at the same time?</h3>
+  <p>By default, yes. If a cron job takes longer than its interval, cron will start a second instance. Use <code>flock</code> or a lock file mechanism to prevent concurrent execution: <code>flock -n /tmp/lockfile /path/to/script.sh</code>.</p>
+
+  <h2>Conclusion</h2>
+
+  <p>Cron jobs are one of those tools you'll use for your entire career. The syntax looks cryptic at first, but once you understand the five fields — minute, hour, day of month, month, day of week — it becomes second nature. The real productivity hack is not memorizing it. It's using a visual builder that lets you focus on <em>when</em> you want something to run, not how to encode it.</p>
+
+  <p>Bookmark <a href="https://goosekit.dev/cron/">goosekit.dev/cron</a> for your next cron expression. It's free, it runs in your browser, and the next-run preview will save you from the most common scheduling bugs.</p>
+
+  <div class="cta">
+    <p style="color:#fff;font-weight:600;font-size:1.1rem;margin:0;">Build cron expressions visually — free</p>
+    <p style="margin:6px 0 0;">No signup. No server. Preview next 10 runs. Copy-paste ready.</p>
+    <a href="https://goosekit.dev/cron/">Open Cron Builder →</a>
+  </div>
+
+  <h2>Related posts</h2>
+  <ul>
+    <li><a href="/blog/free-online-developer-tools-no-signup/">50+ Free Online Developer Tools — No Signup Required</a></li>
+    <li><a href="/blog/best-nextjs-saas-starter-template-2026/">Best Next.js SaaS Starter Template 2026</a></li>
+  </ul>
+</main>
+
+<footer>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/cron/">Cron Builder</a></p>
+</footer>
+</body>
+</html>
