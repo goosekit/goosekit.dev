@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regex Cheat Sheet JavaScript — Free Quick Reference Guide | Goosekit</title>
+  <meta name="description" content="The ultimate regex cheat sheet for JavaScript developers. Quick-reference tables, copy-paste patterns, and working code examples for common validation tasks.">
+  <link rel="stylesheet" href="../blog-template.css">
+  <style>body{margin:0;min-height:100vh;background:var(--background)}</style>
+  <async-ad data-ad-region="1" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+</head>
+<body>
+<header class="site-header">
+<div class="container"><a href="/index.html" class="site-brand"><div class="brand-logo"><img src="../logo.svg" alt="Goosekit Logo"></div><span class="brand-text">Goosekit</span></a><nav><ul class="main-menu"><li><a href="/json/">JSON</a></li><li><a href="/regex/">Regex</a></li><li><a href="/hash/">Hash</a></li><li><a href="/password/">Password</a></li><li><a href="/uuid/">UUID</a></li><li><a href="/qr/">QR</a></li><li><a href="/compare/">Comparisons</a></li><li><a href="/api/">API</a></li></ul><div class="site-actions"><a href="/tools/" class="site-tool-link">All Tools</a><a href="/api/" class="site-tool-link">Get API Key</a><button class="toggle-dark" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button></div></nav></div>
+</header>
+<main class="article container">
+
+<h1>Regex Cheat Sheet JavaScript — Free Quick Reference Guide</h1>
+
+<p>If you have ever stared at a wall of backslashes, parentheses, and question marks wondering what on earth it does — you are not alone. Regular expressions are one of the most powerful tools available to JavaScript developers, yet they remain one of the most intimidating and least intuitive parts of the language. This <strong>regex cheat sheet for JavaScript</strong> is designed to fix that problem. Every pattern here is tested, ready to copy-paste, and comes with a working code example.</p>
+
+<p>Whether you are validating a form field, parsing a log line, extracting data from an API response, or just trying to understand that legacy function no one dares to touch, this guide has you covered. Keep it bookmarked. Print it. Paste it on your monitor. Whatever works.</p>
+
+<h2>What Is Regex in JavaScript?</h2>
+
+<p>In JavaScript, regular expressions are first-class objects. You can create them two ways:</p>
+
+<pre><code>// Regex literal — preferred, concise, no escaping headaches
+const pattern = /\d+/g;
+
+// RegExp constructor — useful when building patterns dynamically
+const pattern = new RegExp('\\d+', 'g');</code></pre>
+
+<p>The literal syntax is more common and generally recommended unless you need to construct a pattern at runtime from variables or user input. Both approachs behave identically once created.</p>
+
+<p>JavaScript's regex engine supports the following flags, appended after the closing slash:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Flag</th>
+      <th>Meaning</th>
+      <th>Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>g</code></td><td>Global</td><td>Finds all matches, not just the first</td></tr>
+    <tr><td><code>i</code></td><td>Case-insensitive</td><td>Matches regardless of letter case</td></tr>
+    <tr><td><code>m</code></td><td>Multiline</td><td>Makes <code>^</code> and <code>$</code> match line boundaries</td></tr>
+    <tr><td><code>s</code></td><td>DotAll</td><td>Makes <code>.</code> match newlines too</td></tr>
+    <tr><td><code>u</code></td><td>Unicode</td><td>Enables full Unicode matching</td></tr>
+    <tr><td><code>y</code></td><td>Sticky</td><td>Matches only from the lastIndex position</td></tr>
+  </tbody>
+</table>
+
+<p>Flags combine freely: <code>/pattern/gi</code> is global and case-insensitive, for example.</p>
+
+<h2>Core JavaScript Regex Methods</h2>
+
+<p>Before diving into the patterns themselves, here are the primary methods you will use to apply them.</p>
+
+<pre><code>const re = /hello/;
+const str = "Hello World, hello again";
+
+// test() — returns true or false (fastest for validation)
+re.test(str); // false — case-sensitive by default
+
+// exec() — returns an array with match details (captures, index)
+re.exec(str); // ["hello", index: 13, input: "...", groups: undefined]</code></pre>
+
+<p>Strings also have regex-aware methods:</p>
+
+<pre><code>const str = "one-two-three";
+
+// match() — returns array of matches (with /g flag)
+str.match(/\w+/g); // ["one", "two", "three"]
+
+// matchAll() — returns an iterator of all match objects (ES2020)
+[...str.matchAll(/(\w+)/g)].map(m => m[1]); // ["one", "two", "three"]
+
+// replace() — replace matches
+str.replace(/-/g, "_"); // "one_two_three"
+
+// replaceAll() — replace all, no /g needed (ES2021)
+str.replaceAll("-", "_"); // "one_two_three"
+
+// search() — return index of first match
+str.search(/two/); // 4
+
+// split() — split string by pattern
+str.split(/-/); // ["one", "two", "three"]</code></pre>
+
+<div class="cta">
+  <strong>Want to test any of these patterns interactively?</strong> Head to the <a href="https://goosekit.dev/regex/">Goosekit Regex Tester</a> — paste a pattern, type some text, and see matches highlighted in real time. No signup, no data sent anywhere.
+</div>
+
+<h2>Regex JavaScript Cheat Sheet — Quick Reference Table</h2>
+
+<p>This table is the core of the cheat sheet. Each row gives a use case, a ready-to-use pattern, and an example string it matches. Every pattern is compatible with modern JavaScript (ES6+) and can be tested immediately in the <a href="https://goosekit.dev/regex/">Goosekit Regex Tester</a>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use Case</th>
+      <th>Pattern</th>
+      <th>Example Match</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Email address</td><td><code>^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$</code></td><td>dev@goosekit.dev</td></tr>
+    <tr><td>URL (http/https)</td><td><code>^https?://[^\s]+$</code></td><td>https://goosekit.dev/regex/</td></tr>
+    <tr><td>Phone (US formats)</td><td><code>^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$</code></td><td>(555) 123-4567</td></tr>
+    <tr><td>Phone (international)</td><td><code>^\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}$</code></td><td>+44 20 7946 0958</td></tr>
+    <tr><td>IPv4 address</td><td><code>\b(?:\d{1,3}\.){3}\d{1,3}\b</code></td><td>192.168.1.1</td></tr>
+    <tr><td>Date (YYYY-MM-DD)</td><td><code>^\d{4}-\d{2}-\d{2}$</code></td><td>2026-04-12</td></tr>
+    <tr><td>Time (24-hour)</td><td><code>^(?:[01]\d|2[0-3]):[0-5]\d$</code></td><td>14:30</td></tr>
+    <tr><td>Hex color (#rgb or #rrggbb)</td><td><code>^#([0-9a-fA-F]{3}){1,2}$</code></td><td>#ff6600</td></tr>
+    <tr><td>Username (3–20 chars)</td><td><code>^[a-zA-Z0-9_]{3,20}$</code></td><td>goose_dev42</td></tr>
+    <tr><td>Strong password</td><td><code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$</code></td><td>G00se!Kit</td></tr>
+    <tr><td>ZIP code (US, ZIP+4)</td><td><code>^\d{5}(-\d{4})?$</code></td><td>90210-1234</td></tr>
+    <tr><td>UUID v4</td><td><code>^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$</code></td><td>123e4567-e89b-42d3-a456-556642440000</td></tr>
+    <tr><td>HTML tag (opening + closing)</td><td><code>&lt;([a-z][a-z0-9]*)\b[^&gt;]*&gt;(.*?)&lt;/\1&gt;</code></td><td>&lt;p&gt;Hello&lt;/p&gt;</td></tr>
+    <tr><td>URL slug</td><td><code>^[a-z0-9]+(?:-[a-z0-9]+)*$</code></td><td>regex-cheat-sheet-javascript</td></tr>
+    <tr><td>Hashtag</td><td><code>#[a-zA-Z0-9_]+</code></td><td>#JavaScript</td></tr>
+    <tr><td>Markdown link</td><td><code>\[([^\]]+)\]\(([^)]+)\)</code></td><td>[text](url)</td></tr>
+  </tbody>
+</table>
+
+<p>Each of these patterns works as-is in JavaScript. Copy the pattern from the table, wrap it in slashes (or pass it to <code>new RegExp()</code>), and you are ready to go. For hands-on testing, paste any pattern into the <a href="https://goosekit.dev/regex/">free Goosekit Regex Tester</a>.</p>
+
+<h2>Regex Character Classes Cheat Sheet</h2>
+
+<p>Character classes are the atomic units of every regex pattern. This table covers every shorthand class and metacharacter you need to know in JavaScript.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Syntax</th>
+      <th>Matches</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>.</code></td><td>Any character except newline</td><td><code>a.c</code> → "abc", "a9c"</td></tr>
+    <tr><td><code>\d</code></td><td>Digit (0–9)</td><td><code>\d{3}</code> → "042"</td></tr>
+    <tr><td><code>\D</code></td><td>Non-digit</td><td><code>\D+</code> → "hello"</td></tr>
+    <tr><td><code>\w</code></td><td>Word character (A-Z, a-z, 0-9, _)</td><td><code>\w+</code> → "regex_101"</td></tr>
+    <tr><td><code>\W</code></td><td>Non-word character</td><td><code>\W</code> → "@" in "a@b"</td></tr>
+    <tr><td><code>\s</code></td><td>Whitespace (space, tab, newline)</td><td><code>\s+</code> → "   "</td></tr>
+    <tr><td><code>\S</code></td><td>Non-whitespace</td><td><code>\S+</code> → "word"</td></tr>
+    <tr><td><code>\b</code></td><td>Word boundary</td><td><code>\bcat\b</code> → "cat" not in "concat"</td></tr>
+    <tr><td><code>[abc]</code></td><td>Any one of the listed chars</td><td><code>[aeiou]</code> → "e" in "hello"</td></tr>
+    <tr><td><code>[^abc]</code></td><td>Any char <strong>not</strong> listed</td><td><code>[^0-9]</code> → "x"</td></tr>
+    <tr><td><code>[a-z]</code></td><td>Range (any lowercase letter)</td><td><code>[a-z]</code> → "m"</td></tr>
+    <tr><td><code>[A-Za-z0-9]</code></td><td>Any alphanumeric</td><td><code>[A-Za-z0-9]+</code> → "abc123"</td></tr>
+  </tbody>
+</table>
+
+<h2>Quantifiers and Anchors</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Syntax</th>
+      <th>Meaning</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>x*</code></td><td>Zero or more of x (greedy)</td><td><code>bo*</code> → "b", "bo", "boo"</td></tr>
+    <tr><td><code>x+</code></td><td>One or more of x (greedy)</td><td><code>bo+</code> → "bo", "boo"</td></tr>
+    <tr><td><code>x?</code></td><td>Zero or one of x</td><td><code>colou?r</code> → "color", "colour"</td></tr>
+    <tr><td><code>x{n}</code></td><td>Exactly n times</td><td><code>\d{4}</code> → "2026"</td></tr>
+    <tr><td><code>x{n,}</code></td><td>n or more times</td><td><code>\d{2,}</code> → "42", "123"</td></tr>
+    <tr><td><code>x{n,m}</code></td><td>Between n and m times</td><td><code>\d{2,4}</code> → "99", "9999"</td></tr>
+    <tr><td><code>x*?</code>, <code>x+?</code></td><td>Lazy (match as little as possible)</td><td><code>&lt;.+?&gt;</code> → "&lt;p&gt;", "&lt;/p&gt;"</td></tr>
+    <tr><td><code>^</code></td><td>Start of string (or line with /m)</td><td><code>^Hello</code> → matches at start only</td></tr>
+    <tr><td><code>$</code></td><td>End of string (or line with /m)</td><td><code>world$</code> → matches at end only</td></tr>
+  </tbody>
+</table>
+
+<h2>Working Examples: Regex in JavaScript</h2>
+
+<p>Theory is useful, but nothing beats code you can actually run. Here are real-world examples you can drop straight into a Node.js script or browser console.</p>
+
+<h3>Form Validation</h3>
+
+<pre><code>function validateForm(data) {
+  const errors = {};
+
+  // Email validation
+  const emailRe = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if (!emailRe.test(data.email)) {
+    errors.email = "Please enter a valid email address.";
+  }
+
+  // Phone validation (flexible US formats)
+  const phoneRe = /^\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
+  if (data.phone && !phoneRe.test(data.phone)) {
+    errors.phone = "Invalid phone number.";
+  }
+
+  // Password: 8+ chars, uppercase, lowercase, digit, special char
+  const pwdRe = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  if (!pwdRe.test(data.password)) {
+    errors.password = "Password must be 8+ chars with uppercase, lowercase, digit, and special char.";
+  }
+
+  return errors;
+}</code></pre>
+
+<h3>Extracting Data from Text</h3>
+
+<pre><code>const logEntry = "2026-04-12 01:30:00 [ERROR] Connection refused on port 8080";
+
+// Extract timestamp, level, and message using named groups (ES2018+)
+const logRe = /^(?<date>\d{4}-\d{2}-\d{2})\s+(?<time>\d{2}:\d{2}:\d{2})\s+\[(?<level>\w+)\]\s+(?<message>.+)$/;
+const match = logEntry.match(logRe);
+
+if (match) {
+  console.log(match.groups.date);    // "2026-04-12"
+  console.log(match.groups.level);   // "ERROR"
+  console.log(match.groups.message); // "Connection refused on port 8080"
+}
+
+// Extract all numbers from a paragraph
+const text = "Server 1 returned 42 errors and 7 warnings. Server 2 had 0.";
+const numbers = text.match(/\d+/g);
+console.log(numbers); // ["1", "42", "7", "2", "0"]</code></pre>
+
+<h3>Finding and Replacing HTML Tags</h3>
+
+<pre><code>const html = "&lt;b&gt;bold&lt;/b&gt; and &lt;i&gt;italic&lt;/i&gt; text";
+
+// Replace all &lt;b&gt; and &lt;/b&gt; with &lt;strong&gt;
+const result = html.replace(/&(lt;)\/?(b)&gt;/g, (match, p1, p2) => {
+  const tag = p2 === 'b' ? 'strong' : p2;
+  return `&lt;${p1 || ''}${tag}&gt;`;
+});
+console.log(result); // "&lt;strong&gt;bold&lt;/strong&gt; and &lt;i&gt;italic&lt;/i&gt; text"</code></pre>
+
+<h3>Stripping Sensitive Data Before Logging</h3>
+
+<pre><code>function maskSensitiveData(text) {
+  // Mask credit card numbers (Visa, MC, Amex patterns)
+  text = text.replace(/\b(\d{4})\d{8,}(\d{4})\b/g, '$1****$2');
+
+  // Mask email local parts
+  text = text.replace(/([a-zA-Z0-9._%+-]{1,3})[a-zA-Z0-9._%+-]*@/g, '$1***@');
+
+  return text;
+}</code></pre>
+
+<h2>Common Pitfalls and How to Avoid Them</h2>
+
+<p>Even experienced JavaScript developers trip over regex. Here are the most frequent mistakes and how to sidestep them.</p>
+
+<h3>1. Forgetting the <code>g</code> Flag on <code>match()</code></h3>
+<p>Without the <code>g</code> flag, <code>String.prototype.match()</code> returns only the first match along with capture groups. With <code>g</code>, it returns all matches (but no capture details). Use <code>matchAll()</code> when you need both — all matches <em>and</em> their capture groups.</p>
+
+<h3>2. Catastrophic Backtracking</h3>
+<p>Nested quantifiers like <code>(.*).* </code> can cause exponential backtracking on certain inputs, effectively freezing your program. The fix is usually to make quantifiers lazy or to use more specific character classes:</p>
+
+<pre><code>// Dangerous — may hang on long strings
+const bad = /(.*)*(.*)*/;
+
+// Better — specific matching
+const good = /([^"]*)"/;</code></pre>
+
+<h3>3. Not Escaping Special Characters in Dynamic Patterns</h3>
+<p>When building a regex from user input, special regex characters must be escaped:</p>
+
+<pre><code>function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+const userInput = "file.txt";
+const re = new RegExp(escapeRegExp(userInput)); // correctly escaped</code></pre>
+
+<h3>4. The LastIndex Trap with the <code>g</code> Flag</h3>
+<p>When using <code>RegExp.prototype.test()</code> or <code>exec()</code> with the <code>g</code> flag on a regex object stored in a variable, the engine remembers the <code>lastIndex</code>. Subsequent calls may return unexpected results. The fix: either recreate the regex each time or manually reset <code>lastIndex</code> to 0.</p>
+
+<div class="cta">
+  <strong>Caught by backtracking or lastIndex bugs?</strong> The <a href="https://goosekit.dev/regex/">Goosekit Regex Tester</a> highlights matches in real time so you can spot unexpected behavior before it hits production. Test any pattern from this cheat sheet live in your browser.
+</div>
+
+<h2>Regex Lookarounds in JavaScript</h2>
+
+<p>Lookarounds let you assert conditions without consuming characters. JavaScript supports all four types (as of ES2018):</p>
+
+<pre><code>// Positive lookahead — match a number followed by " dollars"
+/\d+(?= dollars)/.exec("100 dollars");  // ["100"]
+
+// Negative lookahead — match a number NOT followed by " dollars"
+/\d+(?! dollars)/.exec("100 euros");    // ["100"]
+
+// Positive lookbehind — match a number preceded by "$"
+/(?<=\$)\d+/.exec("Price: $50");        // ["50"]
+
+// Negative lookbehind — match a number NOT preceded by "$"
+/(?<!\$)\d+/.exec("Price: €50");        // ["50"]</code></pre>
+
+<p>Lookarounds are essential for password rules, currency extraction, and any situation where context matters but should not be part of the match result.</p>
+
+<h2>Why Use an Online Regex Tester as a JavaScript Developer?</h2>
+
+<p>Writing regex directly in your code and running your test suite to check results is an incredibly slow feedback loop. An online regex tester closes that loop entirely:</p>
+
+<ul>
+  <li><strong>See matches instantly</strong> — As you type each character of your pattern, matching text highlights in real time. You know the moment your pattern drifts off track.</li>
+  <li><strong>Debug faster</strong> — Tweak one character at a time and watch the results update. No save-run-observe cycle means you iterate orders of magnitude faster.</li>
+  <li><strong>Learn by doing</strong> — Regex is fundamentally a hands-on skill. A tester gives you a safe playground to experiment with quantifiers, lookarounds, and character classes. Your intuition improves dramatically when results are immediate.</li>
+  <li><strong>100% client-side privacy</strong> — The <a href="https://goosekit.dev/regex/">Goosekit Regex Tester</a> processes everything in your browser. Your patterns and test strings never leave your machine, which matters when you are testing against production data or API keys.</li>
+  <li><strong>Cross-language validation</strong> — Test a pattern once in JavaScript syntax, and it will work identically in most other languages. Core regex syntax is consistent across JavaScript, Python, Java, Ruby, and more.
+  <li><strong>Zero setup</strong> — No npm packages, no REPLs, no Docker. Open a browser tab and start testing. Works on desktops, tablets, and phones.</li>
+</ul>
+
+<p>Whether you are debugging a complex parser or writing your first validation function, having a regex tester open in a browser tab will save you time every single day.</p>
+
+<div class="cta">
+  <h3>Ready to test your regex patterns?</h3>
+  <p>Open <a href="https://goosekit.dev/regex/">Goosekit's free Regex Tester</a> — paste your pattern, paste your text, and see matches highlighted instantly. No signup. No data sent to any server. Just fast, private regex testing in your browser.</p>
+  <p><a href="https://goosekit.dev/regex/" class="cta-button">Try the Free Regex Tester →</a></p>
+</div>
+
+</main>
+<async-ad data-ad-region="2" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+<script src="../theme.js"></script>
+</body>
+</html>
