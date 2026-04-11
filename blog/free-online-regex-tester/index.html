@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Free Online Regex Tester — Test Patterns In Your Browser | Goosekit</title>
+  <meta name="description" content="Free online regex tester with live matching and syntax highlighting. Test regular expressions instantly in your browser — no signup required.">
+  <link rel="stylesheet" href="../blog-template.css">
+  <style>body{margin:0;min-height:100vh;background:var(--background)}</style>
+  <async-ad data-ad-region="1" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+</head>
+<body>
+<header class="site-header">
+<div class="container"><a href="/index.html" class="site-brand"><div class="brand-logo"><img src="../logo.svg" alt="Goosekit Logo"></div><span class="brand-text">Goosekit</span></a><nav><ul class="main-menu"><li><a href="/json/">JSON</a></li><li><a href="/regex/">Regex</a></li><li><a href="/hash/">Hash</a></li><li><a href="/password/">Password</a></li><li><a href="/uuid/">UUID</a></li><li><a href="/qr/">QR</a></li><li><a href="/compare/">Comparisons</a></li><li><a href="/api/">API</a></li></ul><div class="site-actions"><a href="/tools/" class="site-tool-link">All Tools</a><a href="/api/" class="site-tool-link">Get API Key</a><button class="toggle-dark" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button></div></nav></div>
+</header>
+<main class="article container">
+
+<h1>Free Online Regex Tester — Test Patterns In Your Browser</h1>
+
+<p>Regular expressions are one of the most powerful tools in a developer's arsenal, yet they remain one of the most intimidating. Whether you are validating user input, parsing log files, or extracting data from unstructured text, regex gives you a concise, declarative way to describe patterns in strings. The problem? Writing regex without instant feedback is like coding blindfolded. A single misplaced quantifier can turn a working pattern into one that matches nothing — or worse, matches everything.</p>
+
+<p>That is exactly why an <strong>online regex tester</strong> is essential. With <a href="https://goosekit.dev/regex/">Goosekit's free Regex Tester</a>, you paste your pattern, type or paste your test string, and see matches highlighted in real time. No signup, no installation, no data leaving your browser. Just fast, private regex testing.</p>
+
+<h2>What Is a Regular Expression?</h2>
+
+<p>A <strong>regular expression</strong> (regex or regexp) is a sequence of characters that defines a search pattern. Originally rooted in formal language theory and automata research from the 1950s, regular expressions became a practical tool when Ken Thompson built them into the Unix text editor <code>ed</code> in 1968. Today they are supported natively in virtually every programming language, text editor, and command-line tool.</p>
+
+<p>At its core, a regex engine scans an input string from left to right, attempting to match the pattern at each position. When it finds a match, it can return the matched substring, its position, or captured groups within it. Patterns range from the trivially simple — <code>hello</code> matches the literal word "hello" — to the astonishingly complex, like a full RFC-5322 email address validator that spans several hundred characters.</p>
+
+<p>Understanding regex means understanding two things: the <em>syntax</em> (which characters have special meaning) and the <em>engine behavior</em> (how backtracking, greediness, and anchoring work). We will cover both below.</p>
+
+<h2>Common Regex Patterns Every Developer Should Know</h2>
+
+<p>Below is a quick-reference table of patterns you will reach for again and again. Each one is tested and ready to paste into the <a href="https://goosekit.dev/regex/">Goosekit Regex Tester</a>.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Use Case</th>
+      <th>Pattern</th>
+      <th>Example Match</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Email address</td><td><code>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}</code></td><td>dev@goosekit.dev</td></tr>
+    <tr><td>URL (http/https)</td><td><code>https?://[^\s/$.?#].[^\s]*</code></td><td>https://goosekit.dev/regex/</td></tr>
+    <tr><td>Phone (US)</td><td><code>\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}</code></td><td>(555) 123-4567</td></tr>
+    <tr><td>Phone (international)</td><td><code>\+?\d{1,3}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}</code></td><td>+44 20 7946 0958</td></tr>
+    <tr><td>IPv4 address</td><td><code>\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b</code></td><td>192.168.1.1</td></tr>
+    <tr><td>IPv6 address (simplified)</td><td><code>([0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}</code></td><td>2001:0db8:85a3:0000:0000:8a2e:0370:7334</td></tr>
+    <tr><td>Date (YYYY-MM-DD)</td><td><code>\d{4}-\d{2}-\d{2}</code></td><td>2026-04-11</td></tr>
+    <tr><td>Date (MM/DD/YYYY)</td><td><code>\d{2}/\d{2}/\d{4}</code></td><td>04/11/2026</td></tr>
+    <tr><td>Time (24h)</td><td><code>\b([01]\d|2[0-3]):[0-5]\d\b</code></td><td>14:30</td></tr>
+    <tr><td>Hex color code</td><td><code>#([0-9a-fA-F]{3}){1,2}\b</code></td><td>#ff6600</td></tr>
+    <tr><td>CSS color (rgb)</td><td><code>rgb\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)</code></td><td>rgb(255, 102, 0)</td></tr>
+    <tr><td>Username (alphanumeric)</td><td><code>^[a-zA-Z0-9_]{3,20}$</code></td><td>goose_dev42</td></tr>
+    <tr><td>Strong password</td><td><code>^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$</code></td><td>G00se!Kit</td></tr>
+    <tr><td>ZIP code (US)</td><td><code>\b\d{5}(-\d{4})?\b</code></td><td>90210</td></tr>
+    <tr><td>HTML tag</td><td><code>&lt;([a-z][a-z0-9]*)\b[^&gt;]*&gt;(.*?)&lt;/\1&gt;</code></td><td>&lt;p&gt;Hello&lt;/p&gt;</td></tr>
+    <tr><td>Credit card (Visa)</td><td><code>\b4\d{3}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b</code></td><td>4111 1111 1111 1111</td></tr>
+    <tr><td>Slug (URL-safe)</td><td><code>^[a-z0-9]+(?:-[a-z0-9]+)*$</code></td><td>free-online-regex-tester</td></tr>
+  </tbody>
+</table>
+
+<div class="cta">
+  <strong>Try these patterns live →</strong> Paste any pattern from the table above into our <a href="https://goosekit.dev/regex/">free Regex Tester</a> and see instant matches highlighted in your browser.
+</div>
+
+<h2>Regex Syntax Essentials</h2>
+
+<p>Before diving into advanced techniques, let's solidify the fundamentals. Regex syntax can be broken into a handful of building blocks that combine to form arbitrarily complex patterns.</p>
+
+<ul>
+  <li><strong>Literal characters</strong> — Most characters match themselves. The pattern <code>cat</code> matches the substring "cat".</li>
+  <li><strong>Metacharacters</strong> — Characters like <code>.</code>, <code>*</code>, <code>+</code>, <code>?</code>, <code>^</code>, <code>$</code>, <code>|</code>, <code>\</code>, <code>(</code>, <code>)</code>, <code>[</code>, <code>]</code>, <code>{</code>, and <code>}</code> have special meaning. To match them literally, escape with a backslash: <code>\.</code> matches a period.</li>
+  <li><strong>Character classes</strong> — Square brackets define a set of characters. <code>[aeiou]</code> matches any single vowel. Ranges work too: <code>[a-z]</code> matches any lowercase letter.</li>
+  <li><strong>Quantifiers</strong> — Control how many times the preceding element must appear. <code>*</code> means zero or more, <code>+</code> means one or more, <code>?</code> means zero or one, and <code>{n,m}</code> means between n and m times.</li>
+  <li><strong>Anchors</strong> — <code>^</code> matches the start of a line, <code>$</code> matches the end. <code>\b</code> matches a word boundary.</li>
+  <li><strong>Alternation</strong> — The pipe <code>|</code> acts as a logical OR. <code>cat|dog</code> matches either "cat" or "dog".</li>
+  <li><strong>Groups</strong> — Parentheses <code>()</code> group sub-expressions and create captures. <code>(\d{3})-(\d{4})</code> captures the area code and number separately.</li>
+</ul>
+
+<h2>Regex Cheat Sheet</h2>
+
+<p>Keep this table bookmarked. It covers the character classes and shorthand notations you will use most often.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Character Class</th>
+      <th>Description</th>
+      <th>Example</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td><code>.</code></td><td>Any character except newline</td><td><code>a.c</code> matches "abc", "a9c"</td></tr>
+    <tr><td><code>\d</code></td><td>Any digit (0–9)</td><td><code>\d{3}</code> matches "042"</td></tr>
+    <tr><td><code>\D</code></td><td>Any non-digit</td><td><code>\D+</code> matches "hello"</td></tr>
+    <tr><td><code>\w</code></td><td>Word character (letter, digit, underscore)</td><td><code>\w+</code> matches "regex_101"</td></tr>
+    <tr><td><code>\W</code></td><td>Non-word character</td><td><code>\W</code> matches "@" in "a@b"</td></tr>
+    <tr><td><code>\s</code></td><td>Whitespace (space, tab, newline)</td><td><code>\s+</code> matches "   "</td></tr>
+    <tr><td><code>\S</code></td><td>Non-whitespace</td><td><code>\S+</code> matches "word"</td></tr>
+    <tr><td><code>\b</code></td><td>Word boundary</td><td><code>\bcat\b</code> won't match "concatenate"</td></tr>
+    <tr><td><code>[abc]</code></td><td>Any one of a, b, or c</td><td><code>[aeiou]</code> matches "e" in "hello"</td></tr>
+    <tr><td><code>[^abc]</code></td><td>Any character except a, b, or c</td><td><code>[^0-9]</code> matches "x"</td></tr>
+    <tr><td><code>(x|y)</code></td><td>Either x or y</td><td><code>(cat|dog)</code> matches "cat"</td></tr>
+    <tr><td><code>x{n}</code></td><td>Exactly n repetitions of x</td><td><code>a{3}</code> matches "aaa"</td></tr>
+    <tr><td><code>x{n,m}</code></td><td>Between n and m repetitions</td><td><code>a{2,4}</code> matches "aaa"</td></tr>
+    <tr><td><code>x*</code></td><td>Zero or more of x</td><td><code>bo*</code> matches "b", "bo", "boo"</td></tr>
+    <tr><td><code>x+</code></td><td>One or more of x</td><td><code>bo+</code> matches "bo", "boo"</td></tr>
+    <tr><td><code>x?</code></td><td>Zero or one of x</td><td><code>colou?r</code> matches "color" and "colour"</td></tr>
+  </tbody>
+</table>
+
+<h2>Advanced Regex Techniques</h2>
+
+<p>Once you have the basics down, these advanced features unlock serious power. They are supported in most modern regex engines including JavaScript, Python, Java, and .NET.</p>
+
+<h3>Lookaheads</h3>
+
+<p>A <strong>lookahead</strong> asserts that what follows the current position matches a given pattern, without consuming any characters. There are two types:</p>
+
+<ul>
+  <li><strong>Positive lookahead</strong> <code>(?=...)</code> — succeeds if the pattern ahead matches. For example, <code>\d+(?= dollars)</code> matches "100" in "100 dollars" but not in "100 euros".</li>
+  <li><strong>Negative lookahead</strong> <code>(?!...)</code> — succeeds if the pattern ahead does <em>not</em> match. <code>\d+(?! dollars)</code> matches "100" in "100 euros" but not in "100 dollars".</li>
+</ul>
+
+<p>Lookaheads are essential for password validation patterns where you need to assert multiple conditions (contains uppercase, contains digit, etc.) at the same position.</p>
+
+<h3>Lookbehinds</h3>
+
+<p>A <strong>lookbehind</strong> works like a lookahead but checks the text <em>before</em> the current position:</p>
+
+<ul>
+  <li><strong>Positive lookbehind</strong> <code>(?&lt;=...)</code> — <code>(?&lt;=\$)\d+</code> matches "50" in "$50" but not in "€50".</li>
+  <li><strong>Negative lookbehind</strong> <code>(?&lt;!...)</code> — <code>(?&lt;!\$)\d+</code> matches "50" in "€50" but not the "50" in "$50".</li>
+</ul>
+
+<p>Note that lookbehinds in JavaScript require fixed-length patterns in most engines, though this restriction has been relaxed in V8 (Chrome, Node.js).</p>
+
+<h3>Non-Capturing Groups</h3>
+
+<p>Standard parentheses <code>()</code> capture their match into a numbered group. If you only need grouping for alternation or quantifiers but don't need the capture, use <code>(?:...)</code>. This is faster and keeps your capture groups clean:</p>
+
+<pre><code>// Capturing — $1 = "http" or "https"
+(https?)://example\.com
+
+// Non-capturing — no $1, just grouping
+(?:https?)://example\.com</code></pre>
+
+<h3>Greedy vs Lazy Matching</h3>
+
+<p>By default, quantifiers are <strong>greedy</strong>: they match as much text as possible. Adding <code>?</code> after a quantifier makes it <strong>lazy</strong> (or reluctant), matching as little as possible. This distinction matters enormously when parsing structured text like HTML:</p>
+
+<pre><code>// Greedy: matches from first &lt; to LAST &gt;
+&lt;.+&gt;    → matches "&lt;p&gt;Hello&lt;/p&gt;" as one chunk
+
+// Lazy: matches from first &lt; to NEXT &gt;
+&lt;.+?&gt;   → matches "&lt;p&gt;" then "&lt;/p&gt;" separately</code></pre>
+
+<p>When in doubt, start with lazy quantifiers and switch to greedy only when you know the input structure guarantees correctness.</p>
+
+<h2>Regex in Popular Programming Languages</h2>
+
+<p>Regex syntax is largely consistent across languages, but the API for using it varies. Here are working examples in three popular environments.</p>
+
+<h3>JavaScript</h3>
+
+<pre><code>// Validate an email address
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const input = "hello@goosekit.dev";
+if (emailRegex.test(input)) {
+  console.log("Valid email");
+}
+
+// Extract all dates from a string
+const text = "Released on 2026-01-15 and updated 2026-04-11.";
+const dates = text.match(/\d{4}-\d{2}-\d{2}/g);
+console.log(dates); // ["2026-01-15", "2026-04-11"]</code></pre>
+
+<h3>Python</h3>
+
+<pre><code>import re
+
+# Find all phone numbers in a document
+text = "Call (555) 123-4567 or 800-555-0199 for support."
+pattern = r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}'
+phones = re.findall(pattern, text)
+print(phones)  # ['(555) 123-4567', '800-555-0199']
+
+# Named groups for structured extraction
+log = '2026-04-11 14:32:01 ERROR Database timeout'
+m = re.match(r'(?P&lt;date&gt;\d{4}-\d{2}-\d{2}) (?P&lt;time&gt;\d{2}:\d{2}:\d{2}) (?P&lt;level&gt;\w+) (?P&lt;msg&gt;.+)', log)
+if m:
+    print(f"[{m.group('level')}] {m.group('msg')}")
+    # [ERROR] Database timeout</code></pre>
+
+<h3>Bash / grep</h3>
+
+<pre><code># Find all IPv4 addresses in a log file
+grep -oE '\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b' /var/log/access.log
+
+# Count lines containing "ERROR" or "WARN"
+grep -cE '(ERROR|WARN)' application.log
+
+# Extract URLs from a file using grep -P (Perl-compatible regex)
+grep -oP 'https?://[^\s"]+' page.html</code></pre>
+
+<h2>Why Use an Online Regex Tester?</h2>
+
+<p>Writing regex in a code editor and running your program to see if it works is painfully slow. An online regex tester gives you a tight feedback loop: you see matches update as you type each character of your pattern. Here is why developers rely on them daily:</p>
+
+<ul>
+  <li><strong>Instant visual feedback</strong> — Matches are highlighted in real time, so you can see exactly what your pattern captures and where it fails. No compile-run-check cycle.</li>
+  <li><strong>Faster debugging</strong> — When a pattern doesn't match what you expect, you can tweak individual characters and immediately observe the effect. This is vastly more productive than inserting print statements in your code.</li>
+  <li><strong>Learning by experimentation</strong> — Regex is best learned hands-on. A tester lets you experiment with quantifiers, groups, and lookaheads in a safe sandbox. You build intuition faster when results are immediate.</li>
+  <li><strong>Privacy and security</strong> — Goosekit's Regex Tester runs entirely in your browser. Your patterns and test strings never leave your machine. This matters when you are testing against production data, API keys, or other sensitive content.</li>
+  <li><strong>Cross-language confidence</strong> — Test a pattern once, then use it in JavaScript, Python, Go, or any language. The core syntax is the same, so a pattern that works in the tester will work in your code.</li>
+  <li><strong>No setup required</strong> — No npm packages, no Python REPLs, no Docker containers. Open a browser tab and start testing. It works on any device, including tablets and phones.</li>
+</ul>
+
+<p>Whether you are a seasoned developer debugging a complex parser or a student writing your first <code>grep</code> command, having a regex tester open in a browser tab will save you time every single day.</p>
+
+<div class="cta">
+  <h3>Ready to test your regex?</h3>
+  <p>Open <a href="https://goosekit.dev/regex/">Goosekit's free Regex Tester</a> — paste your pattern, paste your text, and see matches highlighted instantly. No signup. No data sent to any server. Just fast, private regex testing in your browser.</p>
+  <p><a href="https://goosekit.dev/regex/" class="cta-button">Try the Free Regex Tester →</a></p>
+</div>
+
+</main>
+<async-ad data-ad-region="2" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+<script src="../theme.js"></script>
+</body>
+</html>
