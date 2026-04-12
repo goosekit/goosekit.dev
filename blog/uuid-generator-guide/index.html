@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UUID Generator Online — Create v4 &amp; v7 UUIDs Instantly | Goosekit</title>
+  <meta name="description" content="Free online UUID generator. Generate version 4 (random) and version 7 (time-ordered) UUIDs in your browser. Bulk generation, copy to clipboard, no signup.">
+  <link rel="stylesheet" href="../blog-template.css">
+  <style>body{margin:0;min-height:100vh;background:var(--background)}</style>
+  <async-ad data-ad-region="1" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+</head>
+<body>
+<header class="site-header">
+<div class="container"><a href="/index.html" class="site-brand"><div class="brand-logo"><img src="../logo.svg" alt="Goosekit Logo"></div><span class="brand-text">Goosekit</span></a><nav><ul class="main-menu"><li><a href="/json/">JSON</a></li><li><a href="/regex/">Regex</a></li><li><a href="/hash/">Hash</a></li><li><a href="/password/">Password</a></li><li><a href="/uuid/">UUID</a></li><li><a href="/qr/">QR</a></li><li><a href="/compare/">Comparisons</a></li><li><a href="/api/">API</a></li></ul><div class="site-actions"><a href="/tools/" class="site-tool-link">All Tools</a><a href="/api/" class="site-tool-link">Get API Key</a><button class="toggle-dark" id="darkModeToggle" aria-label="Toggle dark mode">🌙</button></div></nav></div>
+</header>
+<main class="article container">
+
+<h1>UUID Generator Online — Create v4 &amp; v7 UUIDs Instantly</h1>
+
+<p>Every system needs unique identifiers. Database primary keys, API tokens, session IDs, file names, distributed trace spans — the list goes on. The <strong>Universally Unique Identifier</strong> (UUID) standard, defined in RFC 4122 and updated by <a href="https://www.rfc-editor.org/rfc/rfc9562">RFC 9562</a>, gives you a mathematically sound way to generate identifiers that are effectively guaranteed to be unique across space and time, without any central coordination.</p>
+
+<p>But generating a UUID in production code every time you need one is slow during development, prototyping, or quick scripting tasks. That is exactly where an <strong>online UUID generator</strong> shines. With <a href="https://goosekit.dev/uuid/">Goosekit's free UUID Generator</a>, you can generate version 4 (random) and version 7 (time-ordered) UUIDs instantly — bulk or one-at-a-time — with zero setup and no data leaving your browser.</p>
+
+<h2>What Is a UUID?</h2>
+
+<p>A <strong>UUID</strong> is a 128-bit value, typically represented as a 32-character hexadecimal string grouped into five sections separated by hyphens: <code>8-4-4-4-12</code>. Here is a concrete example:</p>
+
+<pre><code>550e8400-e29b-41d4-a716-446655440000</code></pre>
+
+<p>The standard format encodes version information and variant bits directly into the string. In the example above, the <code>4</code> in position 13 signals a version 4 (random) UUID. The bits in position 17 (the <code>a</code> in <code>a716</code>) encode the variant, which is always <code>10xx</code> in binary for RFC 4122-compliant UUIDs.</p>
+
+<p>Because 128 bits gives you roughly 3.4 × 10³⁸ possible values, the probability of a collision is astronomically low. Even generating one UUID per second for the estimated age of the universe, you would still have less than a one-in-a-billion chance of hitting the same value twice.</p>
+
+<h2>UUID Versions Explained</h2>
+
+<p>RFC 9562 defines multiple UUID versions, each with different generation strategies and use cases. The two most relevant for modern development are version 4 and version 7.</p>
+
+<h3>Version 4 — Random UUIDs</h3>
+
+<p>A <strong>v4 UUID</strong> is generated entirely from random (or pseudo-random) bits. Out of 128 bits, 122 are random; 4 bits are reserved for the version field, and 2 bits for the variant. This is the most widely used UUID version because it is simple, requires no state, and works everywhere.</p>
+
+<pre><code>f47ac10b-58cc-4372-a567-0e02b2c3d479
+  ↑        ↑ ↑
+  |        | └── version: 4
+  |        └─────── variant: 10xx (RFC 4122)
+  └──────────────── 122 random bits</code></pre>
+
+<p><strong>Pros:</strong> No coordination needed, stateless, trivially implementable with any cryptographically secure random number generator.</p>
+
+<p><strong>Cons:</strong> Completely unordered. When used as a database primary key, v4 UUIDs cause page splits and poor index locality because each new value is inserted at a random position in the B-tree.</p>
+
+<h3>Version 7 — Time-Ordered UUIDs</h3>
+
+<p><strong>v7 UUID</strong> is the newest addition to the standard, defined in RFC 9562 (2023). It embeds a Unix timestamp in milliseconds in the most significant bits, followed by random data. The result is a UUID that sorts naturally over time.</p>
+
+<pre><code>018e5ab2-f140-7350-8c9a-2d1e3f4a5b6c
+├───────────┬┘
+│           └── timestamp: 48 bits (Unix ms)
+└── version: 7, variant: 10xx, random: remaining bits</code></pre>
+
+<p><strong>Pros:</strong> Chronological ordering means efficient index inserts — new rows go at the end of the B-tree, not scattered everywhere. Better cache locality. Easier visual debugging (you can roughly tell when something was created by looking at its ID). Compatible with distributed systems because the timestamp provides sufficient uniqueness even with random sub-millisecond components.</p>
+
+<p><strong>Cons:</strong> Slightly more complex to generate — you need access to a millisecond-precision clock. Not all libraries support v7 yet (it is new), which is exactly why <a href="https://goosekit.dev/uuid/">Goosekit's UUID Generator</a> supports it right out of the box.</p>
+
+<h2>Version Comparison</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>Property</th>
+      <th>Version 4</th>
+      <th>Version 7</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr><td>Generation method</td><td>Random (122 bits)</td><td>Timestamp + random</td></tr>
+    <tr><td>Sort order</td><td>Random (no ordering)</td><td>Chronological</td></tr>
+    <tr><td>Database index performance</td><td>Poor (page splits)</td><td>Excellent (append-only)</td></tr>
+    <tr><td>Requires clock sync</td><td>No</td><td>No (millisecond precision is sufficient)</td></tr>
+    <tr><td>Standard</td><td>RFC 4122 (2005)</td><td>RFC 9562 (2023)</td></tr>
+    <tr><td>Library support</td><td>Universal</td><td>Growing rapidly</td></tr>
+    <tr><td>Best for</td><td>API keys, tokens, non-indexed IDs</td><td>Primary keys, event sourcing, audit logs</td></tr>
+    <tr><td>Example</td><td><code>550e8400-e29b-41d4-a716-446655440000</code></td><td><code>018e5ab2-f140-7350-8c9a-2d1e3f4a5b6c</code></td></tr>
+  </tbody>
+</table>
+
+<div class="cta">
+  <strong>Generate both versions instantly →</strong> Try <a href="https://goosekit.dev/uuid/">Goosekit's free UUID Generator</a> with support for v4 and v7, bulk generation, and one-click copy. No signup, no server round-trips.
+</div>
+
+<h2>UUID Generator Code Examples</h2>
+
+<p>You can generate UUIDs programmatically in virtually any language. Below are idiomatic examples for the two most relevant versions.</p>
+
+<h3>JavaScript / Node.js</h3>
+
+<pre><code>// Version 4 — using the built-in crypto module (Node.js 19+)
+const v4 = crypto.randomUUID();
+console.log(v4);
+// → "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+
+// Version 7 — manual implementation using crypto.getRandomValues
+function uuidv7() {
+  const now = Date.now();
+  const buf = new Uint8Array(16);
+  // 48-bit timestamp (big-endian)
+  const view = new DataView(buf.buffer);
+  view.setUint32(0, Math.floor(now / 1_000_000) * 0.000001 + (now % 1_000_000 * 0x10000000000), false);
+  view.setBigUint64(0, BigInt(now) << 16n, false);
+  // Fill remaining with random bytes
+  crypto.getRandomValues(buf);
+  // Set version 7 (byte 6, high nibble)
+  buf[6] = (buf[6] & 0x0f) | 0x70;
+  // Set variant (byte 8, high bits = 10)
+  buf[8] = (buf[8] & 0x3f) | 0x80;
+  // Format as hex string
+  const hex = [...buf].map(b => b.toString(16).padStart(2, '0'));
+  return `${hex.slice(0,4).join('')}-${hex.slice(4,6).join('')}-${hex.slice(6,8).join('')}-${hex.slice(8,10).join('')}-${hex.slice(10,16).join('')}`;
+}
+
+console.log(uuidv7());
+// → "018f9c3a-a1b2-7c4d-9e8f-3a5b7c9d1e2f"</code></pre>
+
+<h3>Python</h3>
+
+<pre><code>import uuid
+
+# Version 4
+print(str(uuid.uuid4()))
+# → "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+
+# Version 7 — Python 3.12+
+print(str(uuid.uuid7()))
+# → "018f9c3a-a1b2-7c4d-9e8f-3a5b7c9d1e2f"
+
+# For older Python versions, install the uuid7 package:
+# pip install uuid7
+# from uuid7 import uuid7
+# print(str(uuid7()))</code></pre>
+
+<h3>Bash / Command Line</h3>
+
+<pre><code># Version 4 using /proc/sys/kernel/random/uuid (Linux)
+cat /proc/sys/kernel/random/uuid
+
+# Version 4 using python one-liner (cross-platform)
+python3 -c "import uuid; print(uuid.uuid4())"
+
+# Generate 10 UUIDs at once
+for i in {1..10}; do python3 -c "import uuid; print(uuid.uuid4())"; done</code></pre>
+
+<h3>Using Goosekit's API</h3>
+
+<p>If you need UUID generation from a script or CI pipeline, you can call the free API directly:</p>
+
+<pre><code># Generate a single v4 UUID
+curl -s "https://goosekit.dev/api/uuid?type=v4"
+
+# Generate 10 v7 UUIDs as JSON
+curl -s "https://goosekit.dev/api/uuid?type=v7&count=10"</code></pre>
+
+<h2>UUID Best Practices</h2>
+
+<p>Generating a UUID is easy. Using them correctly in production takes a bit more thought. Here are the guidelines we see developers get wrong most often:</p>
+
+<ul>
+  <li><strong>Prefer v7 for database primary keys.</strong> If your database uses B-tree indexes (PostgreSQL, MySQL, SQLite), v7 UUIDs dramatically improve insert performance and reduce index fragmentation compared to v4. Benchmarks show up to 50% improvement in write throughput on write-heavy workloads.</li>
+  <li><strong>Use v4 for tokens and secrets.</strong> When the identifier must not leak any ordering information — like password reset tokens, API keys, or session IDs — v4 is the better choice because it contains no timestamp.</li>
+  <li><strong>Never generate your own UUIDs from <code>Math.random()</code>.</strong> In JavaScript, use <code>crypto.randomUUID()</code> or <code>crypto.getRandomValues()</code>. <code>Math.random()</code> is not cryptographically secure and has insufficient entropy for collision-free identifier generation.</li>
+  <li><strong>Store UUIDs efficiently.</strong> The hyphenated string form takes 36 bytes. If storage is a concern, store as <code>BINARY(16)</code> in MySQL or <code>UUID</code> in PostgreSQL (which stores as 16 bytes natively). Format to hyphenated string only at the presentation layer.</li>
+  <li><strong>Use uppercase or lowercase consistently.</strong> RFC 9562 specifies that output should be lowercase hexadecimal letters <code>a-f</code>. Stick with lowercase for interoperability, but know that UUID comparison is case-insensitive.</li>
+  <li><strong>Do not use UUIDs as security tokens.</strong> While v4 UUIDs have high entropy, they are not designed as security tokens. Use dedicated token generators (e.g., JWT with proper signing) for authentication purposes.</li>
+</ul>
+
+<h2>Why Use an Online UUID Generator?</h2>
+
+<p>You might wonder: if generating a UUID is a one-liner in most languages, why reach for an online tool? Here is what makes it genuinely useful in daily development:</p>
+
+<ul>
+  <li><strong>Instant, no-code generation</strong> — When you need a UUID for a config file, a database seed, or a quick test, opening a REPL or writing a script is overkill. An online generator gives you an ID in less than a second.</li>
+  <li><strong>Bulk generation</strong> — Need 50 UUIDs to seed a test database? Select the quantity, click generate, copy the entire list. No loops, no scripts.</li>
+  <li><strong>Version comparison</strong> — Want to see the difference between a v4 and v7 UUID side by side? An online tool lets you generate both instantly and compare the structure visually.</li>
+  <li><strong>Privacy</strong> — <a href="https://goosekit.dev/uuid/">Goosekit's UUID Generator</a> runs entirely in your browser. Your UUIDs are generated locally with the Web Crypto API. Nothing is sent to any server. This matters when you are generating identifiers for production systems or testing sensitive deployments.</li>
+  <li><strong>Always available</strong> — No npm install, no pip install, no dependency to manage. Open a tab on any device — laptop, tablet, phone — and generate UUIDs immediately.</li>
+  <li><strong>API access</strong> — For automation, the same generator is available via a free REST API. Integrate UUID generation into your CI/CD pipeline, scripts, or applications without writing any generation logic.</li>
+</ul>
+
+<h2>UUID Format Anatomy</h2>
+
+<p>Understanding the structure helps you debug issues and read UUIDs at a glance. Every RFC 9562 UUID follows the same layout:</p>
+
+<pre><code>xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
+│             │     │     └─ 32-bit node/random
+│             │     └─ variant (10xx = standard)
+│             └─ version (4, 7, etc.)
+└─ 96-bit time or random data</code></pre>
+
+<p>The <strong>version marker</strong> (M) tells you how the UUID was generated. The <strong>variant field</strong> (N) identifies which UUID specification the value conforms to. For all modern UUIDs (RFC 4122 and RFC 9562), the variant is always <code>10xx</code> in binary, which means the first hex digit is always <code>8</code>, <code>9</code>, <code>a</code>, or <code>b</code>.</p>
+
+<div class="cta">
+  <h3>Generate UUIDs now — free and instant</h3>
+  <p>Open <a href="https://goosekit.dev/uuid/">Goosekit's free UUID Generator</a> — create version 4 or version 7 UUIDs, generate in bulk, and copy with one click. No signup. All generation happens in your browser via the Web Crypto API.</p>
+  <p><a href="https://goosekit.dev/uuid/" class="cta-button">Try the Free UUID Generator →</a></p>
+</div>
+
+</main>
+<async-ad data-ad-region="2" data-publisher-ca-pub="ca-pub-2307550194687083"></async-ad>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/async-ad/4.2.0/async-ad.min.js" async></script>
+<script src="../theme.js"></script>
+</body>
+</html>
