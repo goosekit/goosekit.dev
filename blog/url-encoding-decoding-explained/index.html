@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>URL Encoding and Decoding Explained — Complete Guide (2026) | Goosekit</title>
+  <meta name="description" content="Learn URL encoding (percent-encoding) from first principles: how it works, which characters need encoding, code examples in Python, JavaScript, and Go, and a free online tool.">
+  <link rel="canonical" href="https://goosekit.dev/blog/url-encoding-decoding-explained/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <meta property="og:title" content="URL Encoding and Decoding Explained — Complete Guide (2026)">
+  <meta property="og:description" content="Master URL encoding with practical examples, code snippets, and a free online encoder/decoder tool.">
+  <meta property="og:url" content="https://goosekit.dev/blog/url-encoding-decoding-explained/">
+  <meta property="og:type" content="article">
+  <link rel="stylesheet" href="../blog-template.css">
+  <style>body{margin:0;min-height:100vh;background:var(--background)}</style>
+  <style>ins.adsbygoogle{display:none!important}</style>
+</head>
+<body>
+<header class="banner"><a href="/"><img src="/logo-dark.png" alt="Goosekit"> Goosekit</a></header>
+
+<main class="container">
+  <p class="meta">📅 April 12, 2026 · 7 min read · <a href="/blog/">← All posts</a></p>
+  <h1>URL Encoding and Decoding Explained — Complete Guide (2026)</h1>
+
+  <p>Have you ever copied a URL from your browser's address bar and ended up with a string full of <code>%20</code>, <code>%3D</code>, and <code>%26</code> characters? Or pasted a URL into your code only to have it break because of spaces, ampersands, or non-ASCII characters? That is URL encoding — also known as <strong>percent-encoding</strong> — at work.</p>
+
+  <p>URL encoding is a foundational web technology that ensures data can be safely transmitted in URLs, HTML forms, cookies, and HTTP headers. Despite being specified in 1994 (RFC 1738, updated by RFC 3986), it remains a constant source of subtle bugs for developers who do not understand when to encode, what to encode, and which tool to use.</p>
+
+  <p>This guide covers everything: the specification, character-by-character rules, code examples in every major language, common mistakes that cause real outages, and best practices for 2026.</p>
+
+  <h2>What Is URL Encoding?</h2>
+
+  <p>URL encoding replaces unsafe ASCII characters with a <code>%</code> followed by two hexadecimal digits representing the character's ASCII value. For example:</p>
+
+  <pre><code>"Hello World! 100% free"
+ → "Hello%20World%21%20100%25%20free"</code></pre>
+
+  <p>Each space (<code> </code>, ASCII 32 = 0x20) becomes <code>%20</code>, the exclamation mark (<code>!</code>, ASCII 33 = 0x21) becomes <code>%21</code>, and the percent sign (<code>%</code>, ASCII 37 = 0x25) becomes <code>%25</code>.</p>
+
+  <p>Non-ASCII characters are first encoded as UTF-8 bytes, then each byte is percent-encoded:</p>
+
+  <pre><code>"café" in UTF-8 bytes: 63 61 66 C3 A9
+ → "caf%C3%A9"
+
+"日本語" in UTF-8 bytes: E6 97 A5 E6 9C AC E8 AA 9E
+ → "%E6%97%A5%E6%9C%AC%E8%AA%9E"</code></pre>
+
+  <h2>Which Characters Need Encoding?</h2>
+
+  <p>According to RFC 3986, a URL is composed of <strong>unreserved</strong> characters, <strong>reserved</strong> characters, and everything else:</p>
+
+  <h3>Unreserved Characters (NEVER encode these)</h3>
+
+  <pre><code>A–Z  a–z  0–9  -  _  .  ~</code></pre>
+
+  <p>These 66 characters are safe in any part of a URL and should <strong>never</strong> be percent-encoded. Encoding them (e.g., turning a hyphen into <code>%2D</code>) is technically valid but produces unnecessarily long and hard-to-read URLs.</p>
+
+  <h3>Reserved Characters (MUST encode in data context)</h3>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Character</th>
+        <th>Encoded</th>
+        <th>Reserved Purpose</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><code>!</code></td><td><code>%21</code></td><td>Delimiter</td></tr>
+      <tr><td><code>#</code></td><td><code>%23</code></td><td>Fragment identifier</td></tr>
+      <tr><td><code>$</code></td><td><code>%24</code></td><td>Delimiter</td></tr>
+      <tr><td><code>&amp;</code></td><td><code>%26</code></td><td>Query parameter separator</td></tr>
+      <tr><td><code>'</code></td><td><code>%27</code></td><td>Delimiter</td></tr>
+      <tr><td><code>(</code></td><td><code>%28</code></td><td>Delimiter</td></tr>
+      <tr><td><code>)</code></td><td><code>%29</code></td><td>Delimiter</td></tr>
+      <tr><td><code>*</code></td><td><code>%2A</code></td><td>Delimiter</td></tr>
+      <tr><td><code>+</code></td><td><code>%2B</code></td><td>Space in application/x-www-form-urlencoded</td></tr>
+      <tr><td><code>,</code></td><td><code>%2C</code></td><td>Delimiter</td></tr>
+      <tr><td><code>/</code></td><td><code>%2F</code></td><td>Path segment separator</td></tr>
+      <tr><td><code>:</code></td><td><code>%3A</code></td><td>Scheme and port separator</td></tr>
+      <tr><td><code>;</code></td><td><code>%3B</code></td><td>Parameter delimiter (path)</td></tr>
+      <tr><td><code>=</code></td><td><code>%3D</code></td><td>Query parameter value assignment</td></tr>
+      <tr><td><code>?</code></td><td><code>%3F</code></td><td>Query string introduction</td></tr>
+      <tr><td><code>@</code></td><td><code>%40</code></td><td>Userinfo delimiter</td></tr>
+      <tr><td><code>[</code></td><td><code>%5B</code></td><td>Delimiter</td></tr>
+      <tr><td><code>]</code></td><td><code>%5D</code></td><td>Delimiter</td></tr>
+      <tr><td><code>space</code></td><td><code>%20</code></td><td>Whitespace (not allowed in URLs)</td></tr>
+    </tbody>
+  </table>
+
+  <p>The rule of thumb: if a character has special meaning in a URL context (separating path segments, delimiting query parameters, etc.), you <strong>must</strong> percent-encode it when that character appears as <em>data</em> rather than as a structural element.</p>
+
+  <h2>Practical Examples</h2>
+
+  <h3>Query Parameter Encoding</h3>
+
+  <pre><code>// Building a search URL with special characters
+const query = "cats & dogs: 100% fun!";
+const encoded = encodeURIComponent(query);
+console.log(encoded);
+// "cats%20%26%20dogs%3A%20100%25%20fun!"
+
+const url = `https://example.com/search?q=${encoded}`;
+console.log(url);
+// "https://example.com/search?q=cats%20%26%20dogs%3A%20100%25%20fun!"</code></pre>
+
+  <h3>Path Segment Encoding</h3>
+
+  <pre><code>// File paths with special characters
+const filename = "report Q1 2026 (final).pdf";
+const encoded = encodeURIComponent(filename);
+const url = `https://goosekit.dev/files/${encoded}`;
+// https://goosekit.dev/files/report%20Q1%202026%20(final).pdf</code></pre>
+
+  <h3>JSON in Query Parameters</h3>
+
+  <pre><code>// Sending structured data as a query parameter
+const filter = { status: "active", tags: ["api", "webhook"] };
+const json = JSON.stringify(filter);
+const encoded = encodeURIComponent(json);
+const url = `https://api.example.com/orders?filter=${encoded}`;
+// https://api.example.com/orders?filter=%7B%22status%22%3A%22active%22%2C%22tags%22%3A%5B%22api%22%2C%22webhook%22%5D%7D</code></pre>
+
+  <div class="cta">
+    <h3>Encode or decode URLs instantly</h3>
+    <p>Use <a href="https://goosekit.dev/url/">Goosekit's free URL Encoder/Decoder</a> to encode or decode any URL component. Supports both standard percent-encoding and application/x-www-form-urlencoded format. Runs 100% in your browser.</p>
+    <a href="https://goosekit.dev/url/">Encode / Decode URLs →</a>
+  </div>
+
+  <h2>URL Encoding in Code</h2>
+
+  <h3>JavaScript (Browser and Node.js)</h3>
+
+  <pre><code>// Built-in functions (available everywhere)
+const text = "Hello, World! café";
+
+// Encode — encodes everything except unreserved chars
+const encoded = encodeURIComponent(text);
+console.log(encoded);
+// Hello%2C%20World!%20caf%C3%A9
+
+// Decode
+const decoded = decodeURIComponent(encoded);
+console.log(decoded); // Hello, World! café
+
+// ⚠️ DON'T use encodeURI() for query parameter values
+// encodeURI() does NOT encode: # $ & + , / : ; = ? @
+// These are structural characters that MUST be encoded in data
+const uri = "https://example.com/path with spaces";
+const safeUri = encodeURI(uri); // Encodes spaces but keeps structure
+
+// ⚠️ decodeURIComponent throws on malformed input
+try {
+  decodeURIComponent("%E0%A4%A");
+} catch (e) {
+  console.error("Malformed URI:", e.message);
+  // URIError: URI malformed
+}</code></pre>
+
+  <h3>Python</h3>
+
+  <pre><code>from urllib.parse import quote, unquote, quote_plus, urlencode
+
+text = "Hello, World! café"
+
+# encodeURIComponent equivalent
+encoded = quote(text, safe="")
+print(encoded)  # Hello%2C%20World!%20caf%C3%A9
+
+# decodeURIComponent equivalent
+decoded = unquote(encoded)
+print(decoded)  # Hello, World! café
+
+# application/x-www-form-urlencoded (spaces → +)
+form_encoded = quote_plus(text)
+print(form_encoded)  # Hello%2C+World%21+caf%C3%A9
+
+# Build query strings
+params = {"q": "search query", "page": 2, "lang": "en"}
+query_string = urlencode(params)
+print(query_string)  # q=search+query&page=2&lang=en</code></pre>
+
+  <h3>Go (Golang)</h3>
+
+  <pre><code>package main
+
+import (
+    "fmt"
+    "net/url"
+)
+
+func main() {
+    text := "Hello, World! café"
+
+    // Encode
+    encoded := url.QueryEscape(text)
+    fmt.Println(encoded) // Hello%2C+World%21+caf%C3%A9
+
+    // Decode
+    decoded, _ := url.QueryUnescape(encoded)
+    fmt.Println(decoded) // Hello, World! café
+
+    // Build a full URL safely
+    u := &url.URL{
+        Scheme:   "https",
+        Host:     "api.example.com",
+        Path:     "/v1/search",
+    }
+    q := u.Query()
+    q.Set("q", text)
+    q.Set("limit", "10")
+    u.RawQuery = q.Encode()
+    fmt.Println(u.String())
+    // https://api.example.com/v1/search?q=Hello%2C+World%21+caf%C3%A9&limit=10
+}</code></pre>
+
+  <h3>Java</h3>
+
+  <pre><code>import java.net.URLEncoder;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+
+public class UrlEncoding {
+    public static void main(String[] args) throws Exception {
+        String text = "Hello, World! café";
+
+        // Encode (Java 10+)
+        String encoded = URLEncoder.encode(text, StandardCharsets.UTF_8);
+        System.out.println(encoded); // Hello%2C+World%21+caf%C3%A9
+
+        // Decode
+        String decoded = URLDecoder.decode(encoded, StandardCharsets.UTF_8);
+        System.out.println(decoded); // Hello, World! café
+    }
+}</code></pre>
+
+  <h3>Command Line</h3>
+
+  <pre><code># Using Python one-liner for quick encoding
+python3 -c "from urllib.parse import quote; print(quote('hello world'))"
+# hello%20world
+
+# Using Python for decoding
+python3 -c "from urllib.parse import unquote; print(unquote('hello%20world'))"
+# hello world
+
+# Using curl (automatic encoding in URL)
+curl "https://api.example.com/search?q=$(python3 -c "from urllib.parse import quote; print(quote('hello world'))")"</code></pre>
+
+  <h2>Common Pitfalls and How to Avoid Them</h2>
+
+  <h3>1. Using <code>encodeURI()</code> Instead of <code>encodeURIComponent()</code></h3>
+
+  <pre><code>// ❌ Wrong — preserves structural characters that should be encoded in values
+const bad = encodeURI("key=value&other=data");
+// "key=value&other=data" — & and = are NOT encoded!
+
+// ✅ Correct — encodes everything except unreserved characters
+const good = encodeURIComponent("key=value&other=data");
+// "key%3Dvalue%26other%3Ddata"</code></pre>
+
+  <p>Use <code>encodeURI()</code> only for complete URL strings where structural characters must be preserved. Use <code>encodeURIComponent()</code> for individual URL components (query values, path segments, fragment identifiers).</p>
+
+  <h3>2. Mixing + and %20 for Spaces</h3>
+
+  <p>The history is confusing: in <code>application/x-www-form-urlencoded</code> (HTML form submissions), spaces are encoded as <code>+</code>. In <code>application/x-www-form-urlencoded</code> query strings, browsers accept both. But <code>+</code> is a literal plus sign in standard percent-encoding. When in doubt, use <code>%20</code> for spaces.</p>
+
+  <pre><code>// In query strings: both are generally accepted
+"?q=hello+world"  // + means space (form encoding)
+"?q=hello%20world" // %20 means space (percent-encoding)
+
+// But in path segments: + is literal
+"/path/hello+world"  // The + is part of the path, NOT a space
+"/path/hello%20world" // This IS a space in the path</code></pre>
+
+  <h3>3. Double Encoding</h3>
+
+  <p>Encoding already-encoded data creates strings that look like <code>%2520</code> instead of <code>%20</code>. This happens when a framework automatically encodes and you also encode manually:</p>
+
+  <pre><code>// ❌ Double encoding
+const once = encodeURIComponent("hello world");
+// "hello%20world"
+const twice = encodeURIComponent(once);
+// "hello%2520world" ← broken!
+
+// ✅ Encode once, at the right level
+const params = new URLSearchParams({ q: "hello world" });
+const url = `/search?${params.toString()}`;
+// "/search?q=hello+world"</code></pre>
+
+  <h3>4. URL Fragment Identifiers (#)</h3>
+
+  <p>The <code>#</code> character and everything after it is never sent to the server — it is handled entirely client-side. If you need to include a hash in a value, encode it:</p>
+
+  <pre><code>// ❌ The # starts a fragment — "section1" is never sent to the server
+fetch("/api/article?content=Intro#section1")
+
+// ✅ Properly encode the #
+encodeURIComponent("Intro#section1")
+// "Intro%23section1"</code></pre>
+
+  <h2>URL Encoding of JSON (Advanced)</h2>
+
+  <p>Sometimes you need to embed JSON directly in a URL. This is common for sharing filters, search parameters, or configuration state:</p>
+
+  <pre><code>const filters = {
+  category: "api-tools",
+  tags: ["free", "no-signup"],
+  sort: "-created_at",
+  page: 1
+};
+
+const json = JSON.stringify(filters);
+const encoded = encodeURIComponent(json);
+const shareUrl = `https://goosekit.dev/tools?filters=${encoded}`;
+
+// shareUrl:
+// https://goosekit.dev/tools?filters=%7B%22category%22%3A%22api-tools%22%2C%22tags%22%3A%5B%22free%22%2C%22no-signup%22%5D%2C%22sort%22%3A%22-created_at%22%2C%22page%22%3A1%7D</code></pre>
+
+  <p>For the receiving side:</p>
+
+  <pre><code>// Parse the URL parameter back to an object
+const params = new URLSearchParams(window.location.search);
+const filters = JSON.parse(params.get("filters"));</code></pre>
+
+  <h2>URL Decoding: Reversing the Process</h2>
+
+  <p>A quick reference for decoding in every common environment:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Environment</th>
+        <th>Function</th>
+        <th>Example</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>JavaScript</td><td><code>decodeURIComponent(str)</code></td><td><code>decodeURIComponent("hello%20world")</code></td></tr>
+      <tr><td>Python</td><td><code>urllib.parse.unquote(str)</code></td><td><code>unquote("hello%20world")</code></td></tr>
+      <tr><td>Go</td><td><code>url.QueryUnescape(str)</code></td><td><code>url.QueryUnescape("hello+world")</code></td></tr>
+      <tr><td>Java</td><td><code>URLDecoder.decode(str, charset)</code></td><td><code>URLDecoder.decode("hello+world", UTF_8)</code></td></tr>
+      <tr><td>Ruby</td><td><code>CGI.unescape(str)</code></td><td><code>CGI.unescape("hello+world")</code></td></tr>
+      <tr><td>PHP</td><td><code>urldecode(str)</code></td><td><code>urldecode("hello+world")</code></td></tr>
+    </tbody>
+  </table>
+
+  <h2>Conclusion</h2>
+
+  <p>URL encoding is simple once you internalize two rules: encode structural characters when they appear as data, and always use UTF-8 as the underlying character encoding. The most common bugs — double encoding, <code>encodeURI</code> vs <code>encodeURIComponent</code> confusion, and <code>+</code> vs <code>%20</code> ambiguity — all stem from not understanding <em>where</em> in the URL a string is being used.</p>
+
+  <p>When in doubt, run your strings through a tool to verify the encoding is correct before shipping.</p>
+
+  <div class="cta">
+    <h3>Verify your URL encoding</h3>
+    <p><a href="https://goosekit.dev/url/">Goosekit's free URL Encoder/Decoder</a> handles both percent-encoding and form encoding. No signup, no data leaves your browser.</p>
+    <a href="https://goosekit.dev/url/">Try the URL Encoder →</a>
+  </div>
+
+</main>
+
+<footer>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/tools/">All Tools</a> · <a href="/url/">URL Encoder/Decoder</a></p>
+</footer>
+</body>
+</html>
