@@ -439,13 +439,28 @@
     /* ── Canvas area ── */
     .canvas-area {
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 20px;
       padding: 32px;
       overflow: auto;
       background: radial-gradient(ellipse at 60% 40%, rgba(99,102,241,0.06) 0%, transparent 70%),
                   var(--bg);
       position: relative;
+    }
+    .canvas-mobile-top,
+    .canvas-mobile-bottom {
+      display: none;
+      width: 100%;
+      gap: 16px;
+      flex-direction: column;
+    }
+    .canvas-mobile-bottom .section-title {
+      margin-bottom: 8px;
+    }
+    .canvas-mobile-bottom .export-row {
+      flex-direction: column;
     }
     .canvas-wrapper {
       position: relative;
@@ -570,15 +585,21 @@
       .canvas-area {
         min-height: 60vh;
         padding: 16px;
-        align-items: flex-start;
+        align-items: stretch;
+        justify-content: flex-start;
         overflow: hidden;
+        gap: 16px;
+      }
+      .canvas-mobile-top,
+      .canvas-mobile-bottom {
+        display: flex;
       }
       .canvas-wrapper {
         width: 100%;
       }
       .canvas-placeholder {
         width: 100%;
-        min-height: 60vh;
+        min-height: 48vh;
         padding: 24px 12px;
       }
       .drop-zone {
@@ -661,18 +682,20 @@
   <!-- Sidebar -->
   <aside class="sidebar" data-panel="settings">
 
-    <!-- Image input -->
-    <div>
-      <div class="section-title">📂 Image</div>
-      <div class="drop-zone" id="dropZone" onclick="document.getElementById('file-input').click()" role="button" tabindex="0" aria-label="Choose a screenshot to upload">
-        <input type="file" id="file-input" accept="image/*" />
-        <div class="drop-icon">🖼️</div>
-        <div class="drop-label">
-          <span class="drop-label-desktop"><strong>Choose or drop</strong> your screenshot here</span>
-          <span class="drop-label-mobile"><strong>Tap to upload</strong> a screenshot</span>
+    <div id="sidebarImageSlot">
+      <!-- Image input -->
+      <div id="imageInputSection">
+        <div class="section-title">📂 Image</div>
+        <div class="drop-zone" id="dropZone" onclick="document.getElementById('file-input').click()" role="button" tabindex="0" aria-label="Choose a screenshot to upload">
+          <input type="file" id="file-input" accept="image/*" />
+          <div class="drop-icon">🖼️</div>
+          <div class="drop-label">
+            <span class="drop-label-desktop"><strong>Choose or drop</strong> your screenshot here</span>
+            <span class="drop-label-mobile"><strong>Tap to upload</strong> a screenshot</span>
+          </div>
+          <button class="upload-btn" type="button" onclick="event.stopPropagation(); document.getElementById('file-input').click()">Choose file</button>
+          <div class="drop-hint">Paste from clipboard or choose a screenshot to start</div>
         </div>
-        <button class="upload-btn" type="button" onclick="event.stopPropagation(); document.getElementById('file-input').click()">Choose file</button>
-        <div class="drop-hint">Paste from clipboard or choose a screenshot to start</div>
       </div>
     </div>
 
@@ -730,34 +753,36 @@
       </div>
     </div>
 
-    <!-- Export Size Presets -->
-    <div>
-      <div class="section-title">📐 Export Size</div>
-      <div class="size-presets" id="sizePresets">
-        <button class="size-preset-btn active" data-w="0" data-h="0">
-          <span class="preset-name">Original</span>
-          <span class="preset-dim">Auto</span>
-        </button>
-        <button class="size-preset-btn" data-w="1600" data-h="900">
-          <span class="preset-name">Twitter</span>
-          <span class="preset-dim">1600×900</span>
-        </button>
-        <button class="size-preset-btn" data-w="1200" data-h="627">
-          <span class="preset-name">LinkedIn</span>
-          <span class="preset-dim">1200×627</span>
-        </button>
-        <button class="size-preset-btn" data-w="1080" data-h="1080">
-          <span class="preset-name">Instagram</span>
-          <span class="preset-dim">1080×1080</span>
-        </button>
-        <button class="size-preset-btn" data-w="1270" data-h="760">
-          <span class="preset-name">Product Hunt</span>
-          <span class="preset-dim">1270×760</span>
-        </button>
-        <button class="size-preset-btn" data-w="1920" data-h="1080">
-          <span class="preset-name">Presentation</span>
-          <span class="preset-dim">1920×1080</span>
-        </button>
+    <div id="sidebarExportSizeSlot">
+      <!-- Export Size Presets -->
+      <div id="exportSizeSection">
+        <div class="section-title">📐 Export Size</div>
+        <div class="size-presets" id="sizePresets">
+          <button class="size-preset-btn active" data-w="0" data-h="0">
+            <span class="preset-name">Original</span>
+            <span class="preset-dim">Auto</span>
+          </button>
+          <button class="size-preset-btn" data-w="1600" data-h="900">
+            <span class="preset-name">Twitter</span>
+            <span class="preset-dim">1600×900</span>
+          </button>
+          <button class="size-preset-btn" data-w="1200" data-h="627">
+            <span class="preset-name">LinkedIn</span>
+            <span class="preset-dim">1200×627</span>
+          </button>
+          <button class="size-preset-btn" data-w="1080" data-h="1080">
+            <span class="preset-name">Instagram</span>
+            <span class="preset-dim">1080×1080</span>
+          </button>
+          <button class="size-preset-btn" data-w="1270" data-h="760">
+            <span class="preset-name">Product Hunt</span>
+            <span class="preset-dim">1270×760</span>
+          </button>
+          <button class="size-preset-btn" data-w="1920" data-h="1080">
+            <span class="preset-name">Presentation</span>
+            <span class="preset-dim">1920×1080</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -779,12 +804,14 @@
       </div>
     </div>
 
-    <!-- Export -->
-    <div>
-      <div class="section-title">💾 Export</div>
-      <div class="export-row">
-        <button class="btn btn-primary" id="btnDownload" disabled>⬇ Download PNG</button>
-        <button class="btn btn-secondary" id="btnCopy" disabled>📋 Copy to clipboard</button>
+    <div id="sidebarExportActionsSlot">
+      <!-- Export -->
+      <div id="exportActionsSection">
+        <div class="section-title">💾 Export</div>
+        <div class="export-row">
+          <button class="btn btn-primary" id="btnDownload" disabled>⬇ Download PNG</button>
+          <button class="btn btn-secondary" id="btnCopy" disabled>📋 Copy to clipboard</button>
+        </div>
       </div>
     </div>
 
@@ -792,6 +819,7 @@
 
   <!-- Canvas -->
   <main class="canvas-area active" id="canvasArea" data-panel="editor">
+    <div class="canvas-mobile-top" id="canvasMobileTop"></div>
     <div class="canvas-placeholder" id="placeholder">
       <div class="big-icon">🖼️</div>
       <p>Tap or drop a screenshot to get started</p>
@@ -800,6 +828,7 @@
     <div class="canvas-wrapper" id="canvasWrapper" style="display:none;">
       <canvas id="preview"></canvas>
     </div>
+    <div class="canvas-mobile-bottom" id="canvasMobileBottom"></div>
   </main>
 
 </div>
@@ -835,6 +864,8 @@
       tabPanels.forEach(function (panel) { panel.classList.toggle('active', panel.dataset.panel === nextTab); });
     });
   });
+
+  const mobileLayoutQuery = window.matchMedia('(max-width: 768px)');
 
   // ─── Gradient presets ───────────────────────────────────────
   const GRADIENTS = [
@@ -900,6 +931,33 @@
   const placeholder  = document.getElementById('placeholder');
   const canvasWrapper= document.getElementById('canvasWrapper');
   const toast        = document.getElementById('toast');
+  const sidebarImageSlot = document.getElementById('sidebarImageSlot');
+  const sidebarExportSizeSlot = document.getElementById('sidebarExportSizeSlot');
+  const sidebarExportActionsSlot = document.getElementById('sidebarExportActionsSlot');
+  const imageInputSection = document.getElementById('imageInputSection');
+  const exportSizeSection = document.getElementById('exportSizeSection');
+  const exportActionsSection = document.getElementById('exportActionsSection');
+  const canvasMobileTop = document.getElementById('canvasMobileTop');
+  const canvasMobileBottom = document.getElementById('canvasMobileBottom');
+
+  function syncResponsiveLayout() {
+    if (mobileLayoutQuery.matches) {
+      canvasMobileTop.appendChild(imageInputSection);
+      canvasMobileBottom.appendChild(exportSizeSection);
+      canvasMobileBottom.appendChild(exportActionsSection);
+    } else {
+      sidebarImageSlot.appendChild(imageInputSection);
+      sidebarExportSizeSlot.appendChild(exportSizeSection);
+      sidebarExportActionsSlot.appendChild(exportActionsSection);
+    }
+  }
+
+  syncResponsiveLayout();
+  if (typeof mobileLayoutQuery.addEventListener === 'function') {
+    mobileLayoutQuery.addEventListener('change', syncResponsiveLayout);
+  } else if (typeof mobileLayoutQuery.addListener === 'function') {
+    mobileLayoutQuery.addListener(syncResponsiveLayout);
+  }
 
   // ─── Performance: debounced render + lightweight cache ──────
   let renderRAF = 0;
