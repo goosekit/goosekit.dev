@@ -1066,6 +1066,19 @@
   fileInput.addEventListener('change', function() {
     if (fileInput.files[0]) loadFile(fileInput.files[0]);
   });
+  // Mobile tap-to-upload
+  dropZone.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT') return;
+    fileInput.click();
+  });
+  var uploadBtn = dropZone.querySelector('.upload-btn');
+  if (uploadBtn) {
+    uploadBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      fileInput.click();
+    });
+  }
+
   dropZone.addEventListener('keydown', function(e) {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();

@@ -381,6 +381,15 @@
     .toast.show { opacity: 1; transform: translateY(0); }
     .toast.success { border-color: var(--green); color: var(--green); }
     .toast.error   { border-color: var(--red);   color: var(--red); }
+  
+    .seo-content { max-width: 780px; margin: 2rem auto 0; padding: 0 1.5rem 4rem; }
+    .seo-content h2 { font-size: 1.5rem; color: #fff; margin: 1.5rem 0 0.75rem; }
+    .seo-content h3 { font-size: 1.15rem; color: #d4d4e8; margin: 1rem 0 0.5rem; }
+    .seo-content p { color: #b8b8cc; line-height: 1.7; margin-bottom: 0.75rem; }
+    .seo-content ul, .seo-content ol { color: #b8b8cc; line-height: 1.8; margin: 0.5rem 0 1rem 1.25rem; }
+    .seo-content a { color: #7b8cff; text-decoration: none; }
+    .seo-content a:hover { text-decoration: underline; }
+    .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style></head>
 <body>
@@ -490,16 +499,41 @@
   </div>
 </main>
 
+<div class="seo-content">
+  <h2>How to format and validate JSON online</h2>
+  <p>Paste your raw JSON into the editor above. Goosekit's JSON Formatter instantly beautifies your data with syntax highlighting, validates the structure, and highlights any errors.</p>
+  <ol>
+    <li>Paste or type your JSON</li>
+    <li>Click Format to beautify with proper indentation</li>
+    <li>Review color-coded output for errors</li>
+    <li>Click Minify to compress for production</li>
+    <li>Copy or download the result</li>
+  </ol>
+  <h2>Features</h2>
+  <ul>
+    <li>Instant formatting with syntax highlighting</li>
+    <li>Error detection and line numbers</li>
+    <li>Minify for production use</li>
+    <li>Auto-format on paste</li>
+    <li>Sort keys alphabetically</li>
+    <li>Drop .json files directly</li>
+    <li><strong>100% client-side</strong> — your data never leaves the browser</li>
+  </ul>
+  <h2>Frequently Asked Questions</h2>
+  <h3>What is JSON formatting?</h3>
+  <p>JSON formatting adds indentation and line breaks to make JSON data readable. Minified JSON removes whitespace to reduce file size.</p>
+  <h3>Does my data leave the browser?</h3>
+  <p>No. All processing happens in your browser using pure JavaScript.</p>
+  <h3>Is this tool free?</h3>
+  <p>Yes, completely free with no signup required.</p>
+  <h2>Related Tools</h2>
+  <p>Try our <a href="/base64/">Base64 Encoder</a>, <a href="/jwt/">JWT Decoder</a>, or <a href="/yaml/">YAML to JSON converter</a>.</p>
+</div>
+
 <footer>
-  <span>Goosekit</span>
+  <span><a href="/">🪿 Goosekit</a></span>
   <span>·</span>
   <span>Free JSON tools, no signup needed.</span>
-  <div class="promo">
-    More free dev tools:
-    <a href="https://screensnap.app/" target="_blank" rel="noopener">ScreenSnap</a>
-    ·
-    <a href="https://ogpreview.app/" target="_blank" rel="noopener">OG Preview</a>
-  </div>
 </footer>
 
 <div class="toast" id="toast"></div>

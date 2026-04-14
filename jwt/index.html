@@ -184,7 +184,16 @@
             .claim-row { flex-direction: column; gap: 0.2rem; }
             .claim-label { margin-left: 0; }
         }
-    </style>
+    
+    .seo-content { max-width: 780px; margin: 2rem auto 0; padding: 0 1.5rem 4rem; }
+    .seo-content h2 { font-size: 1.5rem; color: #fff; margin: 1.5rem 0 0.75rem; }
+    .seo-content h3 { font-size: 1.15rem; color: #d4d4e8; margin: 1rem 0 0.5rem; }
+    .seo-content p { color: #b8b8cc; line-height: 1.7; margin-bottom: 0.75rem; }
+    .seo-content ul, .seo-content ol { color: #b8b8cc; line-height: 1.8; margin: 0.5rem 0 1rem 1.25rem; }
+    .seo-content a { color: #7b8cff; text-decoration: none; }
+    .seo-content a:hover { text-decoration: underline; }
+    .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+  </style>
 <style>ins.adsbygoogle{display:none!important}</style></head>
 <body>
 <!-- Goosekit Banner -->
@@ -222,12 +231,36 @@
             </div>
         </div>
 
-        <footer>
-            <p>
-                <a href="https://goosekit.dev">GooseKit</a> ·
-                <a href="https://arthurpierrey.github.io/screensnap/app.html">ScreenSnap</a> ·
-                <a href="https://arthurpierrey.github.io/ogpreview/">OG Preview</a>
-            </p>
+        <div class="seo-content">
+  <h2>How to decode a JWT online</h2>
+  <p>Paste your JSON Web Token above. Goosekit's JWT Decoder instantly reveals the header, payload, and token claims.</p>
+  <ol>
+    <li>Copy your JWT (starts with eyJ…)</li>
+    <li>Paste it into the input field</li>
+    <li>See decoded header and payload with color-coded sections</li>
+    <li>Check expiration status and claims at a glance</li>
+  </ol>
+  <h2>Features</h2>
+  <ul>
+    <li>Instant decode as you type</li>
+    <li>Color-coded header, payload, and signature</li>
+    <li>Expiration status badges</li>
+    <li>Sample JWT for testing</li>
+    <li><strong>100% client-side</strong> — your token never leaves your browser</li>
+  </ul>
+  <h2>Frequently Asked Questions</h2>
+  <h3>What is a JWT?</h3>
+  <p>A JSON Web Token is a compact, URL-safe way to represent claims between parties. Three Base64-encoded parts: header, payload, signature.</p>
+  <h3>Can I decode without the secret?</h3>
+  <p>Yes. Header and payload are Base64-encoded, not encrypted. This tool decodes them without any secret key.</p>
+  <h3>Is this safe for production tokens?</h3>
+  <p>Yes. All decoding happens locally — no data is sent to any server.</p>
+  <h2>Related Tools</h2>
+  <p>More tools: <a href="/json/">JSON Formatter</a>, <a href="/hash/">Hash Generator</a>, <a href="/base64/">Base64 Encoder</a>.</p>
+</div>
+
+<footer>
+            <p><a href="/">🪿 Goosekit</a></p>
             <p style="margin-top: 0.4rem;">Free developer tools. No tracking, no ads. Open source.</p>
         </footer>
     </div>
