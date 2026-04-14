@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://goosekit.dev/</loc><lastmod>2026-04-13</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://goosekit.dev/tools/</loc><lastmod>2026-04-02</lastmod><changefreq>weekly</changefreq><priority>0.9</priority></url>
   <url><loc>https://goosekit.dev/blog/</loc><lastmod>2026-04-13</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/background-remover/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://goosekit.dev/badges/</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <url><loc>https://goosekit.dev/base64/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/box-shadow/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/chart-maker/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -55,8 +53,13 @@
   <url><loc>https://goosekit.dev/uuid/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/word-counter/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://goosekit.dev/api/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://goosekit.dev/compare/</loc><lastmod>2026-04-07</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/pro/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/compare/goosekit-vs-10015/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/compare/goosekit-vs-tinywow/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/tools/for-designers/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/tools/for-developers/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/tools/for-freelancers/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/tools/for-students/</loc><lastmod>2026-04-14</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/ship-it-kit/</loc><lastmod>2026-04-09</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/best-free-online-tools-2026/</loc><lastmod>2026-04-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/free-tools-for-students/</loc><lastmod>2026-04-03</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
