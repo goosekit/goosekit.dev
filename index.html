@@ -916,6 +916,19 @@
   <main>
     <p class="tools-count" id="tools-count">50 tools available</p>
 
+    <section style="max-width:1100px;margin:1.25rem auto 0;padding:0 1rem 0.5rem;">
+      <div style="background:linear-gradient(135deg,rgba(249,115,22,0.12),rgba(59,130,246,0.10));border:1px solid rgba(249,115,22,0.22);border-radius:18px;padding:1.25rem 1.25rem 1rem;">
+        <div style="font-size:1rem;font-weight:700;color:#e5e7eb;margin-bottom:0.4rem;">Discover Goosekit faster</div>
+        <p style="color:#cbd5e1;line-height:1.6;margin:0 0 0.9rem;">Start with curated collections and comparisons if you want the fastest path to the right tool.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:10px;">
+          <a href="/tools/for-developers/" style="text-decoration:none;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.08);color:#fdba74;font-weight:600;border:1px solid rgba(251,146,60,0.35);">Browse developer tools →</a>
+          <a href="/tools/for-students/" style="text-decoration:none;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.08);color:#93c5fd;font-weight:600;border:1px solid rgba(96,165,250,0.35);">Browse student tools →</a>
+          <a href="/compare/goosekit-vs-10015/" style="text-decoration:none;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.08);color:#c4b5fd;font-weight:600;border:1px solid rgba(167,139,250,0.35);">Compare Goosekit vs 10015 →</a>
+          <a href="/compare/goosekit-vs-tinywow/" style="text-decoration:none;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,0.08);color:#67e8f9;font-weight:600;border:1px solid rgba(34,211,238,0.35);">Compare Goosekit vs TinyWow →</a>
+        </div>
+      </div>
+    </section>
+
     <div class="grid" id="grid" role="list">
 
       <!-- ScreenSnap -->
@@ -1946,6 +1959,22 @@
       </div>
     </section>
 
+    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
+      <div style="background:linear-gradient(135deg,rgba(124,58,237,0.16),rgba(34,211,238,0.10));border:1px solid rgba(167,139,250,0.26);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+        <div style="flex:1;min-width:250px;">
+          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">📚 Curated collections & comparisons</div>
+          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Not sure where to start? Explore Goosekit by audience or compare it head-to-head with other free online tool suites.</p>
+          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">Collections</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.25);">Comparisons</span>
+            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(34,211,238,0.15);color:#67e8f9;border:1px solid rgba(34,211,238,0.25);">SEO landing pages</span>
+          </div>
+          <p style="margin:0;color:#cbd5e1;line-height:1.7;"><a href="/tools/for-developers/" style="color:#fdba74;">For Developers</a> · <a href="/tools/for-students/" style="color:#93c5fd;">For Students</a> · <a href="/compare/goosekit-vs-10015/" style="color:#c4b5fd;">Goosekit vs 10015</a> · <a href="/compare/goosekit-vs-tinywow/" style="color:#67e8f9;">Goosekit vs TinyWow</a></p>
+        </div>
+        <a href="/tools/for-developers/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore collections →</a>
+      </div>
+    </section>
+
     <!-- Ship It Kit promo -->
     <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
       <div style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(59,130,246,0.15));border:1px solid rgba(249,115,22,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
@@ -1998,85 +2027,3 @@
       function updateCount(visible) {
         if (visible === total) {
           countEl.textContent = total + ' tools available';
-        } else {
-          countEl.textContent = visible + ' of ' + total + ' tools';
-        }
-      }
-
-      function filterCards(query) {
-        const q = query.trim().toLowerCase();
-        let visible = 0;
-
-        // Remove existing empty state if any
-        const existing = grid.querySelector('.empty-state');
-        if (existing) existing.remove();
-
-        cards.forEach(function (card) {
-          const haystack = (card.dataset.search || '') + ' ' + (card.textContent || '');
-          const match = !q || haystack.toLowerCase().includes(q);
-          card.hidden = !match;
-          if (match) visible++;
-        });
-
-        updateCount(visible);
-
-        if (visible === 0) {
-          const empty = document.createElement('div');
-          empty.className = 'empty-state';
-          empty.innerHTML = '<span class="emoji">🔍</span><p>No tools match "<strong>' + escapeHtml(query) + '</strong>". Try another keyword.</p>';
-          grid.appendChild(empty);
-        }
-      }
-
-      function escapeHtml(str) {
-        return str.replace(/[&<>"']/g, function (c) {
-          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
-        });
-      }
-
-      searchInput.addEventListener('input', function () {
-        filterCards(this.value);
-      });
-
-      // Keyboard shortcut: / to focus search
-      document.addEventListener('keydown', function (e) {
-        if (e.key === '/' && document.activeElement !== searchInput) {
-          e.preventDefault();
-          searchInput.focus();
-          searchInput.select();
-        }
-        if (e.key === 'Escape' && document.activeElement === searchInput) {
-          searchInput.value = '';
-          filterCards('');
-          searchInput.blur();
-        }
-      });
-    })();
-
-    // Make tags clickable → filter search
-    document.querySelectorAll('.tag').forEach(function(tag) {
-      tag.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var searchInput = document.getElementById('search-input');
-        var term = tag.textContent.trim();
-        searchInput.value = term;
-        searchInput.dispatchEvent(new Event('input'));
-        searchInput.focus();
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-    });
-
-    // Make entire cards clickable
-    document.querySelectorAll('article.card').forEach(function(card) {
-      var link = card.querySelector('.card-link');
-      if (link) {
-        card.addEventListener('click', function(e) {
-          if (e.target.closest('.card-link, .tag')) return;
-          window.location.href = link.href;
-        });
-      }
-    });
-  </script>
-
-</body>
-</html>
