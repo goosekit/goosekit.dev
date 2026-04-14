@@ -124,6 +124,38 @@
       overflow: hidden;
     }
 
+    .mobile-tabbar {
+      display: none;
+    }
+
+    .mobile-tab {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      transition: color var(--transition), background var(--transition);
+    }
+
+    .mobile-tab.active {
+      color: var(--text);
+    }
+
+    .mobile-tab.active::after {
+      content: '';
+      position: absolute;
+      left: 16px;
+      right: 16px;
+      bottom: 0;
+      height: 2px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--accent), #6366f1);
+    }
+
     /* ── Sidebar ── */
     .sidebar {
       background: var(--surface);
@@ -442,20 +474,108 @@
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
+      #gk-banner > div {
+        padding: 6px 12px !important;
+      }
+      #gk-banner a {
+        font-size: 12px !important;
+      }
+      #gk-banner img {
+        height: 24px !important;
+      }
+      .banner {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+      header {
+        padding: 12px 16px;
+      }
+      .logo {
+        width: 28px;
+        height: 28px;
+        font-size: 16px;
+      }
+      .logo-text {
+        font-size: 16px;
+      }
       .app-shell {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto 1fr;
+        display: flex;
+        flex-direction: column;
         height: auto;
         overflow: visible;
       }
+      .mobile-tabbar {
+        display: flex;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        background: rgba(22, 33, 62, 0.96);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(12px);
+      }
+      .mobile-tab {
+        flex: 1;
+      }
+      .sidebar,
+      .canvas-area {
+        display: none;
+      }
+      .sidebar.active,
+      .canvas-area.active {
+        display: flex;
+      }
       .sidebar {
         border-right: none;
-        border-bottom: 1px solid var(--border);
-        max-height: 50vh;
+        border-bottom: none;
+        max-height: calc(100vh - 130px);
+        overflow-y: auto;
+        padding: 18px 16px 24px;
+        gap: 18px;
       }
-      .canvas-area { min-height: 50vh; padding: 16px; }
+      .canvas-area {
+        min-height: 60vh;
+        padding: 16px;
+        align-items: flex-start;
+        overflow: hidden;
+      }
+      .canvas-wrapper {
+        width: 100%;
+      }
+      .canvas-placeholder {
+        width: 100%;
+        min-height: 60vh;
+        padding: 24px 12px;
+      }
+      .drop-zone {
+        padding: 30px 18px;
+        border-color: rgba(124,58,237,0.55);
+        background: rgba(124,58,237,0.12);
+      }
+      .drop-icon {
+        font-size: 34px;
+        margin-bottom: 10px;
+      }
+      .drop-label {
+        font-size: 14px;
+      }
+      .drop-hint {
+        font-size: 12px;
+        margin-top: 6px;
+      }
       .header-sub { display: none; }
-      .seo-content { padding: 32px 16px; }
+      #ext-promo {
+        position: relative !important;
+        right: auto !important;
+        bottom: auto !important;
+        margin: 16px;
+        max-width: none !important;
+        width: auto;
+        z-index: 1 !important;
+      }
+      .seo-content {
+        padding: 32px 16px 40px;
+        margin: 0;
+      }
       .seo-content h1 { font-size: 1.5rem; }
     }
   </style>
@@ -490,8 +610,13 @@
 <!-- App shell -->
 <div class="app-shell">
 
+  <div class="mobile-tabbar" aria-label="Mobile editor navigation">
+    <button class="mobile-tab active" data-tab="editor" type="button">Editor</button>
+    <button class="mobile-tab" data-tab="settings" type="button">Settings</button>
+  </div>
+
   <!-- Sidebar -->
-  <aside class="sidebar">
+  <aside class="sidebar" data-panel="settings">
 
     <!-- Image input -->
     <div>
@@ -499,8 +624,8 @@
       <div class="drop-zone" id="dropZone">
         <input type="file" id="fileInput" accept="image/*" />
         <div class="drop-icon">🖼️</div>
-        <div class="drop-label"><strong>Drop image here</strong> or click to browse</div>
-        <div class="drop-hint">Ctrl+V to paste from clipboard</div>
+        <div class="drop-label"><strong>Tap to upload</strong> or drop your screenshot here</div>
+        <div class="drop-hint">Paste from clipboard or choose a screenshot to start</div>
       </div>
     </div>
 
@@ -619,7 +744,7 @@
   </aside>
 
   <!-- Canvas -->
-  <main class="canvas-area" id="canvasArea">
+  <main class="canvas-area active" id="canvasArea" data-panel="editor">
     <div class="canvas-placeholder" id="placeholder">
       <div class="big-icon">🖼️</div>
       <p>Drop a screenshot to get started</p>
@@ -653,6 +778,16 @@
     exportH: 0,
     watermark: false,
   };
+
+  const tabButtons = document.querySelectorAll('.mobile-tab');
+  const tabPanels = document.querySelectorAll('[data-panel]');
+  tabButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+      const nextTab = button.dataset.tab;
+      tabButtons.forEach(function (tab) { tab.classList.toggle('active', tab === button); });
+      tabPanels.forEach(function (panel) { panel.classList.toggle('active', panel.dataset.panel === nextTab); });
+    });
+  });
 
   // ─── Gradient presets ───────────────────────────────────────
   const GRADIENTS = [
