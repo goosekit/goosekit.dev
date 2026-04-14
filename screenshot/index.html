@@ -612,7 +612,7 @@
       <div class="section-title">💾 Export</div>
       <div class="export-row">
         <button class="btn btn-primary" id="btnDownload" disabled>⬇ Download PNG</button>
-        <button class="btn btn-secondary" id="btnCopy" disabled>📋 Copy</button>
+        <button class="btn btn-secondary" id="btnCopy" disabled>📋 Copy to clipboard</button>
       </div>
     </div>
 
@@ -719,11 +719,26 @@
   const canvasWrapper= document.getElementById('canvasWrapper');
   const toast        = document.getElementById('toast');
 
-  // ─── Performance: debounced render ──────────────────────────
+  // ─── Performance: debounced render + lightweight cache ──────
   let renderRAF = 0;
+  const compositeCache = new Map();
+
   function scheduleRender() {
     if (renderRAF) cancelAnimationFrame(renderRAF);
     renderRAF = requestAnimationFrame(render);
+  }
+
+  function clearCompositeCache() {
+    compositeCache.clear();
+  }
+
+  function rememberComposite(key, canvasEl) {
+    compositeCache.set(key, canvasEl);
+    if (compositeCache.size > 12) {
+      const firstKey = compositeCache.keys().next().value;
+      compositeCache.delete(firstKey);
+    }
+    return canvasEl;
   }
 
   // ─── Build gradient swatches ────────────────────────────────
@@ -849,6 +864,41 @@
     }
   });
 
+  function syncButtonGroup(groupEl, value) {
+    groupEl.querySelectorAll('button').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.val === String(value));
+    });
+  }
+
+  function applySmartDefaults() {
+    state.background = 'aurora';
+    state.padding = 48;
+    state.radius = 16;
+    state.shadow = 'medium';
+    state.frame = 'none';
+    state.scale = 1;
+    state.exportW = 0;
+    state.exportH = 0;
+    state.watermark = false;
+
+    paddingEl.value = state.padding;
+    paddingVal.textContent = state.padding + 'px';
+    radiusEl.value = state.radius;
+    radiusVal.textContent = state.radius + 'px';
+    solidColorRow.style.display = 'none';
+    watermarkToggle.classList.toggle('on', state.watermark);
+
+    document.querySelectorAll('.gradient-swatch').forEach(function(swatch) {
+      swatch.classList.toggle('active', swatch.dataset.id === state.background);
+    });
+    syncButtonGroup(shadowGroup, state.shadow);
+    syncButtonGroup(frameGroup, state.frame);
+    syncButtonGroup(scaleGroup, state.scale);
+    sizePresets.querySelectorAll('.size-preset-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.w === '0' && btn.dataset.h === '0');
+    });
+  }
+
   // ─── Load file ──────────────────────────────────────────────
   function loadFile(file) {
     var url = URL.createObjectURL(file);
@@ -856,6 +906,8 @@
     img.onload = function() {
       if (state.image) URL.revokeObjectURL(state.image.src);
       state.image = img;
+      applySmartDefaults();
+      clearCompositeCache();
       placeholder.style.display = 'none';
       canvasWrapper.style.display = 'block';
       btnDownload.disabled = false;
@@ -872,6 +924,20 @@
     var pad = state.padding * s;
     var img = state.image;
     var frame = state.frame;
+    var cacheKey = [
+      img.src,
+      s,
+      targetW || 0,
+      targetH || 0,
+      state.background,
+      state.solidColor,
+      state.padding,
+      state.radius,
+      state.shadow,
+      state.frame,
+      state.watermark
+    ].join('|');
+    if (compositeCache.has(cacheKey)) return compositeCache.get(cacheKey);
 
     // Frame chrome dimensions (in scaled pixels)
     var frameTop = 0, frameRight = 0, frameBottom = 0, frameLeft = 0;
@@ -955,10 +1021,10 @@
       if (state.watermark) {
         drawWatermark(rcx, targetW, targetH, 1);
       }
-      return resized;
+      return rememberComposite(cacheKey, resized);
     }
 
-    return c;
+    return rememberComposite(cacheKey, c);
   }
 
   // ─── Watermark drawing ──────────────────────────────────────
@@ -1041,15 +1107,21 @@
         cx.fillStyle = og;
         cx.fillRect(0, 0, w, h);
       }
-      // Subtle noise via small rects (fast approximation)
-      cx.globalAlpha = 0.03;
-      cx.fillStyle = '#ffffff';
-      for (var ny = 0; ny < h; ny += 4) {
-        for (var nx = 0; nx < w; nx += 4) {
-          if (Math.random() > 0.5) cx.fillRect(nx, ny, 2, 2);
-        }
+      // Deterministic highlight overlay keeps the glass feel without per-render noise jitter
+      var sheen = cx.createLinearGradient(0, 0, w, h);
+      sheen.addColorStop(0, 'rgba(255,255,255,0.12)');
+      sheen.addColorStop(0.5, 'rgba(255,255,255,0.02)');
+      sheen.addColorStop(1, 'rgba(255,255,255,0.08)');
+      cx.fillStyle = sheen;
+      cx.fillRect(0, 0, w, h);
+      cx.strokeStyle = 'rgba(255,255,255,0.06)';
+      cx.lineWidth = 1;
+      for (var line = -h; line < w; line += 28) {
+        cx.beginPath();
+        cx.moveTo(line, 0);
+        cx.lineTo(line + h, h);
+        cx.stroke();
       }
-      cx.globalAlpha = 1.0;
     }
   }
 
