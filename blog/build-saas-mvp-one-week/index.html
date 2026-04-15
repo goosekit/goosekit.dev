@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Build a SaaS MVP in One Week with Next.js 15</title>
+  <meta name="description" content="A realistic week-long MVP sprint plan using Next.js 15, Supabase, and Stripe. Includes the starter kit that handles auth, billing, and email so you can ship the actual product.">
+  <meta property="og:title" content="How to Build a SaaS MVP in One Week with Next.js 15">
+  <meta property="og:description" content="A realistic week-long MVP sprint plan. Next.js 15 + Supabase + Stripe with Ship It Kit covering the infrastructure.">
+  <meta property="og:type" content="article">
+  <link rel="canonical" href="https://goosekit.dev/blog/build-saas-mvp-one-week/">
+  <link rel="stylesheet" href="/styles/blog.css">
+  <style>
+    body {font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e5e7eb; line-height: 1.7; max-width: 760px; margin: 0 auto; padding: 2rem 1.5rem;}
+    h1 {font-size: 1.8rem; color: #fff; margin-bottom: .5rem; line-height: 1.3;}
+    .meta {color: #888; font-size: .85rem; margin-bottom: 2rem;}
+    h2 {color: #e5e7eb; font-size: 1.25rem; margin: 2rem 0 .75rem; border-bottom: 1px solid #1f2937; padding-bottom: .4rem;}
+    h3 {color: #d1d5db; font-size: 1.05rem; margin: 1.5rem 0 .5rem;}
+    p {margin: .85rem 0; color: #9ca3af;}
+    a {color: #60a5fa; text-decoration: none;}
+    a:hover {text-decoration: underline;}
+    ul, ol {margin: .85rem 0; padding-left: 1.5rem; color: #9ca3af;}
+    li {margin: .4rem 0;}
+    strong {color: #e5e7eb;}
+    code {background: #1f2937; padding: .15rem .4rem; border-radius: 4px; font-size: .875rem; color: #f9fafb;}
+    pre {background: #1f2937; padding: 1rem; border-radius: 8px; overflow-x: auto; margin: 1rem 0;}
+    pre code {background: none; padding: 0;}
+    blockquote {border-left: 3px solid #f59e0b; padding: .5rem 1rem; margin: 1.5rem 0; background: #1f1f2e; border-radius: 0 6px 6px 0;}
+    .promo-block {background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border: 1px solid #f59e0b; border-radius: 10px; padding: 1.25rem; margin: 2rem 0; text-align: center;}
+    .promo-block h3 {color: #fff; margin: 0 0 .5rem; font-size: 1.1rem;}
+    .promo-block p {color: #9ca3af; margin: 0 0 1rem; font-size: .9rem;}
+    .promo-block .cta {display: inline-block; background: #f59e0b; color: #000; font-weight: 700; padding: .6rem 1.5rem; border-radius: 6px; text-decoration: none; font-size: .9rem;}
+    .promo-block .cta:hover {background: #fbbf24; text-decoration: none;}
+    .checklist {list-style: none; padding: 0;}
+    .checklist li {padding-left: 1.5rem; position: relative;}
+    .checklist li::before {content: '✓'; position: absolute; left: 0; color: #f59e0b;}
+    .day-label {color: #f59e0b; font-weight: 600; font-size: .85rem; text-transform: uppercase; letter-spacing: .05em;}
+    table {width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: .9rem;}
+    th {background: #1f2937; color: #e5e7eb; padding: .6rem .8rem; text-align: left; border: 1px solid #374151;}
+    td {padding: .6rem .8rem; border: 1px solid #374151; color: #9ca3af;}
+    tr:hover td {background: #1a1a2e;}
+    .week-grid {display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;}
+    .day-card {background: #1f2937; border-radius: 8px; padding: 1rem; border: 1px solid #374151;}
+    .day-card h4 {color: #f59e0b; margin: 0 0 .5rem; font-size: .9rem;}
+    .day-card p {margin: 0; font-size: .85rem;}
+    @media (max-width: 600px) {.week-grid {grid-template-columns: 1fr;}}
+    .tag {display: inline-block; background: #1f2937; color: #9ca3af; padding: .2rem .6rem; border-radius: 4px; font-size: .75rem; margin: .15rem;}
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Build a SaaS MVP in One Week with Next.js 15",
+    "description": "A realistic week-long MVP sprint plan using Next.js 15, Supabase, and Stripe. Includes the starter kit that handles auth, billing, and email so you can ship the actual product.",
+    "author": {"@type": "Person", "name": "Arthur Pierrey"},
+    "datePublished": "2026-04-15",
+    "dateModified": "2026-04-15"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can you really build a SaaS MVP in one week?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes — if you use a pre-built infrastructure foundation. The real constraint is always the setup phase (auth, billing, webhooks, email, dashboard shell). With the right starter kit covering that foundation, a week is realistic for the product-facing work."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What stack builds a SaaS fastest in 2026?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Next.js 15 + Supabase + Stripe is the fastest combination for indie devs. Next.js handles the full-stack framework, Supabase handles auth and database without separate infrastructure, and Stripe handles payments with the best developer experience."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What usually slows down a one-week MVP sprint?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The setup phase: wiring auth, connecting Stripe checkout and webhooks, setting up transactional email, building the settings and dashboard shell. These are mostly the same across every SaaS but take 2-3 weeks to do right. A starter kit skips that."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What does Ship It Kit include?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ship It Kit includes Next.js 15, Supabase auth + database, Stripe Checkout + Customer Portal + webhooks, React Email templates, Tailwind + Shadcn/ui components, landing page + dashboard scaffold, and AI coding rules for Cursor and Claude Code. €49 one-time."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <p><a href="/blog/">← Back to blog</a></p>
+  <h1>How to Build a SaaS MVP in One Week with Next.js 15</h1>
+  <p class="meta">Published April 15, 2026 · 9 min read · <span class="tag">Next.js</span><span class="tag">SaaS</span><span class="tag">MVP</span><span class="tag">Ship It Kit</span></p>
+
+  <p>One week is enough. The problem is never the product idea — it is the same 15 tasks you have to do for every SaaS before you can work on the thing that actually matters.</p>
+
+  <p>This is a realistic sprint plan for building a SaaS MVP in 7 days with Next.js 15, Supabase, and Stripe. The key insight: <strong>use a starter kit that handles the infrastructure layer</strong>, so your week goes entirely on the product.</p>
+
+  <div class="promo-block">
+    <h3>⚡ Ship It Kit — The Infrastructure Layer, Done</h3>
+    <p>Auth, Stripe, webhooks, email, dashboard shell — all wired before day 1. You work on your product.<br><strong>€49 one-time · Launch price ends April 30</strong></p>
+    <a href="/ship-it-kit/" class="cta">See What's Included →</a>
+  </div>
+
+  <h2>The Real Timeline for a SaaS MVP</h2>
+
+  <p>Most indie hackers spend 2-3 weeks on setup before writing a single line of product code. Auth takes 3 days. Stripe integration takes another 3. Email templates, webhook handlers, settings pages — it adds up to a month of infrastructure before you know if anyone wants what you are building.</p>
+
+  <p>Here is the honest breakdown:</p>
+
+  <table>
+    <tr><th>Phase</th><th>Without Starter</th><th>With Ship It Kit</th></tr>
+    <tr><td>Auth + DB setup</td><td>3-5 days</td><td>Done</td></tr>
+    <tr><td>Stripe billing + webhooks</td><td>2-3 days</td><td>Done</td></tr>
+    <tr><td>Transactional email</td><td>1-2 days</td><td>Done</td></tr>
+    <tr><td>Dashboard shell + settings</td><td>2-3 days</td><td>Done</td></tr>
+    <tr><td>Product feature work</td><td>Whatever is left</td><td>7 days of full focus</td></tr>
+  </table>
+
+  <p>With the infrastructure handled, a week is genuinely realistic for a working MVP that can take real payments and serve real users.</p>
+
+  <h2>The One-Week Sprint Plan</h2>
+
+  <div class="week-grid">
+    <div class="day-card">
+      <h4>Day 1 — Setup + Core Feature</h4>
+      <p>Deploy Ship It Kit. Configure Stripe and Supabase with your keys. Ship the core feature — the one thing that makes your SaaS worth paying for.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 2 — UX + First Users</h4>
+      <p>Polish the onboarding flow. Get 5-10 people to sign up. Use their feedback to cut the worst UX problems before they become assumptions.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 3 — Payment Integration</h4>
+      <p>Connect your core feature to Stripe checkout. Set up your pricing page. Start with a single plan — one price, one CTA.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 4 — Retention Basics</h4>
+      <p>Add the essential onboarding email, a "getting started" dashboard state, and a way to contact support. Small things that prevent churn.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 5 — SEO + Launch Page</h4>
+      <p>Write the landing page copy. Add the essential SEO tags. Publish a launch post on one community (Indie Hackers, Reddit, Twitter). Start collecting signups.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 6 — Public Launch</h4>
+      <p>Post to 2-3 communities. Reply to every comment. Collect emails. If people are interested, a few will ask about pricing — that is your first signal.</p>
+    </div>
+    <div class="day-card">
+      <h4>Day 7 — Iterate + Validate</h4>
+      <p>Talk to the people who signed up. Fix the top 2 complaints. Ship one improvement. Decide: keep building or pivot?</p>
+    </div>
+  </div>
+
+  <h2>What to Skip in Week One</h2>
+
+  <ul>
+    <li><strong>Multi-tenancy</strong> — Build for your first 50 users, not for 50,000.</li>
+    <li><strong>Email automation sequences</strong> — A single welcome email is enough for now.</li>
+    <li><strong>Admin dashboards</strong> — You can read Stripe data directly.</li>
+    <li><strong>Dark mode</strong> — Ship in light mode. Add dark mode when someone asks for it.</li>
+    <li><strong>Mobile optimization</strong> — Your first users are on desktop. Focus there first.</li>
+    <li><strong>Analytics beyond Stripe</strong> — First week, just track signups and revenue.</li>
+  </ul>
+
+  <h2>The Stack That Makes This Real</h2>
+
+  <p>The reason most one-week plans fail is that the stack requires too many decisions. These choices are already made in Ship It Kit:</p>
+
+  <ul>
+    <li><strong>Next.js 15</strong> — App router, server components, Vercel-ready deployment</li>
+    <li><strong>Supabase</strong> — Auth + database without managing separate services</li>
+    <li><strong>Stripe</strong> — Checkout, customer portal, webhook handlers — all wired</li>
+    <li><strong>React Email</strong> — Transactional email templates already set up</li>
+    <li><strong>Tailwind + Shadcn/ui</strong> — UI components that look production-ready on day 1</li>
+    <li><strong>AI coding rules</strong> — .cursorrules and Windsurf rules so AI assistants understand the project structure</li>
+  </ul>
+
+  <h2>Who This Plan Works For</h2>
+
+  <p>This sprint is realistic if you:</p>
+  <ul>
+    <li>Have a clear core feature (not a feature list — one thing users pay for)</li>
+    <li>Know your first 10 target users (personal network, community, Twitter DMs)</li>
+    <li>Can spend 6-8 hours per day on the build</li>
+    <li>Are okay with an ugly-but-functional MVP vs a polished product</li>
+  </ul>
+
+  <p>It does not work if you are still in discovery mode, unsure who the buyer is, or want to build in public without a product to show.</p>
+
+  <h2>First Week Success Metrics</h2>
+
+  <p>Track these, not vanity numbers:</p>
+  <ul>
+    <li><strong>Revenue</strong> — Even €1 in week one changes the conversation</li>
+    <li><strong>Paying users</strong> — Even 1 paid user validates demand</li>
+    <li><strong>Active users</strong> — People who logged in after day 3</li>
+    <li><strong>Support tickets</strong> — What breaks first tells you what to fix</li>
+    <li><strong>Drop-off point</strong> — Where do new signups stop? That is your UX problem</li>
+  </ul>
+
+  <div class="promo-block">
+    <h3>Ready to Start Your One-Week Sprint?</h3>
+    <p>Ship It Kit handles the infrastructure foundation so your week goes entirely on the product.<br><strong>€49 one-time · Includes lifetime updates</strong></p>
+    <a href="/ship-it-kit/" class="cta">Get Ship It Kit →</a>
+  </div>
+
+  <h2>FAQ</h2>
+
+  <h3>Can you really build a SaaS MVP in one week?</h3>
+  <p>Yes — if you use a pre-built infrastructure foundation. The real constraint is always the setup phase. With the right starter kit, a week is realistic for the product-facing work.</p>
+
+  <h3>What stack builds a SaaS fastest in 2026?</h3>
+  <p>Next.js 15 + Supabase + Stripe is the fastest combination for indie devs. Supabase handles auth and database without separate infrastructure. Stripe has the best developer experience for payments.</p>
+
+  <h3>What usually slows down a one-week MVP sprint?</h3>
+  <p>The setup phase: wiring auth, connecting Stripe, setting up email, building the dashboard shell. These are mostly the same across every SaaS but take 2-3 weeks to do right. A starter kit skips that entirely.</p>
+
+  <h3>What does Ship It Kit include?</h3>
+  <p>Next.js 15, Supabase auth + database, Stripe Checkout + Portal + webhooks, React Email templates, Tailwind + Shadcn/ui components, landing page + dashboard scaffold, and AI coding rules. €49 one-time.</p>
+
+  <p><br><a href="/blog/">← Back to blog</a></p>
+</body>
+</html>
