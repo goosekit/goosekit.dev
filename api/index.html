@@ -160,7 +160,7 @@
 <div class="container">
 
   <!-- Pricing -->
-  <div class="pricing" style="grid-template-columns: 1fr; max-width: 480px; margin: 0 auto 40px;">
+  <div class="pricing" style="max-width: 760px; margin: 0 auto 40px;">
     <div class="plan">
       <h3>Free Forever</h3>
       <div class="price">$0 <span>/forever</span></div>
@@ -173,10 +173,23 @@
       </ul>
       <a href="#endpoints" class="plan-btn free">Start Using →</a>
     </div>
+
+    <div class="plan pro">
+      <div class="plan-badge">Early access</div>
+      <h3>Production</h3>
+      <div class="price">Custom <span>usage-based</span></div>
+      <ul>
+        <li>Higher request limits</li>
+        <li>Priority support</li>
+        <li>Best fit for internal tools or product integrations</li>
+        <li>Manual onboarding while the paid plan is still taking shape</li>
+      </ul>
+      <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20API%20production%20access.%0A%0AEndpoint(s)%20I%20need%3A%20%0AEstimated%20monthly%20volume%3A%20%0AUse%20case%3A%20%0A%0AThanks!" class="plan-btn pro-btn">Request production access →</a>
+    </div>
   </div>
 
-  <div style="background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 40px; max-width: 640px; text-align: center;">
-    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or dedicated SLAs?</strong> <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#fb923c; text-decoration: underline;">Get in touch</a> — we'll work something out.</p>
+  <div style="background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 40px; max-width: 760px; text-align: center;">
+    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#fb923c; text-decoration: underline;">email Arthur directly</a> with your endpoint needs and expected volume.</p>
   </div>
 
   <!-- Auth -->
@@ -237,7 +250,7 @@ Content-Type: application/json
     <h2>📊 Rate Limits</h2>
     <p>Free tier: <strong>100 requests/day</strong> per IP address across all endpoints. Rate limit resets daily at midnight UTC.</p>
     <p style="margin-top:8px;">When you hit the limit, you'll receive a <code>429 Too Many Requests</code> response with a <code>Retry-After</code> header.</p>
-    <p style="margin-top:8px;">Need higher limits for production use? <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#fb923c;">Get in touch</a>.</p>
+    <p style="margin-top:8px;">For production use, higher-volume internal tools, or partner-style access, <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access" style="color:#fb923c;">request production access</a> and include your expected volume plus endpoint needs.</p>
   </div>
 
 </div>
