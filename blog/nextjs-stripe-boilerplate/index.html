@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next.js Stripe Boilerplate in 2026, What to Look For</title>
+  <meta name="description" content="Looking for a Next.js Stripe boilerplate in 2026? Here's what matters: Checkout, portal, webhooks, auth, Supabase sync, and deploy readiness.">
+  <link rel="canonical" href="https://goosekit.dev/blog/nextjs-stripe-boilerplate/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <meta property="og:title" content="Next.js Stripe Boilerplate in 2026, What to Look For">
+  <meta property="og:description" content="The checklist for evaluating any Next.js Stripe starter: billing flow, webhook sync, auth, and production readiness.">
+  <meta property="og:url" content="https://goosekit.dev/blog/nextjs-stripe-boilerplate/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What should a Next.js Stripe boilerplate include?",
+        "acceptedAnswer": {"@type": "Answer", "text": "A real Next.js Stripe boilerplate should include Stripe Checkout, customer portal, verified webhook handlers, auth, a database sync layer, pricing page, billing pages, and deployment documentation. If any of those are missing, you are still doing infrastructure work instead of shipping your product."}
+      },
+      {
+        "@type": "Question",
+        "name": "How long does Stripe integration take in Next.js from scratch?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Usually 4 to 5 days if you do it properly. The button itself is fast, but checkout sessions, webhooks, customer portal, billing state sync, success/cancel flows, and testing add up."}
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need Supabase with a Stripe boilerplate?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Not strictly, but pairing Stripe with Supabase is a strong default for indie SaaS. Supabase gives you auth, Postgres, and row-level security, while Stripe handles billing. Together they cover most SaaS infrastructure needs."}
+      },
+      {
+        "@type": "Question",
+        "name": "What is the cheapest production-ready Next.js Stripe starter?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Ship It Kit is one of the cheapest production-ready options at €49 one-time. It includes Next.js 15, Supabase auth, Stripe Checkout, portal, webhook handlers, email, UI, and AI coding rules."}
+      }
+    ]
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; }
+    a { color: #7b8cff; }
+    .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
+    .banner a { display: inline-flex; align-items: center; gap: 8px; color: #f5f7ff; font-weight: 600; font-size: 14px; text-decoration: none; }
+    .banner img { height: 28px; border-radius: 4px; }
+    .container { max-width: 760px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+    h1 { font-size: 2rem; color: #fff; margin-bottom: 0.5rem; line-height: 1.3; }
+    h2 { font-size: 1.4rem; color: #fff; margin: 2rem 0 0.8rem; }
+    h3 { color: #c8c8e0; margin: 1.4rem 0 0.5rem; }
+    p, li { color: #b8b8cc; margin-bottom: 0.8rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+    .meta { color: #666; font-size: 0.9rem; margin-bottom: 2rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.6rem; font-size: 0.92rem; background: #16162a; border-radius: 8px; overflow: hidden; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a40; color: #cfcfdd; }
+    th { background: #1d1d33; color: #fff; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+    .win { color: #86efac; font-weight: 600; }
+    .callout { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 10px; padding: 14px 16px; margin: 1.2rem 0; color: #86efac; }
+    .cta { background: linear-gradient(135deg,rgba(124,58,237,0.15),rgba(59,130,246,0.15)); border: 1px solid rgba(124,58,237,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
+    .cta a { display: inline-block; background: linear-gradient(135deg,#7c3aed,#3b82f6); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
+    footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
+  </style>
+  <style>ins.adsbygoogle{display:none!important}</style>
+</head>
+<body>
+<header class="banner"><a href="/"><img src="/logo-dark.png" alt="Goosekit"> Goosekit</a></header>
+
+<main class="container">
+  <p class="meta">📅 April 15, 2026 · 8 min read · <a href="/blog/">← All posts</a></p>
+  <h1>Next.js Stripe Boilerplate in 2026, What to Look For</h1>
+
+  <p>If you're shopping for a <strong>Next.js Stripe boilerplate</strong>, the dangerous mistake is judging it by the screenshot instead of the billing flow. Almost every starter looks good on the landing page. Far fewer are actually ready to take money, keep billing state in sync, and survive real production use.</p>
+
+  <div class="callout">The bar is simple: if a starter does not include checkout, portal, webhooks, auth, and database sync, it is not saving you a week. It is just moving the work around.</div>
+
+  <h2>The Real Checklist</h2>
+  <p>Here is what matters when evaluating any Next.js billing starter or SaaS template.</p>
+
+  <h3>1. Stripe Checkout is not enough</h3>
+  <p>Many starters proudly say "Stripe integrated" when all they really provide is a checkout button. That's not the hard part. The hard part is everything around it:</p>
+  <ul>
+    <li>creating the checkout session securely</li>
+    <li>handling success and cancel redirects</li>
+    <li>storing the customer and subscription IDs</li>
+    <li>updating billing state after webhook events</li>
+    <li>letting users manage billing later</li>
+  </ul>
+
+  <h3>2. Customer portal matters more than most founders think</h3>
+  <p>If users cannot cancel, update payment methods, or change plans themselves, you become support. A real boilerplate includes the Stripe customer portal flow from day one.</p>
+
+  <h3>3. Webhooks must already be wired and verified</h3>
+  <p>The failure mode on most DIY billing setups is not checkout. It is webhook handling. You need signature verification, event routing, idempotent updates, and a clear mapping between Stripe objects and your database records.</p>
+
+  <h3>4. Auth and billing should already talk to each other</h3>
+  <p>Billing doesn't exist in a vacuum. The user who logs in with Google needs to be the same user whose plan updates after a successful payment. That is why <strong>Supabase + Stripe + Next.js</strong> is such a common stack for indie SaaS in 2026.</p>
+
+  <h2>What “Production-Ready” Usually Means</h2>
+  <table>
+    <tr><th>Capability</th><th>Nice demo starter</th><th>Production-ready starter</th></tr>
+    <tr><td>Stripe Checkout</td><td class="win">Yes</td><td class="win">Yes</td></tr>
+    <tr><td>Customer portal</td><td>No / partial</td><td class="win">Included</td></tr>
+    <tr><td>Webhook verification</td><td>No / vague</td><td class="win">Included</td></tr>
+    <tr><td>Auth + billing sync</td><td>Manual</td><td class="win">Pre-wired</td></tr>
+    <tr><td>Pricing + settings pages</td><td>Sometimes</td><td class="win">Included</td></tr>
+    <tr><td>Deploy docs</td><td>Thin</td><td class="win">Explicit</td></tr>
+  </table>
+
+  <h2>Why Founders Search for “Next.js Stripe Boilerplate”</h2>
+  <p>Usually because they already felt the pain once. They already know a blank repo becomes a week of wiring:</p>
+  <ul>
+    <li>1 day for pricing page and checkout flow</li>
+    <li>1 to 2 days for webhooks and plan state</li>
+    <li>1 day for auth and gated app routes</li>
+    <li>1 day for email and success flows</li>
+    <li>another day for testing, edge cases, and deploy cleanup</li>
+  </ul>
+  <p>That is why high-intent buyers do not just want a UI kit. They want a billing-ready starting point.</p>
+
+  <h2>Ship It Kit as a Practical Option</h2>
+  <p><a href="/ship-it-kit/">Ship It Kit</a> is Goosekit's own answer to this exact problem. It is intentionally not a huge enterprise framework. It is a focused <strong>Next.js 15 + Supabase + Stripe</strong> starter for indie hackers and solo founders who want to launch quickly.</p>
+
+  <p>What it includes:</p>
+  <ul>
+    <li>Next.js 15 App Router + TypeScript</li>
+    <li>Supabase auth with protected routes</li>
+    <li>Stripe Checkout + customer portal</li>
+    <li>webhook handlers for billing events</li>
+    <li>settings and billing UI</li>
+    <li>Tailwind CSS + Shadcn/ui components</li>
+    <li>transactional email setup</li>
+    <li>AI coding rules so Cursor, Claude, and similar tools understand the project fast</li>
+  </ul>
+
+  <p>Price: <strong>€49 one-time</strong>. That is unusually cheap for a starter that actually covers billing end to end.</p>
+
+  <div class="cta">
+    <p><strong>Want the shortcut?</strong></p>
+    <p>See the full Ship It Kit breakdown and checkout flow.</p>
+    <a href="/ship-it-kit/">Open Ship It Kit →</a>
+  </div>
+
+  <h2>Best Use Cases</h2>
+  <p>A billing-ready starter is especially useful if you are building:</p>
+  <ul>
+    <li>an AI micro-SaaS with subscriptions</li>
+    <li>a paid internal tool or dashboard</li>
+    <li>a client portal with monthly access</li>
+    <li>a founder-side project you want live this week, not next month</li>
+  </ul>
+
+  <h2>FAQ</h2>
+  <h3>What should a Next.js Stripe boilerplate include?</h3>
+  <p>A real Next.js Stripe boilerplate should include Stripe Checkout, customer portal, verified webhook handlers, auth, a database sync layer, pricing page, billing pages, and deployment documentation.</p>
+
+  <h3>How long does Stripe integration take in Next.js from scratch?</h3>
+  <p>Usually 4 to 5 days if you do it properly. The button itself is fast, but checkout sessions, webhooks, customer portal, billing state sync, success/cancel flows, and testing add up.</p>
+
+  <h3>Do I need Supabase with a Stripe boilerplate?</h3>
+  <p>Not strictly, but pairing Stripe with Supabase is a strong default for indie SaaS. Supabase gives you auth, Postgres, and row-level security, while Stripe handles billing.</p>
+
+  <h3>What is the cheapest production-ready Next.js Stripe starter?</h3>
+  <p>Ship It Kit is one of the cheapest production-ready options at €49 one-time, with checkout, portal, auth, UI, and webhook handling included.</p>
+</main>
+
+<footer>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/ship-it-kit/">Ship It Kit</a></p>
+  <p style="margin-top:8px;">Built with 🪿 by Goosekit</p>
+</footer>
+</body>
+</html>
