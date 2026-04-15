@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ship It Kit — Next.js SaaS Starter · Buy on Gumroad</title>
-  <meta name="description" content="Buy Ship It Kit directly on Gumroad. Next.js 15 + Supabase + Stripe starter for SaaS MVPs. €49 one-time payment. No ads, no tracking.">
+  <title>Ship It Kit — Simple Checkout</title>
+  <meta name="description" content="Simple checkout page for Ship It Kit. Next.js 15 + Supabase + Stripe starter for SaaS MVPs. €49 one-time payment.">
   <link rel="canonical" href="https://goosekit.dev/ship-it-kit-gumroad/">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -17,10 +17,10 @@
     .stack span { background: #1f2937; color: #9ca3af; padding: .3rem .7rem; border-radius: 6px; font-size: .8rem; }
     .price { font-size: 2.5rem; font-weight: 700; color: #fff; margin-bottom: .25rem; }
     .price-note { color: #888; font-size: .85rem; margin-bottom: 1.5rem; }
-    .gumroad-btn { display: block; background: #ff5c5c; color: #fff; font-weight: 700; font-size: 1rem; padding: .85rem 2rem; border-radius: 8px; text-decoration: none; margin-bottom: 1rem; transition: opacity .2s; }
-    .gumroad-btn:hover { opacity: 0.85; text-decoration: none; }
-    .lemonsqueezy-btn { display: block; background: #1f2937; color: #e5e7eb; font-weight: 600; font-size: .9rem; padding: .75rem 2rem; border-radius: 8px; text-decoration: none; border: 1px solid #374151; transition: background .2s; }
-    .lemonsqueezy-btn:hover { background: #2d2d42; text-decoration: none; }
+    .primary-btn { display: block; background: #f59e0b; color: #000; font-weight: 700; font-size: 1rem; padding: .85rem 2rem; border-radius: 8px; text-decoration: none; margin-bottom: 1rem; transition: opacity .2s; }
+    .primary-btn:hover { opacity: 0.9; text-decoration: none; }
+    .secondary-btn { display: block; background: #1f2937; color: #e5e7eb; font-weight: 600; font-size: .9rem; padding: .75rem 2rem; border-radius: 8px; text-decoration: none; border: 1px solid #374151; transition: background .2s; }
+    .secondary-btn:hover { background: #2d2d42; text-decoration: none; }
     .divider { border-top: 1px solid #2a2a40; margin: 1.5rem 0; }
     .features { text-align: left; margin: 1.5rem 0; }
     .features li { list-style: none; padding: .4rem 0; font-size: .88rem; color: #9ca3af; display: flex; align-items: center; gap: .5rem; }
@@ -34,8 +34,8 @@
 <body>
   <div class="card">
     <div class="badge">⚡ Launch Window</div>
-    <h1>Ship It Kit</h1>
-    <p class="subtitle">Next.js 15 SaaS starter with Supabase auth, Stripe billing, and AI-friendly structure</p>
+    <h1>Ship It Kit, simple checkout</h1>
+    <p class="subtitle">A clean checkout page for builders who already know they want the kit</p>
 
     <div class="stack">
       <span>Next.js 15</span>
@@ -49,13 +49,12 @@
     <div class="price">€49</div>
     <p class="price-note">one-time payment · lifetime updates</p>
 
-    <a href="https://gumroad.com/l/shipitkit" class="gumroad-btn" target="_blank" rel="noopener" id="gumroad-link">
-      Buy on Gumroad →
+    <a href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" class="primary-btn" target="_blank" rel="noopener">
+      Buy now via Lemon Squeezy →
     </a>
-    <p style="font-size:.7rem;color:#555;margin-top:-.5rem;margin-bottom:1rem;">⚠️ Arthur: replace gumroad.com/l/shipitkit with your actual Gumroad product link before publishing</p>
 
-    <a href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" class="lemonsqueezy-btn" target="_blank" rel="noopener">
-      Or buy via Lemon Squeezy →
+    <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20alternate%20checkout" class="secondary-btn">
+      Need another checkout option? Email Arthur →
     </a>
 
     <div class="divider"></div>
@@ -70,7 +69,7 @@
     </ul>
 
     <div class="urgency">
-      ⚡ Launch window pricing ends April 30 — price goes up after
+      ⚡ Launch window pricing ends April 30, price goes up after
     </div>
 
     <div class="back">
