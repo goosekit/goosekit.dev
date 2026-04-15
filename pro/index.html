@@ -153,19 +153,23 @@
       font-size: 1rem;
       font-weight: 600;
       border: none;
-      cursor: default;
-      transition: opacity .2s;
+      cursor: pointer;
+      transition: opacity .2s, transform .2s;
+      text-decoration: none;
     }
-    .btn-disabled {
-      background: #2a2a3d;
-      color: #606078;
-      pointer-events: none;
+    .btn:hover { opacity: .92; transform: translateY(-1px); text-decoration: none; }
+    .btn-primary {
+      background: var(--gradient);
+      color: #fff;
     }
-    .btn-outline-disabled {
+    .btn-secondary {
       background: transparent;
       border: 2px solid #2a2a3d;
-      color: #606078;
-      pointer-events: none;
+      color: var(--text);
+    }
+    .btn-muted {
+      background: #2a2a3d;
+      color: #b7b7cc;
     }
 
     /* Comparison Table */
@@ -300,14 +304,14 @@
           <li>No signup required</li>
           <li>Community support</li>
         </ul>
-        <button class="btn btn-outline-disabled" disabled>Coming Soon</button>
+        <a class="btn btn-secondary" href="/">Use Free Tools</a>
       </div>
 
       <!-- Pro -->
       <div class="card featured">
         <div class="badge">Most Popular</div>
         <h3>Pro</h3>
-        <div class="price">$5 <span>/mo</span></div>
+        <div class="price">$5 <span>/mo target</span></div>
         <ul>
           <li>Everything in Free</li>
           <li>Batch processing</li>
@@ -316,21 +320,21 @@
           <li>API access (10K requests/mo)</li>
           <li>Export presets</li>
         </ul>
-        <button class="btn btn-disabled" disabled>Coming Soon</button>
+        <a class="btn btn-primary" href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20Pro%20early%20access&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20Pro.%0A%0AMy%20main%20use%20case%3A%20%0AExpected%20usage%3A%20%0A%0AThanks!">Request Early Access</a>
       </div>
 
       <!-- Business -->
       <div class="card">
         <h3>Business</h3>
-        <div class="price">$15 <span>/mo</span></div>
+        <div class="price">Custom <span>early access</span></div>
         <ul>
           <li>Everything in Pro</li>
-          <li>Unlimited API access</li>
+          <li>Higher API limits</li>
           <li>Custom branding &amp; white-label</li>
           <li>Priority support</li>
           <li>Team accounts</li>
         </ul>
-        <button class="btn btn-outline-disabled" disabled>Coming Soon</button>
+        <a class="btn btn-muted" href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20Business%20plan%20inquiry&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20Business.%0A%0ATeam%20size%3A%20%0AAPI%20or%20branding%20needs%3A%20%0A%0AThanks!">Contact for Business</a>
       </div>
 
     </div>
@@ -373,31 +377,31 @@
     <div class="faq-grid">
       <div class="faq-item">
         <h4>When does Pro launch?</h4>
-        <p>Coming soon! Join the waitlist below to be the first to know.</p>
+        <p>Early access is being handled manually right now. If you want batch processing or API access sooner, use the early access button and describe your use case.</p>
       </div>
       <div class="faq-item">
-        <h4>Is there a free trial?</h4>
-        <p>Yes — every Pro and Business plan comes with a 14-day free trial.</p>
+        <h4>Is pricing final?</h4>
+        <p>Not yet. The Pro and Business prices on this page are target prices used to gauge demand before the public launch.</p>
       </div>
       <div class="faq-item">
-        <h4>Can I cancel anytime?</h4>
-        <p>Absolutely. Cancel anytime with no questions asked.</p>
+        <h4>Can I request higher API limits now?</h4>
+        <p>Yes. Business inquiries are open now for teams or projects that need higher limits, branding, or priority support.</p>
       </div>
       <div class="faq-item">
-        <h4>What payment methods do you accept?</h4>
-        <p>We use Stripe — cards, Apple Pay, and Google Pay are all supported.</p>
+        <h4>How do I get access?</h4>
+        <p>Click one of the email CTAs on this page. Arthur will review requests manually and follow up with next steps.</p>
       </div>
     </div>
   </section>
 
   <!-- Waitlist -->
   <section class="waitlist container">
-    <h2>Join the Waitlist</h2>
-    <p>Be the first to know when Goosekit Pro launches.</p>
-    <form class="waitlist-form" onsubmit="return false;">
-      <input type="email" placeholder="you@example.com" aria-label="Email address" required>
-      <button type="submit">Notify Me</button>
-    </form>
+    <h2>Need Pro Features Before Launch?</h2>
+    <p>If Goosekit can save you time or unlock a workflow right now, send a quick note. Early access is being handled manually.</p>
+    <div class="waitlist-form">
+      <a class="btn btn-primary" style="max-width:460px;" href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20Pro%20early%20access&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20Pro.%0A%0AThe%20main%20tools%20I%20use%3A%20%0AThe%20main%20Pro%20feature%20I%20want%3A%20%0A%0AThanks!">Email for Early Access</a>
+    </div>
+    <p style="margin-top:14px;font-size:.92rem;">Best for teams needing API access, batch workflows, or priority support sooner.</p>
   </section>
 
   <!-- Footer -->
