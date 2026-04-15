@@ -1,0 +1,14 @@
+https://goosekit.dev/
+https://goosekit.dev/blog/
+https://goosekit.dev/json/
+https://goosekit.dev/regex/
+https://goosekit.dev/jwt/
+https://goosekit.dev/hash/
+https://goosekit.dev/base64/
+https://goosekit.dev/screenshot/
+https://goosekit.dev/tools/for-developers/
+https://goosekit.dev/tools/for-students/
+https://goosekit.dev/compare/goosekit-vs-10015/
+https://goosekit.dev/compare/goosekit-vs-tinywow/
+https://goosekit.dev/blog/understanding-base64-encoding/
+https://goosekit.dev/blog/url-encoding-decoding-explained/
