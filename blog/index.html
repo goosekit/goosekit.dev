@@ -24,7 +24,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; line-height: 1.75; }
-    a { color: #7b8cff; text-decoration: none; }
+    a { color: #ff4800; text-decoration: none; }
     a:hover { text-decoration: underline; }
     .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
     .banner a { display: inline-block; }
@@ -33,10 +33,10 @@
     h1 { font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; }
     .subtitle { color: #888; margin-bottom: 2.5rem; font-size: 1.05rem; }
     .post-card { background: #1a1a2e; border: 1px solid #2a2a40; border-radius: 12px; padding: 1.8rem; margin-bottom: 1.5rem; transition: border-color 0.2s; }
-    .post-card:hover { border-color: #7b8cff; }
+    .post-card:hover { border-color: #ff4800; }
     .post-card h2 { font-size: 1.35rem; margin-bottom: 0.4rem; }
     .post-card h2 a { color: #fff; }
-    .post-card h2 a:hover { color: #7b8cff; text-decoration: none; }
+    .post-card h2 a:hover { color: #ff4800; text-decoration: none; }
     .post-card .date { font-size: 0.85rem; color: #666; margin-bottom: 0.6rem; }
     .post-card p { color: #b8b8cc; margin-bottom: 0.8rem; }
     .post-card .read-more { font-weight: 600; font-size: 0.9rem; }
@@ -46,23 +46,24 @@
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
 </head>
 <body>
-<div style="background:linear-gradient(90deg,#ff4800,#ff4800);padding:10px 16px;text-align:center;font-family:system-ui,sans-serif;font-size:0.85rem;color:#fff;font-weight:600;"><span>🚨 Ship It Kit Launch — €49 ends April 30</span> <a href="/ship-it-kit/" style="color:#fff;text-decoration:underline;margin-left:8px;">See the offer →</a></div>
 
-<header class="banner">
-  <a href="/"><img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools"></a>
-</header>
+<!-- Goosekit Banner -->
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:26px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
+  </div>
+</div>
 
 <main class="container">
   <h1>Goosekit Blog</h1>
   <p class="subtitle">Guides, tips, and tutorials to help you get the most out of free online tools.</p>
 
-  <section class="post-card" style="border-color:rgba(255,72,0,0.28);background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
-    <h2 style="margin-bottom:.35rem;">Building a SaaS, not just using tools?</h2>
-    <p style="margin-bottom:.85rem;">Ship It Kit is the Goosekit product that can help you launch now, with Next.js 15, Supabase auth, Stripe billing, and AI-ready structure already wired.</p>
-    <span class="tag">Builder</span> <span class="tag">SaaS</span> <span class="tag">Paid Product</span>
-    <br><a class="read-more" href="/ship-it-kit/?ref=blog_index_intro" data-ph-event="ship_it_kit_landing_view_clicked" data-ph-location="blog_index_intro_landing">See Ship It Kit →</a>
-    <a class="read-more" href="/go/ship-it-kit/checkout-blog-index/?source=ship_it_kit_blog_index" style="background:#c2410c;color:#fff;border-color:#c2410c;" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="blog_index_intro_buy">💳 Buy now — €49</a>
-  </section>
+  
 
 
   <article class="post-card">

@@ -49,7 +49,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.8; }
-    a { color: #7b8cff; }
+    a { color: #ff4800; }
     .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
     .banner a { display: inline-flex; align-items: center; gap: 8px; color: #f5f7ff; font-weight: 600; font-size: 14px; text-decoration: none; }
     .banner img { height: 28px; border-radius: 4px; }
@@ -64,13 +64,13 @@
     code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 0.9em; color: #86efac; }
     pre { background: #16162a; border: 1px solid #2a2a40; border-radius: 8px; padding: 16px; overflow-x: auto; margin: 1.2rem 0 1.6rem; }
     pre code { background: none; padding: 0; color: #e0e0e8; }
-    blockquote { border-left: 3px solid #7c3aed; padding-left: 16px; margin: 1.5rem 0; color: #9090a8; font-style: italic; }
+    blockquote { border-left: 3px solid #ff4800; padding-left: 16px; margin: 1.5rem 0; color: #9090a8; font-style: italic; }
     .timeline { position: relative; padding-left: 24px; margin: 1.5rem 0 2rem; }
     .timeline::before { content: ''; position: absolute; left: 0; top: 4px; bottom: 4px; width: 2px; background: #2a2a40; }
     .timeline-item { position: relative; margin-bottom: 1.2rem; }
-    .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: #7c3aed; }
+    .timeline-item::before { content: ''; position: absolute; left: -28px; top: 8px; width: 10px; height: 10px; border-radius: 50%; background: #ff4800; }
     .timeline-item strong { color: #fff; }
-    .cta { background: linear-gradient(135deg,rgba(124,58,237,0.15),rgba(59,130,246,0.15)); border: 1px solid rgba(124,58,237,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
+    .cta { background: linear-gradient(135deg,rgba(255,72,0,0.12),rgba(255,166,71,0.08)); border: 1px solid rgba(255,72,0,0.28); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
     .cta h3 { color: #fff; margin: 0 0 8px; font-size: 1.2rem; }
     .cta a { display: inline-block; background: linear-gradient(135deg,#ff4800,#ff4800); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; font-size: 1rem; }
     .cta p { color: #9090a8; margin-bottom: 0; font-size: 0.95rem; }
@@ -81,14 +81,24 @@
     tr:last-child td { border-bottom: none; }
     .win { color: #86efac; font-weight: 600; }
     footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
-    footer a { color: #7b8cff; }
+    footer a { color: #ff4800; }
     @media (max-width: 600px) { h1 { font-size: 1.5rem; } .container { padding: 1.5rem 1rem 3rem; } }
   </style>
   <style>ins.adsbygoogle{display:none!important}</style>
   <script defer src="/posthog.js"></script>
 </head>
 <body>
-<header class="banner"><a href="/"><img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools"></a></header>
+<!-- Goosekit Banner -->
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:26px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
+  </div>
+</div>
 
 <main class="container">
   <p class="meta">📅 April 15, 2026 · 11 min read · <a href="/blog/">← All posts</a></p>

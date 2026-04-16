@@ -143,10 +143,15 @@
 </head>
 <body>
 
-<div class="banner">
-  <div class="container">
-    <a href="/"><img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools"></a>
-    <a href="/" class="back">← Back to tools</a>
+<!-- Goosekit Banner -->
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:26px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
   </div>
 </div>
 
@@ -193,10 +198,7 @@
     <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#ff4800; text-decoration: underline;">email Arthur directly</a> with your endpoint needs and expected volume.</p>
   </div>
 
-  <div style="background: linear-gradient(135deg, rgba(59,130,246,0.10), rgba(255,72,0,0.10)); border: 1px solid rgba(59,130,246,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 40px; max-width: 760px; text-align: center;">
-    <p style="color:#dbeafe; font-size:0.95rem; margin:0 0 8px;"><strong>Building your own SaaS?</strong> Ship It Kit is live now with Next.js 15, Supabase auth, Stripe billing, and AI-ready structure.</p>
-    <a href="/ship-it-kit/" style="display:inline-block; margin-top:6px; color:#ff4800; font-weight:600; text-decoration:none;">See Ship It Kit →</a>
-  </div>
+  
 
   <!-- Auth -->
   <div class="auth">

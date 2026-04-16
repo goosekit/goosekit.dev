@@ -495,7 +495,7 @@
     }
 
     .site-brand img {
-      width: 108px;
+      width: 100px;
       height: auto;
       display: block;
     }
@@ -582,12 +582,14 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin: 18px auto 0;
-      padding: 12px 18px;
-      border-radius: 999px;
+      margin: 34px auto 0;
+      padding: 14px 18px;
+      border-radius: 18px;
       border: 1px solid rgba(255,72,0,0.18);
       background: linear-gradient(135deg, rgba(255,72,0,0.12), rgba(255,255,255,0.04));
       color: #e7edf7;
+      max-width: 520px;
+      width: min(100%, 520px);
       font-size: 0.96rem;
       box-shadow: 0 16px 36px rgba(0,0,0,0.22);
       animation: fadeInDown 0.6s 0.34s ease both;
@@ -616,7 +618,7 @@
     /* ── SEARCH ── */
     .search-wrap {
       position: relative;
-      max-width: 440px;
+      max-width: 560px;
       margin: 0 auto;
       animation: fadeInDown 0.6s 0.3s ease both;
     }
@@ -687,7 +689,7 @@
       .site-nav { gap: 8px 12px; }
       .site-nav a { font-size: 0.86rem; }
       .hero { padding: 52px 18px 72px; }
-      .hero-proof { width: 100%; border-radius: 18px; padding: 12px 14px; }
+      .hero-proof { width: 100%; border-radius: 16px; padding: 12px 14px; margin-top: 28px; }
     }
 
     /* ── CARD ── */
@@ -926,24 +928,17 @@
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <a class="site-brand" href="/" aria-label="Goosekit home">
-        <img src="/logo-dark.png" alt="Goosekit">
-      </a>
-      <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/tools/">Tools</a>
-        <a href="/tools/for-developers/">Developers</a>
-        <a href="/tools/for-designers/">Designers</a>
-        <a href="/tools/for-students/">Students</a>
-        <a href="/compare/goosekit-vs-tinywow/">Compare</a>
-        <a href="/blog/">Blog</a>
-        <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
-        <a href="/api/">API</a>
-        <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
-      </nav>
-    </div>
-  </header>
+  <!-- Goosekit Banner -->
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:26px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
+  </div>
+</div>
 
   <!-- HERO -->
   <header class="hero">
@@ -1991,56 +1986,7 @@
     </div>
 
     <!-- DevTools API promo -->
-    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(255,72,0,0.12),rgba(255,72,0,0.08));border:1px solid rgba(255,72,0,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-        <div style="flex:1;min-width:250px;">
-          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">⚡ Goosekit API</div>
-          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Need these tools as an API? Hash generation, UUIDs, JSON formatting, passwords & more — all as REST endpoints. 100 free requests/day, no signup.</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">REST API</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">Free tier</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">CORS</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">No signup</span>
-          </div>
-        </div>
-        <a href="https://goosekit-json.goosekit.workers.dev" target="_blank" rel="noopener noreferrer" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore API →</a>
-      </div>
-    </section>
-
-    <!-- Offline Pack promo -->
-    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(255,72,0,0.16),rgba(255,72,0,0.12));border:1px solid rgba(255,72,0,0.28);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-        <div style="flex:1;min-width:250px;">
-          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">💾 Goosekit Offline Pack</div>
-          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Take Goosekit with you. The Offline Pack bundles 12 high-utility tools into one portable folder for payload work, auth debugging, regex testing, and fast local workflows without ads, tracking, or internet.</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">12 tools</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">Offline</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">No tracking</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">€29 one-time</span>
-          </div>
-        </div>
-        <a href="/offline-pack/?ref=homepage_promo" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">See Offline Pack →</a>
-      </div>
-    </section>
-
-    <!-- Ship It Kit promo -->
-    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(255,72,0,0.15),rgba(255,72,0,0.10));border:1px solid rgba(255,72,0,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-        <div style="flex:1;min-width:250px;">
-          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">🚀 Next.js Supabase Stripe MVP Starter</div>
-          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">The billing-ready Next.js + Supabase + Stripe codebase to ship your MVP. Auth, Stripe billing, dashboard shell — all wired. Stop configuring, start building product.</p>
-          <p data-launch-countdown style="color:#ff4800;font-size:0.85rem;font-weight:600;margin:0;">⚡ Launch window — order before April 30</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">Next.js 15</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">Supabase</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">Stripe</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(255,72,0,0.15);color:#fed7aa;border:1px solid rgba(255,72,0,0.25);">AI-Ready</span>
-          </div>
-        </div>
-        <a href="/go/ship-it-kit/home-promo/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">See the starter →</a>
-      </div>
-    </section>
+    
   </main>
 
   <!-- FOOTER -->
@@ -2073,20 +2019,42 @@
 
       const countEl = document.querySelector('[data-count-target]');
       if (!countEl) return;
-      const target = Number(countEl.getAttribute('data-count-target') || '0');
-      const duration = 1400;
-      const start = performance.now();
-      const from = Math.max(0, target - 275);
 
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        const value = Math.round(from + (target - from) * eased);
-        countEl.textContent = value.toLocaleString('en-US');
-        if (progress < 1) requestAnimationFrame(tick);
+      function animateCount(target) {
+        const duration = 1400;
+        const start = performance.now();
+        const current = Number((countEl.textContent || '0').replace(/,/g, '')) || 0;
+        const from = Math.max(0, current || target - 275);
+
+        function tick(now) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const value = Math.round(from + (target - from) * eased);
+          countEl.textContent = value.toLocaleString('en-US');
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+
+        requestAnimationFrame(tick);
       }
 
-      requestAnimationFrame(tick);
+      async function refreshVisitorCount(initial) {
+        try {
+          const res = await fetch('/stats/visitors.json?ts=' + Date.now(), { cache: 'no-store' });
+          if (!res.ok) throw new Error('stats unavailable');
+          const data = await res.json();
+          const target = Number(data.count || countEl.getAttribute('data-count-target') || '0');
+          countEl.setAttribute('data-count-target', String(target));
+          if (initial) animateCount(target);
+          else countEl.textContent = target.toLocaleString('en-US');
+        } catch (_) {
+          const fallback = Number(countEl.getAttribute('data-count-target') || '0');
+          if (initial) animateCount(fallback);
+          else countEl.textContent = fallback.toLocaleString('en-US');
+        }
+      }
+
+      refreshVisitorCount(true);
+      setInterval(() => refreshVisitorCount(false), 60000);
     })();
   </script>
 </body>

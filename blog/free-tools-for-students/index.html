@@ -43,7 +43,7 @@
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif; line-height: 1.75; }
-    a { color: #7b8cff; text-decoration: none; }
+    a { color: #ff4800; text-decoration: none; }
     a:hover { text-decoration: underline; }
     .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
     .banner a { display: inline-block; }
@@ -51,7 +51,7 @@
     .container { max-width: 780px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
     .breadcrumb { font-size: 0.85rem; color: #888; margin-bottom: 1.5rem; }
     .breadcrumb a { color: #888; }
-    .breadcrumb a:hover { color: #7b8cff; }
+    .breadcrumb a:hover { color: #ff4800; }
     h1 { font-size: 2.2rem; color: #fff; margin-bottom: 0.5rem; line-height: 1.25; }
     .meta { font-size: 0.9rem; color: #777; margin-bottom: 2rem; }
     h2 { font-size: 1.5rem; color: #fff; margin: 2.2rem 0 0.8rem; }
@@ -59,19 +59,27 @@
     p { margin-bottom: 1rem; }
     .tool-card { background: #1a1a2e; border: 1px solid #2a2a40; border-radius: 10px; padding: 1.5rem; margin-bottom: 1.5rem; }
     .tool-card h3 { margin-top: 0; }
-    .tool-card .cta { display: inline-block; margin-top: 0.6rem; background: #7b8cff; color: #0f0f19; padding: 0.45rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
+    .tool-card .cta { display: inline-block; margin-top: 0.6rem; background: #ff4800; color: #0f0f19; padding: 0.45rem 1rem; border-radius: 6px; font-weight: 600; font-size: 0.9rem; }
     .tool-card .cta:hover { background: #6370e0; text-decoration: none; }
     .intro { font-size: 1.1rem; color: #b8b8cc; margin-bottom: 2rem; }
-    .conclusion { background: #1a1a2e; border-left: 4px solid #7b8cff; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 2.5rem; }
+    .conclusion { background: #1a1a2e; border-left: 4px solid #ff4800; padding: 1.5rem; border-radius: 0 10px 10px 0; margin-top: 2.5rem; }
     @media (max-width: 600px) { h1 { font-size: 1.6rem; } .container { padding: 1.5rem 1rem 3rem; } }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
 </head>
 <body>
 
-<header class="banner">
-  <a href="/"><img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools"></a>
-</header>
+<!-- Goosekit Banner -->
+<div id="gk-banner" style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:26px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
+  </div>
+</div>
 
 <main class="container">
   <nav class="breadcrumb"><a href="/">Home</a> / <a href="/blog/">Blog</a> / 10 Free Tools for Students</nav>
@@ -165,10 +173,6 @@
     <p>Bookmark <a href="/">goosekit.dev</a> and keep these <strong>free online tools for students</strong> within reach whenever you need them. No sign-up, no cost, no limits — just tools that work. Good luck with your studies!</p>
   </div>
 
-<div style="margin:2rem 0;padding:1.25rem 1.5rem;border:1px solid rgba(255,72,0,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
-  <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Looking to ship a SaaS with the same stack? <strong style="color:#ff4800;">Ship It Kit</strong> is a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure — €49 one-time.</p>
-  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#ff4800;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
-</div>
 </main>
 
 </body>
