@@ -603,15 +603,10 @@
     }
 
     .hero-proof .spark {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 26px;
-      height: 26px;
-      border-radius: 999px;
-      background: rgba(255,72,0,0.18);
+      display: inline-block;
       color: #ffd7bf;
-      font-size: 0.9rem;
+      font-size: 1rem;
+      line-height: 1;
       flex-shrink: 0;
     }
 
@@ -939,6 +934,7 @@
   .site-header-inner {
     width: 100%;
     margin: 0;
+    min-height: 56px;
     padding: 8px 16px 8px 10px;
     display: flex;
     align-items: center;
@@ -998,12 +994,18 @@
   }
 
   @media (max-width: 900px) {
-    .site-header-inner { padding: 8px 12px; }
+    .site-header-inner {
+      min-height: 56px;
+      padding: 8px 12px;
+    }
     .site-nav { width: 100%; justify-content: flex-start; gap: 8px 12px; }
   }
 
   @media (max-width: 560px) {
-    .site-header-inner { padding: 8px 10px; }
+    .site-header-inner {
+      min-height: 56px;
+      padding: 8px 10px;
+    }
     .site-brand img { width: 98px; }
     .site-nav { gap: 8px 12px; }
     .site-nav a { font-size: 0.86rem; }
