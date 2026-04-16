@@ -349,8 +349,8 @@
       ⚡ Launch window open — price goes up after April 30
     </div>
     <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;align-items:center;margin-top:16px;">
-      <a href="/go/ship-it-kit/checkout-landing-hero/" class="cta-btn" target="_blank" rel="noopener" style="margin-top:0;">Get the starter →</a>
-      <a href="/ship-it-kit-checklist/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;padding:16px 24px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;">Get the free checklist</a>
+      <a href="/go/ship-it-kit/checkout-landing-hero/?source=ship_it_kit_landing_hero" class="cta-btn" target="_blank" rel="noopener" style="margin-top:0;" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero_buy">Get the starter →</a>
+      <a href="/ship-it-kit-checklist/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;justify-content:center;padding:16px 24px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.03);color:#fff;font-weight:700;font-size:1rem;text-decoration:none;" data-ph-event="ship_it_kit_checklist_clicked" data-ph-location="hero_checklist">Get the free checklist</a>
     </div>
     <p style="margin-top:14px;font-size:0.95rem;color:var(--text-dim);">Instant GitHub repo · Clone, add keys, deploy · Unlimited projects · Lifetime updates</p>
     <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;margin-top:16px;">
@@ -640,7 +640,7 @@
     <h2>Ready to Ship?</h2>
     <p data-launch-countdown style="color:#ff4800;font-size:0.95rem;font-weight:600;margin-bottom:8px;">⚡ Launch window — order before April 30</p>
     <p>Join developers who stopped wasting time on boilerplate and started building what matters.</p>
-    <a href="/go/ship-it-kit/checkout-landing-bottom/" class="cta-btn" target="_blank" rel="noopener">Get the starter — €49 →</a>
+    <a href="/go/ship-it-kit/checkout-landing-bottom/?source=ship_it_kit_landing_bottom" class="cta-btn" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom_buy">Get the starter — €49 →</a>
     <p style="margin-top:14px;font-size:0.95rem;color:var(--text-dim);">Checkout takes a minute, then you get the repo and can start customizing right away.</p>
     <p style="margin-top:8px;font-size:0.88rem;color:#ff4800;">🔒 30-day money-back guarantee · No questions asked</p>
     <p style="margin-top:10px;font-size:0.92rem;color:var(--text-dim);">Not fully sure yet? Email <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Arthur</a> with your use case for a quick fit check before buying.</p>
@@ -654,8 +654,8 @@
     <h2 style="font-size:1.3rem;color:#e2e8f0;margin-bottom:.5rem;">Not ready to buy yet? Grab the launch checklist free.</h2>
     <p style="color:#8b949e;font-size:.9rem;margin-bottom:1.25rem;">A practical 14-point checklist for auth, billing, email, onboarding, and launch basics, built for Next.js SaaS founders.</p>
     <div style="display:flex;gap:.6rem;max-width:520px;margin:0 auto;flex-wrap:wrap;justify-content:center;align-items:center;">
-      <a href="/ship-it-kit-checklist/" style="padding:11px 22px;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:600;font-size:.9rem;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;">Open the free checklist →</a>
-      <a href="/blog/nextjs-stripe-boilerplate/" style="padding:11px 22px;background:rgba(255,255,255,0.04);color:#e2e8f0;font-weight:600;font-size:.9rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);cursor:pointer;white-space:nowrap;text-decoration:none;">Read the boilerplate guide</a>
+      <a href="/ship-it-kit-checklist/" style="padding:11px 22px;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:600;font-size:.9rem;border-radius:8px;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;" data-ph-event="ship_it_kit_checklist_clicked" data-ph-location="bottom_checklist">Open the free checklist →</a>
+      <a href="/blog/nextjs-stripe-boilerplate/" style="padding:11px 22px;background:rgba(255,255,255,0.04);color:#e2e8f0;font-weight:600;font-size:.9rem;border-radius:8px;border:1px solid rgba(255,255,255,0.12);cursor:pointer;white-space:nowrap;text-decoration:none;" data-ph-event="ship_it_kit_boilerplate_guide_clicked" data-ph-location="bottom_guide">Read the boilerplate guide</a>
     </div>
     <p style="color:#606078;font-size:.78rem;margin-top:.75rem;">No form wall, no signup trap, just the checklist.</p>
   </div>
@@ -683,6 +683,34 @@
     els.forEach(el => { el.textContent = text; });
   })();
 </script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      product: 'ship_it_kit'
+    });
+
+    document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture(el.getAttribute('data-ph-event'), {
+          product: 'ship_it_kit',
+          ref: ref,
+          location: el.getAttribute('data-ph-location') || 'unknown',
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 
 <!-- Sticky bottom checkout bar -->
 <div id="sticky-bar" style="position:fixed;bottom:0;left:0;right:0;z-index:999;background:linear-gradient(135deg,#0d1117,#161b22);border-top:1px solid rgba(255,72,0,0.4);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:16px;transform:translateY(100%);transition:transform 0.3s ease;box-shadow:0 -4px 32px rgba(0,0,0,0.5);">
@@ -690,7 +718,7 @@
     <span style="font-size:.82rem;color:#94a3b8;">🚀 Ship It Kit — Next.js 15 SaaS starter</span>
     <span style="font-size:.9rem;color:#e2e8f0;font-weight:700;">€49 <span style="font-size:.8rem;color:#8b949e;font-weight:400;">one-time · instant GitHub repo access</span></span>
   </div>
-  <a href="/go/ship-it-kit/checkout-landing-sticky/" target="_blank" rel="noopener" style="flex-shrink:0;padding:10px 22px;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;text-decoration:none;white-space:nowrap;">Get it →</a>
+  <a href="/go/ship-it-kit/checkout-landing-sticky/?source=ship_it_kit_landing_sticky" target="_blank" rel="noopener" style="flex-shrink:0;padding:10px 22px;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;text-decoration:none;white-space:nowrap;" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="sticky_buy">Get it →</a>
 </div>
 <script>
   (function () {
