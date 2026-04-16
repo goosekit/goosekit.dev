@@ -88,4 +88,10 @@
   <url><loc>https://goosekit.dev/blog/json-vs-yaml/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/css-gradient-generator/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/uuid-generator-guide/</loc><lastmod>2026-04-12</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url>
+    <loc>https://goosekit.dev/blog/ship-it-kit-review/</loc>
+    <lastmod>2026-04-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
