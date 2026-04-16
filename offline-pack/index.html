@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2307550194687083" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goosekit Offline Pack, 12 Private Browser Tools in One Folder</title>
+  <meta name="description" content="Goosekit Offline Pack bundles 12 browser-based tools into one portable folder. Format JSON, test regex, decode JWTs, and debug payloads offline for €29.">
+  <link rel="canonical" href="https://goosekit.dev/offline-pack/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Goosekit Offline Pack, 12 Private Browser Tools in One Folder">
+  <meta property="og:description" content="A portable Goosekit bundle for payloads, auth, regex, formatting, and quick debugging. No ads, no tracking, no internet required.">
+  <meta property="og:url" content="https://goosekit.dev/offline-pack/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/offline-pack/offline-pack-home.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Goosekit Offline Pack">
+  <meta name="twitter:description" content="12 Goosekit tools in one portable offline pack. €29 one-time.">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Goosekit Offline Pack",
+    "description": "A portable bundle of 12 Goosekit browser tools for local payload formatting, regex testing, JWT decoding, hashing, SQL formatting, and daily builder workflows.",
+    "url": "https://goosekit.dev/offline-pack/",
+    "brand": { "@type": "Brand", "name": "Goosekit" },
+    "image": [
+      "https://goosekit.dev/offline-pack/offline-pack-home.png",
+      "https://goosekit.dev/offline-pack/offline-pack-json.png",
+      "https://goosekit.dev/offline-pack/offline-pack-regex.png"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "price": "29",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock",
+      "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757"
+    }
+  }
+  </script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What do I get after purchase?",
+        "acceptedAnswer": {"@type": "Answer", "text": "A ZIP file with 12 Goosekit tools, a local pack home page, and a short README. Unzip it and open index.html in your browser."}
+      },
+      {
+        "@type": "Question",
+        "name": "Does it work without internet?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. The included tools are packaged for local browser use and do not require a server or internet connection for the core experience."}
+      },
+      {
+        "@type": "Question",
+        "name": "What operating systems are supported?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Mac, Windows, and Linux. If you have a modern browser, you can run the pack locally."}
+      },
+      {
+        "@type": "Question",
+        "name": "Is this a subscription?",
+        "acceptedAnswer": {"@type": "Answer", "text": "No. Goosekit Offline Pack is a one-time purchase."}
+      }
+    ]
+  }
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1118;
+      --card: #171a23;
+      --card-2: #1d2130;
+      --border: rgba(255,255,255,0.08);
+      --text: #edf2ff;
+      --muted: #9fb0c9;
+      --accent: #ff4800;
+      --accent-soft: rgba(255,72,0,0.12);
+      --gradient: linear-gradient(135deg, #ff4800, #ef4444);
+      --radius: 20px;
+      --shadow: 0 28px 80px rgba(0,0,0,0.32);
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, Arial, sans-serif;
+      background: radial-gradient(circle at top, rgba(255,72,0,0.12), transparent 28%), var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+    .banner {
+      background: rgba(12,14,22,0.88);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      backdrop-filter: blur(10px);
+      padding: 12px 0;
+    }
+    .banner .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      color: #f4f7ff;
+    }
+    .brand-link img { height: 30px; border-radius: 6px; }
+    .back-link { color: #b3bfd7; font-size: 0.92rem; }
+    .back-link:hover { color: #fff; }
+
+    .hero {
+      padding: 72px 0 48px;
+    }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 32px;
+      align-items: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(255,72,0,0.24);
+      color: #ffbf9f;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 0.86rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+    .hero h1 {
+      font-size: clamp(2.3rem, 5vw, 4rem);
+      line-height: 1.06;
+      margin-bottom: 18px;
+    }
+    .hero p {
+      font-size: 1.08rem;
+      color: var(--muted);
+      max-width: 640px;
+    }
+    .price-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin: 24px 0 18px;
+    }
+    .price {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .price-note {
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 15px 22px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary {
+      background: var(--gradient);
+      color: #fff;
+      box-shadow: 0 16px 40px rgba(255,72,0,0.22);
+    }
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.12);
+      color: #dbe5ff;
+      background: rgba(255,255,255,0.03);
+    }
+    .mini-proof {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      color: #c3d0eb;
+      font-size: 0.92rem;
+    }
+    .mini-proof span {
+      padding: 8px 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+    }
+    .hero-shot {
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 24px;
+      padding: 16px;
+      box-shadow: var(--shadow);
+    }
+    .hero-shot img {
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+      margin: 18px 0 48px;
+    }
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+    .stat strong {
+      display: block;
+      font-size: 1.55rem;
+      margin-bottom: 4px;
+    }
+    .stat span { color: var(--muted); font-size: 0.95rem; }
+
+    .section {
+      padding: 18px 0 42px;
+    }
+    .section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+    .section-copy {
+      color: var(--muted);
+      max-width: 720px;
+      margin-bottom: 22px;
+    }
+
+    .features, .tool-grid, .steps, .faq-grid {
+      display: grid;
+      gap: 18px;
+    }
+    .features { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .tool-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .steps { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+    .faq-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+    .card h3 {
+      font-size: 1.08rem;
+      margin-bottom: 10px;
+    }
+    .card p, .card li {
+      color: var(--muted);
+    }
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255,72,0,0.1);
+      color: #ffb393;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+    .tool-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .tool-tag {
+      color: #ffbf9f;
+      font-size: 0.78rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,72,0,0.12);
+      color: var(--accent);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 18px;
+      align-items: start;
+    }
+    .shot {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 14px;
+    }
+    .shot img { border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); }
+    .shot-label {
+      color: #dbe5ff;
+      font-weight: 700;
+      margin: 12px 0 4px;
+    }
+    .shot p { color: var(--muted); font-size: 0.95rem; }
+
+    .final-cta {
+      margin: 18px 0 72px;
+      background: linear-gradient(135deg, rgba(255,72,0,0.14), rgba(59,130,246,0.08));
+      border: 1px solid rgba(255,72,0,0.18);
+      border-radius: 24px;
+      padding: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .final-cta p { color: var(--muted); max-width: 620px; }
+
+    footer {
+      padding: 26px 0 44px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      color: #90a0bd;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .gallery { grid-template-columns: 1fr; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 18px; }
+      .hero { padding-top: 54px; }
+      .stats { grid-template-columns: 1fr; }
+      .price { font-size: 2.5rem; }
+    }
+  </style>
+<style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
+</head>
+<body>
+  <div class="banner">
+    <div class="container">
+      <a class="brand-link" href="/">
+        <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools">
+        <span>Goosekit</span>
+      </a>
+      <a class="back-link" href="/">← Back to free tools</a>
+    </div>
+  </div>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">🪿 New paid product by Goosekit</div>
+            <h1>Your favorite Goosekit tools, packed for offline work.</h1>
+            <p>Goosekit Offline Pack gives you 12 browser-based tools in one portable folder. Format JSON, test regex, decode JWTs, hash files, convert cURL, and debug payloads without opening random sites or depending on a connection.</p>
+            <div class="price-row">
+              <div class="price">€29</div>
+              <div class="price-note">One-time purchase, unzip and run locally on Mac, Windows, or Linux.</div>
+            </div>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="/go/offline-pack/checkout-hero/" target="_blank" rel="noopener">Buy Goosekit Offline Pack →</a>
+              <a class="btn btn-secondary" href="#included-tools">See what’s included</a>
+            </div>
+            <div class="mini-proof">
+              <span>12 included tools</span>
+              <span>No ads</span>
+              <span>No tracking</span>
+              <span>No internet required</span>
+            </div>
+          </div>
+          <div class="hero-shot">
+            <img src="/offline-pack/offline-pack-home.png" alt="Goosekit Offline Pack home page screenshot">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container stats" aria-label="Product facts">
+      <article class="stat"><strong>12</strong><span>Goosekit tools packaged for local use</span></article>
+      <article class="stat"><strong>~1 minute</strong><span>Unzip, open <code>index.html</code>, start working</span></article>
+      <article class="stat"><strong>772 KB</strong><span>Current ZIP size, lightweight and portable</span></article>
+      <article class="stat"><strong>Browser-based</strong><span>Works on modern browsers across Mac, Windows, and Linux</span></article>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>Why this exists</h2>
+        <p class="section-copy">Goosekit already works browser-side. The Offline Pack turns the most practical tools into something you can keep on your machine for flights, corporate networks, privacy-sensitive payloads, and fast local debugging.</p>
+        <div class="features">
+          <article class="card">
+            <div class="feature-icon">🔒</div>
+            <h3>Private by default</h3>
+            <p>Paste tokens, payloads, config files, and snippets into a local pack instead of crossing your fingers with another random website.</p>
+          </article>
+          <article class="card">
+            <div class="feature-icon">🧳</div>
+            <h3>Portable</h3>
+            <p>Keep the ZIP in Dropbox, iCloud, a USB key, or your work folder. Unzip it anywhere and open the pack home page locally.</p>
+          </article>
+          <article class="card">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast to open</h3>
+            <p>No install flow, no account, no app store, no server. Just click <code>index.html</code> and open the tool you need.</p>
+          </article>
+          <article class="card">
+            <div class="feature-icon">🧰</div>
+            <h3>Focused tool set</h3>
+            <p>This first version includes the highest-utility Goosekit tools for payload formatting, auth debugging, hashing, SQL cleanup, and quick API work.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="included-tools">
+      <div class="container">
+        <h2>Included tools</h2>
+        <p class="section-copy">The pack is intentionally focused. It includes the Goosekit tools most likely to save time during day-to-day payload, auth, and debugging work.</p>
+        <div class="tool-grid">
+          <article class="card"><div class="tool-head"><h3>JSON Formatter</h3><span class="tool-tag">Payloads</span></div><p>Beautify, validate, and minify JSON locally.</p></article>
+          <article class="card"><div class="tool-head"><h3>Regex Tester</h3><span class="tool-tag">Validation</span></div><p>Real-time matching, groups, flags, and replace mode offline.</p></article>
+          <article class="card"><div class="tool-head"><h3>JWT Decoder</h3><span class="tool-tag">Auth</span></div><p>Inspect headers and payloads without sending tokens anywhere.</p></article>
+          <article class="card"><div class="tool-head"><h3>Base64 Encoder / Decoder</h3><span class="tool-tag">Encoding</span></div><p>Encode and decode text without another browser tab.</p></article>
+          <article class="card"><div class="tool-head"><h3>Hash Generator</h3><span class="tool-tag">Security</span></div><p>Create hashes for text and files locally.</p></article>
+          <article class="card"><div class="tool-head"><h3>UUID Generator</h3><span class="tool-tag">Utilities</span></div><p>Generate IDs fast, even with no connection.</p></article>
+          <article class="card"><div class="tool-head"><h3>Diff Checker</h3><span class="tool-tag">Review</span></div><p>Compare snippets, configs, or release copy side by side.</p></article>
+          <article class="card"><div class="tool-head"><h3>URL Encoder / Decoder</h3><span class="tool-tag">Encoding</span></div><p>Repair query strings and inspect escaped URLs quickly.</p></article>
+          <article class="card"><div class="tool-head"><h3>SQL Formatter</h3><span class="tool-tag">Database</span></div><p>Turn unreadable SQL into something you can scan in seconds.</p></article>
+          <article class="card"><div class="tool-head"><h3>JSON to CSV</h3><span class="tool-tag">Conversion</span></div><p>Convert JSON arrays without uploads or cloud processing.</p></article>
+          <article class="card"><div class="tool-head"><h3>cURL Converter</h3><span class="tool-tag">API</span></div><p>Translate cURL snippets into application code locally.</p></article>
+          <article class="card"><div class="tool-head"><h3>Cron Helper</h3><span class="tool-tag">Scheduling</span></div><p>Work on cron expressions without breaking your flow.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>What it looks like</h2>
+        <p class="section-copy">The pack ships with a local home page plus the selected tools ready to open inside the folder.</p>
+        <div class="gallery">
+          <article class="shot">
+            <img src="/offline-pack/offline-pack-home.png" alt="Goosekit Offline Pack home page">
+            <div class="shot-label">Pack home</div>
+            <p>Open one file, then jump straight to the tool you need.</p>
+          </article>
+          <article class="shot">
+            <img src="/offline-pack/offline-pack-json.png" alt="Goosekit Offline Pack JSON formatter screenshot">
+            <div class="shot-label">JSON workflow</div>
+            <p>Format and validate payloads locally.</p>
+          </article>
+          <article class="shot">
+            <img src="/offline-pack/offline-pack-regex.png" alt="Goosekit Offline Pack regex tester screenshot">
+            <div class="shot-label">Regex workflow</div>
+            <p>Debug patterns without a live connection.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>How it works</h2>
+        <p class="section-copy">The delivery is intentionally simple, because the goal is speed and reliability.</p>
+        <div class="steps">
+          <article class="card"><div class="step-num">1</div><h3>Buy once</h3><p>Use the Lemon Squeezy checkout and get instant access after payment.</p></article>
+          <article class="card"><div class="step-num">2</div><h3>Download the ZIP</h3><p>Save the pack locally, unzip it wherever you want, and keep it anywhere you trust.</p></article>
+          <article class="card"><div class="step-num">3</div><h3>Open index.html</h3><p>Launch the local pack in your browser and start using the included Goosekit tools offline.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h2>FAQ</h2>
+        <div class="faq-grid">
+          <article class="card"><h3>Do I need to install anything?</h3><p>No. Unzip the folder and open <code>index.html</code> in a modern browser.</p></article>
+          <article class="card"><h3>Does it work on Windows too?</h3><p>Yes. It is browser-based, so the pack works across Mac, Windows, and Linux.</p></article>
+          <article class="card"><h3>Is this a subscription?</h3><p>No. Goosekit Offline Pack is a one-time purchase.</p></article>
+          <article class="card"><h3>Why not just use the website?</h3><p>The website is still great. This pack is for local-only workflows, bad connections, company networks, and people who want a portable private version.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <div class="final-cta">
+        <div>
+          <h2>Get the pack and keep it on your machine.</h2>
+          <p>Goosekit Offline Pack is the fastest paid Goosekit product to start using. Buy once, download the ZIP, and keep these 12 tools ready wherever you work.</p>
+        </div>
+        <a class="btn btn-primary" href="/go/offline-pack/checkout-bottom/" target="_blank" rel="noopener">Buy for €29 →</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">Goosekit Offline Pack, a portable bundle of Goosekit tools for offline payload, auth, and debugging work.</div>
+  </footer>
+</body>
+</html>
