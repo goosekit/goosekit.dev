@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS MVP Launch Checklist, Next.js + Supabase + Stripe | Goosekit</title>
+  <meta name="description" content="Free SaaS MVP launch checklist for Next.js founders. Use this 14-point checklist to sanity-check auth, billing, email, and launch basics before shipping.">
+  <link rel="canonical" href="https://goosekit.dev/ship-it-kit-checklist/">
+  <meta property="og:title" content="Free SaaS MVP Launch Checklist | Goosekit">
+  <meta property="og:description" content="A practical 14-point checklist for shipping a Next.js SaaS MVP with auth, billing, email, and launch basics covered.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://goosekit.dev/ship-it-kit-checklist/">
+  <meta property="og:image" content="https://goosekit.dev/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Free SaaS MVP Launch Checklist | Goosekit">
+  <meta name="twitter:description" content="A practical 14-point checklist for shipping a Next.js SaaS MVP with auth, billing, email, and launch basics covered.">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-soft: rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.10);
+      --text: #e6edf3;
+      --text-dim: #94a3b8;
+      --accent: #ff4800;
+      --accent-soft: rgba(255,72,0,0.12);
+      --green: #34d399;
+      --max: 1040px;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--accent); }
+    .container { width: min(calc(100% - 32px), var(--max)); margin: 0 auto; }
+    .banner {
+      border-bottom: 1px solid var(--border);
+      background: rgba(15,15,25,0.92);
+    }
+    .banner .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .brand img { height: 28px; border-radius: 4px; }
+    .back { color: var(--text-dim); text-decoration: none; font-size: 0.95rem; }
+    .hero {
+      padding: 72px 0 48px;
+      text-align: center;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid rgba(255,72,0,0.24);
+      background: var(--accent-soft);
+      color: #ffd6c5;
+      border-radius: 999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.08;
+      margin: 0 0 18px;
+    }
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto;
+      color: var(--text-dim);
+      font-size: 1.1rem;
+    }
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 22px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--accent), var(--accent)); color: #fff; }
+    .btn-secondary { background: var(--surface); color: var(--text); border-color: var(--border); }
+    .section { padding: 20px 0 24px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+    .card h2 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+    }
+    .checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      color: var(--text-dim);
+    }
+    .checklist strong { color: var(--text); }
+    .check {
+      color: var(--green);
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+    .callout {
+      margin-top: 26px;
+      background: linear-gradient(135deg, rgba(255,72,0,0.10), rgba(59,130,246,0.08));
+      border: 1px solid rgba(255,72,0,0.18);
+      border-radius: 18px;
+      padding: 26px;
+      text-align: center;
+    }
+    .callout p { color: var(--text-dim); margin: 10px auto 0; max-width: 720px; }
+    footer {
+      padding: 36px 0 54px;
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <div class="container">
+      <a class="brand" href="/"><img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools">Goosekit</a>
+      <a class="back" href="/ship-it-kit/">← Back to Ship It Kit</a>
+    </div>
+  </div>
+
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Free resource · practical, not fluffy</div>
+      <h1>SaaS MVP launch checklist<br>for Next.js founders</h1>
+      <p>Use this before you ship. It is the fast sanity check for auth, billing, email, onboarding, and launch basics, especially if you are building with Next.js, Supabase, and Stripe.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-hero/" target="_blank" rel="noopener">Get Ship It Kit →</a>
+        <a class="btn btn-secondary" href="/blog/nextjs-stripe-boilerplate/">Read what a real boilerplate should include</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container grid">
+      <div class="card">
+        <h2>1. Auth and access</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>Login, signup, reset flow:</strong> every basic path works without dead ends.</span></li>
+          <li><span class="check">✓</span><span><strong>Protected routes:</strong> dashboard and billing pages cannot leak to signed-out users.</span></li>
+          <li><span class="check">✓</span><span><strong>User ownership:</strong> every project, row, and mutation respects the signed-in user.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>2. Billing and money</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>Checkout flow:</strong> customer can actually pay without broken redirects or missing prices.</span></li>
+          <li><span class="check">✓</span><span><strong>Portal access:</strong> billing settings let users manage plan and card details.</span></li>
+          <li><span class="check">✓</span><span><strong>Webhook handling:</strong> payment success, cancel, and plan changes update your app state.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>3. Product basics</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>One clear first action:</strong> a new user knows what to do after signup.</span></li>
+          <li><span class="check">✓</span><span><strong>Empty states:</strong> blank dashboard views explain the next step instead of looking broken.</span></li>
+          <li><span class="check">✓</span><span><strong>Settings page:</strong> profile, billing, and account basics exist before launch.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>4. Email and delivery</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>Transactional email:</strong> welcome, reset, and billing flows have the right emails wired.</span></li>
+          <li><span class="check">✓</span><span><strong>Sender clarity:</strong> receipts and onboarding emails look trustworthy, not hacked together.</span></li>
+          <li><span class="check">✓</span><span><strong>Post-purchase path:</strong> buyers know where to go immediately after paying.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>5. Launch hygiene</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>Meta tags and OG image:</strong> your product shares cleanly on social and chat.</span></li>
+          <li><span class="check">✓</span><span><strong>Error handling:</strong> failures show human messages, not raw stack traces.</span></li>
+          <li><span class="check">✓</span><span><strong>Fast deploy:</strong> one repo, one env file, one path to production.</span></li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>6. Founder reality check</h2>
+        <ul class="checklist">
+          <li><span class="check">✓</span><span><strong>Can you demo it in 2 minutes?</strong> If not, simplify the story.</span></li>
+          <li><span class="check">✓</span><span><strong>Can you explain the value in one sentence?</strong> If not, sharpen positioning first.</span></li>
+          <li><span class="check">✓</span><span><strong>Are you building product work, not plumbing?</strong> That is the real point of using a starter.</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="callout">
+        <h2 style="margin:0;font-size:1.45rem;">Want this already wired for you?</h2>
+        <p>Ship It Kit gives you the billing-ready base: Supabase auth, Stripe checkout + portal, dashboard shell, email templates, and a cleaner starting point for AI-assisted building.</p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-bottom/" target="_blank" rel="noopener">Get the starter for €49 →</a>
+          <a class="btn btn-secondary" href="/ship-it-kit/">See the product page</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>Goosekit · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
+    </div>
+  </footer>
+</body>
+</html>
