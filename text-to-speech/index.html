@@ -37,6 +37,7 @@ textarea:focus{outline:none;border-color:#7c8aff}
 .voice-row{display:flex;gap:12px;flex-wrap:wrap}
 .voice-row select{flex:1;min-width:200px;background:#181825;border:1px solid #2a2a3d;border-radius:8px;padding:10px 12px;color:#e0e0e8;font-size:14px;cursor:pointer}
 .voice-row select:focus{outline:none;border-color:#7c8aff}
+.voice-hint{font-size:13px;color:#9aa3c7;margin-top:-6px}
 
 .sliders{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
 .slider-group{display:flex;flex-direction:column;gap:4px}
@@ -189,8 +190,18 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
 
   <div class="controls">
     <div class="voice-row">
+      <select id="languageSelect" aria-label="Language preference">
+        <option value="auto">Auto-detect language</option>
+        <option value="en">English</option>
+        <option value="fr">French</option>
+        <option value="es">Spanish</option>
+        <option value="de">German</option>
+        <option value="it">Italian</option>
+        <option value="pt">Portuguese</option>
+      </select>
       <select id="voiceSelect" aria-label="Voice"><option>Loading voices…</option></select>
     </div>
+    <div class="voice-hint" id="voiceHint">Trying to pick the most natural voice for your text…</div>
 
     <div class="sliders">
       <div class="slider-group">
@@ -218,8 +229,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
 
   <div class="info">
     <h2>How it works</h2>
-    <p>This tool uses the <strong>Web Speech API</strong> built into modern browsers — your text never leaves your device. Choose from all voices installed on your system, tweak speed, pitch, and volume, then press Play.</p>
-    <p>Works best in Chrome, Edge, and Safari. Firefox supports basic voices. On mobile, tap Play to begin.</p>
+    <p>This tool uses the <strong>Web Speech API</strong> built into modern browsers, so your text stays on your device. Goosekit now auto-detects the text language and tries to pick the most natural matching voice available on your system.</p>
+    <p>Voice quality still depends on the voices installed in your browser or OS. Chrome, Edge, and Safari usually sound best. If a voice sounds odd, switch language or choose another voice manually.</p>
   </div>
 
   <div class="info" style="margin-top:24px;">
@@ -234,7 +245,9 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
 (() => {
   const synth = window.speechSynthesis;
   const textInput = document.getElementById('textInput');
+  const languageSelect = document.getElementById('languageSelect');
   const voiceSelect = document.getElementById('voiceSelect');
+  const voiceHint = document.getElementById('voiceHint');
   const rateInput = document.getElementById('rate');
   const pitchInput = document.getElementById('pitch');
   const volumeInput = document.getElementById('volume');
@@ -248,11 +261,100 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
 
   let voices = [];
   let isPaused = false;
+  let manualVoiceChosen = false;
+
+  rateInput.value = '0.95';
+  rateVal.textContent = '0.95×';
+
+  const NATURAL_VOICE_PATTERNS = {
+    en: [/samantha/i, /daniel/i, /alex/i, /moira/i, /karen/i, /serena/i, /google.*english/i, /microsoft.*aria/i, /microsoft.*jenny/i, /microsoft.*guy/i, /microsoft.*ryan/i, /siri/i],
+    fr: [/thomas/i, /amelie/i, /am[eé]lie/i, /aurelie/i, /aur[eé]lie/i, /marie/i, /google.*fran/i, /microsoft.*denise/i, /microsoft.*henri/i, /siri/i],
+    es: [/monica/i, /jorge/i, /google.*espa/i, /microsoft.*elvira/i, /microsoft.*alvaro/i],
+    de: [/anna/i, /markus/i, /google.*deutsch/i, /microsoft.*katja/i, /microsoft.*conrad/i],
+    it: [/alice/i, /luca/i, /google.*ital/i, /microsoft.*elsa/i, /microsoft.*diego/i],
+    pt: [/joana/i, /luciana/i, /google.*portugu/i, /microsoft.*francisca/i, /microsoft.*antonio/i]
+  };
+
+  const NOVELTY_VOICE_PATTERNS = [/zarvox/i, /bad news/i, /good news/i, /bubbles/i, /boing/i, /cellos/i, /pipe organ/i, /whisper/i, /trinoids/i, /hysterical/i];
 
   // Slider display updates
   rateInput.addEventListener('input', () => rateVal.textContent = parseFloat(rateInput.value).toFixed(2) + '×');
   pitchInput.addEventListener('input', () => pitchVal.textContent = parseFloat(pitchInput.value).toFixed(2));
   volumeInput.addEventListener('input', () => volVal.textContent = Math.round(volumeInput.value * 100) + '%');
+
+  function detectLanguage(text) {
+    const sample = (text || '').toLowerCase();
+    if (!sample.trim()) return 'en';
+
+    const scores = {
+      fr: (sample.match(/[àâçéèêëîïôûùüÿœæ]/g) || []).length + (sample.match(/\b(le|la|les|un|une|des|est|avec|pour|dans|que|qui|sur|pas|plus|bonjour|merci)\b/g) || []).length,
+      en: (sample.match(/\b(the|and|with|for|this|that|your|from|have|will|hello|thanks)\b/g) || []).length,
+      es: (sample.match(/[ñáéíóúü]/g) || []).length + (sample.match(/\b(el|la|los|las|una|para|con|que|hola|gracias)\b/g) || []).length,
+      de: (sample.match(/[äöüß]/g) || []).length + (sample.match(/\b(der|die|das|und|mit|für|ist|nicht|hallo|danke)\b/g) || []).length,
+      it: (sample.match(/[àèéìíîòóù]/g) || []).length + (sample.match(/\b(il|lo|la|gli|per|con|che|ciao|grazie)\b/g) || []).length,
+      pt: (sample.match(/[ãõáâàçéêíóôú]/g) || []).length + (sample.match(/\b(o|a|os|as|uma|para|com|que|ol[áa]|obrigad)\b/g) || []).length
+    };
+
+    return Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0] || 'en';
+  }
+
+  function desiredLanguage() {
+    return languageSelect.value === 'auto' ? detectLanguage(textInput.value) : languageSelect.value;
+  }
+
+  function isNoveltyVoice(name) {
+    return NOVELTY_VOICE_PATTERNS.some((pattern) => pattern.test(name || ''));
+  }
+
+  function scoreVoice(voice, lang) {
+    let score = 0;
+    const voiceLang = (voice.lang || '').toLowerCase();
+    const voiceName = voice.name || '';
+
+    if (voiceLang.startsWith(lang)) score += 80;
+    else if (lang === 'en') score += 5;
+
+    if (voice.default) score += 10;
+    if (voice.localService) score += 12;
+    if (/google|microsoft|apple|siri/i.test(voiceName)) score += 8;
+    if (isNoveltyVoice(voiceName)) score -= 120;
+
+    const preferredPatterns = NATURAL_VOICE_PATTERNS[lang] || [];
+    if (preferredPatterns.some((pattern) => pattern.test(voiceName))) score += 35;
+
+    return score;
+  }
+
+  function updateVoiceHint(selectedVoice) {
+    const lang = desiredLanguage();
+    const labelMap = { en: 'English', fr: 'French', es: 'Spanish', de: 'German', it: 'Italian', pt: 'Portuguese' };
+    const langLabel = labelMap[lang] || lang.toUpperCase();
+    if (!selectedVoice) {
+      voiceHint.textContent = `No ${langLabel} voice found in this browser yet. You can still try another installed voice manually.`;
+      return;
+    }
+    const source = selectedVoice.localService ? 'local' : 'browser';
+    voiceHint.textContent = `Using ${langLabel} voice: ${selectedVoice.name} (${source}). Switch manually if you prefer another tone.`;
+  }
+
+  function selectBestVoice(force = false) {
+    if (!voices.length) return;
+    if (manualVoiceChosen && !force) {
+      updateVoiceHint(voices[voiceSelect.value]);
+      return;
+    }
+
+    const lang = desiredLanguage();
+    const ranked = voices
+      .map((voice, index) => ({ index, score: scoreVoice(voice, lang) }))
+      .sort((a, b) => b.score - a.score);
+
+    const best = ranked[0];
+    if (best) {
+      voiceSelect.value = String(best.index);
+      updateVoiceHint(voices[best.index]);
+    }
+  }
 
   // Load voices
   function loadVoices() {
@@ -265,13 +367,22 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
       opt.textContent = `${v.name} (${v.lang})${v.default ? ' — default' : ''}`;
       voiceSelect.appendChild(opt);
     });
-    // Select first English voice by default
-    const enIdx = voices.findIndex(v => v.lang.startsWith('en'));
-    if (enIdx > -1) voiceSelect.value = enIdx;
+    selectBestVoice(true);
   }
 
   loadVoices();
   if (synth.onvoiceschanged !== undefined) synth.onvoiceschanged = loadVoices;
+  voiceSelect.addEventListener('change', () => {
+    manualVoiceChosen = true;
+    updateVoiceHint(voices[voiceSelect.value]);
+  });
+  languageSelect.addEventListener('change', () => {
+    manualVoiceChosen = false;
+    selectBestVoice(true);
+  });
+  textInput.addEventListener('input', () => {
+    if (languageSelect.value === 'auto') selectBestVoice();
+  });
 
   // Word highlighting
   function highlightWord(charIndex, charLen) {
@@ -307,6 +418,7 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
     if (!text) { status.textContent = 'Please enter some text.'; return; }
 
     synth.cancel();
+    selectBestVoice();
 
     const utter = new SpeechSynthesisUtterance(text);
     utter.voice = voices[voiceSelect.value] || null;
