@@ -582,7 +582,7 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin: 0 auto 24px;
+      margin: 18px auto 0;
       padding: 12px 18px;
       border-radius: 999px;
       border: 1px solid rgba(255,72,0,0.18);
@@ -590,10 +590,11 @@
       color: #e7edf7;
       font-size: 0.96rem;
       box-shadow: 0 16px 36px rgba(0,0,0,0.22);
-      animation: fadeInDown 0.6s 0.24s ease both;
+      animation: fadeInDown 0.6s 0.34s ease both;
     }
 
-    .hero-proof strong {
+    .hero-proof strong,
+    .hero-proof .count {
       color: #fff;
       font-weight: 800;
       letter-spacing: -0.02em;
@@ -950,11 +951,6 @@
     <h1>50 Free Online Tools for Developers, Designers &amp; Students</h1>
     <p>Use JSON formatter, regex tester, JWT decoder, hash generator, Base64 tools, screenshot beautifier, and more, all browser-based, fast, and no signup.</p>
 
-    <div class="hero-proof">
-      <span class="spark">✦</span>
-      <span>Already trusted by <strong>3,475+</strong> people using Goosekit tools</span>
-    </div>
-
     <div class="search-wrap">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/>
@@ -968,6 +964,11 @@
         autocomplete="off"
         spellcheck="false"
       />
+    </div>
+
+    <div class="hero-proof">
+      <span class="spark">✦</span>
+      <span>Already trusted by <span class="count" data-count-target="3475">3,475</span>+ people using Goosekit tools</span>
     </div>
 
   </header>
@@ -2059,15 +2060,33 @@
   <script>
     (function () {
       const els = document.querySelectorAll('[data-launch-countdown]');
-      if (!els.length) return;
-      const deadline = new Date('2026-04-30T21:59:59Z');
-      const now = new Date();
-      const days = Math.ceil((deadline - now) / 86400000);
-      let text = '⚡ Launch window — order before April 30';
-      if (days > 1) text = `⚡ Launch window — ${days} days left at €49`;
-      else if (days === 1) text = '⚡ Launch window — 1 day left at €49';
-      else if (days === 0) text = '⚡ Launch window closes today — €49';
-      els.forEach(el => { el.textContent = text; });
+      if (els.length) {
+        const deadline = new Date('2026-04-30T21:59:59Z');
+        const now = new Date();
+        const days = Math.ceil((deadline - now) / 86400000);
+        let text = '⚡ Launch window — order before April 30';
+        if (days > 1) text = `⚡ Launch window — ${days} days left at €49`;
+        else if (days === 1) text = '⚡ Launch window — 1 day left at €49';
+        else if (days === 0) text = '⚡ Launch window closes today — €49';
+        els.forEach(el => { el.textContent = text; });
+      }
+
+      const countEl = document.querySelector('[data-count-target]');
+      if (!countEl) return;
+      const target = Number(countEl.getAttribute('data-count-target') || '0');
+      const duration = 1400;
+      const start = performance.now();
+      const from = Math.max(0, target - 275);
+
+      function tick(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const value = Math.round(from + (target - from) * eased);
+        countEl.textContent = value.toLocaleString('en-US');
+        if (progress < 1) requestAnimationFrame(tick);
+      }
+
+      requestAnimationFrame(tick);
     })();
   </script>
 </body>
