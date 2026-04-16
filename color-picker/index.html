@@ -18,7 +18,7 @@
     :root {
       --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
       --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
-      --accent: #7c3aed; --radius: 16px;
+      --accent: #ff4800; --radius: 16px;
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     body {
@@ -28,11 +28,11 @@
     }
     header {
       text-align: center; padding: 60px 24px 40px;
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(124,58,237,0.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.18) 0%, transparent 70%);
     }
     header h1 {
       font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #fff 30%, #c4b5fd 70%, #67e8f9 100%);
+      background: linear-gradient(135deg, #fff 30%, #ff4800 70%, #ff4800 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     header p { color: var(--text-muted); margin-top: 12px; max-width: 500px; margin-inline: auto; }
@@ -69,7 +69,7 @@
       border-radius: 8px; color: var(--text); font-size: 14px; font-family: monospace; outline: none;
       transition: border-color var(--transition);
     }
-    .field-row input[type="text"]:focus { border-color: rgba(124,58,237,0.5); }
+    .field-row input[type="text"]:focus { border-color: rgba(249,115,22,0.5); }
     .copy-btn {
       padding: 10px 14px; background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.3);
       border-radius: 8px; color: #c4b5fd; font-size: 12px; font-weight: 600; cursor: pointer;
@@ -130,14 +130,14 @@
       <!-- Left: Picker + Values -->
       <div class="card">
         <h2>Pick a Color</h2>
-        <div class="color-preview" id="preview" style="background:#7c3aed;">
-          <input type="color" class="native-picker" id="nativePicker" value="#7c3aed" />
+        <div class="color-preview" id="preview" style="background:#ff4800;">
+          <input type="color" class="native-picker" id="nativePicker" value="#ff4800" />
         </div>
 
         <div class="field-group">
           <label>HEX</label>
           <div class="field-row">
-            <input type="text" id="hexInput" value="#7c3aed" spellcheck="false" />
+            <input type="text" id="hexInput" value="#ff4800" spellcheck="false" />
             <button class="copy-btn" onclick="copyVal('hexInput')">Copy</button>
           </div>
         </div>
@@ -335,6 +335,6 @@
     });
   }
   </script>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

@@ -19,13 +19,13 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{background:#0f0f19;color:#e0e4f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;min-height:100vh;display:flex;flex-direction:column}
 .container{max-width:960px;margin:0 auto;padding:32px 20px;flex:1;width:100%}
-h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;background:linear-gradient(135deg,#ff4800,#ff4800);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 .subtitle{text-align:center;color:#8890b5;font-size:15px;margin-bottom:32px}
 .drop-zone{border:2px dashed rgba(167,139,250,0.35);border-radius:16px;padding:60px 24px;text-align:center;cursor:pointer;transition:all .2s;background:rgba(167,139,250,0.04);margin-bottom:28px}
-.drop-zone:hover,.drop-zone.drag-over{border-color:#a78bfa;background:rgba(167,139,250,0.1)}
+.drop-zone:hover,.drop-zone.drag-over{border-color:#ff4800;background:rgba(255,72,0,0.1)}
 .drop-zone .icon{font-size:48px;margin-bottom:12px}
 .drop-zone p{color:#8890b5;font-size:15px}
-.drop-zone .browse{color:#a78bfa;text-decoration:underline;cursor:pointer}
+.drop-zone .browse{color:#ff4800;text-decoration:underline;cursor:pointer}
 #fileInput{display:none}
 .editor{display:none;gap:24px}
 .editor.active{display:grid;grid-template-columns:1fr 320px}
@@ -38,31 +38,31 @@ h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;background
 .radio-group{display:flex;gap:8px;margin-bottom:14px}
 .radio-group label{flex:1;text-align:center;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:all .15s;color:#8890b5}
 .radio-group input{display:none}
-.radio-group input:checked+span{background:rgba(167,139,250,0.2);border-color:#a78bfa;color:#e0e4f0}
-.radio-group label:has(input:checked){background:rgba(167,139,250,0.15);border-color:#a78bfa;color:#e0e4f0}
+.radio-group input:checked+span{background:rgba(255,72,0,0.2);border-color:#ff4800;color:#e0e4f0}
+.radio-group label:has(input:checked){background:rgba(255,72,0,0.15);border-color:#ff4800;color:#e0e4f0}
 .dim-inputs{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .dim-inputs.single{grid-template-columns:1fr}
 .field label{display:block;font-size:12px;color:#6b7194;margin-bottom:4px}
 .field input{width:100%;padding:9px 12px;border-radius:8px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:#e0e4f0;font-size:14px;outline:none;transition:border-color .15s}
-.field input:focus{border-color:#a78bfa}
+.field input:focus{border-color:#ff4800}
 .aspect-toggle{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:13px;color:#8890b5}
 .toggle{position:relative;width:40px;height:22px;cursor:pointer}
 .toggle input{display:none}
 .toggle .slider{position:absolute;inset:0;background:rgba(255,255,255,0.1);border-radius:11px;transition:all .2s}
 .toggle .slider::before{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:#6b7194;top:3px;left:3px;transition:all .2s}
 .toggle input:checked+.slider{background:rgba(167,139,250,0.4)}
-.toggle input:checked+.slider::before{transform:translateX(18px);background:#a78bfa}
+.toggle input:checked+.slider::before{transform:translateX(18px);background:#ff4800}
 .format-group{display:flex;gap:8px}
 .format-group label{flex:1;text-align:center;padding:8px;border-radius:8px;font-size:13px;font-weight:500;cursor:pointer;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);transition:all .15s;color:#8890b5}
 .format-group input{display:none}
-.format-group label:has(input:checked){background:rgba(96,165,250,0.15);border-color:#60a5fa;color:#e0e4f0}
+.format-group label:has(input:checked){background:rgba(255,72,0,0.15);border-color:#ff4800;color:#e0e4f0}
 .quality-row{margin-top:14px;display:none}
 .quality-row.visible{display:block}
 .quality-row label{font-size:12px;color:#6b7194;display:flex;justify-content:space-between;margin-bottom:6px}
-.quality-row input[type=range]{width:100%;accent-color:#a78bfa;cursor:pointer}
+.quality-row input[type=range]{width:100%;accent-color:#ff4800;cursor:pointer}
 .actions{display:flex;gap:10px;margin-top:4px}
 .btn{flex:1;padding:12px;border:none;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;transition:all .15s}
-.btn-primary{background:linear-gradient(135deg,#a78bfa,#7c5fcf);color:#fff}
+.btn-primary{background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff}
 .btn-primary:hover{opacity:.9;transform:translateY(-1px)}
 .btn-secondary{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);color:#a8b0d3}
 .btn-secondary:hover{background:rgba(255,255,255,0.1)}
@@ -72,7 +72,7 @@ h1{font-size:28px;font-weight:700;text-align:center;margin-bottom:8px;background
 .output-preview{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:16px;display:inline-block}
 .output-preview img{max-width:100%;max-height:360px;border-radius:8px}
 .output-info{margin-top:10px;font-size:13px;color:#6b7194}
-.download-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#60a5fa,#3b82f6);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
+.download-btn{display:inline-flex;align-items:center;gap:8px;margin-top:16px;padding:12px 28px;border-radius:10px;background:linear-gradient(135deg,#ff4800,#ff4800);color:#fff;font-size:14px;font-weight:600;text-decoration:none;transition:all .15s}
 .download-btn:hover{opacity:.9;transform:translateY(-1px)}
 footer{text-align:center;padding:20px;color:#4a5070;font-size:12px;border-top:1px solid rgba(255,255,255,0.05)}
 @media(max-width:700px){
@@ -151,9 +151,9 @@ footer{text-align:center;padding:20px;color:#4a5070;font-size:12px;border-top:1p
 <section style="max-width:1100px;margin:32px auto 0;padding:0 24px 24px;">
   <div style="background:#161625;border:1px solid #2a2a3d;border-radius:12px;padding:24px;">
     <h2 style="font-size:1.1rem;margin-bottom:10px;color:#e6edf3;">Related Tools</h2>
-    <p style="color:#8b949e;line-height:1.7;margin-bottom:18px;">Try our <a href="/image-compressor/" style="color:#f97316;text-decoration:none;">Image Compressor</a>, <a href="/image-cropper/" style="color:#f97316;text-decoration:none;">Image Cropper</a>, <a href="/background-remover/" style="color:#f97316;text-decoration:none;">Background Remover</a>, and <a href="/image-to-pdf/" style="color:#f97316;text-decoration:none;">Image to PDF Converter</a>.</p>
+    <p style="color:#8b949e;line-height:1.7;margin-bottom:18px;">Try our <a href="/image-compressor/" style="color:#ff4800;text-decoration:none;">Image Compressor</a>, <a href="/image-cropper/" style="color:#ff4800;text-decoration:none;">Image Cropper</a>, <a href="/background-remover/" style="color:#ff4800;text-decoration:none;">Background Remover</a>, and <a href="/image-to-pdf/" style="color:#ff4800;text-decoration:none;">Image to PDF Converter</a>.</p>
     <h2 style="font-size:1.1rem;margin-bottom:10px;color:#e6edf3;">Related Guides</h2>
-    <p style="color:#8b949e;line-height:1.7;">Read <a href="/blog/compress-images-without-losing-quality/" style="color:#f97316;text-decoration:none;">How to Compress Images Without Losing Quality</a> for practical advice on preparing lighter, faster-loading assets after resizing.</p>
+    <p style="color:#8b949e;line-height:1.7;">Read <a href="/blog/compress-images-without-losing-quality/" style="color:#ff4800;text-decoration:none;">How to Compress Images Without Losing Quality</a> for practical advice on preparing lighter, faster-loading assets after resizing.</p>
   </div>
 </section>
 
@@ -296,6 +296,6 @@ footer{text-align:center;padding:20px;color:#4a5070;font-size:12px;border-top:1p
   });
 })();
 </script>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

@@ -13,7 +13,7 @@
 <meta property="og:type" content="website">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#0f0f19;--surface:#181825;--surface2:#1e1e2e;--border:#2a2a3d;--text:#cdd6f4;--subtext:#a6adc8;--accent:#f38ba8;--accent2:#fab387;--green:#a6e3a1;--blue:#89b4fa;--mauve:#cba6f7;--ring-bg:#2a2a3d;--shadow:0 8px 32px rgba(0,0,0,.4)}
+:root{--bg:#0f0f19;--surface:#181825;--surface2:#1e1e2e;--border:#2a2a3d;--text:#cdd6f4;--subtext:#a6adc8;--accent:#f97316;--accent2:#fb923c;--green:#a6e3a1;--blue:#89b4fa;--mauve:#cba6f7;--ring-bg:#2a2a3d;--shadow:0 8px 32px rgba(0,0,0,.4)}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center}
 a{color:var(--blue);text-decoration:none}
 a:hover{text-decoration:underline}
@@ -21,11 +21,11 @@ a:hover{text-decoration:underline}
 /* Banner */
 .banner{width:100%;background:linear-gradient(135deg,#1e1e2e 0%,#181825 100%);border-bottom:1px solid var(--border);padding:12px 0;text-align:center}
 .banner span{font-size:1.1rem;font-weight:700;letter-spacing:.5px}
-.banner a{color:var(--mauve);font-weight:700}
+.banner a{color:var(--accent);font-weight:700}
 
 /* Main */
 .container{max-width:480px;width:100%;padding:24px 20px;flex:1;display:flex;flex-direction:column;align-items:center;gap:28px}
-h1{font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--accent),var(--mauve));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1{font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .subtitle{color:var(--subtext);font-size:.9rem;text-align:center;margin-top:-12px}
 
 /* Mode tabs */
@@ -48,7 +48,7 @@ h1{font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient
 .ctrl-btn{width:56px;height:56px;border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1.3rem;transition:all .2s;background:var(--surface2);color:var(--text);border:1px solid var(--border)}
 .ctrl-btn:hover{transform:scale(1.08);border-color:var(--accent)}
 .ctrl-btn.primary{width:68px;height:68px;background:var(--accent);color:var(--bg);border:none;font-size:1.5rem}
-.ctrl-btn.primary:hover{background:var(--mauve)}
+.ctrl-btn.primary:hover{background:#ea580c}
 
 /* Session counter */
 .sessions{display:flex;align-items:center;gap:8px;color:var(--subtext);font-size:.9rem;font-weight:600}
@@ -67,11 +67,11 @@ h1{font-size:1.6rem;font-weight:800;text-align:center;background:linear-gradient
 .setting-row input:focus{outline:none;border-color:var(--accent)}
 .settings-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:4px}
 .save-btn{padding:8px 20px;border-radius:10px;border:none;background:var(--accent);color:var(--bg);font-weight:700;cursor:pointer;font-size:.85rem;transition:all .2s}
-.save-btn:hover{background:var(--mauve)}
+.save-btn:hover{background:#ea580c}
 
 /* Notification toggle */
 .notif-row{display:flex;align-items:center;gap:8px;color:var(--subtext);font-size:.85rem;cursor:pointer}
-.notif-row input{accent-color:var(--accent)}
+.notif-row input{accent-color:#f97316}
 
 /* Footer */
 footer{padding:20px;text-align:center;color:var(--subtext);font-size:.78rem;border-top:1px solid var(--border);width:100%}
@@ -366,6 +366,6 @@ footer{padding:20px;text-align:center;color:var(--subtext);font-size:.78rem;bord
   updateDots();
 })();
 </script>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

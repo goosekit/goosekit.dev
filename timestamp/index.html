@@ -17,7 +17,7 @@
     :root {
       --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
       --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
-      --accent: #06b6d4; --radius: 16px;
+      --accent: #ff4800; --radius: 16px;
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     body {
@@ -27,11 +27,11 @@
     }
     header {
       text-align: center; padding: 60px 24px 40px;
-      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(6,182,212,0.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(249,115,22,0.18) 0%, transparent 70%);
     }
     header h1 {
       font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #fff 30%, #67e8f9 70%, #c4b5fd 100%);
+      background: linear-gradient(135deg, #fff 30%, #ff4800 70%, #ff4800 100%);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
     header p { color: var(--text-muted); margin-top: 12px; max-width: 500px; margin-inline: auto; }
@@ -42,7 +42,7 @@
       background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius);
     }
     .now-bar .label { font-size: 12px; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.05em; }
-    .now-bar .ts { font-size: 2rem; font-weight: 800; font-family: monospace; color: #67e8f9; margin: 4px 0; cursor: pointer; }
+    .now-bar .ts { font-size: 2rem; font-weight: 800; font-family: monospace; color: #ff4800; margin: 4px 0; cursor: pointer; }
     .now-bar .ts:hover { opacity: 0.8; }
     .now-bar .human { font-size: 14px; color: var(--text-muted); }
 
@@ -60,13 +60,13 @@
       border-radius: 8px; color: var(--text); font-size: 14px; font-family: monospace; outline: none;
       transition: border-color var(--transition);
     }
-    .field-row input:focus { border-color: rgba(6,182,212,0.5); }
+    .field-row input:focus { border-color: rgba(249,115,22,0.5); }
     .btn {
-      padding: 10px 16px; background: rgba(6,182,212,0.15); border: 1px solid rgba(6,182,212,0.3);
-      border-radius: 8px; color: #67e8f9; font-size: 13px; font-weight: 600; cursor: pointer;
+      padding: 10px 16px; background: rgba(249,115,22,0.15); border: 1px solid rgba(249,115,22,0.3);
+      border-radius: 8px; color: #ff4800; font-size: 13px; font-weight: 600; cursor: pointer;
       transition: background var(--transition); white-space: nowrap;
     }
-    .btn:hover { background: rgba(6,182,212,0.25); }
+    .btn:hover { background: rgba(249,115,22,0.25); }
 
     .results { margin-top: 20px; }
     .result-row {
@@ -76,13 +76,13 @@
     .result-row:last-child { border-bottom: none; }
     .result-label { font-size: 13px; color: var(--text-muted); min-width: 120px; }
     .result-value { font-family: monospace; font-size: 14px; color: var(--text); cursor: pointer; text-align: right; }
-    .result-value:hover { color: #67e8f9; }
+    .result-value:hover { color: #ff4800; }
 
     footer {
       text-align: center; padding: 40px 24px; border-top: 1px solid var(--border);
       color: var(--text-dim); font-size: 13px;
     }
-    footer a { color: #67e8f9; text-decoration: none; }
+    footer a { color: #ff4800; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style></head>
@@ -237,10 +237,10 @@
   document.getElementById('tsInput').addEventListener('keydown', e => { if(e.key==='Enter') convertTs(); });
   document.getElementById('parseInput').addEventListener('keydown', e => { if(e.key==='Enter') parseDate(); });
   </script>
-<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(249,115,22,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(249,115,22,0.10),rgba(59,130,246,0.10));">
+<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(255,72,0,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
   <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Ship It Kit is Goosekit's live paid product, a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure.</p>
-  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#f97316;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
+  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#ff4800;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
 </div>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

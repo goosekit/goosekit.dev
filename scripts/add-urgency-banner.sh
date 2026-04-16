@@ -1,6 +1,6 @@
 #!/bin/bash
 DEPLOY_DIR="/tmp/goosekit-deploy"
-BANNER_HTML='<div style="background:linear-gradient(90deg,#f97316,#fb923c);padding:10px 16px;text-align:center;font-family:system-ui,sans-serif;font-size:0.85rem;color:#fff;font-weight:600;"><span>🚨 Ship It Kit Launch — €49 ends April 30</span> <a href="/ship-it-kit/" style="color:#fff;text-decoration:underline;margin-left:8px;">See the offer →</a></div>'
+BANNER_HTML='<div style="background:linear-gradient(90deg,#ff4800,#ff4800);padding:10px 16px;text-align:center;font-family:system-ui,sans-serif;font-size:0.85rem;color:#fff;font-weight:600;"><span>🚨 Ship It Kit Launch — €49 ends April 30</span> <a href="/ship-it-kit/" style="color:#fff;text-decoration:underline;margin-left:8px;">See the offer →</a></div>'
 PAGES=("/json/" "/regex/" "/hash/" "/base64/" "/jwt/" "/screenshot/" "/index.html" "/blog/"/index.html "/tools/"/index.html)
 for page in "${PAGES[@]}"; do
   f="$DEPLOY_DIR${page}"

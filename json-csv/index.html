@@ -17,13 +17,13 @@
     :root {
       --bg: #0a0a1a; --bg-panel: #0f0f24; --border: rgba(255,255,255,0.07);
       --border-hover: rgba(255,255,255,0.15); --text: #e2e8f0; --text-muted: #94a3b8;
-      --text-dim: #64748b; --accent: #06b6d4; --accent-glow: rgba(6,182,212,0.15);
+      --text-dim: #64748b; --accent: #ff4800; --accent-glow: rgba(255,72,0,0.15);
       --success: #22c55e; --error: #ef4444; --radius: 12px;
       --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
     }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 2rem 1rem; }
     .container { max-width: 1100px; margin: 0 auto; }
-    h1 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), #a78bfa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    h1 { text-align: center; font-size: 2rem; margin-bottom: 0.5rem; background: linear-gradient(135deg, var(--accent), #ff4800); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .subtitle { text-align: center; color: var(--text-muted); margin-bottom: 2rem; font-size: 0.95rem; }
     .mode-toggle { display: flex; justify-content: center; gap: 0.5rem; margin-bottom: 1.5rem; }
     .mode-btn { padding: 0.6rem 1.5rem; border: 1px solid var(--border); background: var(--bg-panel); color: var(--text-muted); border-radius: var(--radius); cursor: pointer; transition: var(--transition); font-size: 0.9rem; }
@@ -40,7 +40,7 @@
     .btn { padding: 0.6rem 1.5rem; border: 1px solid var(--border); background: var(--bg-panel); color: var(--text); border-radius: var(--radius); cursor: pointer; transition: var(--transition); font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem; }
     .btn:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.03); }
     .btn-primary { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 600; }
-    .btn-primary:hover { background: #0891b2; }
+    .btn-primary:hover { background: #ea580c; }
     .copy-btn { padding: 0.4rem 0.8rem; border: 1px solid var(--border); background: transparent; color: var(--text-muted); border-radius: 8px; cursor: pointer; font-size: 0.8rem; transition: var(--transition); }
     .copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
     .copy-btn.copied { border-color: var(--success); color: var(--success); }
@@ -328,10 +328,10 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') convert();
     });
   </script>
-<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(249,115,22,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(249,115,22,0.10),rgba(59,130,246,0.10));">
+<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(255,72,0,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
   <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Ship It Kit is Goosekit's live paid product, a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure.</p>
-  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#f97316;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
+  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#ff4800;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
 </div>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

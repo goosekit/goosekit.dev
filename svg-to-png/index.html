@@ -17,7 +17,7 @@
     :root {
       --bg: #0a0a1a; --bg-card: #0f0f24; --border: rgba(255,255,255,0.07);
       --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
-      --accent: #7c3aed; --accent-glow: rgba(124,58,237,0.3); --radius: 16px;
+      --accent: #ff4800; --accent-glow: rgba(255,72,0,0.15); --radius: 16px;
       --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
     body {
@@ -73,7 +73,7 @@
       padding: 12px 28px; border-radius: 10px; border: none; font-weight: 600;
       font-size: 0.95rem; cursor: pointer; transition: var(--transition);
     }
-    .btn-primary { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; }
+    .btn-primary { background: linear-gradient(135deg, #ff4800, #ff4800); color: #fff; }
     .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px var(--accent-glow); }
     .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
     .btn-secondary { background: rgba(255,255,255,0.06); color: var(--text); border: 1px solid var(--border); }
@@ -327,10 +327,10 @@
       if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); convert(); }
     });
   </script>
-<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(249,115,22,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(249,115,22,0.10),rgba(59,130,246,0.10));">
+<div style="margin:28px 0 10px;padding:18px 20px;border:1px solid rgba(255,72,0,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
   <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Ship It Kit is Goosekit's live paid product, a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure.</p>
-  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#f97316;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
+  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#ff4800;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
 </div>
-<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#f97316;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#f97316;text-decoration:none;">📝 Blog</a></div>
+<div style="background:#16162a;border-top:1px solid #2a2a40;padding:16px;text-align:center;font-family:-apple-system,sans-serif;font-size:0.8rem;color:#666;"><a href="/ship-it-kit/" style="color:#ff4800;text-decoration:none;">🚀 Ship It Kit</a> · <a href="/api/" style="color:#ff4800;text-decoration:none;">🔌 API</a> · <a href="/blog/" style="color:#ff4800;text-decoration:none;">📝 Blog</a></div>
 </body>
 </html>

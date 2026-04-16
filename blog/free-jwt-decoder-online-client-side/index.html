@@ -64,10 +64,10 @@
     th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2a40; color: #cfcfdd; }
     th { background: #1d1d33; color: #fff; font-weight: 600; }
     tr:last-child td { border-bottom: none; }
-    .warning { background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.3); border-radius: 10px; padding: 20px; margin: 1.5rem 0; }
-    .warning strong { color: #f97316; }
-    .cta { background: linear-gradient(135deg,rgba(249,115,22,0.15),rgba(239,68,68,0.15)); border: 1px solid rgba(249,115,22,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
-    .cta a { display: inline-block; background: linear-gradient(135deg,#f97316,#ef4444); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
+    .warning { background: rgba(255,72,0,0.1); border: 1px solid rgba(255,72,0,0.3); border-radius: 10px; padding: 20px; margin: 1.5rem 0; }
+    .warning strong { color: #ff4800; }
+    .cta { background: linear-gradient(135deg,rgba(255,72,0,0.15),rgba(239,68,68,0.15)); border: 1px solid rgba(255,72,0,0.3); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
+    .cta a { display: inline-block; background: linear-gradient(135deg,#ff4800,#ef4444); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
     footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style></head>
@@ -88,7 +88,7 @@
   <p><strong>JSON Web Token (JWT)</strong>, defined in <a href="https://datatracker.ietf.org/doc/html/rfc7519">RFC 7519</a>, is a compact, URL-safe token format used to securely transmit claims between two parties. Every JWT has three parts separated by dots:</p>
 
   <pre><code style="display:block;overflow-x:auto;white-space:pre-wrap;word-break:break-all;background:rgba(255,255,255,0.06);padding:16px;border-radius:10px;font-size:0.85em;color:#a0a0b8;line-height:1.6;">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9    .   eyJzdWIiOiIxMjM0NTY3ODkwIn0   .   SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
-<span style="color:#f97316;">← HEADER (base64url)          →</span>   <span style="color:#3b82f6;">← PAYLOAD (base64url)                  →</span>   <span style="color:#86efac;">← SIGNATURE (binary data, base64url-encoded) →</span></code></pre>
+<span style="color:#ff4800;">← HEADER (base64url)          →</span>   <span style="color:#3b82f6;">← PAYLOAD (base64url)                  →</span>   <span style="color:#86efac;">← SIGNATURE (binary data, base64url-encoded) →</span></code></pre>
 
   <p>Each part is base64url-encoded JSON (except the signature, which is raw binary data encoded as base64url). Let's look at each piece in detail.</p>
 
@@ -360,9 +360,9 @@ console.log(header, payload);</code></pre>
     <a href="https://goosekit.dev/jwt/">Try the JWT Decoder →</a>
   </div>
 
-<div style="margin:2rem 0;padding:1.25rem 1.5rem;border:1px solid rgba(249,115,22,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(249,115,22,0.10),rgba(59,130,246,0.10));">
-  <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Looking to ship a SaaS with the same stack? <strong style="color:#f97316;">Ship It Kit</strong> is a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure — €49 one-time.</p>
-  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#f97316;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
+<div style="margin:2rem 0;padding:1.25rem 1.5rem;border:1px solid rgba(255,72,0,0.22);border-radius:14px;background:linear-gradient(135deg,rgba(255,72,0,0.10),rgba(59,130,246,0.10));">
+  <p style="margin:0;color:#cbd5e1;font-size:0.9rem;">Looking to ship a SaaS with the same stack? <strong style="color:#ff4800;">Ship It Kit</strong> is a Next.js 15 starter with Supabase auth, Stripe billing, and AI-ready structure — €49 one-time.</p>
+  <p style="margin:10px 0 0;"><a href="/ship-it-kit/" style="color:#ff4800;font-weight:700;text-decoration:none;">See Ship It Kit →</a></p>
 </div>
 </main>
 
