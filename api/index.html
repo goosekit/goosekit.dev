@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Goosekit API — Free Developer REST API for JSON, Hash, UUID, Password & More</title>
-  <meta name="description" content="Free REST API for developers. JSON formatting, hash generation, UUID creation, password generation, and QR codes. 100 free requests/day, no signup, CORS enabled.">
+  <meta name="description" content="Free REST API for developers. JSON formatting, hash generation, UUID creation, and password generation. 100 free requests/day, no signup, CORS enabled.">
   <link rel="canonical" href="https://goosekit.dev/api/">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Goosekit API — Free Developer REST API">
-  <meta property="og:description" content="JSON formatting, hash generation, UUID, password & lorem ipsum as REST endpoints. 100 free requests/day.">
+  <meta property="og:description" content="JSON formatting, hash generation, UUID, and password generation as REST endpoints. 100 free requests/day.">
   <meta property="og:url" content="https://goosekit.dev/api/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/logo.png">
@@ -21,7 +21,7 @@
     "@context": "https://schema.org",
     "@type": "WebAPI",
     "name": "Goosekit API",
-    "description": "Free REST API for JSON formatting, hash generation, UUID creation, password generation, and lorem ipsum.",
+    "description": "Free REST API for JSON formatting, hash generation, UUID creation, and password generation.",
     "url": "https://goosekit.dev/api/",
     "provider": { "@type": "Organization", "name": "Goosekit", "url": "https://goosekit.dev" },
     "offers": [
@@ -166,7 +166,7 @@
       <div class="price">$0 <span>/forever</span></div>
       <ul>
         <li>100 requests/day per IP</li>
-        <li>All 5 endpoints</li>
+        <li>All 4 live endpoints</li>
         <li>CORS enabled</li>
         <li>No signup, no API key</li>
         <li>Community support</li>
@@ -235,19 +235,20 @@ Content-Type: application/json
     <div class="endpoint">
       <h3><span class="method get">GET</span> UUID Generator</h3>
       <p>Generate v4 UUIDs. Supports batch generation.</p>
-      <pre>GET https://goosekit-uuid.goosekit.workers.dev/?count=5</pre>
+      <pre>GET https://goosekit-uuid.goosekit.workers.dev/generate?count=5</pre>
     </div>
 
     <div class="endpoint">
       <h3><span class="method get">GET</span> Password Generator</h3>
       <p>Generate cryptographically secure random passwords.</p>
-      <pre>GET https://goosekit-password.goosekit.workers.dev/?length=32&symbols=true</pre>
+      <pre>GET https://goosekit-password.goosekit.workers.dev/generate?length=32&symbols=true</pre>
     </div>
 
     <div class="endpoint">
-      <h3><span class="method get">GET</span> Lorem Ipsum Generator</h3>
-      <p>Generate placeholder text: paragraphs, sentences, or words.</p>
-      <pre>GET https://goosekit-lorem.goosekit.workers.dev/?paragraphs=3&format=text</pre>
+      <h3><span class="method get">GET</span> More endpoints coming soon</h3>
+      <p>Need another utility endpoint for your workflow? Request it when you ask for production access and include your use case.</p>
+      <pre>Email: arthur.pierrey@gmail.com
+Subject: Goosekit API production access</pre>
     </div>
   </div>
 
