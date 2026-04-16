@@ -209,6 +209,7 @@
   <!-- Endpoints -->
   <div class="endpoints" id="endpoints">
     <h2>Endpoints</h2>
+    <p style="color: var(--text-dim); text-align: center; margin: -8px auto 24px; max-width: 680px;">Use <strong>POST</strong> for JSON formatting and hashing. Use <strong>GET</strong> for UUID, password, and lorem generation.</p>
 
     <div class="endpoint">
       <h3><span class="method post">POST</span> JSON Formatter</h3>
@@ -223,7 +224,7 @@ Content-Type: application/json
     </div>
 
     <div class="endpoint">
-      <h3><span class="method get">GET</span> Hash Generator</h3>
+      <h3><span class="method post">POST</span> Hash Generator</h3>
       <p>Generate MD5, SHA-1, SHA-256, SHA-512 hashes.</p>
       <pre>POST https://goosekit-hash.goosekit.workers.dev/hash
 Content-Type: application/json
