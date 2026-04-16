@@ -477,23 +477,25 @@
     }
 
     .site-header-inner {
-      max-width: 1140px;
-      margin: 0 auto;
-      padding: 14px 24px;
+      width: 100%;
+      margin: 0;
+      padding: 10px 18px 10px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
     }
 
     .site-brand {
       display: inline-flex;
       align-items: center;
       text-decoration: none;
+      flex-shrink: 0;
+      margin-right: 10px;
     }
 
     .site-brand img {
-      width: 132px;
+      width: 120px;
       height: auto;
       display: block;
     }
@@ -503,14 +505,16 @@
       align-items: center;
       justify-content: flex-end;
       flex-wrap: wrap;
-      gap: 8px 18px;
+      flex: 1;
+      gap: 8px 14px;
     }
 
     .site-nav a {
       color: var(--text-muted);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-weight: 600;
+      line-height: 1;
       transition: color var(--transition), background var(--transition), border-color var(--transition);
     }
 
@@ -522,9 +526,9 @@
       color: #fff;
       background: rgba(255,72,0,0.95);
       border: 1px solid rgba(255,72,0,0.9);
-      padding: 9px 14px;
-      border-radius: 12px;
-      box-shadow: 0 10px 24px rgba(255,72,0,0.18);
+      padding: 8px 12px;
+      border-radius: 11px;
+      box-shadow: 0 8px 22px rgba(255,72,0,0.16);
     }
 
     .site-nav .nav-cta:hover {
@@ -537,7 +541,7 @@
     .hero {
       position: relative;
       overflow: hidden;
-      padding: 72px 24px 80px;
+      padding: 64px 24px 80px;
       text-align: center;
     }
 
@@ -569,8 +573,43 @@
       font-size: clamp(1rem, 2.5vw, 1.2rem);
       color: var(--text-muted);
       max-width: 560px;
-      margin: 0 auto 32px;
+      margin: 0 auto 22px;
       animation: fadeInDown 0.6s 0.2s ease both;
+    }
+
+    .hero-proof {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 0 auto 24px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,72,0,0.18);
+      background: linear-gradient(135deg, rgba(255,72,0,0.12), rgba(255,255,255,0.04));
+      color: #e7edf7;
+      font-size: 0.96rem;
+      box-shadow: 0 16px 36px rgba(0,0,0,0.22);
+      animation: fadeInDown 0.6s 0.24s ease both;
+    }
+
+    .hero-proof strong {
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-proof .spark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(255,72,0,0.18);
+      color: #ffd7bf;
+      font-size: 0.9rem;
+      flex-shrink: 0;
     }
 
     /* ── SEARCH ── */
@@ -637,16 +676,17 @@
 
     @media (max-width: 900px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
-      .site-header-inner { flex-direction: column; align-items: flex-start; }
-      .site-nav { width: 100%; justify-content: flex-start; }
+      .site-header-inner { padding: 10px 14px; }
+      .site-nav { width: 100%; justify-content: flex-start; gap: 8px 12px; }
     }
     @media (max-width: 560px) {
       .grid { grid-template-columns: 1fr; }
-      .site-header-inner { padding: 12px 18px; }
-      .site-brand img { width: 118px; }
-      .site-nav { gap: 8px 14px; }
-      .site-nav a { font-size: 0.9rem; }
-      .hero { padding: 56px 18px 72px; }
+      .site-header-inner { padding: 10px 12px; }
+      .site-brand img { width: 112px; }
+      .site-nav { gap: 8px 12px; }
+      .site-nav a { font-size: 0.86rem; }
+      .hero { padding: 52px 18px 72px; }
+      .hero-proof { width: 100%; border-radius: 18px; padding: 12px 14px; }
     }
 
     /* ── CARD ── */
@@ -690,37 +730,17 @@
       transition: opacity var(--transition);
       border-radius: var(--radius);
       pointer-events: none;
+      background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.1) 0%, transparent 70%);
     }
 
     .card:hover {
       transform: translateY(-4px);
-      border-color: var(--border-hover);
-      background: var(--bg-card-hover);
+      border-color: rgba(255,72,0,0.26);
+      background: linear-gradient(180deg, rgba(255,72,0,0.06) 0%, var(--bg-card-hover) 70%);
+      box-shadow: 0 10px 40px rgba(255,72,0,0.18);
     }
 
     .card:hover::before { opacity: 1; }
-
-    /* Accent glow per card */
-    .card[data-accent="screensnap"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="screensnap"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="ogpreview"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="ogpreview"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="devformat"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="devformat"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="base64"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="base64"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="regexlab"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="regexlab"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="diffview"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="diffview"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
-
-    .card[data-accent="hashgen"]:hover { box-shadow: 0 8px 40px rgba(255,72,0,0.2); }
-    .card[data-accent="hashgen"]::before { background: radial-gradient(ellipse 80% 80% at 50% 0%, rgba(255,72,0,0.08) 0%, transparent 70%); }
 
     /* Card delay for stagger */
     .card:nth-child(1) { animation-delay: 0.05s; }
@@ -767,28 +787,24 @@
 
     .tag {
       cursor: pointer;
-      transition: opacity 0.15s;
+      transition: background var(--transition), border-color var(--transition), color var(--transition), transform var(--transition);
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.04em;
       text-transform: uppercase;
       padding: 3px 9px;
       border-radius: 100px;
-      background: rgba(255,255,255,0.06);
-      color: var(--text-dim);
-      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,72,0,0.12);
+      color: #fed7aa;
+      border: 1px solid rgba(255,72,0,0.2);
     }
 
-    .tag:hover { opacity: 1; }
-
-    /* Accent tag color */
-    .card[data-accent="screensnap"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="ogpreview"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="devformat"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="base64"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="regexlab"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="diffview"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
-    .card[data-accent="hashgen"] .tag { color: #fed7aa; background: rgba(255,72,0,0.12); border-color: rgba(255,72,0,0.2); }
+    .card:hover .tag {
+      background: rgba(255,72,0,0.18);
+      border-color: rgba(255,72,0,0.3);
+      color: #fff1e6;
+      transform: translateY(-1px);
+    }
 
     /* Link */
     .card-link {
@@ -803,15 +819,7 @@
       transition: color var(--transition), gap var(--transition);
     }
 
-    .card-link:hover { color: #fff; gap: 10px; }
-
-    .card[data-accent="screensnap"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="ogpreview"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="devformat"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="base64"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="regexlab"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="diffview"] .card-link:hover { color: #fed7aa; }
-    .card[data-accent="hashgen"] .card-link:hover { color: #fed7aa; }
+    .card-link:hover { color: #fed7aa; gap: 10px; }
 
     /* Divider line at bottom of card */
     .card::after {
@@ -826,13 +834,7 @@
       pointer-events: none;
     }
     .card:hover::after { opacity: 1; }
-    .card[data-accent="screensnap"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="ogpreview"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="devformat"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="base64"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="regexlab"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="diffview"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
-    .card[data-accent="hashgen"]::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
+    .card::after { background: linear-gradient(90deg, transparent, #ff4800, transparent); }
 
     /* ── EMPTY STATE ── */
     .empty-state {
@@ -930,7 +932,10 @@
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="/tools/">Tools</a>
+        <a href="/tools/for-developers/">Developers</a>
         <a href="/tools/for-designers/">Designers</a>
+        <a href="/tools/for-students/">Students</a>
+        <a href="/compare/goosekit-vs-tinywow/">Compare</a>
         <a href="/blog/">Blog</a>
         <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
         <a href="/api/">API</a>
@@ -945,6 +950,11 @@
     <h1>50 Free Online Tools for Developers, Designers &amp; Students</h1>
     <p>Use JSON formatter, regex tester, JWT decoder, hash generator, Base64 tools, screenshot beautifier, and more, all browser-based, fast, and no signup.</p>
 
+    <div class="hero-proof">
+      <span class="spark">✦</span>
+      <span>Already trusted by <strong>3,475+</strong> people using Goosekit tools</span>
+    </div>
+
     <div class="search-wrap">
       <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/>
@@ -958,10 +968,6 @@
         autocomplete="off"
         spellcheck="false"
       />
-    </div>
-
-    <div style="max-width:820px;margin:20px auto 0;padding:16px 20px;border-radius:16px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);display:flex;justify-content:center;align-items:center;gap:10px;color:#cbd5e1;font-size:0.98rem;line-height:1.5;text-align:center;">
-      <span>Trusted by <strong style="color:#fff;">3,475+</strong> people so far</span>
     </div>
 
   </header>

@@ -7,11 +7,11 @@
   <title>JSON ↔ YAML Converter — Free Online Tool</title>
   <meta name="description" content="Convert JSON to YAML and YAML to JSON instantly. Free, browser-based, no signup, no data leaves your machine." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://json2yaml.vercel.app/" />
+  <link rel="canonical" href="https://goosekit.dev/json-yaml/" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="JSON ↔ YAML Converter — Free Online Tool" />
   <meta property="og:description" content="Convert JSON to YAML and YAML to JSON instantly. Free, browser-based, no tracking." />
-  <meta property="og:url" content="https://json2yaml.vercel.app/" />
+  <meta property="og:url" content="https://goosekit.dev/json-yaml/" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="JSON ↔ YAML Converter — Free Online Tool" />
   <style>
@@ -37,7 +37,8 @@
     .btn-convert { background: linear-gradient(135deg, #ff4800, #ea580c) !important; color: #000 !important; font-weight: 700; border: none !important; padding: 10px 24px !important; }
     .btn-convert:hover { opacity: 0.9; }
     .btn-swap { font-size: 18px; padding: 8px 14px !important; }
-    .btn-copy { font-size: 12px; padding: 6px 14px !important; }
+    .btn-copy { font-family: inherit; font-size: 12px; padding: 6px 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-panel); color: var(--text-muted); cursor: pointer; transition: border-color var(--transition), background var(--transition), color var(--transition); }
+    .btn-copy:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.06); color: var(--text); }
 
     .editor-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 700px) { .editor-wrap { grid-template-columns: 1fr; } }
@@ -94,14 +95,14 @@
       <div class="panel">
         <div class="panel-label">
           <span id="inputLabel">INPUT (JSON)</span>
-          <button class="btn-copy controls" onclick="copyText('input')">📋 Copy</button>
+          <button class="btn-copy" onclick="copyText('input')">📋 Copy</button>
         </div>
         <textarea id="input" placeholder="Paste your JSON here..." spellcheck="false"></textarea>
       </div>
       <div class="panel">
         <div class="panel-label">
           <span id="outputLabel">OUTPUT (YAML)</span>
-          <button class="btn-copy controls" onclick="copyText('output')">📋 Copy</button>
+          <button class="btn-copy" onclick="copyText('output')">📋 Copy</button>
         </div>
         <textarea id="output" placeholder="Converted output will appear here..." spellcheck="false" readonly></textarea>
       </div>
