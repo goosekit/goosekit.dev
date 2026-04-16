@@ -56,7 +56,7 @@
     <div class="hero">
       <h1>Ship It Kit Review 2026 — What You Actually Get for €49</h1>
       <p class="meta">An honest review by the builder who made it · April 2026 · 8 min read</p>
-      <a href="/go/ship-it-kit/checkout-blog-review-hero/" class="cta">Get Ship It Kit €49 →</a>
+      <a href="/go/ship-it-kit/checkout-blog-review-hero/?source=ship_it_kit_review_hero" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_hero_buy">Get Ship It Kit €49 →</a>
     </div>
 
     <div class="toc">
@@ -138,13 +138,41 @@ README.md             # Full setup guide</code></pre>
     <div class="footer-cta">
       <h3>Ready to stop wiring boilerplate?</h3>
       <p style="margin-top:8px;">Get Ship It Kit for €49 — instant GitHub repo access.</p>
-      <a href="/go/ship-it-kit/checkout-blog-review-body/">Buy Ship It Kit →</a>
+      <a href="/go/ship-it-kit/checkout-blog-review-body/?source=ship_it_kit_review_body" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_body_buy">Buy Ship It Kit →</a>
       <p style="margin-top:12px;font-size:0.95rem;opacity:0.92;">Want a quick sanity check before buying? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" style="color:#fff;text-decoration:underline;">Email Arthur</a> with your use case. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
     </div>
   </article>
 
   <footer style="margin-top:48px;padding-top:24px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:0.85rem;">
-    <p>Published by Goosekit · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
+    <p>Published by Goosekit · <a href="/ship-it-kit/?ref=review_footer">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref') || 'direct';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+
+      capture('ship_it_kit_review_page_viewed', {
+        ref: ref,
+        path: window.location.pathname,
+        product: 'ship_it_kit'
+      });
+
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            product: 'ship_it_kit',
+            ref: ref,
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

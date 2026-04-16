@@ -60,8 +60,8 @@
     <h2 style="margin-bottom:.35rem;">Building a SaaS, not just using tools?</h2>
     <p style="margin-bottom:.85rem;">Ship It Kit is the Goosekit product that can help you launch now, with Next.js 15, Supabase auth, Stripe billing, and AI-ready structure already wired.</p>
     <span class="tag">Builder</span> <span class="tag">SaaS</span> <span class="tag">Paid Product</span>
-    <br><a class="read-more" href="/ship-it-kit/">See Ship It Kit →</a>
-    <a class="read-more" href="/go/ship-it-kit/checkout-blog-index/" style="background:#c2410c;color:#fff;border-color:#c2410c;" target="_blank" rel="noopener">💳 Buy now — €49</a>
+    <br><a class="read-more" href="/ship-it-kit/?ref=blog_index_intro" data-ph-event="ship_it_kit_landing_view_clicked" data-ph-location="blog_index_intro_landing">See Ship It Kit →</a>
+    <a class="read-more" href="/go/ship-it-kit/checkout-blog-index/?source=ship_it_kit_blog_index" style="background:#c2410c;color:#fff;border-color:#c2410c;" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="blog_index_intro_buy">💳 Buy now — €49</a>
   </section>
 
 
@@ -350,6 +350,33 @@
     </p>
   </section>
 </main>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
 
+    capture('blog_index_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      site_section: 'blog'
+    });
+
+    document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture(el.getAttribute('data-ph-event'), {
+          ref: ref,
+          site_section: 'blog',
+          location: el.getAttribute('data-ph-location') || 'unknown',
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>

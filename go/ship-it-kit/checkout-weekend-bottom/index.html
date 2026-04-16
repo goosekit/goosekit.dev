@@ -5,10 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Redirecting…</title>
-  <meta http-equiv="refresh" content="0; url=https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a">
-  <script>window.location.replace('https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a');</script>
+  <meta http-equiv="refresh" content="3; url=https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a">
+<style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
 </head>
 <body style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;">
-  <p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" style="color:#ff4800;">continue here</a>.</p>
+  <p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" data-manual-checkout-link="true" style="color:#ff4800;">continue here</a>.</p>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var checkoutUrl = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || 'ship_it_kit_weekend_bottom';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+      capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', path: window.location.pathname });
+      var manual = document.querySelector('[data-manual-checkout-link]');
+      if (manual) manual.addEventListener('click', function () { capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit' }); });
+      setTimeout(function () {
+        capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit' });
+        window.location.replace(checkoutUrl);
+      }, 900);
+    });
+  </script>
 </body>
 </html>

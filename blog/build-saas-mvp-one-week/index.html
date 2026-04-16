@@ -112,7 +112,7 @@
   <div class="promo-block">
     <h3>⚡ Ship It Kit — The Infrastructure Layer, Done</h3>
     <p>Auth, Stripe, webhooks, email, dashboard shell — all wired before day 1. You work on your product.<br><strong>€49 one-time · Launch price ends April 30</strong></p>
-    <a href="/go/ship-it-kit/checkout-blog-build-week-hero/" class="cta">Buy Now — €49 →</a>
+    <a href="/go/ship-it-kit/checkout-blog-build-week-hero/?source=ship_it_kit_build_week_hero" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="build_week_hero_buy">Buy Now — €49 →</a>
   </div>
 
   <h2>The Real Timeline for a SaaS MVP</h2>
@@ -215,7 +215,7 @@
   <div class="promo-block">
     <h3>Ready to Start Your One-Week Sprint?</h3>
     <p>Ship It Kit handles the infrastructure foundation so your week goes entirely on the product.<br><strong>€49 one-time · Includes lifetime updates</strong></p>
-    <a href="/go/ship-it-kit/checkout-blog-build-week-bottom/" class="cta">Buy Ship It Kit — €49 →</a>
+    <a href="/go/ship-it-kit/checkout-blog-build-week-bottom/?source=ship_it_kit_build_week_bottom" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="build_week_bottom_buy">Buy Ship It Kit — €49 →</a>
   </div>
 
   <h2>FAQ</h2>
@@ -233,5 +233,33 @@
   <p>Next.js 15, Supabase auth + database, Stripe Checkout + Portal + webhooks, React Email templates, Tailwind + Shadcn/ui components, landing page + dashboard scaffold, and AI coding rules. €49 one-time.</p>
 
   <p><br><a href="/blog/">← Back to blog</a></p>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref') || 'direct';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+
+      capture('ship_it_kit_build_week_page_viewed', {
+        ref: ref,
+        path: window.location.pathname,
+        product: 'ship_it_kit'
+      });
+
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            product: 'ship_it_kit',
+            ref: ref,
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

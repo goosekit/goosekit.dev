@@ -83,8 +83,8 @@
     <h1>Ship Your SaaS MVP<br>This Weekend</h1>
     <p class="subhead">Stop spending the first 2 days wiring auth and Stripe. Get a billing-ready Next.js + Supabase + Stripe codebase. Clone it, add your keys, start building actual product.</p>
     <div class="cta-row">
-      <a href="/go/ship-it-kit/checkout-weekend-hero/" class="btn-primary" target="_blank" rel="noopener">💳 Buy now — €49 →</a>
-      <a href="/ship-it-kit/" class="btn-secondary">See what's inside</a>
+      <a href="/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero" class="btn-primary" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="weekend_hero_buy">💳 Buy now — €49 →</a>
+      <a href="/ship-it-kit/?ref=weekend_page_secondary" class="btn-secondary" data-ph-event="ship_it_kit_landing_view_clicked" data-ph-location="weekend_secondary">See what's inside</a>
     </div>
     <p class="price-note">One-time payment · Lifetime updates · 30-day money-back guarantee</p>
     <div class="urgency">⚡ Launch window — €49 ends April 30 · Regular price goes up after</div>
@@ -222,10 +222,38 @@
   <div class="footer-cta">
     <h2>Ready to stop wiring boilerplate?</h2>
     <p class="sub">Get the billing-ready Next.js + Supabase + Stripe codebase.<br>€49 one-time. Ship your first paying customer this month.</p>
-    <a href="/go/ship-it-kit/checkout-weekend-bottom/" class="btn-primary" target="_blank" rel="noopener">💳 Buy Ship It Kit — €49 →</a>
+    <a href="/go/ship-it-kit/checkout-weekend-bottom/?source=ship_it_kit_weekend_bottom" class="btn-primary" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="weekend_bottom_buy">💳 Buy Ship It Kit — €49 →</a>
     <p class="guarantee">🔒 30-day money-back guarantee · No questions asked</p>
   </div>
 </div>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_weekend_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      product: 'ship_it_kit'
+    });
+
+    document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture(el.getAttribute('data-ph-event'), {
+          product: 'ship_it_kit',
+          ref: ref,
+          location: el.getAttribute('data-ph-location') || 'unknown',
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
