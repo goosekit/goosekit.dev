@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursor Rules Generator — Free AI Tool Configuration for Cursor AI</title>
+  <meta name="description" content="Generate ready-to-use Cursor AI rules (.cursor/rules) for any stack: Next.js, React, Node.js, Python. Customize with strict typing, test safety, security rules and more. 100% free, no signup.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://goosekit.dev/cursor-rules-generator/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Cursor Rules Generator — Free AI Tool Configuration for Cursor AI">
+  <meta property="og:description" content="Generate ready-to-use .cursor/rules files for Next.js, React, Node.js, Python, and more. Fully customizable.">
+  <meta property="og:url" content="https://goosekit.dev/cursor-rules-generator/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Cursor Rules Generator">
+  <meta name="twitter:description" content="Generate .cursor/rules files for Next.js, React, Node.js, Python and more.">
+  <meta name="keywords" content="cursor rules, cursor ai rules, .cursor/rules, ai coding assistant, cursor configuration, next.js rules, react rules, developer tools">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Cursor Rules Generator",
+    "description": "Generate ready-to-use Cursor AI rules (.cursor/rules) for any tech stack. Customize with strict typing, test safety, security, dependency minimization, and more.",
+    "url": "https://goosekit.dev/cursor-rules-generator/",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "browserRequirements": "Requires modern browser, no server required.",
+    "action": {
+      "@type": "Action",
+      "name": "Generate Cursor Rules",
+      "target": { "@type": "EntryPoint", "urlTemplate": "https://goosekit.dev/cursor-rules-generator/" }
+    }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a1a; --bg-panel: #0f0f24; --bg-panel2: #141430;
+      --border: rgba(255,255,255,0.07); --border-hover: rgba(255,255,255,0.16);
+      --text: #e2e8f0; --text-muted: #94a3b8; --text-dim: #64748b;
+      --accent: #ff4800; --accent-glow: rgba(255,72,0,0.14);
+      --success: #22c55e; --radius: 12px;
+      --transition: 0.22s cubic-bezier(0.4,0,0.2,1);
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* HEADER */
+    .site-header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,26,0.85); backdrop-filter: blur(14px); border-bottom: 1px solid var(--border); }
+    .header-inner { max-width: 1140px; margin: 0 auto; padding: 13px 24px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+    .brand img { width: 136px; display: block; }
+    .nav { display: flex; flex-wrap: wrap; gap: 10px 18px; }
+    .nav a { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; transition: color var(--transition); }
+    .nav a:hover { color: #fff; text-decoration: none; }
+    .nav-cta { background: var(--accent) !important; color: #000 !important; padding: 6px 14px; border-radius: 8px; font-weight: 700; }
+    .nav-cta:hover { background: #e05800 !important; }
+
+    /* MAIN */
+    .container { max-width: 940px; margin: 0 auto; padding: 2.5rem 1.25rem 4rem; }
+    .page-header { text-align: center; margin-bottom: 2.5rem; }
+    .page-header .eyebrow { display: inline-block; background: var(--accent-glow); border: 1px solid rgba(255,72,0,0.3); color: var(--accent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 12px; border-radius: 999px; margin-bottom: 1rem; }
+    h1 { font-size: 2.2rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 0.75rem; }
+    .subtitle { font-size: 1rem; color: var(--text-muted); max-width: 540px; margin: 0 auto; line-height: 1.65; }
+
+    /* PRESET SELECTOR */
+    .preset-section { margin-bottom: 1.5rem; }
+    .section-label { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); margin-bottom: 0.65rem; }
+    .preset-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.5rem; }
+    .preset-btn { padding: 0.6rem 0.8rem; border: 1px solid var(--border); background: var(--bg-panel); color: var(--text-muted); border-radius: var(--radius); cursor: pointer; font-size: 0.85rem; font-weight: 600; transition: all var(--transition); text-align: center; }
+    .preset-btn:hover { border-color: var(--border-hover); color: var(--text); }
+    .preset-btn.active { background: var(--accent-glow); border-color: var(--accent); color: var(--accent); }
+
+    /* TOGGLES */
+    .toggles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; margin-bottom: 1.5rem; }
+    @media (max-width: 580px) { .toggles-grid { grid-template-columns: 1fr; } }
+    .toggle-card { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 0.9rem 1rem; cursor: pointer; transition: all var(--transition); display: flex; align-items: flex-start; gap: 0.75rem; }
+    .toggle-card:hover { border-color: var(--border-hover); }
+    .toggle-card.active { border-color: rgba(255,72,0,0.5); background: var(--accent-glow); }
+    .toggle-checkbox { width: 18px; height: 18px; min-width: 18px; accent-color: var(--accent); margin-top: 2px; }
+    .toggle-info { flex: 1; }
+    .toggle-name { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 0.2rem; }
+    .toggle-card.active .toggle-name { color: var(--accent); }
+    .toggle-desc { font-size: 0.78rem; color: var(--text-dim); line-height: 1.4; }
+    .toggle-card.active .toggle-desc { color: var(--text-muted); }
+
+    /* OUTPUT */
+    .output-section { margin-top: 0.5rem; }
+    .output-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
+    .output-title { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); }
+    .copy-btn { padding: 0.4rem 0.9rem; border: 1px solid var(--border); background: var(--bg-panel); color: var(--text-muted); border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 600; transition: all var(--transition); display: flex; align-items: center; gap: 0.35rem; }
+    .copy-btn:hover { border-color: var(--border-hover); color: var(--text); }
+    .copy-btn.copied { border-color: var(--success); color: var(--success); }
+    .output-block { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); position: relative; overflow: hidden; }
+    .output-tabs { display: flex; border-bottom: 1px solid var(--border); }
+    .tab-btn { padding: 0.6rem 1rem; border: none; background: transparent; color: var(--text-dim); font-size: 0.8rem; font-weight: 600; cursor: pointer; border-right: 1px solid var(--border); transition: all var(--transition); }
+    .tab-btn:hover { color: var(--text-muted); background: rgba(255,255,255,0.03); }
+    .tab-btn.active { color: var(--accent); background: var(--accent-glow); }
+    pre { padding: 1.25rem 1rem; font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace; font-size: 0.82rem; line-height: 1.7; color: #c9d1d9; white-space: pre; overflow-x: auto; max-height: 520px; overflow-y: auto; }
+    pre::-webkit-scrollbar { height: 6px; }
+    pre::-webkit-scrollbar-track { background: transparent; }
+    pre::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+
+    /* CTA SECTION */
+    .cta-box { margin-top: 2.5rem; background: linear-gradient(135deg, var(--bg-panel2) 0%, #0d0d20 100%); border: 1px solid rgba(255,72,0,0.2); border-radius: var(--radius); padding: 1.75rem 2rem; text-align: center; }
+    .cta-box h2 { font-size: 1.15rem; font-weight: 800; color: #fff; margin-bottom: 0.5rem; }
+    .cta-box p { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1.25rem; line-height: 1.6; }
+    .cta-btn { display: inline-block; background: var(--accent); color: #000; font-weight: 800; font-size: 0.9rem; padding: 0.65rem 1.5rem; border-radius: 10px; transition: all var(--transition); }
+    .cta-btn:hover { background: #e05800; text-decoration: none; }
+
+    /* FOOTER */
+    footer { text-align: center; padding: 2rem 1rem; border-top: 1px solid var(--border); margin-top: 1rem; }
+    footer p { color: var(--text-dim); font-size: 0.8rem; }
+    footer a { color: var(--accent); }
+  </style>
+  <script defer src="/posthog.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="/"><img src="/logo.png" alt="Goosekit" width="136"></a>
+      <nav class="nav">
+        <a href="/tools/">Tools</a>
+        <a href="/tools/for-developers/">Developers</a>
+        <a href="/blog/">Blog</a>
+        <a href="/go/ship-it-kit/home-nav/" class="nav-cta">Ship It Kit</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-header">
+      <span class="eyebrow">AI · Developer Tools</span>
+      <h1>Cursor Rules Generator</h1>
+      <p class="subtitle">Generate a production-ready <code>.cursor/rules</code> file for your stack in seconds. Fully customizable — copy and paste into your project.</p>
+    </div>
+
+    <!-- PRESET SELECTION -->
+    <div class="preset-section">
+      <div class="section-label">1 — Choose a preset</div>
+      <div class="preset-grid">
+        <button class="preset-btn active" data-preset="general">🌐 General</button>
+        <button class="preset-btn" data-preset="nextjs">▲ Next.js</button>
+        <button class="preset-btn" data-preset="react">⚛️ React</button>
+        <button class="preset-btn" data-preset="nodejs">🟢 Node API</button>
+        <button class="preset-btn" data-preset="python">🐍 Python</button>
+      </div>
+    </div>
+
+    <!-- TOGGLES -->
+    <div class="section-label">2 — Customize rules (optional)</div>
+    <div class="toggles-grid">
+      <div class="toggle-card active" data-flag="strictTyping">
+        <input type="checkbox" class="toggle-checkbox" checked>
+        <div class="toggle-info">
+          <div class="toggle-name">Strict Typing</div>
+          <div class="toggle-desc">Enforce TypeScript types everywhere, no implicit any</div>
+        </div>
+      </div>
+      <div class="toggle-card active" data-flag="tests">
+        <input type="checkbox" class="toggle-checkbox" checked>
+        <div class="toggle-info">
+          <div class="toggle-name">Tests</div>
+          <div class="toggle-desc">Require unit/integration tests for all new code paths</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="refactorSafety">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">Refactor Safety</div>
+          <div class="toggle-desc">Break refactors into small steps, verify each before moving on</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="dependencyMinimization">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">Dependency Minimization</div>
+          <div class="toggle-desc">Prefer stdlib &amp; built-in features before adding new deps</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="commentsDocs">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">Comments &amp; Docs</div>
+          <div class="toggle-desc">Explain why, not just what. Keep docs up-to-date</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="security">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">Security</div>
+          <div class="toggle-desc">Validate all inputs, avoid injection risks, secure secrets</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="fileLength">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">File Size Limit</div>
+          <div class="toggle-desc">Keep files under ~300 lines. Split if larger</div>
+        </div>
+      </div>
+      <div class="toggle-card" data-flag="errorHandling">
+        <input type="checkbox" class="toggle-checkbox">
+        <div class="toggle-info">
+          <div class="toggle-name">Error Handling</div>
+          <div class="toggle-desc">Handle all errors gracefully with meaningful messages</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OUTPUT -->
+    <div class="output-section">
+      <div class="output-header">
+        <span class="output-title">Generated .cursor/rules</span>
+        <button class="copy-btn" id="copyBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span>Copy</span>
+        </button>
+      </div>
+      <div class="output-block">
+        <pre id="rulesOutput"></pre>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-box">
+      <h2>Ship faster with Ship It Kit</h2>
+      <p>50+ templates, workflows, and checklists that help you go from idea to shipped product — without the chaos.</p>
+      <a class="cta-btn" href="/go/ship-it-kit/home-nav/">Explore Ship It Kit →</a>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2026 <a href="https://goosekit.dev">Goosekit</a> — Free tools, zero tracking.</p>
+  </footer>
+
+  <script>
+    // ── Rule blocks ──────────────────────────────────────────────
+    const PRESETS = {
+      general: {
+        name: 'General',
+        description: 'A clean, language-agnostic foundation for any project.',
+        rules: `## Guidelines
+
+- Always write clean, readable code.
+- Keep functions small and focused — do one thing well.
+- Use meaningful variable and function names.
+- Prefer explicit over implicit.
+- Keep the codebase consistent with existing style.
+- Delete dead code and unused exports promptly.
+- No commented-out code in final submissions.`
+      },
+      nextjs: {
+        name: 'Next.js',
+        description: 'Next.js 14+ with App Router, Server Components, and TypeScript.',
+        rules: `## Guidelines
+
+### Stack
+- Use Next.js 14+ App Router conventions.
+- Prefer Server Components by default; add 'use client' only when needed.
+- Use the native Next.js font optimization (\`next/font\`).
+
+### Component Rules
+- Keep components small and composable.
+- Co-locate styles, tests, and utilities with the component.
+- Use \`use client\` sparingly — prefer server components.
+
+### Data Fetching
+- Use React's \`fetch\` with \`cache: 'force-cache'\` for static data.
+- Use server actions for mutations instead of API routes when possible.
+- Never expose sensitive keys in the client bundle.
+
+### Styling
+- Use CSS Modules or Tailwind; avoid inline styles for complex layouts.
+- Keep responsive utility classes organized.
+
+### File Conventions
+- Use \`page.tsx\`, \`layout.tsx\`, \`loading.tsx\`, \`error.tsx\` App Router conventions.
+- Prefer named exports for components.
+
+### Performance
+- Use \`next/image\` for all images.
+- Lazy-load heavy components with \`dynamic()\`.`
+      },
+      react: {
+        name: 'React',
+        description: 'React 18+ with hooks, TypeScript, and modern patterns.',
+        rules: `## Guidelines
+
+### Component Style
+- Use functional components with hooks exclusively.
+- Keep components under ~200 lines; split when they grow.
+- Prefer composition over prop drilling — use Context or composition.
+- Never mutate state directly; use useState/useReducer setters.
+
+### TypeScript
+- Define explicit prop interfaces for every component.
+- Avoid \`any\`; use \`unknown\` and narrow with type guards.
+- Extract shared types to a \`types/\` directory.
+
+### Hooks
+- Extract complex stateful logic into custom hooks.
+- Name hooks with \`use\` prefix (e.g., \`useAuth\`).
+- Keep hooks at the top level — never call them inside conditions or loops.
+
+### Rendering
+- Memoize only when profiling shows a genuine bottleneck.
+- Lists must have a unique, stable \`key\` prop.
+- Avoid inline object/array literals in JSX that cause re-renders.
+
+### Side Effects
+- Clean up all side effects in the return function of useEffect.
+- Keep effect dependencies in sync; use ESLint rules as a guide.`
+      },
+      nodejs: {
+        name: 'Node API',
+        description: 'Express or Fastify REST API with TypeScript and clean architecture.',
+        rules: `## Guidelines
+
+### Architecture
+- Follow layered architecture: routes → controllers → services → repositories.
+- Keep business logic in services, never in route handlers.
+- Validate all inputs at the boundary (use a schema library like Zod).
+
+### TypeScript
+- Define DTOs and response interfaces explicitly.
+- Avoid \`any\`; use strict mode.
+- Export shared types from a \`types/\` directory.
+
+### API Conventions
+- Use semantic HTTP methods (GET, POST, PUT, PATCH, DELETE).
+- Return consistent JSON envelope: \`{ data, error, meta }\`.
+- Always set appropriate HTTP status codes.
+- Log incoming requests with method, path, and duration.
+
+### Error Handling
+- Never leak stack traces to the client.
+- Wrap async route handlers in a try/catch or use a global error handler.
+- Distinguish between client errors (4xx) and server errors (5xx).
+
+### Security
+- Sanitize and validate all user input.
+- Never log sensitive data (passwords, tokens, PII).
+- Use environment variables for secrets; never hardcode them.`
+      },
+      python: {
+        name: 'Python',
+        description: 'Python with type hints, PEP 8 conventions, and modern tooling.',
+        rules: `## Guidelines
+
+### Style
+- Follow PEP 8; use Black for formatting and isort for imports.
+- Add type hints to all function signatures (use \`from __future__ import annotations\` for forward references).
+- Keep functions short — aim for under 40 lines.
+- Use descriptive names; avoid single-letter variables except in tight loops.
+
+### Type Safety
+- Enable \`mypy --strict\` in CI.
+- Prefer \`None\` over \`Optional[T]\` with \`from __future__ import annotations\`.
+- Avoid \`Any\`; use \`typing.cast()\` or generics where needed.
+
+### Imports
+- Group imports: stdlib → third-party → local; sort alphabetically within groups (isort handles this).
+- Never use wildcard imports (\`from X import *\`).
+
+### Testing
+- Write tests using pytest; aim for meaningful coverage, not just line coverage.
+- Name test files \`test_<module>.py\` and test functions \`test_<function_or_scenario>\`.
+- Use fixtures for shared setup; keep tests independent and order-independent.
+
+### Environment
+- Use virtual environments; pin exact versions in requirements.txt or pyproject.toml.
+- Never commit .env files; use \`.env.example\` as a template.`
+      }
+    };
+
+    const FLAG_RULES = {
+      strictTyping: `- Use explicit types everywhere. No \`any\`, no implicit \`any\`.
+- For generic types, always specify the type parameter (e.g., \`Array<string>\`, not \`Array\`).
+- Return types must be declared on all public functions.
+- Prefer \`interface\` over \`type\` for object shapes that may be extended.`,
+      tests: `- All new functions must include unit tests covering happy path and key edge cases.
+- Run the full test suite before marking a PR as ready for review.
+- Coverage should not drop below the current baseline.`,
+      refactorSafety: `- Break large refactors into small, atomic commits. Verify the build and tests pass before moving on.
+- Never refactor and add new features in the same commit.
+- If a rename affects more than 5 files, do it in a dedicated commit.`,
+      dependencyMinimization: `- Before adding a new dependency, check if the stdlib or existing packages cover the need.
+- Avoid pulling in heavy libraries for simple tasks.
+- If a dependency is only used in one place, question whether it's needed.`,
+      commentsDocs: `- Add comments that explain **why**, not just **what**.
+- Keep JSDoc/type docstrings on all public APIs.
+- Update documentation when code changes — no stale docs.`,
+      security: `- Validate and sanitize all external input at the entry point.
+- Never log sensitive data (tokens, passwords, PII).
+- Use parameterized queries for all database operations.
+- Secrets must come from environment variables, never hardcoded.`,
+      fileLength: `- No file should exceed ~300 lines. If it grows beyond that, extract logic into separate modules.
+- Watch for "god files" and proactively split them.`,
+      errorHandling: `- All async operations must be wrapped in try/catch (or a global handler).
+- Errors must carry enough context to be debugged without a debugger.
+- Never swallow errors silently.
+- Distinguish user-facing errors (4xx) from system errors (5xx) in API code.`
+    };
+
+    // ── State ────────────────────────────────────────────────────
+    let currentPreset = 'general';
+    let activeFlags = new Set(['strictTyping', 'tests']);
+
+    // ── Render ──────────────────────────────────────────────────
+    function generate() {
+      const preset = PRESETS[currentPreset];
+      const lines = [preset.rules];
+
+      // Collect active flag rules
+      const flagEntries = [...activeFlags]
+        .map(f => ({ key: f, rule: FLAG_RULES[f] }))
+        .filter(e => e.rule);
+
+      if (flagEntries.length > 0) {
+        lines.push('\n## Additional Rules\n');
+        flagEntries.forEach(e => lines.push(e.rule + '\n'));
+      }
+
+      return lines.join('\n').trim();
+    }
+
+    function render() {
+      document.getElementById('rulesOutput').textContent = generate();
+      document.getElementById('copyBtn').classList.remove('copied');
+      document.getElementById('copyBtn').querySelector('span').textContent = 'Copy';
+    }
+
+    // ── Events ───────────────────────────────────────────────────
+    document.querySelectorAll('.preset-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentPreset = btn.dataset.preset;
+        render();
+      });
+    });
+
+    document.querySelectorAll('.toggle-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        // Don't toggle if clicking the checkbox itself
+        if (e.target.classList.contains('toggle-checkbox')) return;
+        const checkbox = card.querySelector('input[type="checkbox"]');
+        checkbox.checked = !checkbox.checked;
+        card.classList.toggle('active', checkbox.checked);
+        const flag = card.dataset.flag;
+        if (checkbox.checked) {
+          activeFlags.add(flag);
+        } else {
+          activeFlags.delete(flag);
+        }
+        render();
+      });
+    });
+
+    // Checkbox sync on direct click
+    document.querySelectorAll('.toggle-card input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const card = cb.closest('.toggle-card');
+        card.classList.toggle('active', cb.checked);
+        const flag = card.dataset.flag;
+        if (cb.checked) {
+          activeFlags.add(flag);
+        } else {
+          activeFlags.delete(flag);
+        }
+        render();
+      });
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const text = document.getElementById('rulesOutput').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('copyBtn');
+        btn.classList.add('copied');
+        btn.querySelector('span').textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          btn.querySelector('span').textContent = 'Copy';
+        }, 2000);
+      });
+    });
+
+    // ── Init ─────────────────────────────────────────────────────
+    render();
+  </script>
+</body>
+</html>
