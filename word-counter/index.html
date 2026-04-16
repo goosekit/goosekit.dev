@@ -94,8 +94,8 @@
     footer a { color: var(--cyan); text-decoration: none; }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
-<style id="gk-homepage-tabs-header-styles">
-  #gk-homepage-tabs-header {
+<style id="gk-homepage-header-copy-styles">
+  .site-header {
     position: sticky;
     top: 0;
     z-index: 30;
@@ -103,7 +103,8 @@
     backdrop-filter: blur(14px);
     border-bottom: 1px solid rgba(255,255,255,0.06);
   }
-  #gk-homepage-tabs-header .gk-header-inner {
+
+  .site-header-inner {
     width: 100%;
     margin: 0;
     padding: 8px 16px 8px 10px;
@@ -112,19 +113,22 @@
     justify-content: space-between;
     gap: 14px;
   }
-  #gk-homepage-tabs-header .gk-brand {
+
+  .site-brand {
     display: inline-flex;
     align-items: center;
     text-decoration: none;
     flex-shrink: 0;
     margin-right: 10px;
   }
-  #gk-homepage-tabs-header .gk-brand img {
+
+  .site-brand img {
     width: 100px;
     height: auto;
     display: block;
   }
-  #gk-homepage-tabs-header .gk-nav {
+
+  .site-nav {
     display: flex;
     align-items: center;
     justify-content: flex-end;
@@ -132,7 +136,8 @@
     flex: 1;
     gap: 8px 14px;
   }
-  #gk-homepage-tabs-header .gk-nav a {
+
+  .site-nav a {
     color: #94a3b8;
     text-decoration: none;
     font-size: 0.9rem;
@@ -140,10 +145,12 @@
     line-height: 1;
     transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  #gk-homepage-tabs-header .gk-nav a:hover {
+
+  .site-nav a:hover {
     color: #e2e8f0;
   }
-  #gk-homepage-tabs-header .gk-nav .gk-nav-cta {
+
+  .site-nav .nav-cta {
     color: #fff;
     background: rgba(255,72,0,0.95);
     border: 1px solid rgba(255,72,0,0.9);
@@ -151,48 +158,34 @@
     border-radius: 11px;
     box-shadow: 0 8px 22px rgba(255,72,0,0.16);
   }
-  #gk-homepage-tabs-header .gk-nav .gk-nav-cta:hover {
+
+  .site-nav .nav-cta:hover {
     color: #fff;
     background: #ff4800;
     border-color: #ff4800;
   }
+
   @media (max-width: 900px) {
-    #gk-homepage-tabs-header .gk-header-inner {
-      padding: 8px 12px;
-      gap: 10px 12px;
-    }
-    #gk-homepage-tabs-header .gk-brand img {
-      width: 96px;
-    }
-    #gk-homepage-tabs-header .gk-nav {
-      gap: 8px 12px;
-    }
+    .site-header-inner { padding: 8px 12px; }
+    .site-nav { width: 100%; justify-content: flex-start; gap: 8px 12px; }
   }
-  @media (max-width: 720px) {
-    #gk-homepage-tabs-header .gk-header-inner {
-      padding: 8px 10px;
-      align-items: flex-start;
-      flex-direction: column;
-    }
-    #gk-homepage-tabs-header .gk-brand {
-      margin-right: 0;
-    }
-    #gk-homepage-tabs-header .gk-nav {
-      width: 100%;
-      justify-content: flex-start;
-      gap: 8px 10px;
-    }
+
+  @media (max-width: 560px) {
+    .site-header-inner { padding: 8px 10px; }
+    .site-brand img { width: 98px; }
+    .site-nav { gap: 8px 12px; }
+    .site-nav a { font-size: 0.86rem; }
   }
 </style>
 </head>
 <body>
 
-<header id="gk-homepage-tabs-header">
-  <div class="gk-header-inner">
-    <a class="gk-brand" href="/" aria-label="Goosekit home">
+<header class="site-header">
+  <div class="site-header-inner">
+    <a class="site-brand" href="/" aria-label="Goosekit home">
       <img src="/logo-dark.png" alt="Goosekit">
     </a>
-    <nav class="gk-nav" aria-label="Primary navigation">
+    <nav class="site-nav" aria-label="Primary navigation">
       <a href="/tools/">Tools</a>
       <a href="/tools/for-developers/">Developers</a>
       <a href="/tools/for-designers/">Designers</a>
@@ -201,7 +194,7 @@
       <a href="/blog/">Blog</a>
       <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
       <a href="/api/">API</a>
-      <a class="gk-nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
+      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
     </nav>
   </div>
 </header>
