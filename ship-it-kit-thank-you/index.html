@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank you — Ship It Kit</title>
+  <meta name="description" content="You have access to Ship It Kit. Here's what to do next and how to share your experience.">
+  <link rel="canonical" href="https://goosekit.dev/ship-it-kit-thank-you/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/favicon.png">
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: rgba(255,255,255,0.1);
+      --text: #e6edf3;
+      --text-dim: #8b949e;
+      --accent: #7c3aed;
+      --accent-light: #a78bfa;
+      --green: #34d399;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 560px;
+      width: 100%;
+      text-align: center;
+    }
+    .emoji { font-size: 3rem; margin-bottom: 16px; }
+    h1 { font-size: 1.8rem; margin-bottom: 12px; color: #fff; }
+    .subtitle { color: var(--text-dim); margin-bottom: 32px; line-height: 1.6; }
+    .next-steps {
+      text-align: left;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 28px;
+    }
+    .next-steps h2 { font-size: 1rem; color: var(--green); margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .step { display: flex; gap: 12px; margin-bottom: 12px; align-items: flex-start; }
+    .step-num { background: var(--accent); color: #fff; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+    .step-text { font-size: 0.92rem; color: var(--text); line-height: 1.5; }
+    .step-text a { color: var(--accent-light); text-decoration: none; }
+    .step-text a:hover { text-decoration: underline; }
+    .cta-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 20px; }
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.85; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-secondary { background: rgba(255,255,255,0.08); color: var(--text); border: 1px solid var(--border); }
+    .feedback { margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .feedback p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 14px; line-height: 1.6; }
+    .feedback-email {
+      display: inline-flex; gap: 8px; align-items: center;
+      background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.3);
+      border-radius: 8px; padding: 10px 16px; color: var(--green);
+      font-size: 0.9rem; font-weight: 600; text-decoration: none;
+    }
+    .feedback-email:hover { background: rgba(52,211,153,0.15); }
+    .share { margin-top: 20px; font-size: 0.85rem; color: var(--text-dim); }
+    .share a { color: var(--accent-light); text-decoration: none; margin: 0 4px; }
+    .share a:hover { text-decoration: underline; }
+    @media (max-width: 500px) {
+      .card { padding: 32px 20px; }
+      h1 { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="emoji">🎉</div>
+    <h1>You have Ship It Kit</h1>
+    <p class="subtitle">Your purchase went through. Here's how to get started and share your experience.</p>
+
+    <div class="next-steps">
+      <h2>⚡ Next Steps</h2>
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text"><strong>Check your email</strong> — the GitHub repository invite is on its way from <strong>Arthur (Goosekit)</strong>. Accept it within 24 hours.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text"><strong>Clone the repo</strong> and follow the <code>README.md</code> setup guide. Most builders are running locally within 30 minutes.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-text"><strong>Join the Discord</strong> <a href="https://discord.gg/goosekit">discord.gg/goosekit</a> — early buyers share tips and get priority answers.</div>
+      </div>
+    </div>
+
+    <div class="cta-row">
+      <a href="https://goosekit.dev/blog/ship-saas-mvp-nextjs/" class="btn btn-secondary">📖 Setup guide</a>
+      <a href="https://goosekit.dev/ship-it-kit/" class="btn btn-secondary">📄 Docs</a>
+    </div>
+
+    <div class="feedback">
+      <p>Honest feedback makes this product better and helps other builders decide. If Ship It Kit saved you time, a quick word means a lot.</p>
+      <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20Testimonial" class="feedback-email">
+        ✉️ Send a quick testimonial →
+      </a>
+    </div>
+
+    <p class="share">
+      Sharing helps other builders: <a href="https://twitter.com/intent/tweet?text=Just%20got%20Ship%20It%20Kit%20%E2%80%94%20a%20SaaS%20starter%20with%20Supabase%20%2B%20Stripe%20pre-wired.%20Exactly%20the%20boilerplate%20I%20needed.%20https%3A%2F%2Fgoosekit.dev%2Fship-it-kit%2F">Twitter/X</a> ·
+      <a href="https://www.producthunt.com/posts/ship-it-kit">Product Hunt</a> ·
+      <a href="https://news.ycombinator.com/submit">Hacker News</a>
+    </p>
+  </div>
+</body>
+</html>
