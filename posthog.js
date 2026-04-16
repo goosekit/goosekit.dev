@@ -1,6 +1,6 @@
 (function () {
   var CONFIG = {
-    apiKey: '',
+    apiKey: 'phc_qtYbnDv7TBtid67Z7rMhLefybboknUL5EzTpwVYUCtKe',
     apiHost: 'https://us.i.posthog.com',
     personProfiles: 'identified_only'
   };
