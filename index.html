@@ -912,7 +912,7 @@
       <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(148,163,184,0.3);text-align:left;">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
           <div style="font-size:0.82rem;font-weight:700;color:#16a34a;">FOR BUILDERS</div>
-          <div style="background:#fff7ed;border:1px solid #fdba74;border-radius:999px;padding:3px 10px;font-size:0.75rem;color:#c2410c;font-weight:600;">Launch €49 — ends April 30</div>
+          <div data-launch-countdown style="background:#fff7ed;border:1px solid #fdba74;border-radius:999px;padding:3px 10px;font-size:0.75rem;color:#c2410c;font-weight:600;">Launch €49 — ends April 30</div>
         </div>
         <a href="/ship-it-kit/" style="color:#c2410c;font-weight:700;text-decoration:none;font-size:1.05rem;">Ship It Kit — Next.js SaaS starter</a>
         <span style="color:#475569;display:block;margin-top:4px;">Auth, billing, email, dashboard — already wired. €49 one-time, no subscription.</span>
@@ -2008,7 +2008,7 @@
         <div style="flex:1;min-width:250px;">
           <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">🚀 Ship It Kit</div>
           <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">The SaaS starter template built for AI-assisted development. Next.js 15, Supabase auth, Stripe payments, Tailwind — all wired up. Stop configuring, start shipping.</p>
-          <p style="color:#34d399;font-size:0.85rem;font-weight:600;margin:0;">⚡ Launch window — order before April 30</p>
+          <p data-launch-countdown style="color:#34d399;font-size:0.85rem;font-weight:600;margin:0;">⚡ Launch window — order before April 30</p>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(249,115,22,0.15);color:#fed7aa;border:1px solid rgba(249,115,22,0.25);">Next.js 15</span>
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">Supabase</span>
@@ -2026,3 +2026,27 @@
     <div class="footer-inner">
       <p class="footer-tagline">Built with 🪿 by Goosekit — All tools are free, open-source, and run in your browser</p>
       <div class="footer-links">
+        <a href="/blog/">Blog</a>
+        <a href="/api/">API</a>
+        <a href="/ship-it-kit/">Ship It Kit</a>
+        <a href="/pro/">Pro</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const els = document.querySelectorAll('[data-launch-countdown]');
+      if (!els.length) return;
+      const deadline = new Date('2026-04-30T21:59:59Z');
+      const now = new Date();
+      const days = Math.ceil((deadline - now) / 86400000);
+      let text = '⚡ Launch window — order before April 30';
+      if (days > 1) text = `⚡ Launch window — ${days} days left at €49`;
+      else if (days === 1) text = '⚡ Launch window — 1 day left at €49';
+      else if (days === 0) text = '⚡ Launch window closes today — €49';
+      els.forEach(el => { el.textContent = text; });
+    })();
+  </script>
+</body>
+</html>

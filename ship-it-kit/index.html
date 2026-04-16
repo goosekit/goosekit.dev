@@ -341,7 +341,7 @@
     </div>
 
     <div class="hero-price">€49 <span>one-time payment</span></div>
-    <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:8px;padding:6px 14px;margin-bottom:8px;font-size:0.85rem;color:#34d399;font-weight:600;">
+    <div data-launch-countdown style="display:inline-flex;align-items:center;gap:8px;background:rgba(52,211,153,0.1);border:1px solid rgba(52,211,153,0.3);border-radius:8px;padding:6px 14px;margin-bottom:8px;font-size:0.85rem;color:#34d399;font-weight:600;">
       ⚡ Launch window open — price goes up after April 30
     </div>
     <a href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" class="cta-btn" target="_blank" rel="noopener">Get Ship It Kit →</a>
@@ -561,7 +561,7 @@
 <section class="cta-bottom">
   <div class="container">
     <h2>Ready to Ship?</h2>
-    <p style="color:#34d399;font-size:0.95rem;font-weight:600;margin-bottom:8px;">⚡ Launch window — order before April 30</p>
+    <p data-launch-countdown style="color:#34d399;font-size:0.95rem;font-weight:600;margin-bottom:8px;">⚡ Launch window — order before April 30</p>
     <p>Join developers who stopped wasting time on boilerplate and started building what matters.</p>
     <a href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" class="cta-btn" target="_blank" rel="noopener">Get Ship It Kit — €49 →</a>
     <p style="margin-top:14px;font-size:0.95rem;color:var(--text-dim);">Checkout takes a minute, then you get the repo and can start customizing right away.</p>
@@ -578,5 +578,19 @@
   </div>
 </footer>
 
+<script>
+  (function () {
+    const els = document.querySelectorAll('[data-launch-countdown]');
+    if (!els.length) return;
+    const deadline = new Date('2026-04-30T21:59:59Z');
+    const now = new Date();
+    const days = Math.ceil((deadline - now) / 86400000);
+    let text = '⚡ Launch window — order before April 30';
+    if (days > 1) text = `⚡ Launch window — ${days} days left at €49`;
+    else if (days === 1) text = '⚡ Launch window — 1 day left at €49';
+    else if (days === 0) text = '⚡ Launch window closes today — €49';
+    els.forEach(el => { el.textContent = text; });
+  })();
+</script>
 </body>
 </html>
