@@ -2113,8 +2113,7 @@
       function animateCount(target) {
         const duration = 1400;
         const start = performance.now();
-        const current = Number((countEl.textContent || '0').replace(/,/g, '')) || 0;
-        const from = Math.max(0, current || target - 275);
+        const from = Math.max(0, target - 275);
 
         function tick(now) {
           const progress = Math.min((now - start) / duration, 1);
