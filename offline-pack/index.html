@@ -392,8 +392,8 @@
               <div class="price-note">One-time purchase, unzip and run locally on Mac, Windows, or Linux.</div>
             </div>
             <div class="cta-row">
-              <a class="btn btn-primary" href="/go/offline-pack/checkout-hero/" target="_blank" rel="noopener">Buy Goosekit Offline Pack →</a>
-              <a class="btn btn-secondary" href="#included-tools">See what’s included</a>
+              <a class="btn btn-primary" href="/go/offline-pack/checkout-hero/?source=offline_pack_hero" target="_blank" rel="noopener" data-ph-event="offline_pack_cta_clicked" data-ph-location="hero">Buy Goosekit Offline Pack →</a>
+              <a class="btn btn-secondary" href="#included-tools" data-ph-event="offline_pack_section_jump" data-ph-location="hero_secondary">See what’s included</a>
             </div>
             <div class="mini-proof">
               <span>12 included tools</span>
@@ -520,7 +520,7 @@
           <h2>Get the pack and keep it on your machine.</h2>
           <p>Goosekit Offline Pack is the fastest paid Goosekit product to start using. Buy once, download the ZIP, and keep these 12 tools ready wherever you work.</p>
         </div>
-        <a class="btn btn-primary" href="/go/offline-pack/checkout-bottom/" target="_blank" rel="noopener">Buy for €29 →</a>
+        <a class="btn btn-primary" href="/go/offline-pack/checkout-bottom/?source=offline_pack_bottom" target="_blank" rel="noopener" data-ph-event="offline_pack_cta_clicked" data-ph-location="bottom">Buy for €29 →</a>
       </div>
     </section>
   </main>
@@ -528,5 +528,34 @@
   <footer>
     <div class="container">Goosekit Offline Pack, a portable bundle of Goosekit tools for offline payload, auth, and debugging work.</div>
   </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref') || 'direct';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+
+      capture('offline_pack_page_viewed', {
+        ref: ref,
+        path: window.location.pathname,
+        product: 'offline_pack'
+      });
+
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            product: 'offline_pack',
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            ref: ref,
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>
