@@ -209,8 +209,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
         <input type="range" id="rate" min="0.25" max="3" step="0.05" value="1">
       </div>
       <div class="slider-group">
-        <label>Pitch <span id="pitchVal">1.0</span></label>
-        <input type="range" id="pitch" min="0" max="2" step="0.05" value="1">
+        <label>Pitch <span id="pitchVal">0.92</span></label>
+        <input type="range" id="pitch" min="0" max="2" step="0.05" value="0.92">
       </div>
       <div class="slider-group">
         <label>Volume <span id="volVal">100%</span></label>
@@ -265,6 +265,8 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
 
   rateInput.value = '0.95';
   rateVal.textContent = '0.95×';
+  pitchInput.value = '0.92';
+  pitchVal.textContent = '0.92';
 
   const NATURAL_VOICE_PATTERNS = {
     en: [/samantha/i, /daniel/i, /alex/i, /moira/i, /karen/i, /serena/i, /google.*english/i, /microsoft.*aria/i, /microsoft.*jenny/i, /microsoft.*guy/i, /microsoft.*ryan/i, /siri/i],
@@ -315,8 +317,10 @@ input[type=range]::-moz-range-thumb{width:16px;height:16px;background:#7c8aff;bo
     else if (lang === 'en') score += 5;
 
     if (voice.default) score += 10;
-    if (voice.localService) score += 12;
-    if (/google|microsoft|apple|siri/i.test(voiceName)) score += 8;
+    if (voice.localService) score += 26;
+    if (/apple|siri/i.test(voiceName)) score += 14;
+    else if (/microsoft/i.test(voiceName)) score += 10;
+    else if (/google/i.test(voiceName)) score += 4;
     if (isNoveltyVoice(voiceName)) score -= 120;
 
     const preferredPatterns = NATURAL_VOICE_PATTERNS[lang] || [];
