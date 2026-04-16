@@ -5,8 +5,8 @@
   --text: #e5eefc;
   --muted: #9fb1cf;
   --border: rgba(255, 255, 255, 0.1);
-  --accent: #f97316;
-  --accent-2: #fb923c;
+  --accent: #ff4800;
+  --accent-2: #ff4800;
   --success: #34d399;
   --warning: #fbbf24;
   --danger: #fb7185;
@@ -23,7 +23,7 @@
   --muted: #52607a;
   --border: rgba(23, 32, 51, 0.12);
   --accent: #ea580c;
-  --accent-2: #f97316;
+  --accent-2: #ff4800;
   --shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
   color-scheme: light;
 }

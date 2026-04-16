@@ -25,19 +25,19 @@
 
     header { text-align: center; padding: 48px 24px 32px; position: relative; overflow: hidden; }
     header::before { content: ""; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 50% -20%, var(--accent-glow) 0%, transparent 70%); pointer-events: none; }
-    header h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #fff 30%, #fb923c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
+    header h1 { font-size: clamp(1.8rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, #fff 30%, #ff4800 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; }
     header p { color: var(--text-muted); font-size: 1rem; }
 
     main { max-width: 800px; margin: 0 auto; padding: 0 24px 60px; }
 
     .input-section { text-align: center; margin-bottom: 32px; }
     .cron-input { width: 100%; max-width: 480px; padding: 16px 20px; background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: "SF Mono", "Fira Code", monospace; font-size: 1.3rem; text-align: center; letter-spacing: 0.1em; outline: none; transition: border-color var(--transition), box-shadow var(--transition); }
-    .cron-input:focus { border-color: rgba(249,115,22,0.5); box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+    .cron-input:focus { border-color: rgba(255,72,0,0.5); box-shadow: 0 0 0 3px rgba(255,72,0,0.1); }
     .cron-input::placeholder { color: var(--text-dim); letter-spacing: 0.05em; font-size: 1rem; }
 
     .presets { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
     .preset { font-size: 12px; padding: 5px 12px; border-radius: 100px; background: rgba(255,255,255,0.06); color: var(--text-dim); border: 1px solid rgba(255,255,255,0.08); cursor: pointer; transition: all var(--transition); font-family: inherit; }
-    .preset:hover { color: var(--text); border-color: var(--border-hover); background: rgba(249,115,22,0.1); }
+    .preset:hover { color: var(--text); border-color: var(--border-hover); background: rgba(255,72,0,0.1); }
 
     .result { margin-top: 32px; }
     .explanation { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
