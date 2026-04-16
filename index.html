@@ -524,6 +524,37 @@
       animation: fadeInDown 0.6s 0.2s ease both;
     }
 
+    .hero-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      max-width: 760px;
+      margin: 18px auto 28px;
+      animation: fadeInDown 0.6s 0.25s ease both;
+    }
+
+    .hero-tab {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 14px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid rgba(148, 163, 184, 0.22);
+      background: rgba(15, 23, 42, 0.32);
+      color: #e2e8f0;
+      transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .hero-tab:hover {
+      transform: translateY(-1px);
+      border-color: rgba(249, 115, 22, 0.45);
+      background: rgba(30, 41, 59, 0.52);
+    }
+
     /* ── SEARCH ── */
     .search-wrap {
       position: relative;
@@ -588,6 +619,8 @@
 
     @media (max-width: 900px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-tabs { gap: 8px; margin: 16px auto 24px; }
+      .hero-tab { font-size: 0.84rem; padding: 9px 12px; }
     }
     @media (max-width: 560px) {
       .grid { grid-template-columns: 1fr; }
@@ -896,9 +929,15 @@
       <span style="color:#333;margin:0 8px;">·</span>
       <a href="/api/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🔌 API</a>
       <span style="color:#333;margin:0 8px;">·</span>
-      <a href="/ship-it-kit/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🚀 Ship It Kit</a>
+      <a href="/go/ship-it-kit/home-nav/" style="color:#f97316;text-decoration:none;font-size:0.9rem;font-weight:500;">🚀 Ship It Kit</a>
     </div>
 
+    <div class="hero-tabs">
+      <a class="hero-tab" href="/tools/for-developers/">Browse developer tools</a>
+      <a class="hero-tab" href="/tools/for-students/">Browse student tools</a>
+      <a class="hero-tab" href="/compare/goosekit-vs-10015/">Compare vs 10015</a>
+      <a class="hero-tab" href="/compare/goosekit-vs-tinywow/">Compare vs TinyWow</a>
+    </div>
 
   </header>
 
@@ -1953,22 +1992,6 @@
       </div>
     </section>
 
-    <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
-      <div style="background:linear-gradient(135deg,rgba(124,58,237,0.16),rgba(34,211,238,0.10));border:1px solid rgba(167,139,250,0.26);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
-        <div style="flex:1;min-width:250px;">
-          <div style="font-size:1.5rem;font-weight:700;color:#e2e8f0;margin-bottom:0.5rem;">📚 Curated collections & comparisons</div>
-          <p style="color:#94a3b8;line-height:1.6;margin:0 0 1rem;">Not sure where to start? Explore Goosekit by audience or compare it head-to-head with other free online tool suites.</p>
-          <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(59,130,246,0.15);color:#93c5fd;border:1px solid rgba(59,130,246,0.25);">Collections</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(139,92,246,0.15);color:#c4b5fd;border:1px solid rgba(139,92,246,0.25);">Comparisons</span>
-            <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(34,211,238,0.15);color:#67e8f9;border:1px solid rgba(34,211,238,0.25);">SEO landing pages</span>
-          </div>
-          <p style="margin:0;color:#cbd5e1;line-height:1.7;"><a href="/tools/for-developers/" style="color:#fdba74;">For Developers</a> · <a href="/tools/for-students/" style="color:#93c5fd;">For Students</a> · <a href="/compare/goosekit-vs-10015/" style="color:#c4b5fd;">Goosekit vs 10015</a> · <a href="/compare/goosekit-vs-tinywow/" style="color:#67e8f9;">Goosekit vs TinyWow</a></p>
-        </div>
-        <a href="/tools/for-developers/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#7c3aed,#06b6d4);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">Explore collections →</a>
-      </div>
-    </section>
-
     <!-- Ship It Kit promo -->
     <section style="max-width:900px;margin:3rem auto 0;padding:0 1.5rem;">
       <div style="background:linear-gradient(135deg,rgba(249,115,22,0.15),rgba(59,130,246,0.15));border:1px solid rgba(249,115,22,0.3);border-radius:16px;padding:2rem 2.5rem;display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
@@ -1983,7 +2006,7 @@
             <span style="font-size:0.75rem;padding:2px 8px;border-radius:999px;background:rgba(245,158,11,0.15);color:#fcd34d;border:1px solid rgba(245,158,11,0.25);">AI-Ready</span>
           </div>
         </div>
-        <a href="/ship-it-kit/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#f97316,#3b82f6);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">See the starter →</a>
+        <a href="/go/ship-it-kit/home-promo/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;background:linear-gradient(135deg,#f97316,#3b82f6);color:#fff;font-weight:600;font-size:0.95rem;border-radius:10px;text-decoration:none;white-space:nowrap;transition:opacity 0.2s;" onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">See the starter →</a>
       </div>
     </section>
   </main>
