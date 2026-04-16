@@ -89,6 +89,8 @@
       flex: 1;
       display: flex;
       flex-direction: column;
+      width: min(1400px, 100%);
+      margin: 0 auto;
       padding: 16px 20px;
       gap: 12px;
       min-height: 0;
@@ -170,8 +172,8 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      flex: 1;
-      min-height: 0;
+      min-height: 420px;
+      align-items: stretch;
     }
     @media (max-width: 768px) {
       header {
@@ -196,6 +198,10 @@
         align-items: stretch;
         gap: 10px;
         margin-top: 14px;
+      }
+      main > p {
+        margin-top: 2px;
+        margin-bottom: 2px;
       }
       .toolbar .btn {
         width: 100%;
@@ -226,6 +232,10 @@
         grid-template-columns: 1fr;
         gap: 14px;
         margin-top: 14px;
+      }
+      main > p {
+        margin-top: 2px;
+        margin-bottom: 2px;
       }
       .pane {
         min-height: 0;
@@ -272,7 +282,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      min-height: 300px;
+      min-height: 420px;
     }
     .pane-header {
       display: flex;
@@ -496,13 +506,10 @@
 <!-- /Goosekit Banner -->
 
 
-<header>
-  <div class="logo">Dev<span>Format</span></div>
-  <span class="tagline">Free JSON Formatter Online</span>
-</header>
 
 <main>
   <h1>Free JSON Formatter Online, Validator &amp; Beautifier</h1>
+  <p style="color: var(--muted); margin-top: -2px;">Format, validate, and minify JSON instantly, fully in your browser.</p>
   <!-- Toolbar -->
   <div class="toolbar">
     <button class="btn primary" id="btn-format" title="Format / Beautify JSON (Ctrl+Enter)">

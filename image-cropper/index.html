@@ -88,19 +88,17 @@ h1{font-size:1.5rem;font-weight:700;margin-bottom:4px}
 </head>
 <body>
 
-<!-- Banner -->
-<header class="banner">
-  <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <rect width="100" height="100" rx="20" fill="#ff4800"/>
-    <path d="M30 65 L50 30 L70 65 Z" fill="#fff" opacity=".9"/>
-    <circle cx="50" cy="58" r="8" fill="#1a1a2e"/>
-  </svg>
-  <span class="banner-title">Goosekit<span class="banner-dot">.dev</span></span>
-  <nav class="banner-nav">
-    <a href="https://goosekit.dev/">Home</a>
-    <a href="https://goosekit.dev/image-cropper/" aria-current="page">Image Cropper</a>
-  </nav>
-</header>
+<!-- Goosekit Banner -->
+<div style="position:relative;z-index:9999;width:100%;background:rgba(15,15,25,0.95);border-bottom:1px solid rgba(255,255,255,0.08);backdrop-filter:blur(8px);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;">
+  <div style="max-width:1200px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+    <a href="/" style="display:flex;align-items:center;gap:8px;text-decoration:none;color:#f5f7ff;font-weight:600;font-size:14px;">
+      <img src="/logo-dark.png" alt="Goosekit — Free Online Developer Tools" style="height:28px;border-radius:4px;">
+    </a>
+    <a href="/" style="color:#a8b0d3;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:4px;transition:color 0.2s;" onmouseover="this.style.color='#f5f7ff'" onmouseout="this.style.color='#a8b0d3'">
+      ← Explore 50 free tools
+    </a>
+  </div>
+</div>
 
 <main class="app">
   <h1>Image Cropper</h1>
