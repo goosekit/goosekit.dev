@@ -161,6 +161,7 @@
     align-items: center;
     justify-content: space-between;
     gap: 14px;
+    position: relative;
   }
 
   .site-brand {
@@ -175,6 +176,44 @@
     width: 100px;
     height: auto;
     display: block;
+  }
+
+  .site-menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 4px;
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    background: rgba(15,23,42,0.92);
+    color: #e2e8f0;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .site-menu-toggle span {
+    display: block;
+    width: 18px;
+    height: 2px;
+    border-radius: 999px;
+    background: currentColor;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .site-menu-toggle[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .site-menu-toggle[aria-expanded="true"] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .site-menu-toggle[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   .site-nav {
@@ -218,8 +257,48 @@
     .site-header-inner {
       min-height: 56px;
       padding: 8px 12px;
+      flex-wrap: nowrap;
     }
-    .site-nav { width: 100%; justify-content: flex-start; gap: 8px 12px; }
+
+    .site-menu-toggle {
+      display: inline-flex;
+    }
+
+    .site-nav {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 12px;
+      left: 12px;
+      z-index: 50;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      padding: 12px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      background: rgba(10,10,26,0.96);
+      box-shadow: 0 20px 45px rgba(2,6,23,0.42);
+      backdrop-filter: blur(16px);
+    }
+
+    .site-nav.is-open {
+      display: flex;
+    }
+
+    .site-nav a {
+      display: block;
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .site-nav .nav-cta {
+      text-align: center;
+      justify-content: center;
+      margin-top: 4px;
+    }
   }
 
   @media (max-width: 560px) {
@@ -228,10 +307,11 @@
       padding: 8px 10px;
     }
     .site-brand img { width: 98px; }
-    .site-nav { gap: 8px 12px; }
+    .site-nav { right: 10px; left: 10px; }
     .site-nav a { font-size: 0.86rem; }
   }
 </style>
+<script defer src="/site-header.js"></script>
 </head>
 <body>
 
@@ -240,7 +320,12 @@
     <a class="site-brand" href="/" aria-label="Goosekit home">
       <img src="/logo-dark.png" alt="Goosekit">
     </a>
-    <nav class="site-nav" aria-label="Primary navigation">
+    <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
       <a href="/tools/">Tools</a>
       <a href="/tools/for-developers/">Developers</a>
       <a href="/tools/for-designers/">Designers</a>
