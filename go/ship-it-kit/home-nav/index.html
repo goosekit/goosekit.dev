@@ -6,7 +6,14 @@
   <meta name="robots" content="noindex, nofollow">
   <title>Redirecting…</title>
   <meta http-equiv="refresh" content="0; url=/ship-it-kit/?ref=homepage_nav">
-  <script>window.location.replace('/ship-it-kit/?ref=homepage_nav');</script>
+  <script>
+    (function () {
+      var params = new URLSearchParams(window.location.search);
+      if (!params.get('ref')) params.set('ref', 'homepage_nav');
+      var target = '/ship-it-kit/?' + params.toString();
+      window.location.replace(target);
+    })();
+  </script>
 <style id="gk-homepage-header-copy-styles">
   .site-header {
     position: sticky;
@@ -121,6 +128,15 @@
   </div>
 </header>
 
-<p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="/ship-it-kit/?ref=homepage_nav" style="color:#ff4800;">continue here</a>.</p>
+<p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="/ship-it-kit/?ref=homepage_nav" id="manual-link" style="color:#ff4800;">continue here</a>.</p>
+  <script>
+    (function () {
+      var manual = document.getElementById('manual-link');
+      if (!manual) return;
+      var params = new URLSearchParams(window.location.search);
+      if (!params.get('ref')) params.set('ref', 'homepage_nav');
+      manual.href = '/ship-it-kit/?' + params.toString();
+    })();
+  </script>
 </body>
 </html>
