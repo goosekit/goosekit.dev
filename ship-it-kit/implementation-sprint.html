@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Private Setup Sprint, Ship It Kit by Goosekit</title>
+  <meta name="description" content="Private setup sprint for founders using Next.js + Supabase + Stripe who want auth, billing, env setup, and base routes wired faster with direct help.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09111f;
+      --panel: rgba(15, 23, 42, 0.82);
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --accent: #f97316;
+      --accent-2: #fb923c;
+      --green: #22c55e;
+      --danger: #f87171;
+      --shadow: rgba(15, 23, 42, 0.45);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at top, rgba(249, 115, 22, 0.16), transparent 34%),
+        linear-gradient(180deg, #08111f 0%, #0b1324 100%);
+    }
+    a { color: inherit; }
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .topbar, .hero, .grid-2, .grid-3, .footer-line, .cta-actions { display: grid; gap: 18px; }
+    .topbar {
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 24px 0 12px;
+    }
+    .hero {
+      grid-template-columns: 1.1fr 0.9fr;
+      align-items: start;
+      gap: 32px;
+      padding: 56px 0 44px;
+    }
+    .grid-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .brand {
+      text-decoration: none;
+      font-size: 1.08rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+    .brand span { color: var(--accent-2); }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 146, 60, 0.24);
+      background: rgba(249, 115, 22, 0.12);
+      color: #fed7aa;
+      font-weight: 700;
+      padding: 8px 14px;
+      font-size: 0.86rem;
+      letter-spacing: 0.01em;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 18px 44px var(--shadow);
+      padding: 26px;
+    }
+    h1 {
+      margin: 18px 0;
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      max-width: 780px;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.65rem, 3vw, 2.4rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+    h3 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+    }
+    p, li { color: #c8d5ea; }
+    .muted { color: var(--muted); }
+    .eyebrow {
+      margin-bottom: 12px;
+      color: #fdba74;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+    .btn-primary, .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 14px 34px rgba(249, 115, 22, 0.25);
+    }
+    .btn-secondary {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.66);
+      color: var(--text);
+    }
+    .btn-primary:hover, .btn-secondary:hover { transform: translateY(-1px); opacity: 0.96; }
+    .hero-actions, .list { display: grid; gap: 12px; }
+    .hero-actions { grid-template-columns: repeat(2, minmax(0, max-content)); margin: 28px 0 20px; }
+    .list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .check { color: var(--green); font-weight: 800; }
+    .cross { color: var(--danger); font-weight: 800; }
+    .price {
+      margin: 16px 0 8px;
+      font-size: 3rem;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+    }
+    .price span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+    section { padding: 34px 0; }
+    .footer-line {
+      grid-template-columns: 1fr auto;
+      padding: 28px 0 44px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      margin-top: 32px;
+    }
+    @media (max-width: 900px) {
+      .hero, .grid-2, .grid-3, .topbar, .footer-line, .hero-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="index.html">Ship It <span>Kit</span> by Goosekit</a>
+      <a class="btn-secondary" href="index.html">Back to the €49 starter</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div>
+        <div class="pill">Private setup sprint</div>
+        <h1>For founders who want the boring setup handled faster, with real help.</h1>
+        <p>This is the hands-on version of Ship It Kit for exact-fit builders already committed to Next.js + Supabase + Stripe. Instead of just getting the starter, you get a small-scope private sprint to get auth, billing, env setup, and base routes into shape faster.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="mailto:arthur.pierrey@gmail.com?subject=Private%20setup%20sprint&body=My%20stack:%0AWhat%20I%27m%20building:%0AWhat%20I%27m%20stuck%20on:%0ATimeline:">Ask about the setup sprint</a>
+          <a class="btn-secondary" href="index.html">Or just get the €49 starter</a>
+        </div>
+        <ul class="list">
+          <li><span class="check">✓</span><span>Best for small-scope MVPs, not giant custom builds.</span></li>
+          <li><span class="check">✓</span><span>Ship It Kit is included, so you keep the starter after the sprint.</span></li>
+          <li><span class="check">✓</span><span>Designed for builders using AI tools who want a cleaner base before feature work.</span></li>
+        </ul>
+      </div>
+
+      <aside class="card">
+        <div class="pill">Exact-fit only</div>
+        <h2>Simple scope, simple price.</h2>
+        <p class="muted">This is not consulting theater. It is a focused setup sprint for one narrow problem: stop losing time on auth + billing wiring before the product work starts.</p>
+        <div class="price">€299 <span>flat</span></div>
+        <p class="muted">Small scope only. Limited availability. If it is not a fit, the answer should be no.</p>
+        <ul class="list" style="margin-top:18px;">
+          <li><span class="check">✓</span><span>Ship It Kit starter included.</span></li>
+          <li><span class="check">✓</span><span>Quick async scope sanity check before saying yes.</span></li>
+          <li><span class="check">✓</span><span>Hands-on help on setup, env, auth flow, billing flow, and base routes.</span></li>
+          <li><span class="check">✓</span><span>Short handoff so you can keep building after the sprint.</span></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section>
+      <div class="eyebrow">What you get</div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>1. Scope sanity check</h3>
+          <p>You send the stack, the current blocker, and the MVP shape. If it is drifting into a custom project or the wrong stack, it should stop there.</p>
+        </div>
+        <div class="card">
+          <h3>2. Focused setup help</h3>
+          <p>The sprint is for auth, billing, env setup, route protection, and the starter base. Not for building the whole product, not for endless iterations.</p>
+        </div>
+        <div class="card">
+          <h3>3. Clean handoff</h3>
+          <p>You keep Ship It Kit, the adjusted implementation path, and next prompts so you can continue with Cursor, Claude, Copilot, or by hand.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">Best fit</div>
+      <div class="grid-2">
+        <div class="card">
+          <h2>Good fit</h2>
+          <ul class="list">
+            <li><span class="check">✓</span><span>You are already using Next.js + Supabase + Stripe.</span></li>
+            <li><span class="check">✓</span><span>You want the boring base handled faster so you can focus on product logic.</span></li>
+            <li><span class="check">✓</span><span>You are blocked on setup, not still deciding what to build.</span></li>
+            <li><span class="check">✓</span><span>You want a small, practical sprint, not a long advisory engagement.</span></li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Not a fit</h2>
+          <ul class="list">
+            <li><span class="cross">✕</span><span>Different stack or no-code project.</span></li>
+            <li><span class="cross">✕</span><span>Marketplace, enterprise, or highly custom architecture.</span></li>
+            <li><span class="cross">✕</span><span>Need someone to build the entire product for you.</span></li>
+            <li><span class="cross">✕</span><span>Still very early and mostly looking for generic strategy.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow">How to ask</div>
+      <div class="card">
+        <h2>Keep the first message short.</h2>
+        <p class="muted">The fastest filter is a short email with just the essentials. Use this:</p>
+        <pre style="white-space:pre-wrap; font-family:ui-monospace, SFMono-Regular, Menlo, monospace; margin:18px 0 0; color:#e5eefc; background:rgba(8,17,31,0.75); border:1px solid rgba(148,163,184,0.16); border-radius:16px; padding:18px; overflow:auto;">Subject: Private setup sprint
+
+Stack: Next.js + Supabase + Stripe
+What I'm building:
+What is already done:
+What I'm stuck on:
+Timeline:</pre>
+      </div>
+    </section>
+
+    <section>
+      <div class="card">
+        <div class="eyebrow">Bottom line</div>
+        <h2>Two honest options.</h2>
+        <p>If you want the codebase and can handle implementation, take Ship It Kit for €49. If you want a small amount of hands-on help on the exact same stack, ask about the €299 setup sprint.</p>
+        <div class="cta-actions" style="margin-top:22px;">
+          <a class="btn-primary" href="mailto:arthur.pierrey@gmail.com?subject=Private%20setup%20sprint&body=My%20stack:%0AWhat%20I%27m%20building:%0AWhat%20I%27m%20stuck%20on:%0ATimeline:">Ask about the setup sprint</a>
+          <a class="btn-secondary" href="index.html">Review the €49 starter first</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-line">
+      <span>Ship It Kit by Goosekit, for builders who want auth + billing wired faster.</span>
+      <span>Built by Arthur Pierrey.</span>
+    </div>
+  </footer>
+</body>
+</html>
