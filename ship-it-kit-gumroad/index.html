@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ship It Kit — Quick Checkout</title>
-  <meta name="description" content="Quick checkout page for Ship It Kit. Next.js 15 + Supabase + Stripe starter for SaaS MVPs. €49 one-time payment.">
+  <meta name="description" content="Quick checkout page for Ship It Kit. Focused Next.js 15 + Supabase + Stripe auth and billing starter. €49 one-time payment.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://goosekit.dev/ship-it-kit/">
   <style>
@@ -93,19 +93,18 @@
       <span class="trust-badge">⚡ Launch pricing ends April 30</span>
     </div>
     <h1>Ship It Kit, quick checkout</h1>
-    <p class="subtitle">Built by indie makers — skip the auth + billing grind and get to your actual product</p>
+    <p class="subtitle">Focused auth + billing starter for founders who want product work back on the table fast</p>
 
     <div class="stack">
       <span>Next.js 15</span>
-      <span>Supabase</span>
-      <span>Stripe</span>
-      <span>Tailwind</span>
-      <span>Shadcn/ui</span>
-      <span>React Email</span>
+      <span>TypeScript</span>
+      <span>Tailwind CSS 4</span>
+      <span>Supabase Auth</span>
+      <span>Stripe Billing</span>
     </div>
 
     <div class="price">€49</div>
-    <p class="price-note">one-time payment · lifetime updates</p>
+    <p class="price-note">one-time payment · lifetime updates · 30-day refund</p>
 
     <div class="savings">
       💸 Pays for itself in one weekend of saved debugging — that's ~2 days × your hourly rate
@@ -115,7 +114,7 @@
       <p style="font-size:.8rem;color:#d1d5db;margin:0 0 .35rem;font-weight:600;">⚡ What happens after you buy:</p>
       <ol style="font-size:.78rem;color:#9ca3af;margin:0;padding-left:1.1rem;line-height:1.6;">
         <li>License email arrives immediately from Lemon Squeezy</li>
-        <li>Click the link in the email → get GitHub repo access</li>
+        <li>Follow the access instructions and grab the starter repo</li>
         <li>Clone, add your Supabase + Stripe keys, start building</li>
       </ol>
     </div>
@@ -127,18 +126,18 @@
     </a>
     <p style="font-size:.72rem;color:#6b7280;margin-bottom:.75rem;">Card or PayPal · Lemon Squeezy handles checkout securely · License email arrives immediately after payment</p>
 
-    <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20alternate%20checkout" class="secondary-btn">
-      Need another checkout option? Email Arthur →
+    <a href="/ship-it-kit/" class="secondary-btn">
+      See the product page first →
     </a>
 
     <div class="divider"></div>
 
     <ul class="features">
-      <li>Stripe Checkout + Portal + Webhooks wired</li>
-      <li>Supabase auth + database pre-configured</li>
-      <li>Transactional email templates ready</li>
-      <li>Dashboard shell + settings pages scaffolded</li>
-      <li>AI coding rules for Cursor and Claude Code</li>
+      <li>Stripe Checkout + portal + webhooks wired</li>
+      <li>Supabase auth + protected routes ready</li>
+      <li>Typed database layer + schema included</li>
+      <li>Dashboard shell + pricing page included</li>
+      <li>CLAUDE.md for AI-assisted edits</li>
       <li>Landing page included</li>
     </ul>
 
