@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship It Kit vs ShipFast, Makerkit, Supastarter — Next.js Starter Comparison</title>
+  <meta name="description" content="Honest comparison of Ship It Kit against ShipFast, Makerkit, and Supastarter. See scope, price, stack, and which starter fits solo founders best.">
+  <link rel="canonical" href="https://goosekit.dev/compare/ship-it-kit-vs-competitors/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <meta property="og:title" content="Ship It Kit vs ShipFast, Makerkit, Supastarter — Next.js Starter Comparison">
+  <meta property="og:description" content="Honest comparison of Ship It Kit against ShipFast, Makerkit, and Supastarter. See scope, price, and which fits solo founders best.">
+  <meta property="og:url" content="https://goosekit.dev/compare/ship-it-kit-vs-competitors/">
+  <meta property="og:type" content="article">
+  <meta name="robots" content="index, follow">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121f;
+      --border: #2a2a40;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --accent: #ff4800;
+      --accent-dim: #ff480020;
+      --green: #4ade80;
+      --green-dim: #16a34a18;
+      --green-border: #16a34a30;
+      --amber: #fbbf24;
+    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header { border-bottom: 1px solid var(--border); padding: 1rem 2rem; }
+    header a { color: var(--text); font-weight: 600; font-size: 1.1rem; }
+    header a:hover { text-decoration: none; color: var(--accent); }
+    .breadcrumb { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; }
+    .breadcrumb a { color: var(--muted); }
+    .breadcrumb span { margin: 0 .4rem; }
+
+    .hero { text-align: center; padding: 4rem 2rem 3rem; max-width: 720px; margin: 0 auto; }
+    .hero h1 { font-size: 2rem; color: #fff; margin-bottom: 1rem; line-height: 1.25; }
+    .hero h1 span { color: var(--accent); }
+    .hero p { color: var(--muted); font-size: 1.05rem; max-width: 560px; margin: 0 auto 1.5rem; }
+    .hero .cta-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary { background: var(--accent); color: #000; font-weight: 700; padding: .75rem 1.75rem; border-radius: 8px; font-size: .95rem; display: inline-block; }
+    .btn-primary:hover { opacity: .9; text-decoration: none; }
+    .btn-secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); padding: .75rem 1.75rem; border-radius: 8px; font-size: .95rem; display: inline-block; }
+    .btn-secondary:hover { background: #1a1a2e; text-decoration: none; }
+
+    .disclaimer { background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 8px; padding: .75rem 1rem; font-size: .82rem; color: #86efac; text-align: center; margin: 0 auto 2rem; max-width: 560px; }
+
+    main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+    .comparison-table-wrap { overflow-x: auto; margin: 2rem 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    th { text-align: left; padding: .75rem 1rem; border-bottom: 2px solid var(--border); color: #fff; font-weight: 700; }
+    th.center { text-align: center; }
+    td { padding: .7rem 1rem; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--muted); }
+    td.center { text-align: center; }
+    tr:last-child td { border-bottom: none; }
+    .kit-col { background: #1a1030; }
+    .check { color: var(--green); font-weight: 700; }
+    .cross { color: #ef4444; font-weight: 700; }
+    .partial { color: var(--amber); font-weight: 700; }
+    .feature-name { color: var(--text); font-weight: 600; }
+    .competitor-name { font-weight: 700; color: #fff; }
+
+    .section { margin: 3rem 0; }
+    .section h2 { font-size: 1.3rem; color: #fff; margin-bottom: 1rem; padding-bottom: .5rem; border-bottom: 1px solid var(--border); }
+    .section p { color: var(--muted); margin-bottom: 1rem; font-size: .95rem; }
+    .section ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+    .section li { padding-left: 1.5rem; position: relative; color: var(--muted); font-size: .92rem; }
+    .section li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+
+    .who-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+    .who-card h3 { font-size: 1rem; color: #fff; margin-bottom: .5rem; }
+    .who-card p { font-size: .88rem; color: var(--muted); margin: 0; }
+    .who-card strong { color: var(--accent); }
+
+    .fit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .fit-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; text-align: center; }
+    .fit-item .icon { font-size: 1.5rem; margin-bottom: .5rem; }
+    .fit-item h4 { font-size: .9rem; color: #fff; margin-bottom: .35rem; }
+    .fit-item p { font-size: .8rem; color: var(--muted); margin: 0; }
+
+    .pricing-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; text-align: center; margin: 2rem 0; }
+    .pricing-box .price { font-size: 3rem; font-weight: 700; color: #fff; }
+    .pricing-box .price-note { color: var(--muted); font-size: .9rem; margin-top: .5rem; }
+    .pricing-box .tagline { color: var(--accent); font-size: .95rem; font-weight: 600; margin: 1rem 0; }
+    .pricing-box .reason { font-size: .85rem; color: var(--muted); margin-top: .5rem; }
+
+    .final-verdict { background: linear-gradient(135deg, #12121f 0%, #1a1030 100%); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; text-align: center; margin: 3rem 0; }
+    .final-verdict h2 { font-size: 1.4rem; color: #fff; margin-bottom: 1rem; }
+    .final-verdict p { color: var(--muted); font-size: .95rem; max-width: 520px; margin: 0 auto 1.5rem; }
+
+    footer { text-align: center; padding: 2rem; color: var(--muted); font-size: .8rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+    footer a { color: var(--muted); }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 1.5rem; }
+      main { padding: 1rem; }
+      table { font-size: .8rem; }
+      th, td { padding: .5rem .6rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="breadcrumb">
+    <a href="/">Goosekit</a> <span>›</span>
+    <a href="/compare/">Compare</a> <span>›</span>
+    Ship It Kit vs Competitors
+  </div>
+</header>
+
+<section class="hero">
+  <h1>Ship It Kit vs <span>ShipFast, Makerkit, Supastarter</span></h1>
+  <p>Honest comparison for solo founders choosing a Next.js starter. See what each option actually includes, what it costs, and who it's best for.</p>
+  <div class="cta-row">
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-primary" target="_blank" rel="noopener">Buy Ship It Kit — €49 →</a>
+    <a href="/ship-it-kit/" class="btn-secondary">See full product page →</a>
+  </div>
+  <div class="disclaimer" style="margin-top:1.25rem;">
+    🟢 Actively maintained. I use this starter myself for every new SaaS idea.
+  </div>
+</section>
+
+<main>
+
+<div class="comparison-table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th style="min-width:160px;">Feature</th>
+      <th class="center kit-col" style="background:#1a1030;">Ship It Kit<br><span style="font-size:.78rem;color:#9ca3af;font-weight:400;">Goosekit · €49</span></th>
+      <th class="center">ShipFast<br><span style="font-size:.78rem;color:#9ca3af;font-weight:400;">Makerpixel · $149</span></th>
+      <th class="center">Makerkit<br><span style="font-size:.78rem;font-weight:400;color:#9ca3af;">-makerkit · ~$199</span></th>
+      <th class="center">Supastarter<br><span style="font-size:.78rem;font-weight:400;color:#9ca3af;">Kapebit · ~€149</span></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="feature-name">Next.js 15 App Router</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Supabase auth + DB</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="cross">✗</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Stripe Checkout + portal</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Stripe webhook handlers</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Landing + pricing pages</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Protected dashboard shell</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Tailwind CSS 4</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="partial">~</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Email / resend / React Email</td>
+      <td class="center kit-col"><span class="cross">—</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Multi-tenant / teams</td>
+      <td class="center kit-col"><span class="cross">—</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Admin dashboard</td>
+      <td class="center kit-col"><span class="cross">—</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">AI coding context (CLAUDE.md)</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="partial">?</span></td>
+      <td class="center"><span class="partial">?</span></td>
+      <td class="center"><span class="partial">?</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">One-person scope</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="partial">~</span></td>
+      <td class="center"><span class="partial">~</span></td>
+      <td class="center"><span class="partial">~</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">Price</td>
+      <td class="center kit-col" style="color:#fff;font-weight:700;">€49</td>
+      <td class="center">$149</td>
+      <td class="center">~$199</td>
+      <td class="center">~€149</td>
+    </tr>
+    <tr>
+      <td class="feature-name">One-time payment</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="check">✓</span></td>
+      <td class="center"><span class="cross">✗</span> (sub)</td>
+      <td class="center"><span class="check">✓</span></td>
+    </tr>
+    <tr>
+      <td class="feature-name">30-day refund</td>
+      <td class="center kit-col"><span class="check">✓</span></td>
+      <td class="center"><span class="partial">?</span></td>
+      <td class="center"><span class="partial">?</span></td>
+      <td class="center"><span class="partial">?</span></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<div class="section">
+  <h2>What this table misses</h2>
+  <p>Features tell one story. Scope and maintenance burden tell another. Here's what the checkboxes don't say:</p>
+  <ul>
+    <li><strong>Ship It Kit is smaller by design.</strong> It's the auth + billing layer only — not a full SaaS framework. If you want multi-tenant teams, admin panels, and email flows included, you want one of the bigger options. If you want to understand what you have before adding your product logic, Ship It Kit is built for that.</li>
+    <li><strong>ShipFast is the established option.</strong> More community discussion, more testimonials, more integrations. It's also the loudest, which means it attracts both the most buyers and the most vocal critics.</li>
+    <li><strong>Makerkit and Supastarter are good mid-weight choices.</strong> Stronger on features, heavier on scope. Good if you know you need teams and billing from day one. More to learn on day one too.</li>
+    <li><strong>All the big starters fight AI tooling.</strong> They're all large enough that Cursor, Claude, and Copilot slow down or get confused. Ship It Kit has an explicit CLAUDE.md and a deliberately minimal repo structure to stay editable by AI tools.</li>
+  </ul>
+</div>
+
+<div class="section">
+  <h2>Who should use what</h2>
+  <div class="fit-grid">
+    <div class="who-card">
+      <h3>→ Ship It Kit</h3>
+      <p>Solo founders validating a <strong>specific pain point</strong> around auth or billing. Builders using Cursor, Claude, or Copilot. Anyone who wants to understand their starter before adding product complexity.</p>
+    </div>
+    <div class="who-card">
+      <h3>→ ShipFast</h3>
+      <p>Founders who want the most battle-tested community option with a broad feature set and are willing to pay $149 + learn a larger codebase.</p>
+    </div>
+    <div class="who-card">
+      <h3>→ Makerkit / Supastarter</h3>
+      <p>Founders who know they need multi-tenant teams, admin panels, and more integrated features from the start, and have time to absorb a bigger framework.</p>
+    </div>
+  </div>
+</div>
+
+<div class="pricing-box">
+  <div class="price">€49</div>
+  <div class="price-note">one-time payment · lifetime updates · 30-day refund</div>
+  <div class="tagline">The cheapest of the bunch. Intentionally.</div>
+  <div class="reason">Smaller scope + honest positioning = faster setup + less to fight when you add your product logic.</div>
+  <div style="margin-top:1.25rem;">
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-primary" target="_blank" rel="noopener">Buy Ship It Kit — €49 →</a>
+  </div>
+  <div style="margin-top:.75rem; font-size:.82rem; color:var(--muted);">
+    <a href="/ship-it-kit/">← See the full product page with proof files</a>
+  </div>
+</div>
+
+<div class="section">
+  <h2>Common reasons builders choose Ship It Kit</h2>
+  <ul>
+    <li>Already tried a bigger starter and spent more time stripping features than building the product</li>
+    <li>Using Cursor, Claude, or Copilot and need a clean, minimal repo that AI tools can actually edit</li>
+    <li>Want to understand every file in the starter before adding product logic</li>
+    <li>Strict budget: €49 vs $149–$199, with the same core auth + Stripe plumbing</li>
+    <li>Want a 30-day refund if the fit turns out to be wrong — no guessing games</li>
+    <li>Already knows Supabase is the right auth layer for this particular project</li>
+  </ul>
+</div>
+
+<div class="final-verdict">
+  <h2>The honest summary</h2>
+  <p>If you need the giant SaaS framework — teams, admin, full email flow, maximal everything — look at ShipFast, Makerkit, or Supastarter. They're good at what they do.</p>
+  <p>If you want the auth + billing layer wired, nothing extra, understood in an afternoon, and editable by your AI tool — Ship It Kit is built for exactly that.</p>
+  <div class="cta-row" style="justify-content:center;">
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-primary" target="_blank" rel="noopener">Get Ship It Kit — €49 →</a>
+    <a href="/ship-it-kit/" class="btn-secondary">See the starter first →</a>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <p><a href="/">Goosekit</a> · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/compare/">All comparisons</a></p>
+  <p style="margin-top:.5rem;">Built for founders who want product work back on the table fast.</p>
+</footer>
+
+</body>
+</html>
