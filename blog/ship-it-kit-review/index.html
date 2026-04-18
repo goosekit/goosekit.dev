@@ -36,9 +36,22 @@
     .price-box { background: #f0fdf4; border: 2px solid #22c55e; border-radius: 12px; padding: 24px; text-align: center; margin: 32px 0; }
     .price-box .price { font-size: 2.5rem; font-weight: 800; color: #16a34a; }
     .price-box .note { color: #16a34a; font-weight: 600; margin-top: 4px; }
+    .fit-snapshot { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 32px; }
+    .fit-card { border-radius: 14px; padding: 20px; border: 1px solid #e2e8f0; }
+    .fit-card.good { background: #f0fdf4; border-color: #86efac; }
+    .fit-card.bad { background: #fff7ed; border-color: #fdba74; }
+    .fit-card h3 { margin: 0 0 12px; font-size: 1rem; }
+    .fit-card.good h3 { color: #166534; }
+    .fit-card.bad h3 { color: #c2410c; }
+    .fit-card ul { margin: 0; padding-left: 18px; }
+    .fit-card li { margin-bottom: 6px; }
+    .stack-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px 20px; margin: 0 0 28px; color: #1e3a8a; }
+    .stack-note strong { color: #1d4ed8; }
     .footer-cta { background: linear-gradient(135deg, #ff4800, #ec4899); color: #fff; padding: 32px; border-radius: 16px; text-align: center; margin-top: 48px; }
     .footer-cta h3 { color: #fff; margin-top: 0; font-size: 1.3rem; }
     .footer-cta a { display: inline-block; background: #fff; color: #ff4800; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-top: 12px; }
+    .footer-cta .secondary-link { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.45); margin-left: 10px; }
+    @media (max-width: 720px) { .fit-snapshot { grid-template-columns: 1fr; } .footer-cta .secondary-link { margin-left: 0; margin-top: 10px; } }
     .author { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 16px; background: #f8fafc; border-radius: 12px; }
     .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: #ff4800; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.2rem; }
     .author-info { flex: 1; }
@@ -252,8 +265,29 @@
   <article>
     <div class="hero">
       <h1>Ship It Kit Review 2026 — What You Actually Get for €49</h1>
-      <p class="meta">An honest review by the builder who made it · April 2026 · 8 min read</p>
+      <p class="meta">Exact stack, real scope, and who should honestly buy it · April 2026 · 8 min read</p>
       <a href="/go/ship-it-kit/checkout-blog-review-hero/?source=ship_it_kit_review_hero" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_hero_buy">Get Ship It Kit €49 →</a>
+    </div>
+
+    <div class="stack-note"><strong>Fast summary:</strong> this is a <strong>Next.js + Supabase + Stripe</strong> starter focused on auth, protected routes, checkout, portal, and webhook plumbing. It is not a giant framework and not a done-for-you build.</div>
+
+    <div class="fit-snapshot">
+      <div class="fit-card good">
+        <h3>Good fit</h3>
+        <ul>
+          <li>You're building a Next.js SaaS MVP now.</li>
+          <li>Auth + billing are the parts slowing you down.</li>
+          <li>You want starter code you can keep editing with Cursor, Claude, or Copilot.</li>
+        </ul>
+      </div>
+      <div class="fit-card bad">
+        <h3>Probably skip it</h3>
+        <ul>
+          <li>You are not using Next.js.</li>
+          <li>You want a hosted tool or a done-for-you setup service.</li>
+          <li>You want a huge all-in-one framework with lots of abstraction.</li>
+        </ul>
+      </div>
     </div>
 
     <div class="toc">
@@ -336,6 +370,7 @@ README.md             # Full setup guide</code></pre>
       <h3>Ready to stop wiring boilerplate?</h3>
       <p style="margin-top:8px;">Get Ship It Kit for €49 — instant GitHub repo access.</p>
       <a href="/go/ship-it-kit/checkout-blog-review-body/?source=ship_it_kit_review_body" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_body_buy">Buy Ship It Kit →</a>
+      <a href="/ship-it-kit/?ref=review_footer_cta" class="secondary-link">See the product page first</a>
       <p style="margin-top:12px;font-size:0.95rem;opacity:0.92;">Want a quick sanity check before buying? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" style="color:#fff;text-decoration:underline;">Email Arthur</a> with your use case. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
     </div>
   </article>
