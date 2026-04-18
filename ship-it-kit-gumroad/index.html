@@ -35,6 +35,32 @@
     .back a:hover { color: #9ca3af; }
   </style>
   <script defer src="/posthog.js"></script>
+  <script>
+    (function () {
+      function getParisTime() {
+        return new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' });
+      }
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function updateCountdown() {
+        var now = new Date(getParisTime());
+        var end = new Date('2026/04/30 23:59:59 Europe/Paris');
+        var diff = end - now;
+        if (diff <= 0) {
+          document.getElementById('countdown').textContent = 'Offer ended';
+          document.getElementById('countdown').style.color = '#ff4800';
+          return;
+        }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        var s = Math.floor((diff % 60000) / 1000);
+        document.getElementById('countdown').textContent =
+          pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+    })();
+  </script>
 <style id="gk-homepage-header-copy-styles">
   .site-header {
     position: sticky;
@@ -257,6 +283,8 @@
     <div class="savings">
       💸 Pays for itself in one weekend of saved debugging — that's ~2 days × your hourly rate
     </div>
+
+    <div id="countdown" style="font-size:.8rem;color:#ff4800;font-weight:700;margin-bottom:1rem;letter-spacing:.05em;"></div>
 
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="primary-btn" target="_blank" rel="noopener">
       Buy now via Lemon Squeezy →
