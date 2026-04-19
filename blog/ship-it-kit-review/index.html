@@ -269,7 +269,7 @@
       <a href="/go/ship-it-kit/checkout-blog-review-hero/?source=ship_it_kit_review_hero" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_hero_buy">Get Ship It Kit €49 →</a>
     </div>
 
-    <div class="stack-note"><strong>Fast summary:</strong> this is a <strong>Next.js + Supabase + Stripe</strong> starter focused on auth, protected routes, checkout, portal, and webhook plumbing. It is not a giant framework and not a done-for-you build.</div>
+    <div class="stack-note"><strong>Fast summary:</strong> this is a <strong>Next.js + Supabase + Stripe</strong> starter focused on auth, password reset, protected routes, checkout, portal, and webhook plumbing. It is not a giant framework and not a done-for-you build.</div>
 
     <div class="fit-snapshot">
       <div class="fit-card good">
@@ -307,15 +307,15 @@
     <p>This is a review of what that €49 actually buys you, written honestly.</p>
 
     <h2 id="stack">1. What the Stack Includes</h2>
-    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, React Email templates, Tailwind CSS + Shadcn/ui, landing page, dashboard scaffold, settings and billing pages.</strong></p>
+    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, Tailwind CSS 4, landing page, dashboard scaffold, settings and billing pages, plus password reset flow.</strong></p>
 
     <p>Here's what the actual file structure looks like once you clone it:</p>
     <pre><code>/app                  # Next.js App Router pages
-/components/ui        # Shadcn/ui component library
-/emails               # React Email templates
+/app/(app)/settings   # Account + billing home
+/app/(marketing)      # Pricing + public pages
 /lib                  # Supabase client, Stripe utils
-/stripe               # Webhook handlers
-/supabase             # Migrations + types
+/api/stripe           # Checkout + portal endpoints
+/supabase             # Schema + types
 README.md             # Full setup guide</code></pre>
 
     <p>It's a real codebase, not a screenshot of one. You get the full source on GitHub after purchase.</p>
@@ -353,7 +353,7 @@ README.md             # Full setup guide</code></pre>
       <tr><th>Feature</th><th>Ship It Kit</th><th>Typical Free Starter</th></tr>
       <tr><td>Stripe billing + portal</td><td>✓</td><td>Often missing</td></tr>
       <tr><td>Webhook handlers</td><td>✓</td><td>Sometimes</td></tr>
-      <tr><td>React Email templates</td><td>✓</td><td>Rarely</td></tr>
+      <tr><td>Settings / billing home</td><td>✓</td><td>Rarely</td></tr>
       <tr><td>Dedicated landing page</td><td>✓</td><td>Sometimes</td></tr>
       <tr><td>AI-friendly structure</td><td>✓</td><td>Not a design goal</td></tr>
       <tr><td>One-time price</td><td>✓</td><td>Not typical</td></tr>

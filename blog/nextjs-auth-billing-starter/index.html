@@ -446,7 +446,7 @@
       <div class="hero-copy">
         <div class="pill">Focused starter by Goosekit</div>
         <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
-        <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
+        <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, password reset, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="/go/ship-it-kit/product-from-auth-billing/">See the product page</a>
           <a class="btn-secondary" href="#fit">Check if your stack fits</a>
@@ -455,7 +455,7 @@
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
-          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers</span></li>
+          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers, and a settings / billing home</span></li>
           <li><span class="check">✓</span><span>Instant repo access, unlimited projects, 30-day money-back guarantee if it is the wrong fit</span></li>
         </ul>
       </div>
@@ -528,7 +528,7 @@
         </div>
         <div class="panel">
           <h3>What you can launch from</h3>
-          <p>Landing page, auth screen, pricing page, protected dashboard shell, and the core routes needed to get to a first usable MVP.</p>
+          <p>Landing page, auth screen, pricing page, protected dashboard shell, settings / billing home, and the core routes needed to get to a first usable MVP.</p>
         </div>
         <div class="panel">
           <h3>Fast setup docs</h3>
@@ -554,6 +554,7 @@
 │   ├── page.tsx
 │   ├── auth/page.tsx
 │   ├── (app)/dashboard/page.tsx
+│   ├── (app)/settings/page.tsx
 │   ├── (marketing)/pricing/page.tsx
 │   └── api/webhooks/stripe/route.ts
 ├── lib/
@@ -570,8 +571,8 @@ supabase/
               Checkout completion, subscription updates, and cancellation events are already handled.
             </div>
             <div class="path-item">
-              <strong>src/middleware.ts</strong>
-              Route protection is already in place, so the dashboard shell is not a fake screenshot.
+              <strong>src/app/(app)/settings/page.tsx</strong>
+              Buyers get a real account and billing home instead of a dead-end dashboard shell.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -582,11 +583,11 @@ supabase/
         <div class="panel">
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
-            <li><span class="check">✓</span><span>Signup and login flow.</span></li>
+            <li><span class="check">✓</span><span>Signup, login, and password reset flow.</span></li>
             <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
-            <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
+            <li><span class="check">✓</span><span>Landing, pricing, auth, dashboard, and settings starter pages.</span></li>
             <li><span class="check">✓</span><span>Initial AI context so code assistants can edit safely.</span></li>
           </ul>
         </div>

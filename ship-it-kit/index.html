@@ -460,7 +460,7 @@
       <div class="hero-copy">
         <div class="pill">Next.js + Supabase + Stripe starter</div>
         <h1>Next.js + Supabase + Stripe MVP starter, with auth and billing already wired.</h1>
-        <p>Ship It Kit by Goosekit gives solo founders the exact layer most MVPs lose a weekend to: signup, protected routes, checkout, portal, webhook plumbing, and a clean repo that AI coding tools can actually edit.</p>
+        <p>Ship It Kit by Goosekit gives solo founders the exact layer most MVPs lose a weekend to: signup, password reset, protected routes, checkout, portal, webhook plumbing, and a clean repo that AI coding tools can actually edit.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/">Get the starter, €49</a>
           <a class="btn-secondary" href="#proof">See the exact files first</a>
@@ -551,7 +551,7 @@
         </div>
         <div class="panel">
           <h3>What you can launch from</h3>
-          <p>Landing page, auth screen, pricing page, protected dashboard shell, and the core routes needed to get to a first usable MVP.</p>
+          <p>Landing page, auth screen, pricing page, protected dashboard shell, settings / billing home, and the core routes needed to get to a first usable MVP.</p>
         </div>
         <div class="panel">
           <h3>Fast setup docs</h3>
@@ -577,6 +577,7 @@
 │   ├── page.tsx
 │   ├── auth/page.tsx
 │   ├── (app)/dashboard/page.tsx
+│   ├── (app)/settings/page.tsx
 │   ├── (marketing)/pricing/page.tsx
 │   └── api/webhooks/stripe/route.ts
 ├── lib/
@@ -593,8 +594,8 @@ supabase/
               Checkout completion, subscription updates, and cancellation events are already handled.
             </div>
             <div class="path-item">
-              <strong>src/middleware.ts</strong>
-              Route protection is already in place, so the dashboard shell is not a fake screenshot.
+              <strong>src/app/(app)/settings/page.tsx</strong>
+              Buyers get a real account and billing home instead of a dead-end dashboard shell.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -605,11 +606,11 @@ supabase/
         <div class="panel">
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
-            <li><span class="check">✓</span><span>Signup and login flow.</span></li>
+            <li><span class="check">✓</span><span>Signup, login, and password reset flow.</span></li>
             <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
-            <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
+            <li><span class="check">✓</span><span>Landing, pricing, auth, dashboard, and settings starter pages.</span></li>
             <li><span class="check">✓</span><span>Initial AI context so code assistants can edit safely.</span></li>
           </ul>
         </div>
