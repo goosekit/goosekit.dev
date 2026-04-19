@@ -187,6 +187,32 @@
     .check { color: var(--green); font-weight: 800; }
     .cross { color: var(--danger); font-weight: 800; }
 
+    .urgency-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(249, 115, 22, 0.14);
+      border: 1px solid rgba(249, 115, 22, 0.32);
+      color: #fed7aa;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .urgency-countdown {
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .urgency-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 0;
+    }
+
     .card,
     .panel {
       background: rgba(15, 23, 42, 0.8);
@@ -446,6 +472,45 @@
       .footer-line { flex-direction: column; }
     }
   </style>
+  <script>
+    (function () {
+      function getParisTime() {
+        return new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' });
+      }
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function tick(elId) {
+        var el = document.getElementById(elId);
+        if (!el) return;
+        var now = new Date(getParisTime());
+        var end = new Date('2026/04/30 23:59:59 Europe/Paris');
+        var diff = end - now;
+        if (diff <= 0) { el.textContent = 'Offer ended'; el.style.color = '#888'; return; }
+        var d = Math.floor(diff / 86400000);
+        var h = Math.floor((diff % 86400000) / 3600000);
+        var m = Math.floor((diff % 3600000) / 60000);
+        el.textContent = pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+      }
+      var s = 0;
+      function pad(n) { return String(n).padStart(2, '0'); }
+      function updateAll() {
+        ['hero-countdown', 'card-countdown'].forEach(function(id) {
+          var el = document.getElementById(id);
+          if (!el) return;
+          var now = new Date(getParisTime());
+          var end = new Date('2026/04/30 23:59:59 Europe/Paris');
+          var diff = end - now;
+          if (diff <= 0) { el.textContent = 'Offer ended'; el.style.color = '#888'; return; }
+          var d = Math.floor(diff / 86400000);
+          var h = Math.floor((diff % 86400000) / 3600000);
+          var m = Math.floor((diff % 3600000) / 60000);
+          var sec = Math.floor((diff % 60000) / 1000);
+          el.textContent = pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(sec) + 's';
+        });
+      }
+      updateAll();
+      setInterval(updateAll, 1000);
+    })();
+  </script>
 </head>
 <body>
   <header>
@@ -465,7 +530,11 @@
           <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/">Get the starter, €49</a>
           <a class="btn-secondary" href="#proof">See the exact files first</a>
         </div>
-        <p class="price-note" style="margin:14px 0 0;">Low-risk buy: if Ship It Kit is the wrong fit for your stack or workflow, email within 30 days and get a full refund.</p>
+        <div class="urgency-row">
+          <span class="urgency-pill">⚡ Launch pricing ends April 30</span>
+          <span id="hero-countdown" class="urgency-countdown"></span>
+        </div>
+        <p class="price-note" style="margin:10px 0 0;">Low-risk buy: if Ship It Kit is the wrong fit for your stack or workflow, email within 30 days and get a full refund.</p>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
@@ -484,6 +553,10 @@
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
           <span class="mini-pill">30-day money-back</span>
+        </div>
+        <div class="urgency-row" style="margin:0 0 14px;">
+          <span class="urgency-pill">⚡ Ends April 30</span>
+          <span id="card-countdown" class="urgency-countdown" style="font-size:.78rem;"></span>
         </div>
         <ul class="pain-list">
           <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
