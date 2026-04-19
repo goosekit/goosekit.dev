@@ -38,7 +38,20 @@
       "price": "29",
       "priceCurrency": "EUR",
       "availability": "https://schema.org/InStock",
-      "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757"
+      "itemCondition": "https://schema.org/NewCondition",
+      "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757",
+      "shippingDetails": {
+        "@type": "OfferShippingDetails",
+        "doesNotShip": true
+      },
+      "hasMerchantReturnPolicy": {
+        "@type": "MerchantReturnPolicy",
+        "applicableCountry": ["FR", "US", "GB", "DE", "ES", "IT", "NL", "BE", "CA", "AU"],
+        "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+        "merchantReturnDays": 30,
+        "returnFees": "https://schema.org/FreeReturn",
+        "refundType": "https://schema.org/FullRefund"
+      }
     }
   }
   </script>
@@ -67,6 +80,11 @@
         "@type": "Question",
         "name": "Is this a subscription?",
         "acceptedAnswer": {"@type": "Answer", "text": "No. Goosekit Offline Pack is a one-time purchase."}
+      },
+      {
+        "@type": "Question",
+        "name": "Is there a refund policy?",
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. If Goosekit Offline Pack is the wrong fit, email within 30 days and get a full refund."}
       }
     ]
   }
@@ -578,6 +596,7 @@
               <div class="price">€29</div>
               <div class="price-note">One-time purchase, unzip and run locally on Mac, Windows, or Linux.</div>
             </div>
+            <p style="margin:14px 0 0;color:#cbd5e1;font-size:0.95rem;">Low-risk buy, instant digital download, and a 30-day money-back guarantee if the pack is the wrong fit.</p>
             <div class="cta-row">
               <a class="btn btn-primary" href="/go/offline-pack/checkout-hero/?source=offline_pack_hero" target="_blank" rel="noopener" data-ph-event="offline_pack_cta_clicked" data-ph-location="hero">Buy Goosekit Offline Pack →</a>
               <a class="btn btn-secondary" href="#included-tools" data-ph-event="offline_pack_section_jump" data-ph-location="hero_secondary">See what’s included</a>
@@ -684,7 +703,7 @@
         <p class="section-copy">The delivery is intentionally simple, because the goal is speed and reliability.</p>
         <div class="steps">
           <article class="card"><div class="step-num">1</div><h3>Buy once</h3><p>Use the Lemon Squeezy checkout and get instant access after payment.</p></article>
-          <article class="card"><div class="step-num">2</div><h3>Download the ZIP</h3><p>Save the pack locally, unzip it wherever you want, and keep it anywhere you trust.</p></article>
+          <article class="card"><div class="step-num">2</div><h3>Download the ZIP</h3><p>Save the pack locally, unzip it wherever you want, and keep it anywhere you trust. No physical shipping is involved.</p></article>
           <article class="card"><div class="step-num">3</div><h3>Open index.html</h3><p>Launch the local pack in your browser and start using the included Goosekit tools offline.</p></article>
         </div>
       </div>
@@ -697,6 +716,7 @@
           <article class="card"><h3>Do I need to install anything?</h3><p>No. Unzip the folder and open <code>index.html</code> in a modern browser.</p></article>
           <article class="card"><h3>Does it work on Windows too?</h3><p>Yes. It is browser-based, so the pack works across Mac, Windows, and Linux.</p></article>
           <article class="card"><h3>Is this a subscription?</h3><p>No. Goosekit Offline Pack is a one-time purchase.</p></article>
+          <article class="card"><h3>Is there a refund policy?</h3><p>Yes. If Goosekit Offline Pack is the wrong fit, email within 30 days and get a full refund.</p></article>
           <article class="card"><h3>Why not just use the website?</h3><p>The website is still great. This pack is for local-only workflows, bad connections, company networks, and people who want a portable private version.</p></article>
         </div>
       </div>
@@ -706,7 +726,7 @@
       <div class="final-cta">
         <div>
           <h2>Get the pack and keep it on your machine.</h2>
-          <p>Goosekit Offline Pack is the fastest paid Goosekit product to start using. Buy once, download the ZIP, and keep these 12 tools ready wherever you work.</p>
+          <p>Goosekit Offline Pack is the fastest paid Goosekit product to start using. Buy once, download the ZIP, keep these 12 tools ready wherever you work, and stay covered by a 30-day money-back guarantee if it is the wrong fit.</p>
         </div>
         <a class="btn btn-primary" href="/go/offline-pack/checkout-bottom/?source=offline_pack_bottom" target="_blank" rel="noopener" data-ph-event="offline_pack_cta_clicked" data-ph-location="bottom">Buy for €29 →</a>
       </div>
