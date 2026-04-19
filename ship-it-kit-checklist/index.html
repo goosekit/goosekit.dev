@@ -361,10 +361,12 @@
       <h1>SaaS MVP launch checklist<br>for Next.js founders</h1>
       <p>Use this before you ship. It is the fast sanity check for auth, billing, email, onboarding, and launch basics, especially if you are building with Next.js, Supabase, and Stripe.</p>
       <div class="cta-row">
-        <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-hero/?source=ship_it_kit_checklist_hero" target="_blank" rel="noopener">Get Ship It Kit →</a>
-        <a class="btn btn-secondary" href="/blog/nextjs-stripe-boilerplate/">Read what a real boilerplate should include</a>
+        <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-hero/?source=ship_it_kit_checklist_hero" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="checklist_hero_buy">Get instant access for €49 →</a>
+        <a class="btn btn-secondary" href="/blog/ship-it-kit-review/?ref=ship_it_kit_checklist_hero" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_hero_review">Read the review first</a>
       </div>
       <p style="margin-top:14px;font-size:0.95rem;color:var(--text-dim);">€49 one-time · instant GitHub repo access · unlimited personal + commercial projects · 30-day refund policy</p>
+      <p style="margin-top:8px;font-size:0.92rem;color:var(--text-dim);">Still comparing how much starter you actually need? <a href="/blog/nextjs-auth-billing-starter/" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_hero_auth_billing">Read the auth + billing guide</a>.</p>
+      <p style="margin-top:8px;font-size:0.92rem;color:var(--text-dim);">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-checklist/?source=ship_it_kit_checklist_hero_full_offer" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_hero_full_offer">See the full offer</a>. Still unsure? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_hero_fit_check_email">Email Arthur for a quick fit check</a>.</p>
     </div>
   </section>
 
@@ -425,18 +427,46 @@
         <h2 style="margin:0;font-size:1.45rem;">Want this already wired for you?</h2>
         <p>Ship It Kit gives you the billing-ready base: Supabase auth, Stripe checkout + portal, dashboard shell, email templates, and a cleaner starting point for AI-assisted building.</p>
         <div class="cta-row">
-          <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-bottom/?source=ship_it_kit_checklist_callout" target="_blank" rel="noopener">Get the starter for €49 →</a>
-          <a class="btn btn-secondary" href="/ship-it-kit/">See the product page</a>
+          <a class="btn btn-primary" href="/go/ship-it-kit/checkout-landing-bottom/?source=ship_it_kit_checklist_callout" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="checklist_callout_buy">Get instant access for €49 →</a>
+          <a class="btn btn-secondary" href="/blog/ship-it-kit-review/?ref=ship_it_kit_checklist_callout" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_callout_review">Read the review first</a>
         </div>
-        <p style="margin:14px auto 0;max-width:680px;font-size:0.95rem;color:var(--text-dim);">Not fully sure yet? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Email Arthur for a quick fit check</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+        <p style="margin:14px auto 0;max-width:680px;font-size:0.95rem;color:var(--text-dim);">Prefer the deeper explainer first? <a href="/blog/nextjs-auth-billing-starter/" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_callout_auth_billing">See the auth + billing guide</a>. Prefer the exact product page? <a href="/go/ship-it-kit/product-from-checklist/?source=ship_it_kit_checklist_callout_full_offer" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_callout_full_offer">See the full offer</a>. Not fully sure yet? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" data-ph-event="ship_it_kit_secondary_click" data-ph-location="checklist_callout_fit_check_email">Email Arthur for a quick fit check</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
       </div>
     </div>
   </section>
 
   <footer>
     <div class="container">
-      <p>Goosekit · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
+      <p>Goosekit · <a href="/go/ship-it-kit/product-from-checklist/?source=ship_it_kit_checklist_footer">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
     </div>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref') || 'direct';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+
+      capture('ship_it_kit_checklist_page_viewed', {
+        ref: ref,
+        path: window.location.pathname,
+        product: 'ship_it_kit'
+      });
+
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            product: 'ship_it_kit',
+            ref: ref,
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
+    });
+  </script>
 </body>
 </html>

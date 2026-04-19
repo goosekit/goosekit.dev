@@ -8,13 +8,16 @@
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
-      if (!params.get('ref')) params.set('ref', 'AUTH_BILLING_PAGE');
-      var target = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
+      if (!params.get('ref')) params.set('ref', 'ship_it_kit_auth_billing_reply');
+      var target = '/blog/nextjs-auth-billing-starter/?' + params.toString();
       window.location.replace(target);
     })();
   </script>
 </head>
-<body style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;">
-  <p>Redirecting to auth + billing overview…</p>
+<body style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;padding:24px;">
+  <div style="text-align:center;max-width:560px;">
+    <p style="margin:0 0 12px;">Redirecting to auth + billing overview…</p>
+    <p style="margin:0;color:#94a3b8;">If the redirect does not happen, <a href="/blog/nextjs-auth-billing-starter/?ref=ship_it_kit_auth_billing_reply" style="color:#ff4800;">open the guide manually</a>.</p>
+  </div>
 </body>
 </html>

@@ -36,22 +36,9 @@
     .price-box { background: #f0fdf4; border: 2px solid #22c55e; border-radius: 12px; padding: 24px; text-align: center; margin: 32px 0; }
     .price-box .price { font-size: 2.5rem; font-weight: 800; color: #16a34a; }
     .price-box .note { color: #16a34a; font-weight: 600; margin-top: 4px; }
-    .fit-snapshot { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 0 0 32px; }
-    .fit-card { border-radius: 14px; padding: 20px; border: 1px solid #e2e8f0; }
-    .fit-card.good { background: #f0fdf4; border-color: #86efac; }
-    .fit-card.bad { background: #fff7ed; border-color: #fdba74; }
-    .fit-card h3 { margin: 0 0 12px; font-size: 1rem; }
-    .fit-card.good h3 { color: #166534; }
-    .fit-card.bad h3 { color: #c2410c; }
-    .fit-card ul { margin: 0; padding-left: 18px; }
-    .fit-card li { margin-bottom: 6px; }
-    .stack-note { background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 12px; padding: 18px 20px; margin: 0 0 28px; color: #1e3a8a; }
-    .stack-note strong { color: #1d4ed8; }
     .footer-cta { background: linear-gradient(135deg, #ff4800, #ec4899); color: #fff; padding: 32px; border-radius: 16px; text-align: center; margin-top: 48px; }
     .footer-cta h3 { color: #fff; margin-top: 0; font-size: 1.3rem; }
     .footer-cta a { display: inline-block; background: #fff; color: #ff4800; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: 700; margin-top: 12px; }
-    .footer-cta .secondary-link { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.45); margin-left: 10px; }
-    @media (max-width: 720px) { .fit-snapshot { grid-template-columns: 1fr; } .footer-cta .secondary-link { margin-left: 0; margin-top: 10px; } }
     .author { display: flex; align-items: center; gap: 12px; margin-bottom: 24px; padding: 16px; background: #f8fafc; border-radius: 12px; }
     .author-avatar { width: 48px; height: 48px; border-radius: 50%; background: #ff4800; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: 1.2rem; }
     .author-info { flex: 1; }
@@ -265,29 +252,9 @@
   <article>
     <div class="hero">
       <h1>Ship It Kit Review 2026 — What You Actually Get for €49</h1>
-      <p class="meta">Exact stack, real scope, and who should honestly buy it · April 2026 · 8 min read</p>
+      <p class="meta">An honest review by the builder who made it · April 2026 · 8 min read</p>
       <a href="/go/ship-it-kit/checkout-blog-review-hero/?source=ship_it_kit_review_hero" class="cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_hero_buy">Get Ship It Kit €49 →</a>
-    </div>
-
-    <div class="stack-note"><strong>Fast summary:</strong> this is a <strong>Next.js + Supabase + Stripe</strong> starter focused on auth, password reset, protected routes, checkout, portal, and webhook plumbing. It is not a giant framework and not a done-for-you build.</div>
-
-    <div class="fit-snapshot">
-      <div class="fit-card good">
-        <h3>Good fit</h3>
-        <ul>
-          <li>You're building a Next.js SaaS MVP now.</li>
-          <li>Auth + billing are the parts slowing you down.</li>
-          <li>You want starter code you can keep editing with Cursor, Claude, or Copilot.</li>
-        </ul>
-      </div>
-      <div class="fit-card bad">
-        <h3>Probably skip it</h3>
-        <ul>
-          <li>You are not using Next.js.</li>
-          <li>You want a hosted tool or a done-for-you setup service.</li>
-          <li>You want a huge all-in-one framework with lots of abstraction.</li>
-        </ul>
-      </div>
+      <p style="margin-top:14px;color:#94a3b8;font-size:0.98rem;">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-review/?source=review_hero_full_offer">See the full offer</a>. Want the broader pain-first explainer? <a href="/blog/nextjs-auth-billing-starter/?ref=review_hero_auth_billing">Read the auth + billing guide</a>. Still unsure? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Email Arthur for a quick fit check</a>.</p>
     </div>
 
     <div class="toc">
@@ -307,15 +274,15 @@
     <p>This is a review of what that €49 actually buys you, written honestly.</p>
 
     <h2 id="stack">1. What the Stack Includes</h2>
-    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, Tailwind CSS 4, landing page, dashboard scaffold, settings and billing pages, plus password reset flow.</strong></p>
+    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, React Email templates, Tailwind CSS + Shadcn/ui, landing page, dashboard scaffold, settings and billing pages.</strong></p>
 
     <p>Here's what the actual file structure looks like once you clone it:</p>
     <pre><code>/app                  # Next.js App Router pages
-/app/(app)/settings   # Account + billing home
-/app/(marketing)      # Pricing + public pages
+/components/ui        # Shadcn/ui component library
+/emails               # React Email templates
 /lib                  # Supabase client, Stripe utils
-/api/stripe           # Checkout + portal endpoints
-/supabase             # Schema + types
+/stripe               # Webhook handlers
+/supabase             # Migrations + types
 README.md             # Full setup guide</code></pre>
 
     <p>It's a real codebase, not a screenshot of one. You get the full source on GitHub after purchase.</p>
@@ -353,7 +320,7 @@ README.md             # Full setup guide</code></pre>
       <tr><th>Feature</th><th>Ship It Kit</th><th>Typical Free Starter</th></tr>
       <tr><td>Stripe billing + portal</td><td>✓</td><td>Often missing</td></tr>
       <tr><td>Webhook handlers</td><td>✓</td><td>Sometimes</td></tr>
-      <tr><td>Settings / billing home</td><td>✓</td><td>Rarely</td></tr>
+      <tr><td>React Email templates</td><td>✓</td><td>Rarely</td></tr>
       <tr><td>Dedicated landing page</td><td>✓</td><td>Sometimes</td></tr>
       <tr><td>AI-friendly structure</td><td>✓</td><td>Not a design goal</td></tr>
       <tr><td>One-time price</td><td>✓</td><td>Not typical</td></tr>
@@ -370,13 +337,12 @@ README.md             # Full setup guide</code></pre>
       <h3>Ready to stop wiring boilerplate?</h3>
       <p style="margin-top:8px;">Get Ship It Kit for €49 — instant GitHub repo access.</p>
       <a href="/go/ship-it-kit/checkout-blog-review-body/?source=ship_it_kit_review_body" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="review_body_buy">Buy Ship It Kit →</a>
-      <a href="/ship-it-kit/?ref=review_footer_cta" class="secondary-link">See the product page first</a>
-      <p style="margin-top:12px;font-size:0.95rem;opacity:0.92;">Want a quick sanity check before buying? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" style="color:#fff;text-decoration:underline;">Email Arthur</a> with your use case. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+      <p style="margin-top:12px;font-size:0.95rem;opacity:0.92;">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-review/?source=review_body_full_offer" style="color:#fff;text-decoration:underline;">See the full offer</a>. Need one more check before buying? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" style="color:#fff;text-decoration:underline;">Email Arthur</a> with your use case. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
     </div>
   </article>
 
   <footer style="margin-top:48px;padding-top:24px;border-top:1px solid #e2e8f0;text-align:center;color:#94a3b8;font-size:0.85rem;">
-    <p>Published by Goosekit · <a href="/ship-it-kit/?ref=review_footer">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
+    <p>Published by Goosekit · <a href="/go/ship-it-kit/product-from-review/?source=review_footer">Ship It Kit</a> · <a href="/blog/">Blog</a></p>
   </footer>
   <script>
     document.addEventListener('DOMContentLoaded', function () {

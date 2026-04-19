@@ -43,6 +43,11 @@
     .pain-relief { background: linear-gradient(135deg, rgba(194,65,12,0.2), rgba(124,58,237,0.2)); border: 1px solid rgba(194,65,12,0.4); border-radius: 16px; padding: 28px; margin: 24px 0; text-align: center; }
     .pain-relief h3 { color: #ff4800; margin: 0 0 12px; font-size: 1.15rem; }
     .pain-relief p { color: #94a3b8; margin: 0; font-size: 0.95rem; }
+    .fit-snapshot { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 22px; margin: 24px auto 0; max-width: 620px; text-align: left; }
+    .fit-snapshot h3 { color: #fff; margin: 0 0 12px; font-size: 1rem; }
+    .fit-snapshot ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; }
+    .fit-snapshot li { color: #cbd5e1; font-size: 0.92rem; padding-left: 24px; position: relative; }
+    .fit-snapshot li::before { content: '✓'; position: absolute; left: 0; color: #4ade80; font-weight: 800; }
     .comparison { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; overflow: hidden; margin: 24px 0; }
     .comparison-header { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 14px 20px; background: rgba(255,255,255,0.05); font-size: 0.82rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.06em; }
     .comparison-row { display: grid; grid-template-columns: 1fr 1fr 1fr; padding: 12px 20px; border-top: 1px solid rgba(255,255,255,0.05); font-size: 0.88rem; }
@@ -61,17 +66,11 @@
     .footer-cta h2 { font-size: 1.8rem; color: #fff; margin-bottom: 12px; }
     .footer-cta .sub { color: #94a3b8; margin-bottom: 24px; font-size: 1rem; }
     .guarantee { display: flex; align-items: center; justify-content: center; gap: 8px; color: #64748b; font-size: 0.85rem; margin-top: 16px; }
-    .sticky-cta { position:fixed; bottom:0; left:0; right:0; background:rgba(15,23,42,0.97); border-top:1px solid rgba(255,72,0,0.5); padding:12px 20px; display:flex; align-items:center; justify-content:center; gap:16px; z-index:200; backdrop-filter:blur(10px); transform:translateY(100%); transition:transform 0.3s ease; }
-    .sticky-cta.visible { transform:translateY(0); }
-    .sticky-cta-text { font-size:0.92rem; color:#94a3b8; }
-    .sticky-cta-text strong { color:#ff4800; }
     @media (max-width: 600px) {
       h1 { font-size: 1.8rem; }
       .weekend-grid { grid-template-columns: 1fr; }
       .check-list { grid-template-columns: 1fr; }
       .comparison-header, .comparison-row { grid-template-columns: 1fr 1fr 1fr; font-size: 0.78rem; }
-      .sticky-cta { flex-direction:column; gap:8px; padding:10px 16px; }
-      .sticky-cta .btn-primary { width:100%; text-align:center; }
     }
   </style>
   <script defer src="/posthog.js"></script>
@@ -277,7 +276,7 @@
 
 <div class="top-bar">
   🚨 Ship It Kit Launch — €49 ends April 30
-  <a href="/ship-it-kit/">See the full offer →</a>
+  <a href="/go/ship-it-kit/product-from-weekend-page/?source=weekend_topbar_full_offer">See the full offer →</a>
 </div>
 
 <div class="container">
@@ -287,11 +286,19 @@
     <p class="subhead">Stop spending the first 2 days wiring auth and Stripe. Get a billing-ready Next.js + Supabase + Stripe codebase. Clone it, add your keys, start building actual product.</p>
     <div class="cta-row">
       <a href="/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero" class="btn-primary" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="weekend_hero_buy">💳 Buy now — €49 →</a>
-      <a href="/ship-it-kit/?ref=weekend_page_secondary" class="btn-secondary" data-ph-event="ship_it_kit_landing_view_clicked" data-ph-location="weekend_secondary">See what's inside</a>
+      <a href="/blog/ship-it-kit-review/?ref=weekend_page_secondary" class="btn-secondary" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_hero_review">Read the review first</a>
     </div>
-    <p class="price-note">One-time payment · Lifetime updates · 30-day money-back guarantee · no questions asked</p>
+    <p class="price-note">One-time payment · Lifetime updates · 30-day money-back guarantee</p>
+    <p class="price-note" style="margin-top:8px;">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-weekend-page/?source=weekend_page_full_offer" style="color:#c4b5fd;">See the full offer</a>. Still unsure? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" style="color:#c4b5fd;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_hero_fit_check_email">Email Arthur for a quick fit check</a>.</p>
     <div class="urgency">⚡ Launch window — €49 ends April 30 · Regular price goes up after</div>
-    <p class="guarantee">🔒 Try it on your real project. If it is the wrong fit, email within 30 days for a full refund.</p>
+    <div class="fit-snapshot">
+      <h3>This is the right weekend buy if:</h3>
+      <ul>
+        <li>your stack is Next.js + Supabase + Stripe</li>
+        <li>you want starter code, not a hosted done-for-you product</li>
+        <li>the thing blocking you this weekend is auth + billing setup, not the product idea itself</li>
+      </ul>
+    </div>
   </div>
 
   <div class="section">
@@ -314,7 +321,7 @@
         <div class="detail">Customize landing page → deploy to Vercel</div>
       </div>
     </div>
-    <p style="color:#64748b;font-size:0.88rem;">The README walks you through every step. If you get stuck, email <a href="mailto:arthur.pierrey@gmail.com" style="color:#7c3aed;">arthur.pierrey@gmail.com</a>.</p>
+    <p style="color:#64748b;font-size:0.88rem;">The README walks you through every step. If you get stuck, email <a href="mailto:arthur.pierrey@gmail.com" style="color:#7c3aed;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_setup_help_email">arthur.pierrey@gmail.com</a>.</p>
   </div>
 
   <div class="section">
@@ -382,18 +389,18 @@
   </div>
 
   <div class="section">
-    <h2>Early Reviews</h2>
+    <h2>Still evaluating?</h2>
     <div class="testimonial">
-      <p class="testimonial-text">"Scaffold had auth, billing, and webhooks working in 3 hours. Shipped my micro-SaaS the same weekend. Should've had this years ago."</p>
-      <p class="testimonial-author">— Marco T., freelance dev · shipped sipcounter.app with Ship It Kit</p>
+      <p class="testimonial-text">If your real question is whether the boring SaaS base is already coherent enough, start with the auth + billing guide instead of forcing a buy decision too early.</p>
+      <p class="testimonial-author"><a href="/blog/nextjs-auth-billing-starter/" style="color:#7c3aed;text-decoration:none;font-weight:600;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_eval_auth_billing">Read the auth + billing guide →</a></p>
     </div>
     <div class="testimonial">
-      <p class="testimonial-text">"I was about to wire Stripe manually for the third time. €49 and a cup of coffee later, billing was done and I could focus on the actual product logic."</p>
-      <p class="testimonial-author">— Lena K., indie hacker · Berlin</p>
+      <p class="testimonial-text">If you want the most honest product-specific view first, read the review before checkout.</p>
+      <p class="testimonial-author"><a href="/blog/ship-it-kit-review/" style="color:#7c3aed;text-decoration:none;font-weight:600;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_eval_review">Read the Ship It Kit review →</a></p>
     </div>
     <div class="testimonial">
-      <p class="testimonial-text">"Cursor understood the codebase immediately. First time a starter template actually worked well with AI coding tools. Clean file structure, no magic wrappers."</p>
-      <p class="testimonial-author">— Jonas R., fullstack dev · Germany</p>
+      <p class="testimonial-text">If your workflow depends on Cursor, Claude, or Copilot, the AI-focused explainer is usually the better filter than a generic landing page.</p>
+      <p class="testimonial-author"><a href="/blog/ai-saas-starter-template/" style="color:#7c3aed;text-decoration:none;font-weight:600;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_eval_ai_guide">Read the AI SaaS starter guide →</a></p>
     </div>
   </div>
 
@@ -402,7 +409,7 @@
     <div class="faq">
       <div class="faq-item">
         <p class="faq-q">What if I'm not ready for €49?</p>
-        <p class="faq-a">The launch window price of €49 ends April 30. After that, the regular price applies. If you're unsure whether this fits your project, email <a href="mailto:arthur.pierrey@gmail.com" style="color:#7c3aed;">arthur.pierrey@gmail.com</a> with your use case.</p>
+        <p class="faq-a">That is fine. Start with the <a href="/blog/nextjs-auth-billing-starter/" style="color:#7c3aed;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_faq_auth_billing">auth + billing guide</a> if you want a lower-pressure way to sanity-check the fit. If you are still unsure after that, email <a href="mailto:arthur.pierrey@gmail.com" style="color:#7c3aed;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_faq_fit_check_email">arthur.pierrey@gmail.com</a> with your use case.</p>
       </div>
       <div class="faq-item">
         <p class="faq-q">Do I get the full source code?</p>
@@ -410,7 +417,7 @@
       </div>
       <div class="faq-item">
         <p class="faq-q">Is there a refund policy?</p>
-        <p class="faq-a">Yes — 30-day money-back guarantee, no questions asked. If the codebase doesn't work for your project, email for a full refund.</p>
+        <p class="faq-a">Yes — 30-day money-back guarantee, no questions asked. If the codebase doesn't work for your project, email <a href="mailto:arthur.pierrey@gmail.com?subject=Refund%20request%20Ship%20It%20Kit" style="color:#7c3aed;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_faq_refund_email">arthur.pierrey@gmail.com</a> for a full refund.</p>
       </div>
       <div class="faq-item">
         <p class="faq-q">What if I don't use Next.js?</p>
@@ -428,18 +435,9 @@
     <p class="sub">Get the billing-ready Next.js + Supabase + Stripe codebase.<br>€49 one-time. Ship your first paying customer this month.</p>
     <a href="/go/ship-it-kit/checkout-weekend-bottom/?source=ship_it_kit_weekend_bottom" class="btn-primary" target="_blank" rel="noopener" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="weekend_bottom_buy">💳 Buy Ship It Kit — €49 →</a>
     <p class="guarantee">🔒 30-day money-back guarantee · No questions asked</p>
+    <p class="price-note" style="margin-top:12px;">Need proof before buying? Read the <a href="/blog/ship-it-kit-review/?ref=weekend_bottom_review" style="color:#c4b5fd;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_bottom_review">review</a> or the <a href="/blog/nextjs-auth-billing-starter/?ref=weekend_bottom_auth_billing" style="color:#c4b5fd;" data-ph-event="ship_it_kit_secondary_click" data-ph-location="weekend_bottom_auth_billing">auth + billing guide</a> first.</p>
   </div>
 </div>
-
-<script>
-  (function(){
-    var cta=document.getElementById('stickyCta'),hero=document.querySelector('.hero');
-    if(!cta||!hero)return;
-    var toggle=function(){ cta.classList.toggle('visible',hero.getBoundingClientRect().bottom<0); };
-    window.addEventListener('scroll',toggle,{passive:true});
-    toggle();
-  })();
-</script>
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -469,9 +467,5 @@
     });
   });
 </script>
-  <div class="sticky-cta" id="stickyCta">
-    <span class="sticky-cta-text">🚀 Ship It Kit — <strong>€49 ends April 30</strong></span>
-    <a href="/go/ship-it-kit/checkout-weekend-hero/?source=sticky_bar" class="btn-primary" style="padding:10px 22px;font-size:0.9rem;" target="_blank" rel="noopener">Buy Now →</a>
-  </div>
 </body>
 </html>

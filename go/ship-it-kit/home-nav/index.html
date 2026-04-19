@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Redirecting…</title>
-  <meta http-equiv="refresh" content="0; url=/ship-it-kit/?ref=homepage_nav">
+  <meta http-equiv="refresh" content="0; url=/ship-it-kit/?ref=homepage_nav_ship_it_kit">
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
-      if (!params.get('ref')) params.set('ref', 'homepage_nav');
-      var target = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
+      if (!params.get('ref')) params.set('ref', 'homepage_nav_ship_it_kit');
+      var target = '/ship-it-kit/?' + params.toString();
       window.location.replace(target);
     })();
   </script>
@@ -213,7 +213,7 @@
   </div>
 </header>
 
-<p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="/ship-it-kit/?ref=homepage_nav" id="manual-link" style="color:#ff4800;">continue here</a>.</p>
+<p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="/ship-it-kit/?ref=homepage_nav_ship_it_kit" id="manual-link" style="color:#ff4800;">continue here</a>.</p>
   <script>
     (function () {
       var manual = document.getElementById('manual-link');

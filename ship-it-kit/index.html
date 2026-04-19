@@ -3,8 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Next.js + Supabase + Stripe Starter | Ship It Kit by Goosekit</title>
-  <meta name="description" content="Ship It Kit by Goosekit is a focused Next.js + Supabase + Stripe MVP starter with auth, protected routes, Stripe checkout, portal, webhooks, instant repo access, and a 30-day money-back guarantee.">
+  <title>Ship It Kit by Goosekit — Next.js + Supabase + Stripe Starter for SaaS MVPs</title>
+  <meta name="description" content="Ship It Kit by Goosekit is a focused Next.js + Supabase + Stripe starter with signup, protected routes, Stripe checkout, portal, webhooks, and a 30-day money-back guarantee.">
+  <link rel="canonical" href="https://goosekit.dev/ship-it-kit/">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Ship It Kit by Goosekit — Next.js + Supabase + Stripe Starter for SaaS MVPs">
+  <meta property="og:description" content="Focused Next.js + Supabase + Stripe starter with signup, protected routes, checkout, portal, webhooks, and a 30-day money-back guarantee. €49 one-time.">
+  <meta property="og:url" content="https://goosekit.dev/ship-it-kit/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ship It Kit by Goosekit — Next.js + Supabase + Stripe Starter for SaaS MVPs">
+  <meta name="twitter:description" content="Focused Next.js + Supabase + Stripe starter with signup, protected routes, checkout, portal, webhooks, and a 30-day money-back guarantee. €49 one-time.">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Ship It Kit by Goosekit",
+    "description": "Focused Next.js 15 + Supabase + Stripe starter with auth, checkout, portal, webhooks, and protected routes already wired.",
+    "url": "https://goosekit.dev/ship-it-kit/",
+    "brand": { "@type": "Brand", "name": "Goosekit" },
+    "offers": {
+      "@type": "Offer",
+      "price": "49",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock",
+      "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a"
+    }
+  }
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -187,32 +216,6 @@
     .check { color: var(--green); font-weight: 800; }
     .cross { color: var(--danger); font-weight: 800; }
 
-    .urgency-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(249, 115, 22, 0.14);
-      border: 1px solid rgba(249, 115, 22, 0.32);
-      color: #fed7aa;
-      padding: 5px 12px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .urgency-countdown {
-      color: var(--accent-2);
-      font-variant-numeric: tabular-nums;
-    }
-
-    .urgency-row {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 10px;
-      margin: 14px 0 0;
-    }
-
     .card,
     .panel {
       background: rgba(15, 23, 42, 0.8);
@@ -287,15 +290,17 @@
     .fit-grid,
     .included-grid,
     .proof-grid,
-    .steps-grid {
+    .steps-grid,
+    .faq-grid {
       display: grid;
       gap: 18px;
     }
 
-    .fit-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .fit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .included-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
     .proof-grid { grid-template-columns: 1.05fr 0.95fr; }
     .steps-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .faq-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
     .panel {
       padding: 24px;
@@ -405,16 +410,35 @@
 
     .buy-check {
       margin-top: 18px;
-      padding: 14px 16px;
+      padding: 16px;
       border-radius: 16px;
-      background: rgba(34, 197, 94, 0.08);
-      border: 1px solid rgba(34, 197, 94, 0.18);
-      color: #dce7f7;
-      font-size: 0.95rem;
+      background: rgba(8, 17, 31, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.12);
     }
 
-    .buy-check strong {
-      color: #bbf7d0;
+    .buy-check h3 {
+      margin: 0 0 10px;
+      font-size: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .buy-check ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 8px;
+    }
+
+    .faq-item h3 {
+      margin: 0 0 8px;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
+
+    .faq-item p {
+      margin: 0;
+      color: var(--muted);
     }
 
     .cta {
@@ -472,45 +496,6 @@
       .footer-line { flex-direction: column; }
     }
   </style>
-  <script>
-    (function () {
-      function getParisTime() {
-        return new Date().toLocaleString('en-US', { timeZone: 'Europe/Paris' });
-      }
-      function pad(n) { return String(n).padStart(2, '0'); }
-      function tick(elId) {
-        var el = document.getElementById(elId);
-        if (!el) return;
-        var now = new Date(getParisTime());
-        var end = new Date('2026/04/30 23:59:59 Europe/Paris');
-        var diff = end - now;
-        if (diff <= 0) { el.textContent = 'Offer ended'; el.style.color = '#888'; return; }
-        var d = Math.floor(diff / 86400000);
-        var h = Math.floor((diff % 86400000) / 3600000);
-        var m = Math.floor((diff % 3600000) / 60000);
-        el.textContent = pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
-      }
-      var s = 0;
-      function pad(n) { return String(n).padStart(2, '0'); }
-      function updateAll() {
-        ['hero-countdown', 'card-countdown'].forEach(function(id) {
-          var el = document.getElementById(id);
-          if (!el) return;
-          var now = new Date(getParisTime());
-          var end = new Date('2026/04/30 23:59:59 Europe/Paris');
-          var diff = end - now;
-          if (diff <= 0) { el.textContent = 'Offer ended'; el.style.color = '#888'; return; }
-          var d = Math.floor(diff / 86400000);
-          var h = Math.floor((diff % 86400000) / 3600000);
-          var m = Math.floor((diff % 3600000) / 60000);
-          var sec = Math.floor((diff % 60000) / 1000);
-          el.textContent = pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(sec) + 's';
-        });
-      }
-      updateAll();
-      setInterval(updateAll, 1000);
-    })();
-  </script>
 </head>
 <body>
   <header>
@@ -523,44 +508,37 @@
   <main class="container" id="top">
     <section class="hero">
       <div class="hero-copy">
-        <div class="pill">Next.js + Supabase + Stripe starter</div>
-        <h1>Next.js + Supabase + Stripe MVP starter, with auth and billing already wired.</h1>
-        <p>Ship It Kit by Goosekit gives solo founders the exact layer most MVPs lose a weekend to: signup, password reset, protected routes, checkout, portal, webhook plumbing, and a clean repo that AI coding tools can actually edit.</p>
+        <div class="pill">DIY starter by Goosekit</div>
+        <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
+        <p>Ship It Kit is the focused DIY Next.js + Supabase + Stripe base for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/">Get the starter, €49</a>
-          <a class="btn-secondary" href="#proof">See the exact files first</a>
+          <a class="btn-secondary" href="#fit">Check if your stack fits</a>
         </div>
-        <div class="urgency-row">
-          <span class="urgency-pill">⚡ Launch pricing ends April 30</span>
-          <span id="hero-countdown" class="urgency-countdown"></span>
-        </div>
-        <p class="price-note" style="margin:10px 0 0;">Low-risk buy: if Ship It Kit is the wrong fit for your stack or workflow, email within 30 days and get a full refund.</p>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
-          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, and webhook handlers already wired</span></li>
-          <li><span class="check">✓</span><span>Instant repo access, unlimited projects, and a 30-day money-back guarantee</span></li>
+          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers</span></li>
+          <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell</span></li>
         </ul>
       </div>
 
       <aside class="card hero-card">
-        <div class="pill">Focused starter, not a giant boilerplate</div>
-        <h2>Exact scope, low-risk buy.</h2>
-        <p>If your stack is already Next.js + Supabase + Stripe, this gets you back to local product work fast. You buy once, get the repo right after checkout, and stay covered by the 30-day money-back guarantee if the fit is wrong.</p>
+        <div class="pill">DIY, not done-for-you</div>
+        <h2>For builders blocked by the same two jobs.</h2>
+        <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You buy the starter and build on top of it yourself. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
-        <p class="price-note">Instant repo access, unlimited projects, lifetime updates, and a 30-day money-back guarantee if it is the wrong fit.</p>
+        <p class="price-note">Instant repo access, unlimited projects, lifetime starter updates, and a 30-day money-back guarantee.</p>
+        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Email Arthur for a quick fit check</a> before buying.</p>
+        <p class="price-note" style="margin-top:10px;">Need more proof first? <a href="/blog/ship-it-kit-review/?ref=product_hero_review">Read the review</a> or <a href="/blog/nextjs-auth-billing-starter/?ref=product_hero_auth_billing">see the auth + billing walkthrough</a>.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
-          <span class="mini-pill">30-day money-back</span>
-        </div>
-        <div class="urgency-row" style="margin:0 0 14px;">
-          <span class="urgency-pill">⚡ Ends April 30</span>
-          <span id="card-countdown" class="urgency-countdown" style="font-size:.78rem;"></span>
+          <span class="mini-pill">Protected routes ready</span>
         </div>
         <ul class="pain-list">
           <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
-          <li><span class="check">✓</span><span>Built for solo founders shipping a SaaS MVP, not enterprise teams.</span></li>
+          <li><span class="check">✓</span><span>Use it as the base for your own MVP, then customize from there.</span></li>
           <li><span class="check">✓</span><span>Designed to be easy to edit with Cursor, Claude, Copilot, or by hand.</span></li>
         </ul>
       </aside>
@@ -568,9 +546,9 @@
 
     <section class="section" id="fit">
       <div class="section-head">
-        <div class="eyebrow">Fast buy scan</div>
-        <h2>Know in under a minute if this is worth your €49.</h2>
-        <p class="section-sub">The shortest path to a first sale is a very specific promise: right stack, right scope, right delivery model.</p>
+        <div class="eyebrow">Who this is for</div>
+        <h2>Small scope, clear fit.</h2>
+        <p class="section-sub">The shortest path to a first sale is a very specific promise. This page is for people who already know auth and Stripe are the annoying part.</p>
       </div>
       <div class="fit-grid">
         <div class="panel">
@@ -589,15 +567,6 @@
             <li><span class="cross">✕</span><span>No-code buyers looking for a hosted tool.</span></li>
             <li><span class="cross">✕</span><span>Teams that need a giant multi-tenant enterprise framework.</span></li>
             <li><span class="cross">✕</span><span>People who want a generic launch checklist instead of starter code.</span></li>
-          </ul>
-        </div>
-        <div class="panel">
-          <h3>Right after checkout</h3>
-          <ul class="fit-list">
-            <li><span class="check">✓</span><span>You get instant repo access and the setup docs.</span></li>
-            <li><span class="check">✓</span><span>You plug in your Supabase and Stripe keys, then start customizing product logic.</span></li>
-            <li><span class="check">✓</span><span>You are not buying a service, a hosted app, or a giant framework.</span></li>
-            <li><span class="check">✓</span><span>If the fit is wrong once you inspect it in context, the 30-day money-back guarantee still applies.</span></li>
           </ul>
         </div>
       </div>
@@ -624,7 +593,7 @@
         </div>
         <div class="panel">
           <h3>What you can launch from</h3>
-          <p>Landing page, auth screen, pricing page, protected dashboard shell, settings / billing home, and the core routes needed to get to a first usable MVP.</p>
+          <p>Landing page, auth screen, pricing page, protected dashboard shell, and the core routes needed to get to a first usable MVP.</p>
         </div>
         <div class="panel">
           <h3>Fast setup docs</h3>
@@ -650,7 +619,6 @@
 │   ├── page.tsx
 │   ├── auth/page.tsx
 │   ├── (app)/dashboard/page.tsx
-│   ├── (app)/settings/page.tsx
 │   ├── (marketing)/pricing/page.tsx
 │   └── api/webhooks/stripe/route.ts
 ├── lib/
@@ -667,8 +635,8 @@ supabase/
               Checkout completion, subscription updates, and cancellation events are already handled.
             </div>
             <div class="path-item">
-              <strong>src/app/(app)/settings/page.tsx</strong>
-              Buyers get a real account and billing home instead of a dead-end dashboard shell.
+              <strong>src/middleware.ts</strong>
+              Route protection is already in place, so the dashboard shell is not a fake screenshot.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -679,11 +647,11 @@ supabase/
         <div class="panel">
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
-            <li><span class="check">✓</span><span>Signup, login, and password reset flow.</span></li>
+            <li><span class="check">✓</span><span>Signup and login flow.</span></li>
             <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
-            <li><span class="check">✓</span><span>Landing, pricing, auth, dashboard, and settings starter pages.</span></li>
+            <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
             <li><span class="check">✓</span><span>Initial AI context so code assistants can edit safely.</span></li>
           </ul>
         </div>
@@ -724,12 +692,11 @@ supabase/
     <section class="section" id="pricing">
       <div class="price-card card">
         <div>
-          <div class="price-kicker">One-time starter code</div>
+          <div class="price-kicker">One-time DIY starter</div>
           <h2>€49 to skip the auth + billing loop.</h2>
           <p class="section-sub">This is intentionally smaller and cheaper than the big boilerplates. It is for founders who want the access + payments layer handled without buying a giant framework first.</p>
           <div class="price-value">€49 <span>one-time</span></div>
-          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee if it is the wrong fit.</p>
-          <div class="buy-check"><strong>Quick buy check:</strong> if your stack is already Next.js + Supabase + Stripe, this should save you time fast. After checkout you get the access email, clone the repo, add your keys, and get back to product work. If it is not the right fit once you inspect it in context, you are covered by the 30-day refund.</div>
+          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
         </div>
         <div>
           <ul class="price-list">
@@ -737,30 +704,82 @@ supabase/
             <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell.</span></li>
             <li><span class="check">✓</span><span>Schema, env example, setup notes, AI context file.</span></li>
             <li><span class="check">✓</span><span>No subscription, no service upsell, no onboarding ceremony.</span></li>
-            <li><span class="check">✓</span><span>30-day money-back guarantee if you realize the stack or scope is the wrong fit.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
             <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant repo access</a>
             <a class="btn-secondary" href="#fit">Check fit before buying</a>
           </div>
+          <div class="buy-check">
+            <h3>Buy this today if all 3 are true</h3>
+            <ul>
+              <li><span class="check">✓</span><span>Your stack is Next.js + Supabase + Stripe.</span></li>
+              <li><span class="check">✓</span><span>You want starter code, not a hosted product or done-for-you service.</span></li>
+              <li><span class="check">✓</span><span>You want instant repo access so you can start building on top of it right away.</span></li>
+            </ul>
+            <p class="price-note" style="margin-top:12px;">Checkout is handled by Lemon Squeezy. 30-day money-back guarantee. If that is not your stack or buying style, skip it honestly.</p>
+          </div>
+          <div class="buy-check">
+            <h3>What happens right after you buy</h3>
+            <ul>
+              <li><span class="check">✓</span><span>You get the repo access right after checkout, no sales call or manual onboarding queue.</span></li>
+              <li><span class="check">✓</span><span>You copy the env example, add your Supabase and Stripe keys, and run it locally.</span></li>
+              <li><span class="check">✓</span><span>You start editing product logic instead of spending the weekend wiring signup and billing again.</span></li>
+            </ul>
+            <p class="price-note" style="margin-top:12px;">If you realize it is the wrong fit for your stack, use the 30-day refund policy instead of forcing it.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="section-head">
+        <div class="eyebrow">Quick objections</div>
+        <h2>Questions people ask before buying.</h2>
+        <p class="section-sub">Short answers for the last decision point, without pretending this fits everyone.</p>
+      </div>
+      <div class="faq-grid">
+        <div class="panel faq-item">
+          <h3>Why not just use a free starter?</h3>
+          <p>You can. Ship It Kit only makes sense if skipping the auth + billing setup loop is worth €49 to you. If you enjoy wiring that stack yourself, a free starter may honestly be enough.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>Is this a framework or a small starter?</h3>
+          <p>A small starter. The goal is not maximum feature count. The goal is a billing-ready base you can understand quickly and extend without fighting a giant codebase.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>Who is this actually for?</h3>
+          <p>Solo founders and small builders shipping a Next.js SaaS MVP with Supabase and Stripe, especially if they want a repo that works well with Cursor, Claude, Copilot, or manual edits.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>What happens after checkout?</h3>
+          <p>You get instant repo access, add your Supabase and Stripe keys, and start building on top of the starter. Checkout is handled by Lemon Squeezy, not a custom sales process.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>Can I use it for more than one project?</h3>
+          <p>Yes. Ship It Kit is meant to be a reusable starter. If this exact stack fits your workflow, you can use it as the base for multiple MVPs instead of redoing the same setup every time.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>What if I buy it and realize it is the wrong fit?</h3>
+          <p>Do the honest thing fast. If your stack or buying style does not match after purchase, use the 30-day money-back guarantee instead of forcing yourself into the wrong starter.</p>
         </div>
       </div>
     </section>
 
     <section class="cta card">
       <div class="eyebrow">Bottom line</div>
-      <h2>Buy the exact stack if it matches your next MVP.</h2>
-      <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it. If you buy and realize it is the wrong fit, the 30-day money-back guarantee still stands.</p>
+      <h2>Stop rewiring auth and Stripe for every MVP.</h2>
+      <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
         <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/">Get the starter, €49</a>
         <a class="btn-secondary" href="#included">Review what is included</a>
       </div>
+      <p class="price-note" style="margin-top:16px;">€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee. Not sure yet? <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">Read the review</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">check the auth + billing guide</a>, or <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">email Arthur for a quick fit check</a>.</p>
     </section>
   </main>
 
   <footer>
     <div class="container footer-line">
-      <span>Ship It Kit by Goosekit, a focused auth + billing starter for Next.js builders.</span>
+      <span>Ship It Kit by Goosekit, a focused Next.js + Supabase + Stripe starter for SaaS MVP builders.</span>
       <span>Built by Arthur Pierrey. Checkout handled by Lemon Squeezy.</span>
     </div>
   </footer>

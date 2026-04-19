@@ -4,214 +4,180 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Redirecting…</title>
+  <title>Opening secure checkout…</title>
   <meta http-equiv="refresh" content="3; url=https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a">
-<style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
-<style id="gk-homepage-header-copy-styles">
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 30;
-    padding: 0 !important;
-    text-align: left;
-    background: rgba(10,10,26,0.78);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-  }
-
-  .site-header-inner {
-    width: 100%;
-    margin: 0;
-    min-height: 56px;
-    padding: 8px 16px 8px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    position: relative;
-  }
-
-  .site-brand {
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
-    flex-shrink: 0;
-    margin-right: 10px;
-  }
-
-  .site-brand img {
-    width: 100px;
-    height: auto;
-    display: block;
-  }
-
-  .site-menu-toggle {
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 4px;
-    width: 44px;
-    height: 44px;
-    margin-left: auto;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 12px;
-    background: rgba(15,23,42,0.92);
-    color: #e2e8f0;
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .site-menu-toggle span {
-    display: block;
-    width: 18px;
-    height: 2px;
-    border-radius: 999px;
-    background: currentColor;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  .site-menu-toggle[aria-expanded="true"] span:nth-child(1) {
-    transform: translateY(6px) rotate(45deg);
-  }
-
-  .site-menu-toggle[aria-expanded="true"] span:nth-child(2) {
-    opacity: 0;
-  }
-
-  .site-menu-toggle[aria-expanded="true"] span:nth-child(3) {
-    transform: translateY(-6px) rotate(-45deg);
-  }
-
-  .site-nav {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    flex: 1;
-    gap: 8px 14px;
-  }
-
-  .site-nav a {
-    color: #94a3b8;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    line-height: 1;
-    transition: color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .site-nav a:hover {
-    color: #e2e8f0;
-  }
-
-  .site-nav .nav-cta {
-    color: #fff;
-    background: rgba(255,72,0,0.95);
-    border: 1px solid rgba(255,72,0,0.9);
-    padding: 8px 12px;
-    border-radius: 11px;
-    box-shadow: 0 8px 22px rgba(255,72,0,0.16);
-  }
-
-  .site-nav .nav-cta:hover {
-    color: #fff;
-    background: #ff4800;
-    border-color: #ff4800;
-  }
-
-  @media (max-width: 900px) {
-    .site-header-inner {
-      min-height: 56px;
-      padding: 8px 12px;
-      flex-wrap: nowrap;
+  <style>
+    :root {
+      --panel: rgba(15, 23, 42, 0.82);
+      --line: rgba(255,255,255,0.08);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #ff4800;
+      --accent-soft: rgba(255,72,0,0.12);
+      --ok: #86efac;
     }
-
-    .site-menu-toggle {
-      display: inline-flex;
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+      font-family: system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top, rgba(255,72,0,0.16), transparent 35%),
+        linear-gradient(180deg, #0b1120 0%, #0f172a 100%);
     }
-
-    .site-nav {
-      display: none;
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 12px;
-      left: 12px;
-      z-index: 50;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 8px;
-      padding: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      background: rgba(10,10,26,0.96);
-      box-shadow: 0 20px 45px rgba(2,6,23,0.42);
+    .card {
+      width: 100%;
+      max-width: 620px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 28px;
+      box-shadow: 0 28px 80px rgba(0,0,0,0.35);
       backdrop-filter: blur(16px);
     }
-
-    .site-nav.is-open {
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: #fec89a;
+      background: var(--accent-soft);
+      border: 1px solid rgba(255,72,0,0.22);
+      border-radius: 999px;
+      padding: 7px 12px;
+      margin-bottom: 18px;
+    }
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(1.7rem, 3vw, 2.2rem);
+      line-height: 1.15;
+      color: #fff;
+    }
+    p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.18);
+      border-top-color: var(--accent);
+      border-radius: 999px;
+      display: inline-block;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .points {
+      margin: 22px 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      display: grid;
+      gap: 12px;
+    }
+    .point {
       display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      color: #dbe4f0;
     }
-
-    .site-nav a {
-      display: block;
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: rgba(255,255,255,0.02);
+    .point strong { color: #fff; }
+    .check {
+      color: var(--ok);
+      font-weight: 700;
+      flex: 0 0 auto;
     }
-
-    .site-nav .nav-cta {
-      text-align: center;
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 22px;
+      align-items: center;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
       justify-content: center;
-      margin-top: 4px;
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-weight: 700;
+      text-decoration: none;
+      border: 1px solid transparent;
     }
-  }
-
-  @media (max-width: 560px) {
-    .site-header-inner {
-      min-height: 56px;
-      padding: 8px 10px;
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: 0 14px 34px rgba(255,72,0,0.24);
     }
-    .site-brand img { width: 98px; }
-    .site-nav { right: 10px; left: 10px; }
-    .site-nav a { font-size: 0.86rem; }
-  }
-</style>
-<script defer src="/site-header.js"></script>
+    .btn-secondary {
+      color: var(--text);
+      border-color: rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.03);
+    }
+    .foot {
+      margin-top: 18px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+    .subtle-links {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      font-size: 0.95rem;
+    }
+    .subtle-links a {
+      color: #cbd5e1;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(203,213,225,0.22);
+    }
+    .subtle-links a:hover {
+      color: #fff;
+      border-bottom-color: rgba(255,255,255,0.5);
+    }
+  </style>
+<style>ins.adsbygoogle{display:none!important}</style>
+  <script defer src="/posthog.js"></script>
 </head>
-<body style="font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0f172a;color:#e2e8f0;display:grid;place-items:center;min-height:100vh;margin:0;">
-  <header class="site-header">
-  <div class="site-header-inner">
-    <a class="site-brand" href="/" aria-label="Goosekit home">
-      <img src="/logo-dark.png" alt="Goosekit">
-    </a>
-    <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false">
-      <span></span>
-      <span></span>
-      <span></span>
-    </button>
-    <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
-      <a href="/tools/">Tools</a>
-      <a href="/tools/for-developers/">Developers</a>
-      <a href="/tools/for-designers/">Designers</a>
-      <a href="/tools/for-students/">Students</a>
-      <a href="/compare/goosekit-vs-tinywow/">Compare</a>
-      <a href="/blog/">Blog</a>
-      <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
-      <a href="/api/">API</a>
-      <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener">Extension</a>
-      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
-    </nav>
-  </div>
-</header>
+<body>
+  <main class="card">
+    <div class="eyebrow"><span class="spinner" aria-hidden="true"></span> Opening secure checkout</div>
+    <h1>You’re one step away from Ship It Kit</h1>
+    <p>We’re sending you to the secure Lemon Squeezy checkout now. If the redirect stalls, you can continue manually below.</p>
 
-<p style="padding:24px;text-align:center;">Redirecting… If nothing happens, <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" data-manual-checkout-link="true" style="color:#ff4800;">continue here</a>.</p>
+    <section class="points" aria-label="Checkout reassurance">
+      <div class="point"><span class="check">✓</span><span><strong>€49 one-time</strong>, not a subscription.</span></div>
+      <div class="point"><span class="check">✓</span><span><strong>Instant GitHub access</strong> after purchase.</span></div>
+      <div class="point"><span class="check">✓</span><span><strong>30-day refund policy</strong> if it is not the right fit.</span></div>
+    </section>
+
+    <div class="actions">
+      <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" data-manual-checkout-link="true" class="btn btn-primary">Continue to secure checkout</a>
+      <a href="/ship-it-kit/" class="btn btn-secondary" data-ph-event="ship_it_kit_checkout_secondary_click" data-ph-location="redirect_back_to_product">Back to product details</a>
+    </div>
+
+    <p class="foot">Secure payment is handled by Lemon Squeezy. Your tracking source is preserved on redirect.</p>
+    <div class="subtle-links" aria-label="Still evaluating">
+      <span style="color: var(--muted);">Not fully sure yet?</span>
+      <a href="/blog/ship-it-kit-review/" data-ph-event="ship_it_kit_checkout_secondary_click" data-ph-location="redirect_read_review">Read the review</a>
+      <a href="/blog/nextjs-auth-billing-starter/" data-ph-event="ship_it_kit_checkout_secondary_click" data-ph-location="redirect_auth_billing_guide">See the auth + billing guide</a>
+      <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check" data-ph-event="ship_it_kit_checkout_secondary_click" data-ph-location="redirect_fit_check_email">Email for a fit check</a>
+    </div>
+  </main>
+
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var checkoutUrl = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
       var params = new URLSearchParams(window.location.search);
-      var source = params.get('source') || 'ship_it_kit_review_body';
+      var source = params.get('source') || 'ship_it_kit_blog_review_body';
       var capture = function (eventName, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') {
           window.posthog.capture(eventName, props || {});
@@ -219,7 +185,19 @@
       };
       capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', path: window.location.pathname });
       var manual = document.querySelector('[data-manual-checkout-link]');
-      if (manual) manual.addEventListener('click', function () { capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit' }); });
+      if (manual) manual.addEventListener('click', function () {
+        capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit' });
+      });
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            source: source,
+            product: 'ship_it_kit',
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
       setTimeout(function () {
         capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit' });
         window.location.replace(checkoutUrl);

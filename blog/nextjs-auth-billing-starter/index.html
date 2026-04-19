@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ship It Kit by Goosekit — Auth + Billing Starter for Next.js MVPs</title>
-  <meta name="description" content="Ship It Kit by Goosekit is a focused Next.js auth + billing starter with Supabase auth, Stripe checkout, portal, webhooks, and protected routes already wired.">
+  <title>Ship It Kit by Goosekit — DIY Auth + Billing Starter for Next.js MVPs</title>
+  <meta name="description" content="Ship It Kit by Goosekit is a focused DIY Next.js auth + billing starter with Supabase auth, Stripe checkout, portal, webhooks, and protected routes already wired.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -437,39 +437,39 @@
   <header>
     <div class="container topbar">
       <a class="brand" href="#top">Ship It <span>Kit</span> by Goosekit</a>
-      <a class="nav-cta" href="/go/ship-it-kit/product-from-auth-billing/">See the product page</a>
+      <a class="nav-cta" href="/go/ship-it-kit/checkout-auth-billing-sticky/">Get instant repo access</a>
     </div>
   </header>
 
   <main class="container" id="top">
     <section class="hero">
       <div class="hero-copy">
-        <div class="pill">Focused starter by Goosekit</div>
+        <div class="pill">DIY starter by Goosekit</div>
         <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
-        <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, password reset, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
+        <p>Ship It Kit is the focused DIY Next.js + Supabase + Stripe base for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
-          <a class="btn-primary" href="/go/ship-it-kit/product-from-auth-billing/">See the product page</a>
+          <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-hero/">Get the starter, €49</a>
           <a class="btn-secondary" href="#fit">Check if your stack fits</a>
         </div>
-        <p class="price-note" style="margin:14px 0 0;">Low-risk buy: if Ship It Kit is the wrong fit for your stack or workflow, email within 30 days and get a full refund.</p>
+        <p class="price-note" style="max-width:680px;margin-top:0;">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_hero_full_offer">See the full offer</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Email Arthur for a quick fit check</a>.</p>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
-          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers, and a settings / billing home</span></li>
-          <li><span class="check">✓</span><span>Instant repo access, unlimited projects, 30-day money-back guarantee if it is the wrong fit</span></li>
+          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers</span></li>
+          <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell</span></li>
         </ul>
       </div>
 
       <aside class="card hero-card">
-        <div class="pill">Low-risk starter, clear fit</div>
-        <h2>Small enough to understand, complete enough to ship.</h2>
-        <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get the starter repo right after checkout, plug in your keys, and keep building on top of it. If you need a huge framework or a different stack, skip it honestly.</p>
+        <div class="pill">DIY, not done-for-you</div>
+        <h2>For builders blocked by the same two jobs.</h2>
+        <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You buy the starter and build on top of it yourself. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
-        <p class="price-note">Instant repo access, unlimited projects, lifetime updates, and a 30-day money-back guarantee if it is the wrong fit.</p>
+        <p class="price-note">Instant repo access, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
-          <span class="mini-pill">30-day refund</span>
+          <span class="mini-pill">Protected routes ready</span>
         </div>
         <ul class="pain-list">
           <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
@@ -528,7 +528,7 @@
         </div>
         <div class="panel">
           <h3>What you can launch from</h3>
-          <p>Landing page, auth screen, pricing page, protected dashboard shell, settings / billing home, and the core routes needed to get to a first usable MVP.</p>
+          <p>Landing page, auth screen, pricing page, protected dashboard shell, and the core routes needed to get to a first usable MVP.</p>
         </div>
         <div class="panel">
           <h3>Fast setup docs</h3>
@@ -554,7 +554,6 @@
 │   ├── page.tsx
 │   ├── auth/page.tsx
 │   ├── (app)/dashboard/page.tsx
-│   ├── (app)/settings/page.tsx
 │   ├── (marketing)/pricing/page.tsx
 │   └── api/webhooks/stripe/route.ts
 ├── lib/
@@ -571,8 +570,8 @@ supabase/
               Checkout completion, subscription updates, and cancellation events are already handled.
             </div>
             <div class="path-item">
-              <strong>src/app/(app)/settings/page.tsx</strong>
-              Buyers get a real account and billing home instead of a dead-end dashboard shell.
+              <strong>src/middleware.ts</strong>
+              Route protection is already in place, so the dashboard shell is not a fake screenshot.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -583,11 +582,11 @@ supabase/
         <div class="panel">
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
-            <li><span class="check">✓</span><span>Signup, login, and password reset flow.</span></li>
+            <li><span class="check">✓</span><span>Signup and login flow.</span></li>
             <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
-            <li><span class="check">✓</span><span>Landing, pricing, auth, dashboard, and settings starter pages.</span></li>
+            <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
             <li><span class="check">✓</span><span>Initial AI context so code assistants can edit safely.</span></li>
           </ul>
         </div>
@@ -628,11 +627,11 @@ supabase/
     <section class="section" id="pricing">
       <div class="price-card card">
         <div>
-          <div class="price-kicker">One-time starter code</div>
+          <div class="price-kicker">One-time DIY starter</div>
           <h2>€49 to skip the auth + billing loop.</h2>
           <p class="section-sub">This is intentionally smaller and cheaper than the big boilerplates. It is for founders who want the access + payments layer handled without buying a giant framework first.</p>
           <div class="price-value">€49 <span>one-time</span></div>
-          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day refund if it is the wrong fit.</p>
+          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
         </div>
         <div>
           <ul class="price-list">
@@ -642,7 +641,7 @@ supabase/
             <li><span class="check">✓</span><span>No subscription, no service upsell, no onboarding ceremony.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
-            <a class="btn-primary" href="/go/ship-it-kit/product-from-auth-billing/">See the product page</a>
+            <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-pricing/">Get instant repo access</a>
             <a class="btn-secondary" href="#fit">Check fit before buying</a>
           </div>
         </div>
@@ -654,15 +653,16 @@ supabase/
       <h2>Stop rewiring auth and Stripe for every MVP.</h2>
       <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
-        <a class="btn-primary" href="/go/ship-it-kit/product-from-auth-billing/">See the product page</a>
-        <a class="btn-secondary" href="#included">Review what is included</a>
+        <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-bottom/">Get the starter, €49</a>
+        <a class="btn-secondary" href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer">See the full offer</a>
       </div>
+      <p style="margin-top:14px;">Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a> or <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">email Arthur for a quick fit check</a>.</p>
     </section>
   </main>
 
   <footer>
     <div class="container footer-line">
-      <span>Ship It Kit by Goosekit, a focused auth + billing starter for Next.js builders.</span>
+      <span>Ship It Kit by Goosekit, a focused DIY auth + billing starter for Next.js builders.</span>
       <span>Built by Arthur Pierrey. Checkout handled by Lemon Squeezy.</span>
     </div>
   </footer>
