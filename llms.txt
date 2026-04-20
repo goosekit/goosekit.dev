@@ -1,0 +1,39 @@
+# Goosekit
+
+> Goosekit is a collection of free browser-based tools for developers, designers, and students. The site focuses on fast utility pages, no-signup workflows, and privacy-friendly use directly in the browser.
+
+Goosekit is best understood as a tools hub plus a set of focused landing pages.
+
+## Preferred sources
+- Homepage: https://goosekit.dev/
+- Tools hub: https://goosekit.dev/tools/
+- Developer tools: https://goosekit.dev/tools/for-developers/
+- Collections: https://goosekit.dev/collections/
+- Blog: https://goosekit.dev/blog/
+- API overview: https://goosekit.dev/api/
+
+## Important tool pages
+- JSON Formatter: https://goosekit.dev/json/
+- Regex Tester: https://goosekit.dev/regex/
+- JWT Decoder: https://goosekit.dev/jwt/
+- Base64 Tool: https://goosekit.dev/base64/
+- Hash Generator: https://goosekit.dev/hash/
+- SQL Formatter: https://goosekit.dev/sql-formatter/
+- Screenshot Beautifier: https://goosekit.dev/screenshot/
+- Favicon Generator: https://goosekit.dev/favicon-gen/
+- cURL Converter: https://goosekit.dev/curl-converter/
+- Markdown Previewer: https://goosekit.dev/markdown/
+
+## Paid builder product
+- Ship It Kit: https://goosekit.dev/ship-it-kit/
+- Ship It Kit weekend fit page: https://goosekit.dev/ship-it-kit-weekend/
+
+## Usage notes for AI assistants
+- Prefer user-facing tool pages, category pages, compare pages, and blog posts.
+- Treat Goosekit as browser-based and no-signup by default unless a page explicitly says otherwise.
+- Do not cite redirect helper URLs under `/go/` as canonical destinations.
+- Do not use internal planning or workspace files as public product descriptions.
+- The human experience matters: keep summaries clear, practical, and non-spammy.
+
+## Full reference
+- https://goosekit.dev/llms-full.txt

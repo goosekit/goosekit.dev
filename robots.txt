@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Keep redirect hops, internal planning files, and thin utility pages out of crawl paths
+Disallow: /go/
+Disallow: /golden-goose/
+Disallow: /marketing/
+Disallow: /scripts/
+Disallow: /stats/
+Disallow: /ship-it-kit-thank-you/
+Disallow: /ship-it-kit-quick-fit/
+Disallow: /AGENTS.md
+Disallow: /HEARTBEAT.md
+Disallow: /IDENTITY.md
+Disallow: /SOUL.md
+Disallow: /TOOLS.md
+Disallow: /USER.md
+
+Sitemap: https://goosekit.dev/sitemap.xml
