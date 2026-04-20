@@ -9,8 +9,10 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 - Tools hub: https://goosekit.dev/tools/
 - Developer tools: https://goosekit.dev/tools/for-developers/
 - Collections: https://goosekit.dev/collections/
+- Full tool directory: https://goosekit.dev/all-tools/
 - Blog: https://goosekit.dev/blog/
 - API overview: https://goosekit.dev/api/
+- AI reference page: https://goosekit.dev/for-ai/
 
 ## Important tool pages
 - JSON Formatter: https://goosekit.dev/json/

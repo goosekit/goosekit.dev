@@ -15,8 +15,10 @@ Goosekit is a website of free browser-based tools. The core promise is speed, no
 - Developer tools: https://goosekit.dev/tools/for-developers/
 - Designer tools: https://goosekit.dev/tools/for-designers/
 - Collections: https://goosekit.dev/collections/
+- Full tool directory: https://goosekit.dev/all-tools/
 - Blog: https://goosekit.dev/blog/
 - API overview: https://goosekit.dev/api/
+- AI reference page: https://goosekit.dev/for-ai/
 
 ## High-signal tools
 - JSON Formatter: https://goosekit.dev/json/
