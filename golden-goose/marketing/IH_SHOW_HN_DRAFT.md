@@ -32,7 +32,7 @@ So I built **Ship It Kit** — a focused Next.js + Supabase + Stripe starter tha
 - CLAUDE.md for AI-assisted edits
 
 **€49 one-time** (launch pricing — goes up after April 30)
-30-day money-back guarantee, instant repo access after checkout.
+30-day money-back guarantee, instant starter download after checkout.
 
 Live at: https://goosekit.dev/ship-it-kit/
 Honest comparison vs. ShipFast, Makerkit, Supastarter: https://goosekit.dev/compare/ship-it-kit-vs-competitors/
