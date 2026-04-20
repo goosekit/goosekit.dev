@@ -250,7 +250,7 @@
 <header class="site-header">
   <div class="site-header-inner">
     <a class="site-brand" href="/" aria-label="Goosekit home">
-      <img src="/logo-dark.png" alt="Goosekit">
+      <img src="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/logo-dark.png" alt="Goosekit">
     </a>
     <button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false">
       <span></span>
@@ -379,9 +379,9 @@
     <div class="card">
       <div class="section-title">HTML Code</div>
       <div class="code-block" id="html-code"><button class="btn btn-secondary copy-code" id="copy-html">📋 Copy</button>&lt;link rel="icon" type="image/x-icon" href="/favicon.ico"&gt;
-&lt;link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png"&gt;
-&lt;link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"&gt;
-&lt;link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"&gt;</div>
+&lt;link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/favicon-32x32.png"&gt;
+&lt;link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/favicon-16x16.png"&gt;
+&lt;link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/apple-touch-icon.png"&gt;</div>
     </div>
 
     <div class="card">
@@ -633,9 +633,9 @@
   // Copy HTML
   $('#copy-html').addEventListener('click', () => {
     const code = `<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">`;
+<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://raw.githubusercontent.com/goosekit/goosekit.dev/main/apple-touch-icon.png">`;
     navigator.clipboard.writeText(code).then(() => {
       const btn = $('#copy-html');
       btn.textContent = '✅ Copied!';
