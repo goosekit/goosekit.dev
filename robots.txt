@@ -8,7 +8,6 @@ Disallow: /marketing/
 Disallow: /scripts/
 Disallow: /stats/
 Disallow: /AGENTS.md
-Disallow: /for-ai/
 Disallow: /HEARTBEAT.md
 Disallow: /IDENTITY.md
 Disallow: /SOUL.md
