@@ -275,16 +275,18 @@
     <p>This is a review of what that €49 actually buys you, written honestly.</p>
 
     <h2 id="stack">1. What the Stack Includes</h2>
-    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, React Email templates, Tailwind CSS + Shadcn/ui, landing page, dashboard scaffold, settings and billing pages.</strong></p>
+    <p>The exact stack: <strong>Next.js 15 (App Router), Supabase auth + database, Stripe Checkout + Customer Portal + webhook handlers, Tailwind CSS 4, landing page, pricing page, auth flow, dashboard scaffold, and settings/billing pages.</strong></p>
 
     <p>Here's what the actual file structure looks like once you clone it:</p>
-    <pre><code>/app                  # Next.js App Router pages
-/components/ui        # Shadcn/ui component library
-/emails               # React Email templates
-/lib                  # Supabase client, Stripe utils
-/stripe               # Webhook handlers
-/supabase             # Migrations + types
-README.md             # Full setup guide</code></pre>
+    <pre><code>src/app/page.tsx                     # landing page
+src/app/auth/page.tsx               # auth screen
+src/app/(app)/dashboard/page.tsx    # protected dashboard shell
+src/app/(marketing)/pricing/page.tsx# pricing flow
+src/app/api/webhooks/stripe/route.ts# Stripe webhook handler
+src/lib/                            # auth, stripe, supabase helpers
+src/middleware.ts                   # route protection
+supabase/schema.sql                 # schema + DB starting point
+CLAUDE.md                           # AI-editing guidance</code></pre>
 
     <p>It's a real codebase, not a screenshot of one. You get the full source as a starter download after purchase.</p>
 
@@ -321,7 +323,7 @@ README.md             # Full setup guide</code></pre>
       <tr><th>Feature</th><th>Ship It Kit</th><th>Typical Free Starter</th></tr>
       <tr><td>Stripe billing + portal</td><td>✓</td><td>Often missing</td></tr>
       <tr><td>Webhook handlers</td><td>✓</td><td>Sometimes</td></tr>
-      <tr><td>React Email templates</td><td>✓</td><td>Rarely</td></tr>
+      <tr><td>Pricing + dashboard shell</td><td>✓</td><td>Rarely</td></tr>
       <tr><td>Dedicated landing page</td><td>✓</td><td>Sometimes</td></tr>
       <tr><td>AI-friendly structure</td><td>✓</td><td>Not a design goal</td></tr>
       <tr><td>One-time price</td><td>✓</td><td>Not typical</td></tr>
