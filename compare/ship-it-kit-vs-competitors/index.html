@@ -13,6 +13,7 @@
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:type" content="article">
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+  <script defer src="/posthog.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
@@ -289,6 +290,7 @@
     <a href="/go/ship-it-kit/product-from-compare-competitors/?source=compare_competitors_price_proof" class="btn-primary">See the proof-first page →</a>
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
   </div>
+  <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Not fully sure yet? <a href="/ship-it-kit/?ref=compare_competitors_proof_note">See the exact files and setup flow</a> before you buy.</p>
 </div>
 
 <div class="section">
@@ -311,6 +313,7 @@
     <a href="/go/ship-it-kit/product-from-compare-competitors/?source=compare_competitors_verdict_proof" class="btn-primary">See the starter with proof →</a>
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
   </div>
+  <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Need one last proof pass? <a href="/ship-it-kit/?ref=compare_competitors_verdict_proof_note">See the exact files and setup flow</a>.</p>
 </div>
 
 </main>
@@ -319,6 +322,35 @@
   <p><a href="/">Goosekit</a> · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/compare/">All comparisons</a></p>
   <p style="margin-top:.5rem;">Built for founders who want product work back on the table fast.</p>
 </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'compare_competitors'
+    });
+
+    document.querySelectorAll('a[href*="product-from-compare-competitors"], a[href*="lemonsqueezy.com/checkout"], a[href*="/ship-it-kit/"], a[href*="/compare/"], a[href*="/"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'compare_competitors',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 
 </body>
 </html>
