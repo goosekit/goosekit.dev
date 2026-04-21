@@ -499,6 +499,7 @@
       .footer-line { flex-direction: column; }
     }
   </style>
+  <script defer src="/posthog.js"></script>
 </head>
 <body>
   <header>
@@ -532,7 +533,7 @@
         <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
         <p class="price-note">Instant starter download, unlimited projects, lifetime starter updates, and a 30-day money-back guarantee.</p>
-        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">Email Arthur for a quick fit check</a> before buying.</p>
+        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? Use the <a href="/ship-it-kit-checklist/?ref=product_hero_checklist">free checklist</a> before buying.</p>
         <p class="price-note" style="margin-top:10px;">Need more proof first? <a href="/blog/ship-it-kit-review/?ref=product_hero_review">Read the review</a> or <a href="/blog/nextjs-auth-billing-starter/?ref=product_hero_auth_billing">see the auth + billing walkthrough</a>.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
@@ -692,14 +693,39 @@ supabase/
       </div>
     </section>
 
+    <section class="section" id="next-step">
+      <div class="section-head">
+        <div class="eyebrow">Pick your next click</div>
+        <h2>Do not force yourself through the wrong page.</h2>
+        <p class="section-sub">The best next step depends on whether you are ready to buy, still comparing, or still deciding whether paid even makes sense.</p>
+      </div>
+      <div class="included-grid">
+        <div class="panel">
+          <h3>I already know this is my stack</h3>
+          <p>You want the fastest path to the repo and do not need more comparison first.</p>
+          <p><a href="/go/ship-it-kit/checkout-product-router/?ref=product_next_step_checkout">Go straight to checkout</a></p>
+        </div>
+        <div class="panel">
+          <h3>I am still comparing ShipFast / Makerkit / Supastarter</h3>
+          <p>Use the comparison layer first so you can filter by scope, price, and how much framework you actually want.</p>
+          <p><a href="/compare/ship-it-kit-vs-competitors/?ref=product_next_step_compare">Open the comparison page</a></p>
+        </div>
+        <div class="panel">
+          <h3>I am still asking “why not just use a free starter?”</h3>
+          <p>That is a good question. Use the auth + billing page first and only pay if skipping that setup loop is actually worth it to you.</p>
+          <p><a href="/blog/nextjs-auth-billing-starter/?ref=product_next_step_free_vs_paid">Read the auth + billing guide</a></p>
+        </div>
+      </div>
+    </section>
+
     <section class="section" id="pricing">
       <div class="price-card card">
         <div>
-          <div class="price-kicker">One-time self-serve starter</div>
+          <div class="price-kicker">One-time starter</div>
           <h2>€49 to skip the auth + billing loop.</h2>
           <p class="section-sub">This is intentionally smaller and cheaper than the big boilerplates. It is for founders who want the access + payments layer handled without buying a giant framework first.</p>
           <div class="price-value">€49 <span>one-time</span></div>
-          <p class="price-note">Instant starter download. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
+          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
         </div>
         <div>
           <ul class="price-list">
@@ -709,7 +735,7 @@ supabase/
             <li><span class="check">✓</span><span>No subscription, no service upsell, no onboarding ceremony.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
-            <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant starter download</a>
+            <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant repo access</a>
             <a class="btn-secondary" href="#fit">Check fit before buying</a>
           </div>
           <div class="buy-check">
@@ -717,19 +743,20 @@ supabase/
             <ul>
               <li><span class="check">✓</span><span>Your stack is Next.js + Supabase + Stripe.</span></li>
               <li><span class="check">✓</span><span>You want starter code, not a hosted product or done-for-you service.</span></li>
-              <li><span class="check">✓</span><span>You want instant starter access so you can start building on top of it right away.</span></li>
+              <li><span class="check">✓</span><span>You want instant repo access so you can start building on top of it right away.</span></li>
             </ul>
             <p class="price-note" style="margin-top:12px;">Checkout is handled by Lemon Squeezy. 30-day money-back guarantee. If that is not your stack or buying style, skip it honestly.</p>
           </div>
           <div class="buy-check">
             <h3>What happens right after you buy</h3>
             <ul>
-              <li><span class="check">✓</span><span>You get the starter download right after checkout, no sales call or manual onboarding queue.</span></li>
+              <li><span class="check">✓</span><span>You get the repo access right after checkout, no sales call or manual onboarding queue.</span></li>
               <li><span class="check">✓</span><span>You copy the env example, add your Supabase and Stripe keys, and run it locally.</span></li>
               <li><span class="check">✓</span><span>You start editing product logic instead of spending the weekend wiring signup and billing again.</span></li>
             </ul>
             <p class="price-note" style="margin-top:12px;">If you realize it is the wrong fit for your stack, use the 30-day refund policy instead of forcing it.</p>
           </div>
+          <p class="price-note" style="margin-top:16px;">Still unsure? Use the free <a href="/ship-it-kit-checklist/?ref=product_price_checklist">Ship It Kit checklist</a> first, then buy only if the stack and timing are right.</p>
         </div>
       </div>
     </section>
@@ -750,12 +777,20 @@ supabase/
           <p>A small starter. The goal is not maximum feature count. The goal is a billing-ready base you can understand quickly and extend without fighting a giant codebase.</p>
         </div>
         <div class="panel faq-item">
+          <h3>How is this different from ShipFast or Makerkit?</h3>
+          <p>Ship It Kit is intentionally smaller, cheaper, and more specific. If you already want Next.js + Supabase + Stripe and mostly need auth, billing, and dashboard basics done, this is the lighter path. If you want a bigger all-purpose framework with more built-in surface area, ShipFast or Makerkit may fit better.</p>
+        </div>
+        <div class="panel faq-item">
+          <h3>Why is it only €49?</h3>
+          <p>Because the scope is intentionally narrow. This is not trying to be the biggest all-purpose framework. It is a smaller Next.js + Supabase + Stripe starter for founders who want auth + billing handled without buying a much heavier system first.</p>
+        </div>
+        <div class="panel faq-item">
           <h3>Who is this actually for?</h3>
           <p>Solo founders and small builders shipping a Next.js SaaS MVP with Supabase and Stripe, especially if they want a repo that works well with Cursor, Claude, Copilot, or manual edits.</p>
         </div>
         <div class="panel faq-item">
           <h3>What happens after checkout?</h3>
-          <p>You get the starter download right after checkout, add your Supabase and Stripe keys, and start building on top of it. Checkout is handled by Lemon Squeezy, not a custom sales process.</p>
+          <p>You get instant repo access, add your Supabase and Stripe keys, and start building on top of the starter. Checkout is handled by Lemon Squeezy, not a custom sales process.</p>
         </div>
         <div class="panel faq-item">
           <h3>Can I use it for more than one project?</h3>
@@ -776,7 +811,7 @@ supabase/
         <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/">Get the starter, €49</a>
         <a class="btn-secondary" href="#included">Review what is included</a>
       </div>
-      <p class="price-note" style="margin-top:16px;">€49 one-time, instant starter download, lifetime starter updates, 30-day money-back guarantee. Not sure yet? <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">Read the review</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">check the auth + billing guide</a>, or <a href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20fit%20check">email Arthur for a quick fit check</a>.</p>
+      <p class="price-note" style="margin-top:16px;">€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the free <a href="/ship-it-kit-checklist/?ref=product_bottom_checklist">checklist</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
     </section>
   </main>
 
@@ -786,5 +821,34 @@ supabase/
       <span>Built by Arthur Pierrey. Checkout handled by Lemon Squeezy.</span>
     </div>
   </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'product'
+    });
+
+    document.querySelectorAll('a[href*="checkout"], a[href*="ship-it-kit-checklist"], a[href*="nextjs-auth-billing-starter"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="ship-it-kit-vs-"], a[href^="mailto:"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'product',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
