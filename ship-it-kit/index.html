@@ -23,18 +23,84 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Product",
-    "name": "Ship It Kit by Goosekit",
-    "description": "Focused Next.js 15 + Supabase + Stripe starter with auth, checkout, portal, webhooks, and protected routes already wired.",
-    "url": "https://goosekit.dev/ship-it-kit/",
-    "brand": { "@type": "Brand", "name": "Goosekit" },
-    "offers": {
-      "@type": "Offer",
-      "price": "49",
-      "priceCurrency": "EUR",
-      "availability": "https://schema.org/InStock",
-      "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a"
-    }
+    "@graph": [
+      {
+        "@type": "Product",
+        "name": "Ship It Kit by Goosekit",
+        "description": "Focused Next.js 15 + Supabase + Stripe starter with auth, checkout, portal, webhooks, protected routes, pricing flow, and dashboard shell already wired.",
+        "url": "https://goosekit.dev/ship-it-kit/",
+        "brand": { "@type": "Brand", "name": "Goosekit" },
+        "category": "SaaS starter",
+        "audience": {
+          "@type": "Audience",
+          "audienceType": "Solo founders and developers building a Next.js SaaS MVP"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "49",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "url": "https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a",
+          "seller": {
+            "@type": "Organization",
+            "name": "Goosekit"
+          },
+          "hasMerchantReturnPolicy": {
+            "@type": "MerchantReturnPolicy",
+            "applicableCountry": "FR",
+            "returnPolicyCategory": "https://schema.org/MerchantReturnFiniteReturnWindow",
+            "merchantReturnDays": 30,
+            "returnMethod": "https://schema.org/ReturnByMail",
+            "returnFees": "https://schema.org/FreeReturn"
+          }
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why not just use a free starter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You can. Ship It Kit only makes sense if skipping the auth + billing setup loop is worth €49 to you. If you enjoy wiring that stack yourself, a free starter may honestly be enough."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is this a framework or a small starter?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A small starter. The goal is not maximum feature count. The goal is a billing-ready base you can understand quickly and extend without fighting a giant codebase."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is this different from ShipFast or Makerkit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Ship It Kit is intentionally smaller, cheaper, and more specific. If you already want Next.js + Supabase + Stripe and mostly need auth, billing, and dashboard basics done, this is the lighter path. If you want a bigger all-purpose framework with more built-in surface area, ShipFast or Makerkit may fit better."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens after checkout?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "You get instant repo access, add your Supabase and Stripe keys, and start building on top of the starter. Checkout is handled by Lemon Squeezy, not a custom sales process."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if I buy it and realize it is the wrong fit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Do the honest thing fast. If your stack or buying style does not match after purchase, use the 30-day money-back guarantee instead of forcing yourself into the wrong starter."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -517,7 +583,7 @@
         <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
           <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/">Get the starter, €49</a>
-          <a class="btn-secondary" href="#fit">Check if your stack fits</a>
+          <a class="btn-secondary" href="#proof">See the exact files first</a>
         </div>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
@@ -533,13 +599,14 @@
         <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
         <p class="price-note">Instant starter download, unlimited projects, lifetime starter updates, and a 30-day money-back guarantee.</p>
-        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? Use the <a href="/ship-it-kit-checklist/?ref=product_hero_checklist">free checklist</a> before buying.</p>
+        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? Use the <a href="/ship-it-kit-quick-fit/?ref=product_hero_quick_fit">30-second proof-first router</a> before buying.</p>
         <p class="price-note" style="margin-top:10px;">Need more proof first? <a href="/blog/ship-it-kit-review/?ref=product_hero_review">Read the review</a> or <a href="/blog/nextjs-auth-billing-starter/?ref=product_hero_auth_billing">see the auth + billing walkthrough</a>.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
-          <span class="mini-pill">Protected routes ready</span>
+          <span class="mini-pill">Instant repo access</span>
         </div>
+        <p class="price-note" style="margin-top:10px;">Prefer to inspect before buying? Jump to the <a href="#proof">exact file tree</a> and the <a href="#setup">3-step setup flow</a>.</p>
         <ul class="pain-list">
           <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
           <li><span class="check">✓</span><span>Use it as the base for your own MVP, then customize from there.</span></li>
@@ -736,7 +803,7 @@ supabase/
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
             <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant repo access</a>
-            <a class="btn-secondary" href="#fit">Check fit before buying</a>
+            <a class="btn-secondary" href="#proof">Review the proof first</a>
           </div>
           <div class="buy-check">
             <h3>Buy this today if all 3 are true</h3>
@@ -756,7 +823,7 @@ supabase/
             </ul>
             <p class="price-note" style="margin-top:12px;">If you realize it is the wrong fit for your stack, use the 30-day refund policy instead of forcing it.</p>
           </div>
-          <p class="price-note" style="margin-top:16px;">Still unsure? Use the free <a href="/ship-it-kit-checklist/?ref=product_price_checklist">Ship It Kit checklist</a> first, then buy only if the stack and timing are right.</p>
+          <p class="price-note" style="margin-top:16px;">Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=product_price_quick_fit">30-second proof-first router</a> first, then buy only if the stack and timing are right.</p>
         </div>
       </div>
     </section>
@@ -811,7 +878,7 @@ supabase/
         <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/">Get the starter, €49</a>
         <a class="btn-secondary" href="#included">Review what is included</a>
       </div>
-      <p class="price-note" style="margin-top:16px;">€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the free <a href="/ship-it-kit-checklist/?ref=product_bottom_checklist">checklist</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
+      <p class="price-note" style="margin-top:16px;">€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=product_bottom_quick_fit">30-second proof-first router</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
     </section>
   </main>
 
@@ -837,7 +904,7 @@ supabase/
       page_type: 'product'
     });
 
-    document.querySelectorAll('a[href*="checkout"], a[href*="ship-it-kit-checklist"], a[href*="nextjs-auth-billing-starter"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="ship-it-kit-vs-"], a[href^="mailto:"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="checkout"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="nextjs-auth-billing-starter"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="ship-it-kit-vs-"], a[href^="mailto:"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
