@@ -432,6 +432,7 @@
       .footer-line { flex-direction: column; }
     }
   </style>
+  <script defer src="/posthog.js"></script>
 </head>
 <body>
   <header>
@@ -667,5 +668,34 @@ supabase/
       <span>Built by Arthur Pierrey. Checkout handled by Lemon Squeezy.</span>
     </div>
   </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'auth_billing_entry'
+    });
+
+    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-review"], a[href*="product-from-auth-billing"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'auth_billing_entry',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
