@@ -44,7 +44,7 @@
       {
         "@type": "Question",
         "name": "Is Ship It Kit worth it for a first-time indie hacker?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Ship It Kit (€49 one-time) includes every integration a SaaS MVP needs — Supabase auth, Stripe Checkout and portal, Resend email, Tailwind + Shadcn/ui components, and AI coding rules so Cursor and Claude understand the codebase immediately. It is the fastest path from idea to deployed SaaS with billing working on day one."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Ship It Kit (€49 one-time) gives first-time indie hackers the hardest MVP plumbing up front: Next.js 15, Supabase auth, Stripe Checkout + customer portal + webhooks, pricing flow, and a clean repo that is easy to edit with AI tools or by hand. It is strongest when auth and billing are the parts blocking launch."}
       }
     ]
   }
@@ -316,7 +316,7 @@
   <p>Here's how to allocate your weekend for maximum shipped-ness:</p>
 
   <div class="timeline">
-    <div class="timeline-item"><strong>Hour 0–1: Pick your stack and clone</strong><br>Next.js 15 (App Router), Supabase, Stripe. Clone a boilerplate with these already wired. <a href="/go/ship-it-kit/product-from-ship-saas-mvp-nextjs/?source=blog_ship_saas_mvp_nextjs_timeline">Ship It Kit</a> has all three plus email, UI components, and AI coding rules built in.</div>
+    <div class="timeline-item"><strong>Hour 0–1: Pick your stack and clone</strong><br>Next.js 15 (App Router), Supabase, Stripe. Clone a boilerplate with these already wired. <a href="/go/ship-it-kit/product-from-ship-saas-mvp-nextjs/?source=blog_ship_saas_mvp_nextjs_timeline">Ship It Kit</a> has all three plus the pricing page, dashboard shell, and a clean repo you can edit fast with AI tools.</div>
     <div class="timeline-item"><strong>Hour 1–4: Customize the landing page</strong><br>Replace the boilerplate's demo copy with your product name, value prop, and pricing. Change the hero image. Add your own demo video or screenshot. This is the page you'll link from Twitter, directories, and HN.</div>
     <div class="timeline-item"><strong>Hour 4–6: Wire up your core feature</strong><br>Whatever makes your SaaS unique — the thing users actually pay for. Keep it minimal. A waiting list + Stripe checkout is enough for day one. You can always add features after you have paying users.</div>
     <div class="timeline-item"><strong>Hour 6–8: Add Stripe billing</strong><br>In a pre-wired boilerplate this means: set your Stripe product and price IDs in <code>.env</code>, test the checkout flow with Stripe's test mode. Should take 30 minutes if the webhooks are already there.</div>
@@ -360,17 +360,16 @@
     <li>Next.js 15 App Router + TypeScript</li>
     <li>Supabase Auth (email/password + Google + GitHub OAuth)</li>
     <li>Stripe Checkout + Customer Portal + webhook handlers</li>
-    <li>Resend transactional emails (welcome, receipts, password reset)</li>
-    <li>Tailwind CSS + Shadcn/ui components (dark mode included)</li>
-    <li>Landing page + pricing page + settings/billing pages</li>
-    <li>AI coding rules (<code>.cursorrules</code> + Windsurf rules) so Cursor and Claude understand the codebase immediately</li>
+    <li>Tailwind CSS 4 + a starter UI shell you can customize</li>
+    <li>Landing page + pricing page + auth flow + dashboard shell</li>
+    <li>CLAUDE.md + a repo structure that is easy to edit with Cursor, Claude, Copilot, or by hand</li>
   </ul>
 
   <p>Price: <strong>€49 one-time</strong>. Unlimited projects. Lifetime updates. No subscription. 30-day money-back guarantee.</p>
 
   <div class="cta">
     <h3>Ready to stop configuring and start shipping?</h3>
-    <p>Ship It Kit gives you Next.js 15, Supabase auth, Stripe checkout + portal, webhook handling, billing pages, and email flows in one starter that's ready to customize.</p>
+    <p>Ship It Kit gives you Next.js 15, Supabase auth, Stripe checkout + portal, webhook handling, billing pages, and a clean starter structure that's ready to customize.</p>
     <p style="margin-top:10px;color:#b8b8cc;">€49 one-time, instant GitHub access, unlimited projects, lifetime updates, and a 30-day money-back guarantee.</p>
     <a href="/go/ship-it-kit/product-from-ship-saas-mvp-nextjs/?source=blog_ship_saas_mvp_nextjs">See Ship It Kit for €49 →</a>
     <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Need a closer look before buying? <a href="/ship-it-kit/?ref=blog_ship_saas_mvp_nextjs_proof#proof">See the exact files first</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
@@ -408,7 +407,7 @@
     <div class="timeline-item"><strong>What tech stack do you need for a SaaS MVP?</strong><br>For most SaaS MVPs in 2026: Next.js 15 (App Router), Supabase (auth + database), Stripe (payments + billing portal), Tailwind CSS + Shadcn/ui (UI). These four cover 90% of what any SaaS needs on day one.</div>
     <div class="timeline-item"><strong>How do you add Stripe billing to a Next.js app?</strong><br>Stripe Checkout handles the session creation, the customer portal handles subscription management, and webhooks update your database on payment events. In a boilerplate, all three are wired up and tested. From scratch, plan 4-5 days.</div>
     <div class="timeline-item"><strong>What is the fastest way to launch a paid SaaS?</strong><br>Clone a Next.js SaaS starter with Stripe already wired, customize the landing page and pricing, deploy to Vercel, and open Stripe Checkout. You can have a live paying page in under 2 hours if the billing code is already there.</div>
-    <div class="timeline-item"><strong>Is Ship It Kit worth it for a first-time indie hacker?</strong><br>Ship It Kit (€49 one-time) includes every integration a SaaS MVP needs — Supabase auth, Stripe Checkout and portal, Resend email, Tailwind + Shadcn/ui components, and AI coding rules so Cursor and Claude understand the codebase immediately. It is the fastest path from idea to deployed SaaS with billing working on day one.</div>
+    <div class="timeline-item"><strong>Is Ship It Kit worth it for a first-time indie hacker?</strong><br>Ship It Kit (€49 one-time) is worth it when auth and billing are the parts blocking launch. It gives you Next.js 15, Supabase auth, Stripe Checkout + portal + webhooks, pricing flow, and a clean repo that is easy to edit with AI tools or by hand.</div>
   </div>
 
   <div class="cta">
