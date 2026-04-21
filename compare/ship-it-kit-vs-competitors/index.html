@@ -112,7 +112,7 @@
 <header>
   <div class="breadcrumb">
     <a href="/">Goosekit</a> <span>›</span>
-    <a href="/compare/">Compare</a> <span>›</span>
+    <a href="/collections/">Compare</a> <span>›</span>
     Ship It Kit vs Competitors
   </div>
 </header>
@@ -121,7 +121,7 @@
   <h1>Ship It Kit vs <span>ShipFast, Makerkit, Supastarter</span></h1>
   <p>Honest comparison for solo founders choosing a Next.js starter. If you want the paid-user path, landing page, signup, checkout, portal, and webhooks, already coherent on the exact Next.js + Supabase + Stripe stack, this is the smaller-fit option to sanity-check first.</p>
   <div class="cta-row">
-    <a href="/go/ship-it-kit/product-from-compare-competitors/?source=compare_competitors_hero_proof" class="btn-primary">See the proof-first page →</a>
+    <a href="/ship-it-kit/?ref=compare_competitors_hero_proof#proof" class="btn-primary">See the proof-first page →</a>
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
   </div>
   <div class="disclaimer" style="margin-top:1.25rem;">
@@ -287,7 +287,7 @@
   <div class="tagline">The cheapest of the bunch. Intentionally.</div>
   <div class="reason">Smaller scope + honest positioning = faster setup + less to fight when you add your product logic. If you still want to inspect the fit, use the proof-first page before checkout.</div>
   <div class="cta-row" style="justify-content:center; margin-top:1.25rem;">
-    <a href="/go/ship-it-kit/product-from-compare-competitors/?source=compare_competitors_price_proof" class="btn-primary">See the proof-first page →</a>
+    <a href="/ship-it-kit/?ref=compare_competitors_price_proof#proof" class="btn-primary">See the proof-first page →</a>
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
   </div>
   <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Not fully sure yet? <a href="/ship-it-kit/?ref=compare_competitors_proof_note">See the exact files and setup flow</a> before you buy.</p>
@@ -310,7 +310,7 @@
   <p>If you need the giant SaaS framework — teams, admin, full email flow, maximal everything — look at ShipFast, Makerkit, or Supastarter. They're good at what they do.</p>
   <p>If you want the auth + billing layer wired, nothing extra, understood in an afternoon, and editable by your AI tool — Ship It Kit is built for exactly that.</p>
   <div class="cta-row" style="justify-content:center;">
-    <a href="/go/ship-it-kit/product-from-compare-competitors/?source=compare_competitors_verdict_proof" class="btn-primary">See the starter with proof →</a>
+    <a href="/ship-it-kit/?ref=compare_competitors_verdict_proof#proof" class="btn-primary">See the starter with proof →</a>
     <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
   </div>
   <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Need one last proof pass? <a href="/ship-it-kit/?ref=compare_competitors_verdict_proof_note">See the exact files and setup flow</a>.</p>
@@ -319,7 +319,7 @@
 </main>
 
 <footer>
-  <p><a href="/">Goosekit</a> · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/compare/">All comparisons</a></p>
+  <p><a href="/">Goosekit</a> · <a href="/ship-it-kit/">Ship It Kit</a> · <a href="/collections/">All comparisons</a></p>
   <p style="margin-top:.5rem;">Built for founders who want product work back on the table fast.</p>
 </footer>
 <script>
@@ -338,7 +338,7 @@
       page_type: 'compare_competitors'
     });
 
-    document.querySelectorAll('a[href*="product-from-compare-competitors"], a[href*="lemonsqueezy.com/checkout"], a[href*="/ship-it-kit/"], a[href*="/compare/"], a[href*="/"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="lemonsqueezy.com/checkout"], a[href*="/ship-it-kit/"], a[href*="/collections/"], a[href*="/"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
