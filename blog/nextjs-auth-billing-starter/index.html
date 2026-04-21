@@ -452,7 +452,7 @@
           <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-hero/">Get the starter, €49</a>
           <a class="btn-secondary" href="#fit">Check if your stack fits</a>
         </div>
-        <p class="price-note" style="max-width:680px;margin-top:0;">Instant repo access after checkout, no sales call or manual onboarding queue. Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_hero_full_offer">See the full offer</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? Use the <a href="/ship-it-kit-checklist/?ref=auth_billing_hero_checklist">free checklist</a> first.</p>
+        <p class="price-note" style="max-width:680px;margin-top:0;">Instant repo access after checkout, no sales call or manual onboarding queue. Prefer hard proof first? <a href="/ship-it-kit/?ref=auth_billing_hero_proof#proof">See the exact files first</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? Use the <a href="/ship-it-kit-checklist/?ref=auth_billing_hero_checklist">free checklist</a> first.</p>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
@@ -645,7 +645,7 @@ supabase/
             <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-pricing/">Get instant repo access</a>
             <a class="btn-secondary" href="#fit">Check fit before buying</a>
           </div>
-          <p class="price-note" style="margin-top:16px;">Still unsure? Use the free <a href="/ship-it-kit-checklist/?ref=auth_billing_price_checklist">Ship It Kit checklist</a> first, then buy only if the stack and timing are right.</p>
+          <p class="price-note" style="margin-top:16px;">Still unsure? <a href="/ship-it-kit/?ref=auth_billing_price_proof#proof">See the exact files first</a>, or use the free <a href="/ship-it-kit-checklist/?ref=auth_billing_price_checklist">Ship It Kit checklist</a> before buying.</p>
         </div>
       </div>
     </section>
@@ -656,9 +656,9 @@ supabase/
       <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
         <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-bottom/">Get the starter, €49</a>
-        <a class="btn-secondary" href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer">See the full offer</a>
+        <a class="btn-secondary" href="/ship-it-kit/?ref=auth_billing_bottom_proof#proof">See the exact files first</a>
       </div>
-      <p style="margin-top:14px;">Instant repo access after checkout, no sales call or manual onboarding queue. Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a>, <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer_note">see the full offer</a>, or use the <a href="/ship-it-kit-checklist/?ref=auth_billing_bottom_checklist">free checklist</a> first. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+      <p style="margin-top:14px;">Instant repo access after checkout, no sales call or manual onboarding queue. Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a>, <a href="/ship-it-kit/?ref=auth_billing_bottom_proof_note#proof">see the exact files first</a>, or use the <a href="/ship-it-kit-checklist/?ref=auth_billing_bottom_checklist">free checklist</a> first. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
     </section>
   </main>
 
@@ -684,7 +684,7 @@ supabase/
       page_type: 'auth_billing_entry'
     });
 
-    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-review"], a[href*="product-from-auth-billing"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-review"], a[href*="/ship-it-kit/?ref=auth_billing_"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
