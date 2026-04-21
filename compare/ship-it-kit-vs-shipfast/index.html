@@ -24,6 +24,7 @@
     "description": "Honest side-by-side comparison of Ship It Kit and ShipFast for founders choosing a Next.js SaaS starter in 2026."
   }
   </script>
+  <script defer src="/posthog.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; }
@@ -203,6 +204,7 @@
         <span>✓ Instant starter download</span>
         <span>✓ Lifetime updates</span>
       </div>
+      <p style="margin-top:0.9rem;font-size:0.9rem;color:#8f93ad;">Not fully sure yet? Use the <a href="/ship-it-kit-checklist/?ref=compare_shipfast_checklist">free checklist</a> before you buy.</p>
     </div>
 
     <h2>Frequently asked</h2>
@@ -240,5 +242,34 @@
     <a class="btn-primary" href="/go/ship-it-kit/checkout-compare-vs-shipfast/">Get Ship It Kit — €49 →</a>
     <p style="font-size:0.78rem; color:#4a4a6a; margin-top:0.75rem;">30-day money-back · Instant starter download · Lifetime updates</p>
   </div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'compare_shipfast'
+    });
+
+    document.querySelectorAll('a[href*="checkout-compare-vs-shipfast"], a[href*="/ship-it-kit/"], a[href*="ship-it-kit-checklist"], a[href*="/compare/"], a[href*="/blog/"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'compare_shipfast',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
