@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ship It Kit Quick Fit | Goosekit</title>
-  <meta name="description" content="Quick fit page for builders evaluating whether Ship It Kit matches their Next.js + Supabase + Stripe MVP workflow.">
+  <title>Ship It Kit Proof-First Router | Goosekit</title>
+  <meta name="description" content="Fast proof-first router for builders deciding whether to inspect Ship It Kit, read the auth + billing guide, or compare alternatives before checkout.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://goosekit.dev/ship-it-kit-quick-fit/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:title" content="Ship It Kit Quick Fit | Goosekit">
-  <meta property="og:description" content="Fast fit-check page for builders evaluating Ship It Kit.">
+  <meta property="og:title" content="Ship It Kit Proof-First Router | Goosekit">
+  <meta property="og:description" content="Proof-first routing page for builders deciding what to inspect before checkout.">
   <meta property="og:url" content="https://goosekit.dev/ship-it-kit-quick-fit/">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://goosekit.dev/brand/og-image.png">
@@ -173,6 +173,7 @@
       .topbar { flex-direction: column; align-items: flex-start; }
     }
   </style>
+  <script defer src="/posthog.js"></script>
 </head>
 <body>
   <div class="wrap">
@@ -181,31 +182,44 @@
       <a class="back" href="/ship-it-kit/">← Full Ship It Kit page</a>
     </div>
 
-    <section class="panel" aria-label="Ship It Kit quick fit">
+    <section class="panel" aria-label="Ship It Kit proof-first router">
       <div class="inner">
         <div>
-          <div class="eyebrow">Builder shortcut</div>
-          <h1>Building a Next.js SaaS soon?</h1>
-          <p>If auth and billing are the part you keep rebuilding, Ship It Kit is the small paid starter behind Goosekit. It is for builders who want Next.js + Supabase + Stripe already coherent, without buying a huge framework.</p>
+          <div class="eyebrow">Proof-first buyer router</div>
+          <h1>Pick the best next look before checkout.</h1>
+          <p>This page exists for cautious builders who do <strong>not</strong> want a vague fit quiz. If you are evaluating a <strong>Next.js + Supabase + Stripe</strong> starter, choose the next page based on the proof you still need.</p>
           <ul class="points">
-            <li>best fit: Next.js + Supabase + Stripe builders</li>
-            <li>one-time purchase, lifetime starter updates</li>
-            <li>30-day money-back guarantee if it is the wrong fit</li>
+            <li>go to the product proof if you want to inspect the exact files and setup flow</li>
+            <li>go to the auth + billing guide if you want the broader why-now walkthrough first</li>
+            <li>go to the comparison page if you are actively weighing ShipFast-style alternatives</li>
+            <li>skip the offer honestly if you need a different stack, no-code tooling, or done-for-you implementation help</li>
           </ul>
         </div>
         <div class="card">
           <div class="price">€49 <span>one-time</span></div>
-          <div class="note">Starter code, not a hosted service. Good when the blocker is setup, not the product idea.</div>
+          <div class="note">This is a small self-serve starter, not a sales funnel maze. Start with the strongest proof for your question, then buy only if it clearly matches your stack and workflow.</div>
           <div class="actions">
-            <a class="btn btn-primary" href="/go/ship-it-kit/home-promo/">See Ship It Kit</a>
-            <a class="btn btn-secondary" href="/ship-it-kit-weekend/?ref=quick_fit_page">Check weekend fit first</a>
+            <a class="btn btn-primary" href="/ship-it-kit/?ref=quick_fit_primary_proof#proof" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="quick_fit_primary_proof">See the exact files first</a>
+            <a class="btn btn-secondary" href="/blog/nextjs-auth-billing-starter/?ref=quick_fit_auth_billing" data-ph-event="ship_it_kit_secondary_click" data-ph-location="quick_fit_auth_billing">Read the auth + billing guide</a>
+            <a class="btn btn-secondary" href="/compare/ship-it-kit-vs-shipfast/?ref=quick_fit_compare" data-ph-event="ship_it_kit_secondary_click" data-ph-location="quick_fit_compare">Compare it with ShipFast</a>
+            <a class="btn btn-secondary" href="/ship-it-kit-checklist/?ref=quick_fit_checklist" data-ph-event="ship_it_kit_secondary_click" data-ph-location="quick_fit_checklist">Use the free checklist</a>
           </div>
-          <div class="tiny">⚡ Launch window — order before April 30</div>
+          <div class="tiny">⚡ Instant starter download · 30-day refund · No sales call</div>
         </div>
       </div>
     </section>
 
-    <p class="footer">This page is a quick fit-check for builder-targeted traffic, not the Goosekit homepage.</p>
+    <p class="footer">This page now acts as a proof-first router for warm buyer traffic, so cautious visitors can self-serve their next click without falling into the older fit-check wording.</p>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('ship_it_kit_page_viewed', {
+          page_type: 'quick_fit_router',
+          path: window.location.pathname
+        });
+      }
+    });
+  </script>
 </body>
 </html>
