@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship It Kit Lite — Auth + Dashboard + Stripe basics. €19.</title>
+  <meta name="description" content="Ship It Kit Lite is the €19 micro-starter: Next.js 15 + Supabase auth + dashboard shell + basic Stripe checkout. Smaller scope, lower price, same clean codebase.">
+  <link rel="canonical" href="https://goosekit.dev/ship-it-kit-lite/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://goosekit.dev/brand/apple-touch-icon.png">
+  <meta property="og:type" content="product">
+  <meta property="og:title" content="Ship It Kit Lite — Auth + Dashboard + Stripe basics. €19.">
+  <meta property="og:description" content="The €19 micro-starter. Next.js 15 + Supabase auth + dashboard + basic Stripe checkout. Smaller scope than Ship It Kit, same clean codebase.">
+  <meta property="og:url" content="https://goosekit.dev/ship-it-kit-lite/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ship It Kit Lite — Auth + Dashboard + Stripe basics. €19.">
+  <meta name="twitter:description" content="The €19 micro-starter. Next.js 15 + Supabase auth + dashboard + basic Stripe checkout.">
+  <meta name="twitter:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "Ship It Kit Lite",
+    "description": "The €19 micro-starter from Goosekit. Next.js 15 + Supabase auth + dashboard shell + basic Stripe checkout.",
+    "url": "https://goosekit.dev/ship-it-kit-lite/",
+    "brand": { "@type": "Brand", "name": "Goosekit" },
+    "offers": {
+      "@type": "Offer",
+      "price": "19",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock",
+      "url": "https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366"
+    }
+  }
+  </script>
+  <script defer src="/posthog.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0f0f19; color: #e0e0e8; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.7; }
+    a { color: #ff4800; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .banner { background: #16162a; padding: 1rem 2rem; border-bottom: 1px solid #2a2a40; }
+    .banner a { display: inline-flex; align-items: center; gap: 8px; color: #f5f7ff; font-weight: 600; font-size: 14px; text-decoration: none; }
+
+    .container { max-width: 780px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+    .breadcrumb { font-size: 0.85rem; color: #6b6b8a; margin-bottom: 1.5rem; }
+    .breadcrumb a { color: #6b6b8a; }
+    .breadcrumb span { margin: 0 6px; }
+
+    h1 { font-size: 2.1rem; color: #fff; margin-bottom: 0.6rem; line-height: 1.2; letter-spacing: -0.02em; }
+    h2 { font-size: 1.3rem; color: #fff; margin: 2.5rem 0 1rem; }
+    p, li { color: #b8b8cc; margin-bottom: 0.7rem; }
+    .subtitle { font-size: 1.1rem; color: #8888aa; margin-bottom: 1.5rem; }
+
+    .price-row { display: flex; align-items: baseline; gap: 0.8rem; margin: 0.5rem 0 1.5rem; }
+    .price { font-size: 2.6rem; font-weight: 800; color: #fff; letter-spacing: -0.03em; }
+    .price-note { color: #8888aa; font-size: 0.95rem; }
+
+    .hero-cta { display: flex; gap: 0.8rem; flex-wrap: wrap; margin: 0.5rem 0 1.5rem; }
+    .btn-primary { display: inline-block; background: #ff4800; color: #fff; font-weight: 700; font-size: 1rem; padding: 13px 28px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
+    .btn-primary:hover { background: #e03d00; text-decoration: none; }
+    .btn-secondary { display: inline-block; background: transparent; color: #b8b8cc; font-weight: 500; font-size: 0.95rem; padding: 12px 24px; border-radius: 8px; border: 1px solid #2a2a40; text-decoration: none; transition: border-color 0.15s; }
+    .btn-secondary:hover { border-color: #ff4800; color: #ff4800; text-decoration: none; }
+    .trust-row { display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.85rem; color: #6b6b8a; margin-bottom: 1.5rem; }
+
+    .box { background: #13132a; border: 1px solid #2a2a40; border-radius: 10px; padding: 1.5rem 1.8rem; margin: 1.5rem 0; }
+    .box h2 { margin-top: 0; }
+
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .split .panel { background: #13132a; border: 1px solid #2a2a40; border-radius: 10px; padding: 1.3rem 1.5rem; }
+    .split .panel h3 { color: #fff; font-size: 1rem; margin-bottom: 0.8rem; }
+    .split ul { list-style: none; padding: 0; }
+    .split li { padding-left: 1.4rem; position: relative; color: #d7d7e5; font-size: 0.95rem; margin-bottom: 0.55rem; }
+    .split .included li::before { content: '✓'; position: absolute; left: 0; color: #3dd68c; font-weight: 700; }
+    .split .missing li::before { content: '–'; position: absolute; left: 0; color: #f0b429; font-weight: 700; }
+
+    .compare-upgrade { background: #13132a; border: 1px solid #2a2a40; border-radius: 10px; padding: 1.5rem 1.8rem; margin: 2rem 0; }
+    .compare-upgrade p { margin-bottom: 0.4rem; }
+
+    .faq-item { margin-bottom: 1.4rem; border-bottom: 1px solid #1e1e30; padding-bottom: 1.4rem; }
+    .faq-item:last-child { border-bottom: none; margin-bottom: 0; }
+    .faq-q { font-weight: 600; color: #e0e0e8; margin-bottom: 0.4rem; }
+    .faq-a { color: #b8b8cc; font-size: 0.95rem; }
+
+    .footer-cta { background: #0f0f19; border-top: 1px solid #1e1e30; padding: 2.5rem 1.5rem; text-align: center; }
+    .footer-cta p { font-size: 0.9rem; color: #6b6b8a; margin-bottom: 1.2rem; }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 1.7rem; }
+      .split { grid-template-columns: 1fr; }
+      .price { font-size: 2.1rem; }
+      .container { padding: 2rem 1.1rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">
+    <a href="/">
+      <span>← Goosekit free tools</span>
+    </a>
+  </div>
+
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="/">Goosekit</a><span>›</span>
+      Ship It Kit Lite
+    </div>
+
+    <h1>Ship It Kit Lite — Auth + Dashboard + Stripe basics. €19.</h1>
+    <p class="subtitle">The lighter starter for founders who want the core auth + billing wiring without the full feature set.</p>
+
+    <div class="price-row">
+      <div class="price">€19</div>
+      <div class="price-note">one-time · instant download</div>
+    </div>
+
+    <div class="hero-cta">
+      <a class="btn-primary" href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" data-ph-event="ship_it_kit_lite_cta_clicked" data-ph-location="hero">Buy Lite — €19 →</a>
+      <a class="btn-secondary" href="/ship-it-kit/?ref=lite_hero_upgrade">Want the full kit (€49)?</a>
+    </div>
+    <div class="trust-row">
+      <span>✓ 30-day money-back</span>
+      <span>✓ Same codebase as Ship It Kit</span>
+      <span>✓ Next.js 15 + Supabase + Stripe</span>
+    </div>
+
+    <div class="box">
+      <h2>Who this is for</h2>
+      <p>You want the <strong>same clean Next.js 15 + Supabase + Stripe codebase</strong> as Ship It Kit, but at a lower price point. You do not need the team page, advanced webhook examples, or full settings screen yet — you want to stand up an authenticated app with a dashboard and take a first payment, then grow into it.</p>
+      <p>If you already know you want everything, skip Lite and <a href="/ship-it-kit/?ref=lite_who_for">grab the full Ship It Kit for €49</a>.</p>
+    </div>
+
+    <h2>What you get vs. what is cut</h2>
+    <div class="split">
+      <div class="panel included">
+        <h3 style="color:#3dd68c;">Included in Lite</h3>
+        <ul>
+          <li>Next.js 15 starter repo</li>
+          <li>Supabase email + OAuth auth</li>
+          <li>Protected dashboard shell</li>
+          <li>Basic Stripe Checkout</li>
+          <li>Minimal subscription lookup</li>
+          <li>Password reset flow</li>
+          <li>Typed database layer</li>
+          <li>AI-tool friendly (Cursor, Claude)</li>
+        </ul>
+      </div>
+      <div class="panel missing">
+        <h3 style="color:#f0b429;">Not in Lite</h3>
+        <ul>
+          <li>Team / organization page</li>
+          <li>Advanced webhook examples</li>
+          <li>Full billing settings page</li>
+          <li>Customer portal wiring</li>
+          <li>Multi-plan pricing page</li>
+          <li>Lifetime updates guarantee</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-size:0.9rem;color:#8888aa;">Want those? They are in the full <a href="/ship-it-kit/?ref=lite_split_upgrade">Ship It Kit (€49)</a>.</p>
+
+    <div class="compare-upgrade">
+      <h2 style="margin-top:0;">Lite vs. Ship It Kit</h2>
+      <p><strong>Pick Lite (€19)</strong> if you want the smallest possible base — auth, a protected dashboard, and a single Stripe checkout — and you are comfortable extending billing yourself when you need more.</p>
+      <p><strong>Pick Ship It Kit (€49)</strong> if you want the team page, full billing settings, customer portal, and typed webhook handlers already wired, so you can focus entirely on product from day one.</p>
+      <div class="hero-cta" style="margin-top:1rem;">
+        <a class="btn-primary" href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" data-ph-event="ship_it_kit_lite_cta_clicked" data-ph-location="compare_upgrade">Buy Lite for €19 →</a>
+        <a class="btn-secondary" href="/ship-it-kit/?ref=lite_compare_upgrade">See the full kit →</a>
+      </div>
+    </div>
+
+    <h2>Frequently asked</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this the same code as Ship It Kit?</div>
+      <div class="faq-a">Yes — same repo, same stack (Next.js 15 + Supabase + Stripe), same coding style. Lite is a reduced scope of the same codebase, not a different product.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Can I upgrade from Lite to the full kit later?</div>
+      <div class="faq-a">Yes. If you start on Lite and decide you want the team page, full billing settings, and webhook handlers, you can upgrade. Reach out and we will credit your Lite purchase.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Why offer a €19 version at all?</div>
+      <div class="faq-a">Some founders only need auth + a dashboard + a first payment to prove their idea. The €49 full kit is priced for founders who want the full paid-user path wired out of the box. Lite exists for the smaller, earlier bet.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Refund policy?</div>
+      <div class="faq-a">30-day money-back guarantee. If it is not a fit, email us and we refund — no questions.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What do I need to add to run it?</div>
+      <div class="faq-a">A Supabase project (free tier works) and a Stripe account. Drop in your keys and you have a running authenticated app with checkout.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-cta">
+    <p>Pays for itself in one evening of saved auth + Stripe setup.</p>
+    <a class="btn-primary" href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366" data-ph-event="ship_it_kit_lite_cta_clicked" data-ph-location="footer">Buy Ship It Kit Lite — €19 →</a>
+    <p style="font-size:0.78rem; color:#4a4a6a; margin-top:0.75rem;">30-day money-back · Instant download · Or see the <a href="/ship-it-kit/?ref=lite_footer_upgrade">full kit (€49)</a></p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var ref = params.get('ref') || 'direct';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+
+      capture('ship_it_kit_lite_page_viewed', {
+        ref: ref,
+        path: window.location.pathname,
+        page_type: 'lite_landing'
+      });
+
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          capture(el.getAttribute('data-ph-event'), {
+            ref: ref,
+            path: window.location.pathname,
+            page_type: 'lite_landing',
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            cta_text: (el.textContent || '').trim(),
+            target_href: el.getAttribute('href') || null
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

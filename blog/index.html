@@ -102,12 +102,63 @@
       font-size: 0.92rem;
       margin: 0;
     }
+    .email-card {
+      background: #16162a;
+      border: 1px solid #2a2a40;
+      border-radius: 12px;
+      padding: 1.5rem 1.6rem;
+      margin: 0 0 2rem;
+    }
+    .email-card h2 {
+      font-size: 1.15rem;
+      color: #fff;
+      margin: 0 0 0.3rem;
+    }
+    .email-card .email-sub {
+      color: #8888aa;
+      font-size: 0.9rem;
+      margin: 0 0 1rem;
+    }
+    .email-form {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+    .email-form input[type="email"] {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.7rem 0.9rem;
+      border-radius: 8px;
+      border: 1px solid #2a2a40;
+      background: #0f0f19;
+      color: #e0e0e8;
+      font-size: 0.95rem;
+      font-family: inherit;
+    }
+    .email-form input[type="email"]:focus {
+      outline: none;
+      border-color: #ff4800;
+    }
+    .email-form button {
+      padding: 0.7rem 1.3rem;
+      border-radius: 8px;
+      border: none;
+      background: #ff4800;
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.95rem;
+      font-family: inherit;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .email-form button:hover { background: #e03d00; }
     @media (max-width: 600px) {
       h1 { font-size: 1.6rem; }
       .container { padding: 1.5rem 1rem 3rem; }
       .revenue-card { padding: 1.25rem; }
       .revenue-card h2 { font-size: 1.2rem; }
       .revenue-actions a { width: 100%; }
+      .email-form button { width: 100%; }
     }
   </style>
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
@@ -229,6 +280,15 @@
 <main class="container">
   <h1>Goosekit Blog</h1>
   <p class="subtitle">Guides, tips, and tutorials to help you get the most out of free online tools.</p>
+
+  <section class="email-card">
+    <h2>Weekly shipping patterns + new tools</h2>
+    <p class="email-sub">One email. No spam. Unsubscribe anytime.</p>
+    <form class="email-form" action="https://formspree.io/f/xblgwdqz" method="POST" data-ph-event="blog_index_newsletter_submitted" data-ph-location="blog_index_top">
+      <input type="email" name="email" placeholder="you@domain.com" required aria-label="Email address">
+      <button type="submit">Subscribe</button>
+    </form>
+  </section>
 
   <section class="revenue-card">
     <div class="revenue-eyebrow">For builders shipping now</div>
