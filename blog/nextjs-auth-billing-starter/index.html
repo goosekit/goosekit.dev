@@ -339,6 +339,34 @@
       font-size: 0.94rem;
     }
 
+    .rendered-proof {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+      margin: 0 0 22px;
+    }
+
+    .proof-shot {
+      padding: 12px;
+      overflow: hidden;
+    }
+
+    .proof-shot img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      background: #08111f;
+    }
+
+    .proof-shot p {
+      margin: 10px 2px 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
     .price-card {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -409,6 +437,7 @@
 
     @media (max-width: 980px) {
       .hero,
+      .rendered-proof,
       .proof-grid,
       .price-card,
       .fit-grid,
@@ -466,7 +495,7 @@
         <h2>For builders blocked by the same two jobs.</h2>
         <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
-        <p class="price-note">Instant starter download, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
+        <p class="price-note">Instant repo access, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
@@ -546,7 +575,21 @@
       <div class="section-head">
         <div class="eyebrow">Concrete proof</div>
         <h2>Show the plumbing, not startup poetry.</h2>
-        <p class="section-sub">Trust comes from showing the files that usually take time: middleware, webhook handling, auth wiring, and schema basics.</p>
+        <p class="section-sub">Trust comes from showing the files and screens that usually take time: auth wiring, session-aware app gating, webhook handling, and schema basics.</p>
+      </div>
+      <div class="rendered-proof" aria-label="Rendered starter screenshots">
+        <div class="panel proof-shot">
+          <img src="/ship-it-kit/proof/starter-landing-hero.png" alt="Rendered Ship It Kit landing page hero from the starter">
+          <p>Actual landing hero from the starter, not a mockup.</p>
+        </div>
+        <div class="panel proof-shot">
+          <img src="/ship-it-kit/proof/starter-pricing-page.png" alt="Rendered Ship It Kit pricing page from the starter">
+          <p>Actual pricing page with the auth + billing path already wired.</p>
+        </div>
+        <div class="panel proof-shot">
+          <img src="/ship-it-kit/proof/starter-auth-screen.png" alt="Rendered Ship It Kit auth screen from the starter">
+          <p>Actual auth screen from the same codebase buyers get.</p>
+        </div>
       </div>
       <div class="proof-grid">
         <div class="panel">
@@ -572,7 +615,7 @@ supabase/
             </div>
             <div class="path-item">
               <strong>src/middleware.ts</strong>
-              Route protection is already in place, so the dashboard shell is not a fake screenshot.
+              The route matcher scaffold is included, while session-aware app gating currently happens inside the app pages.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -584,7 +627,7 @@ supabase/
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
             <li><span class="check">✓</span><span>Signup and login flow.</span></li>
-            <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
+            <li><span class="check">✓</span><span>Protected app areas with session-aware gating.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
             <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>

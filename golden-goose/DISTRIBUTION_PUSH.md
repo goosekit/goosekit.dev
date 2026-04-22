@@ -28,10 +28,10 @@ Reply to comments with the checkout link.
 
 ---
 
-### 3. Reddit r/InternetIsBeautiful (scheduled April 18-19 — can move up)
+### 3. Reddit r/InternetIsBeautiful (ready to post — best window: weekday morning/early afternoon)
 **Time needed:** 15 min setup | **Potential:** 500-2000 targeted visitors
 
-Post in `marketing/REDDIT_IIB_POSTING_PACKAGE.md`. Move from April 18 if possible.
+Post in `marketing/REDDIT_IIB_POSTING_PACKAGE.md`. Weekday mornings (US time) tend to perform best.
 The IH effect is real — use the angle "I built a Next.js + Supabase + Stripe starter so I never had to wire auth again."
 
 ---
@@ -45,7 +45,7 @@ needs a manual browser session from Arthur's IP.
 ---
 
 ### 5. Submit to AlternativeTo
-**URL:** https://www.alternativeto.net/page/submit/
+**URL:** https://www.alternativeto.net/ (search for the product, then add if missing — requires sign-in to submit)
 Free directory listing. Targets buyers comparing Ship It Kit vs ShipFast vs Makerkit.
 **Potential:** 50-200 targeted visitors/mo ongoing.
 
@@ -81,7 +81,7 @@ Both amplify each other if launched together.
 | ✅ Launch banner on Goosekit | Live | Top banner driving traffic to /ship-it-kit/ |
 | ✅ Blog posts (comparison + review) | Live | SEO coverage for buyer intent keywords |
 | ✅ Twitter thread | Written | Ready to publish |
-| ✅ Reddit IIB package | Written | Scheduled April 18-19 |
+| ✅ Reddit IIB package | Written | Ready to post — weekday mornings best |
 | ✅ SaaSHub package | Written | Needs manual browser submission |
 | ✅ Outreach package | Written | Ready to send |
 

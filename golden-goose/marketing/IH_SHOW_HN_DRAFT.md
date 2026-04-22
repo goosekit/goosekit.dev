@@ -6,7 +6,7 @@
 - Indie Hackers: https://www.indiehackers.com/post (or Show HN if eligible)
 - Hacker News: https://news.ycombinator.com/submit
 
-**Best timing:** Sunday evening (Apr 19) or Monday morning (Apr 20) when indie founders are active
+**Best timing:** Sunday evening (Apr 26, ~21:00-22:00 Paris time) or Monday morning (Apr 27) when indie founders are active. Wednesday/Thursday evening also works if posting sooner.
 
 ---
 

@@ -148,3 +148,20 @@ See `golden-goose/DISTRIBUTION_PUSH.md` for the full prioritized list.
 
 ## Status
 🟡 READY TO EXECUTE — Technical blockers cleared. First euro blocked solely by outreach execution.
+---
+
+## 2026-04-22 16:42 UTC
+### ✅ Tightened the highest-intent ShipFast comparison page
+**File:** `compare/ship-it-kit-vs-shipfast/index.html`
+**What changed:**
+- Fixed canonical, Open Graph URL, schema URL, breadcrumb, and click-tracking selector to the real `/compare/ship-it-kit-vs-shipfast/` route
+- Added a short buyer filter block above the comparison table with two clear exits: proof-first or buy-now
+**Why it matters:** This page already catches warm comparison traffic. The update removes path confusion and gives hesitant buyers a faster trust-first route into either proof or checkout.
+
+## 2026-04-22 17:44 UTC
+### ✅ Moved the buy/no-buy filter above the fold on the product page
+**File:** `ship-it-kit/index.html`
+**What changed:**
+- Added a compact “Buy this if all 3 are true” checklist inside the hero card, directly under the proof pills
+- Added explicit Lemon Squeezy checkout context in the same block so buyers see stack fit + checkout trust before scrolling
+**Why it matters:** `/ship-it-kit/` had 83 product-page visits vs 56 checkout-route visits on 2026-04-21, so the highest-leverage fix was making the main paid-entry page qualify and reassure buyers earlier.
