@@ -1,6 +1,6 @@
-# 🦊 IH Post — Paste-Ready (2026-04-19)
+# 🦊 IH Post — Paste-Ready (2026-04-22)
 
-**Time to post:** Do it now — Sunday evening (21:48 Paris time) is the best IH window.
+**Time to post:** Next best window is Sunday evening (Apr 26, ~21:00-22:00 Paris time). Wednesday/Thursday evening also works if you want to post sooner.
 **URL to paste into:** https://www.indiehackers.com/post
 **Time cost:** ~2 minutes.
 
