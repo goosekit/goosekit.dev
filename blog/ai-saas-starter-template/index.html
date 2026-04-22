@@ -56,6 +56,8 @@
     .callout { background: rgba(52,211,153,0.08); border: 1px solid rgba(52,211,153,0.2); border-radius: 10px; padding: 14px 16px; margin: 1.2rem 0; color: #86efac; }
     .cta { background: linear-gradient(135deg,rgba(255,72,0,0.12),rgba(255,166,71,0.08)); border: 1px solid rgba(255,72,0,0.28); border-radius: 12px; padding: 24px; margin: 2rem 0; text-align: center; }
     .cta a { display: inline-block; background: linear-gradient(135deg,#ff4800,#ff4800); color: #fff; padding: 12px 28px; border-radius: 10px; font-weight: 600; text-decoration: none; margin-top: 10px; }
+    .cta-actions { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .cta-secondary { background: transparent !important; border: 1px solid rgba(255,255,255,0.18); color: #fff !important; }
     footer { background: #16162a; border-top: 1px solid #2a2a40; padding: 1.5rem; text-align: center; color: #666; font-size: 0.85rem; }
   </style>
   <style>ins.adsbygoogle{display:none!important}</style>
@@ -301,9 +303,12 @@
   <div class="cta">
     <p><strong>Want the AI-ready option?</strong></p>
     <p>Ship It Kit gives you Next.js 15, Supabase auth, Stripe checkout + portal, webhook handling, billing UI, and a codebase structured for faster AI-assisted edits.</p>
-    <p style="margin-top:10px;color:#b8b8cc;">€49 one-time, instant GitHub access, unlimited projects, lifetime updates.</p>
-    <a href="/go/ship-it-kit/product-from-ai-saas-page/?source=blog_ai_saas_starter_template">See Ship It Kit for €49 →</a>
-    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Need a closer look before buying? <a href="/ship-it-kit/?ref=blog_ai_saas_starter_template_proof#proof">See the exact files first</a>.</p>
+    <p style="margin-top:10px;color:#b8b8cc;">€49 one-time, instant repo access after checkout, unlimited projects, lifetime updates, and a 30-day money-back guarantee.</p>
+    <div class="cta-actions">
+      <a href="/go/ship-it-kit/product-from-ai-saas-page/?source=blog_ai_saas_starter_template">Get instant access for €49 →</a>
+      <a class="cta-secondary" href="/blog/ship-it-kit-review/?ref=blog_ai_saas_starter_template">Read the review first</a>
+    </div>
+    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Prefer proof before buying? <a href="/ship-it-kit/?ref=blog_ai_saas_starter_template_proof#proof">See the exact files first</a>. Need a quick sanity check before buying? Use the <a href="/ship-it-kit-checklist/?ref=blog_ai_saas_starter_template_checklist">free checklist</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
   </div>
 
   <p style="margin:1.2rem 0 0;color:#b8b8cc;">Related buyer guides: <a href="/blog/nextjs-supabase-stripe-starter/">Best Next.js Supabase Stripe Starter</a> · <a href="/blog/nextjs-stripe-boilerplate/">Next.js Stripe Boilerplate in 2026</a> · <a href="/blog/best-nextjs-saas-starter-template-2026/">Best Next.js SaaS Starter Template in 2026</a></p>
@@ -319,8 +324,37 @@
   <p>Because AI tools are faster when the codebase is consistent, documented, and predictable. A messy starter slows both you and the assistant down.</p>
 </main>
 <footer>
-  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/go/ship-it-kit/product-from-ai-saas-page/?source=blog_ai_saas_starter_template">Ship It Kit</a></p>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/ship-it-kit/?ref=blog_ai_saas_starter_template_footer_proof#proof">See the exact files first</a></p>
   <p style="margin-top:8px;">Built with 🪿 by Goosekit</p>
 </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'ai_saas_entry'
+    });
+
+    document.querySelectorAll('a[href*="product-from-ai-saas-page"], a[href*="ship-it-kit-review"], a[href*="/ship-it-kit/?ref=blog_ai_saas_starter_template"], a[href*="ship-it-kit-checklist"], a[href*="nextjs-supabase-stripe-starter"], a[href*="nextjs-stripe-boilerplate"], a[href*="best-nextjs-saas-starter-template-2026"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'ai_saas_entry',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>
