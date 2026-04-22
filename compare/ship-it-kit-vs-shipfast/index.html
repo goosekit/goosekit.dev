@@ -75,6 +75,11 @@
     .btn-secondary { display: inline-block; background: transparent; color: #b8b8cc; font-weight: 500; font-size: 0.95rem; padding: 12px 24px; border-radius: 8px; border: 1px solid #2a2a40; text-decoration: none; transition: border-color 0.15s; }
     .btn-secondary:hover { border-color: #ff4800; color: #ff4800; text-decoration: none; }
 
+    .rendered-proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 1.75rem 0 0.9rem; }
+    .proof-shot { background: #13132a; border: 1px solid #2a2a40; border-radius: 14px; overflow: hidden; }
+    .proof-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: #0f172a; }
+    .proof-shot p { margin: 0; padding: .85rem .95rem 1rem; color: #8f93ad; font-size: .84rem; }
+
     .trust-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1rem; font-size: 0.85rem; color: #6b6b8a; }
     .trust-row span { display: flex; align-items: center; gap: 5px; }
 
@@ -121,6 +126,23 @@
         <a class="btn-secondary" href="/ship-it-kit/?ref=compare_shipfast_buyer_filter_proof#proof">I want proof first →</a>
       </div>
     </div>
+
+    <div class="rendered-proof" aria-label="Rendered Ship It Kit proof screenshots">
+      <div class="proof-shot">
+        <img src="/ship-it-kit/proof/starter-landing-hero.png" alt="Rendered Ship It Kit landing page hero from the starter">
+        <p>Landing page hero already wired inside the starter.</p>
+      </div>
+      <div class="proof-shot">
+        <img src="/ship-it-kit/proof/starter-pricing-page.png" alt="Rendered Ship It Kit pricing page from the starter">
+        <p>Pricing page with checkout path and billing framing in place.</p>
+      </div>
+      <div class="proof-shot">
+        <img src="/ship-it-kit/proof/starter-auth-screen.png" alt="Rendered Ship It Kit auth screen from the starter">
+        <p>Auth screen showing the smaller scope warm buyers are actually paying for.</p>
+      </div>
+    </div>
+
+    <p style="margin:0 0 1.8rem;color:#8f93ad;font-size:.9rem;">Still cautious? Open the <a href="/ship-it-kit/?ref=compare_shipfast_inline_proof#proof">exact file tree and setup flow</a> before checkout.</p>
 
     <div class="compare-table-wrap">
       <table>
@@ -208,7 +230,7 @@
             <td class="sf-col">Varies by vendor</td>
           </tr>
           <tr>
-            <td><strong>Instant starter download</strong></td>
+            <td><strong>Instant repo access</strong></td>
             <td class="kit-col"><span class="check">✓</span> After purchase</td>
             <td class="sf-col"><span class="check">✓</span> After purchase</td>
           </tr>
@@ -232,7 +254,7 @@
       </div>
       <div class="trust-row">
         <span>✓ 30-day money-back guarantee</span>
-        <span>✓ Instant starter download</span>
+        <span>✓ Instant repo access</span>
         <span>✓ Lifetime updates</span>
       </div>
       <p style="margin-top:0.9rem;font-size:0.9rem;color:#8f93ad;">Not fully sure yet? See the <a href="/ship-it-kit/?ref=compare_shipfast_proof_note#proof">exact files first</a> before you buy.</p>
@@ -257,7 +279,7 @@
 
     <div class="faq-item">
       <div class="faq-q">What if it is the wrong fit after buying?</div>
-      <div class="faq-a">30-day money-back guarantee, no questions asked. Instant starter download after purchase so you can evaluate it immediately.</div>
+      <div class="faq-a">30-day money-back guarantee, no questions asked. Instant repo access after purchase so you can evaluate the starter immediately.</div>
     </div>
 
     <div class="faq-item">
@@ -271,7 +293,7 @@
     <span class="urgency-note">⚡ Launch price — ends April 30</span>
     <p class="footer-value">Pays for itself in one weekend of saved auth + billing setup. At €49 one-time.</p>
     <a class="btn-primary" href="/ship-it-kit/?ref=compare_shipfast_footer_proof#proof">See the exact files first →</a>
-    <p style="font-size:0.78rem; color:#4a4a6a; margin-top:0.75rem;">30-day money-back · Instant starter download · Lifetime updates · Already sold? <a href="/go/ship-it-kit/checkout-compare-vs-shipfast/">Buy for €49</a></p>
+    <p style="font-size:0.78rem; color:#4a4a6a; margin-top:0.75rem;">30-day money-back · Instant repo access · Lifetime updates · Already sold? <a href="/go/ship-it-kit/checkout-compare-vs-shipfast/">Buy for €49</a></p>
   </div>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
