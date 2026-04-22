@@ -184,6 +184,11 @@
     .site-nav { right: 10px; left: 10px; }
     .site-nav a { font-size: 0.86rem; }
   }
+  .nav-dropdown { position:relative; display:inline-block; }
+  .nav-dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(10,10,26,0.95); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 0; min-width:180px; z-index:100; }
+  .nav-dropdown-content a { display:block; padding:8px 16px; color:#c8c8e0; text-decoration:none; font-size:0.9rem; }
+  .nav-dropdown-content a:hover { background:rgba(255,72,0,0.1); color:#fff; }
+  .nav-dropdown:hover .nav-dropdown-content { display:block; }
 </style>
 <script defer src="/site-header.js"></script>
 </head>
@@ -199,15 +204,19 @@
       <span></span>
     </button>
     <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
-      <a href="/tools/">Tools</a>
-      <a href="/tools/for-developers/">Developers</a>
-      <a href="/tools/for-designers/">Designers</a>
-      <a href="/tools/for-students/">Students</a>
+      <div class="nav-dropdown">
+        <a href="/tools/">Tools ▾</a>
+        <div class="nav-dropdown-content">
+          <a href="/tools/">Browse all tools</a>
+          <a href="/collections/">Collections</a>
+          <a href="/tools/for-developers/">For developers</a>
+          <a href="/tools/for-designers/">For designers</a>
+          <a href="/tools/for-students/">For students</a>
+        </div>
+      </div>
       <a href="/compare/">Compare</a>
       <a href="/blog/">Blog</a>
-      <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
-      <a href="/api/">API</a>
-      <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener">Extension</a>
+      <a href="/offline-pack/">Offline Pack</a>
       <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
     </nav>
   </div>
