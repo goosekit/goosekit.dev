@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ship It Kit vs ShipFast — Next.js SaaS Starter Comparison 2026</title>
   <meta name="description" content="Honest comparison of Ship It Kit vs ShipFast: price, stack, auth, billing, AI-friendly setup, and who each Next.js starter fits best in 2026.">
-  <link rel="canonical" href="https://goosekit.dev/collections/ship-it-kit-vs-shipfast/">
+  <link rel="canonical" href="https://goosekit.dev/compare/ship-it-kit-vs-shipfast/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
   <meta property="og:title" content="Ship It Kit vs ShipFast — Next.js SaaS Starter Comparison 2026">
   <meta property="og:description" content="Side-by-side comparison of Ship It Kit and ShipFast on price, stack, auth, billing, AI workflow, and founder fit.">
-  <meta property="og:url" content="https://goosekit.dev/collections/ship-it-kit-vs-shipfast/">
+  <meta property="og:url" content="https://goosekit.dev/compare/ship-it-kit-vs-shipfast/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
@@ -20,7 +20,7 @@
     "@context": "https://schema.org",
     "@type": "WebPage",
     "name": "Ship It Kit vs ShipFast Comparison",
-    "url": "https://goosekit.dev/collections/ship-it-kit-vs-shipfast/",
+    "url": "https://goosekit.dev/compare/ship-it-kit-vs-shipfast/",
     "description": "Honest side-by-side comparison of Ship It Kit and ShipFast for founders choosing a Next.js SaaS starter in 2026."
   }
   </script>
@@ -58,9 +58,16 @@
     .cross { color: #555; }
     .partial { color: #f0b429; }
 
+    .buyer-filter,
     .verdict-box { background: #13132a; border: 1px solid #2a2a40; border-radius: 10px; padding: 1.8rem 2rem; margin: 2.5rem 0; }
+    .buyer-filter h2,
     .verdict-box h2 { margin-top: 0; color: #fff; }
+    .buyer-filter p,
     .verdict-box p { margin-bottom: 0.6rem; }
+    .buyer-filter ul { list-style: none; padding-left: 0; margin: 1rem 0 0; display: grid; gap: 0.7rem; }
+    .buyer-filter li { position: relative; padding-left: 1.4rem; color: #d7d7e5; }
+    .buyer-filter li::before { content: '✓'; position: absolute; left: 0; color: #3dd68c; font-weight: 700; }
+    .buyer-filter .cta-row,
     .verdict-box .cta-row { margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
 
     .btn-primary { display: inline-block; background: #ff4800; color: #fff; font-weight: 700; font-size: 1rem; padding: 13px 28px; border-radius: 8px; text-decoration: none; transition: background 0.15s; }
@@ -93,13 +100,27 @@
   <div class="container">
     <div class="breadcrumb">
       <a href="/">Goosekit</a><span>›</span>
-      <a href="/collections/">Comparisons</a><span>›</span>
+      <a href="/compare/">Comparisons</a><span>›</span>
       Ship It Kit vs ShipFast
     </div>
 
     <h1>Ship It Kit vs ShipFast — Next.js SaaS Starter Comparison</h1>
     <p class="subtitle">Honest side-by-side for founders choosing a Next.js starter in 2026.</p>
     <p class="update-note">Last updated: April 2026 · Both starters active and maintained.</p>
+
+    <div class="buyer-filter">
+      <h2>Buy only if these 3 things are already true</h2>
+      <p>This page gets warm comparison traffic, so the shortest honest path is to filter for stack fit first, then send the right visitors to proof or checkout.</p>
+      <ul>
+        <li>Your stack is already Next.js + Supabase + Stripe.</li>
+        <li>You want a small starter repo, not a bigger SaaS operating system.</li>
+        <li>You want instant repo access today, with a 30-day refund if the fit is wrong.</li>
+      </ul>
+      <div class="cta-row">
+        <a class="btn-primary" href="/go/ship-it-kit/checkout-compare-vs-shipfast/">All 3 fit, buy for €49 →</a>
+        <a class="btn-secondary" href="/ship-it-kit/?ref=compare_shipfast_buyer_filter_proof#proof">I want proof first →</a>
+      </div>
+    </div>
 
     <div class="compare-table-wrap">
       <table>
@@ -258,7 +279,7 @@
       page_type: 'compare_shipfast'
     });
 
-    document.querySelectorAll('a[href*="checkout-compare-vs-shipfast"], a[href*="/ship-it-kit/"], a[href*="ship-it-kit-checklist"], a[href*="/collections/"], a[href*="/blog/"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="checkout-compare-vs-shipfast"], a[href*="/ship-it-kit/"], a[href*="ship-it-kit-checklist"], a[href*="/compare/"], a[href*="/blog/"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
