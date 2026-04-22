@@ -606,6 +606,15 @@
           <span class="mini-pill">Billing already wired</span>
           <span class="mini-pill">Instant repo access</span>
         </div>
+        <div class="buy-check" style="margin-top:0; margin-bottom:18px;">
+          <h3>Buy this if all 3 are true</h3>
+          <ul>
+            <li><span class="check">✓</span><span>Your stack is Next.js + Supabase + Stripe.</span></li>
+            <li><span class="check">✓</span><span>You want starter code, not a hosted tool or agency service.</span></li>
+            <li><span class="check">✓</span><span>You want repo access today so you can build instead of wiring auth and billing again.</span></li>
+          </ul>
+          <p class="price-note" style="margin-top:12px;">Checkout is handled by Lemon Squeezy. If that is not your stack or buying style, skip it honestly.</p>
+        </div>
         <p class="price-note" style="margin-top:10px;">Prefer to inspect before buying? Jump to the <a href="#proof">exact file tree</a> and the <a href="#setup">3-step setup flow</a>.</p>
         <ul class="pain-list">
           <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
@@ -613,6 +622,21 @@
           <li><span class="check">✓</span><span>Designed to be easy to edit with Cursor, Claude, Copilot, or by hand.</span></li>
         </ul>
       </aside>
+    </section>
+
+    <section class="section" id="founder">
+      <div class="card panel" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;padding:28px;">
+        <div aria-hidden="true" style="flex-shrink:0;width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font-weight:800;font-size:1.5rem;letter-spacing:-0.02em;color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-2));box-shadow:0 12px 30px rgba(249,115,22,0.3);">AP</div>
+        <div style="flex:1;min-width:240px;">
+          <div class="eyebrow">Who built this</div>
+          <h2 style="margin:0 0 10px;font-size:clamp(1.4rem,2.6vw,1.9rem);line-height:1.15;letter-spacing:-0.03em;">Built by Arthur Pierrey</h2>
+          <p style="margin:0 0 14px;color:var(--muted);">Indie maker shipping tools since 2024. I built Ship It Kit because I was tired of re-wiring auth + billing for every side project.</p>
+          <p style="margin:0;">
+            <a href="https://twitter.com/thearthist_" target="_blank" rel="noopener" style="color:var(--accent-2);font-weight:700;text-decoration:none;margin-right:18px;">Twitter @thearthist_</a>
+            <a href="https://github.com/arthurpierrey" target="_blank" rel="noopener" style="color:var(--accent-2);font-weight:700;text-decoration:none;">GitHub arthurpierrey</a>
+          </p>
+        </div>
+      </div>
     </section>
 
     <section class="section" id="fit">
@@ -681,7 +705,7 @@
       <div class="section-head">
         <div class="eyebrow">Concrete proof</div>
         <h2>Show the plumbing, not startup poetry.</h2>
-        <p class="section-sub">Trust comes from showing the files that usually take time: middleware, webhook handling, auth wiring, and schema basics.</p>
+        <p class="section-sub">Trust comes from showing the files that usually take time: auth wiring, session-aware app gating, webhook handling, and schema basics.</p>
       </div>
       <div class="proof-grid">
         <div class="panel">
@@ -707,7 +731,7 @@ supabase/
             </div>
             <div class="path-item">
               <strong>src/middleware.ts</strong>
-              Route protection is already in place, so the dashboard shell is not a fake screenshot.
+              The route matcher scaffold is included, while session-aware app gating currently happens inside the app pages.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -719,7 +743,7 @@ supabase/
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
             <li><span class="check">✓</span><span>Signup and login flow.</span></li>
-            <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
+            <li><span class="check">✓</span><span>Protected app areas with session-aware gating.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
             <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
@@ -793,6 +817,7 @@ supabase/
           <p class="section-sub">This is intentionally smaller and cheaper than the big boilerplates. It is for founders who want the access + payments layer handled without buying a giant framework first.</p>
           <div class="price-value">€49 <span>one-time</span></div>
           <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
+          <p class="price-note" style="margin-top:10px;">Why only €49? Because this is the narrow paid-user foundation, not a giant SaaS operating system. You are paying to skip the signup + billing setup weekend, not to buy a bloated framework you will spend days pruning.</p>
         </div>
         <div>
           <ul class="price-list">
@@ -800,6 +825,7 @@ supabase/
             <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell.</span></li>
             <li><span class="check">✓</span><span>Schema, env example, setup notes, AI context file.</span></li>
             <li><span class="check">✓</span><span>No subscription, no service upsell, no onboarding ceremony.</span></li>
+            <li><span class="check">✓</span><span>Priced for a single painful setup loop, not for enterprise feature theater.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
             <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant repo access</a>
@@ -857,7 +883,7 @@ supabase/
         </div>
         <div class="panel faq-item">
           <h3>Why is it only €49?</h3>
-          <p>Because the scope is intentionally narrow. This is not trying to be the biggest all-purpose framework. It is a smaller Next.js + Supabase + Stripe starter for founders who want auth + billing handled without buying a much heavier system first.</p>
+          <p>Because the scope is intentionally narrow. Ship It Kit is priced like a fast-start foundation, not like a giant all-purpose framework. The value is simple: if it saves you even one auth + billing setup cycle, it has done its job. If you want a huge SaaS operating system, the bigger starters are the right place to spend more.</p>
         </div>
         <div class="panel faq-item">
           <h3>Who is this actually for?</h3>

@@ -92,6 +92,18 @@
     .pricing-box .tagline { color: var(--accent); font-size: .95rem; font-weight: 600; margin: 1rem 0; }
     .pricing-box .reason { font-size: .85rem; color: var(--muted); margin-top: .5rem; }
 
+    .buyer-filter { background: linear-gradient(135deg, #12121f 0%, #1a1030 100%); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin: 2rem 0; }
+    .buyer-filter h2 { font-size: 1.15rem; color: #fff; margin-bottom: .65rem; }
+    .buyer-filter p { color: var(--muted); font-size: .92rem; margin-bottom: 1rem; }
+    .buyer-filter ul { list-style: none; display: grid; gap: .7rem; margin-bottom: 1.25rem; }
+    .buyer-filter li { color: #d1d5db; font-size: .92rem; padding-left: 1.4rem; position: relative; }
+    .buyer-filter li::before { content: '✓'; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+    .rendered-proof { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0; }
+    .proof-shot { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
+    .proof-shot img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: cover; background: #0f172a; }
+    .proof-shot p { margin: 0; padding: .85rem .95rem 1rem; color: var(--muted); font-size: .84rem; }
+
     .final-verdict { background: linear-gradient(135deg, #12121f 0%, #1a1030 100%); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem; text-align: center; margin: 3rem 0; }
     .final-verdict h2 { font-size: 1.4rem; color: #fff; margin-bottom: 1rem; }
     .final-verdict p { color: var(--muted); font-size: .95rem; max-width: 520px; margin: 0 auto 1.5rem; }
@@ -104,6 +116,7 @@
       main { padding: 1rem; }
       table { font-size: .8rem; }
       th, td { padding: .5rem .6rem; }
+      .rendered-proof { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -122,14 +135,44 @@
   <p>Honest comparison for solo founders choosing a Next.js starter. If you want the paid-user path, landing page, signup, checkout, portal, and webhooks, already coherent on the exact Next.js + Supabase + Stripe stack, this is the smaller-fit option to sanity-check first.</p>
   <div class="cta-row">
     <a href="/ship-it-kit/?ref=compare_competitors_hero_proof#proof" class="btn-primary">See the proof-first page →</a>
-    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">This is my stack, get instant repo access →</a>
   </div>
   <div class="disclaimer" style="margin-top:1.25rem;">
-    🟢 Smaller by design, instant starter download, 30-day refund if the fit is wrong.
+    🟢 Smaller by design, instant repo access, 30-day money-back guarantee if the fit is wrong.
   </div>
 </section>
 
 <main>
+
+<div class="buyer-filter">
+  <h2>Buy only if these 3 things are already true</h2>
+  <p>Recent funnel reads show compare-page visitors are high intent, but checkout trust is still the bottleneck. This is the shortest honest filter before you click buy.</p>
+  <ul>
+    <li>Your stack is already Next.js + Supabase + Stripe.</li>
+    <li>You want starter code, not a hosted product or done-for-you service.</li>
+    <li>You want instant repo access so you can start editing today.</li>
+  </ul>
+  <div class="cta-row" style="justify-content:flex-start;">
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-primary" target="_blank" rel="noopener">All 3 fit, buy for €49 →</a>
+    <a href="/ship-it-kit/?ref=compare_competitors_buyer_filter_proof#proof" class="btn-secondary">I want proof first →</a>
+  </div>
+</div>
+
+<div class="rendered-proof" aria-label="Rendered Ship It Kit proof screenshots">
+  <div class="proof-shot">
+    <img src="/ship-it-kit/proof/starter-landing-hero.png" alt="Rendered Ship It Kit landing page hero from the starter">
+    <p>Actual landing page hero from the same starter buyers get.</p>
+  </div>
+  <div class="proof-shot">
+    <img src="/ship-it-kit/proof/starter-pricing-page.png" alt="Rendered Ship It Kit pricing page from the starter">
+    <p>Real pricing screen, not a mockup or placeholder concept.</p>
+  </div>
+  <div class="proof-shot">
+    <img src="/ship-it-kit/proof/starter-auth-screen.png" alt="Rendered Ship It Kit auth screen from the starter">
+    <p>Auth screen from the shipped codebase, already wired into the starter flow.</p>
+  </div>
+</div>
+<p style="margin:-.6rem 0 1.8rem;color:#8f93ad;font-size:.9rem;">Still cautious? Open the <a href="/ship-it-kit/?ref=compare_competitors_inline_proof#proof">exact file tree and setup flow</a> before checkout.</p>
 
 <div class="comparison-table-wrap">
 <table>
@@ -283,12 +326,21 @@
 
 <div class="pricing-box">
   <div class="price">€49</div>
-  <div class="price-note">one-time payment · lifetime updates · 30-day refund</div>
+  <div class="price-note">one-time payment · lifetime updates · 30-day money-back guarantee</div>
   <div class="tagline">The cheapest of the bunch. Intentionally.</div>
   <div class="reason">Smaller scope + honest positioning = faster setup + less to fight when you add your product logic. If you still want to inspect the fit, use the proof-first page before checkout.</div>
+  <div style="margin:1rem auto 0;max-width:520px;background:#0f172a;border:1px solid #2a2a40;border-radius:12px;padding:1rem 1.1rem;text-align:left;">
+    <p style="margin:0 0 .45rem;color:#fff;font-size:.9rem;font-weight:700;">What happens right after you buy</p>
+    <ol style="margin:0;padding-left:1.1rem;color:#9ca3af;font-size:.86rem;line-height:1.7;">
+      <li>Lemon Squeezy sends your license email immediately.</li>
+      <li>You follow the access steps and grab the starter repo.</li>
+      <li>You add your Supabase and Stripe keys, then start building.</li>
+    </ol>
+    <p style="margin:.7rem 0 0;color:#8f93ad;font-size:.8rem;">Wrong stack or buying style? Skip it honestly and inspect the proof first.</p>
+  </div>
   <div class="cta-row" style="justify-content:center; margin-top:1.25rem;">
-    <a href="/ship-it-kit/?ref=compare_competitors_price_proof#proof" class="btn-primary">See the proof-first page →</a>
-    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
+    <a href="/ship-it-kit/?ref=compare_competitors_price_proof#proof" class="btn-primary">See the exact files first →</a>
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">All 3 fit, get instant repo access for €49 →</a>
   </div>
   <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Not fully sure yet? <a href="/ship-it-kit/?ref=compare_competitors_proof_note">See the exact files and setup flow</a> before you buy.</p>
 </div>
@@ -300,7 +352,7 @@
     <li>Using Cursor, Claude, or Copilot and need a clean, minimal repo that AI tools can actually edit</li>
     <li>Want to understand every file in the starter before adding product logic</li>
     <li>Strict budget: €49 vs $149–$199, with the same core auth + Stripe plumbing</li>
-    <li>Want a 30-day refund if the fit turns out to be wrong — no guessing games</li>
+    <li>Want a 30-day money-back guarantee if the fit turns out to be wrong, no guessing games</li>
     <li>Already knows Supabase is the right auth layer for this particular project</li>
   </ul>
 </div>
@@ -311,7 +363,7 @@
   <p>If you want the auth + billing layer wired, nothing extra, understood in an afternoon, and editable by your AI tool — Ship It Kit is built for exactly that.</p>
   <div class="cta-row" style="justify-content:center;">
     <a href="/ship-it-kit/?ref=compare_competitors_verdict_proof#proof" class="btn-primary">See the starter with proof →</a>
-    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">Already sold? Buy for €49 →</a>
+    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="btn-secondary" target="_blank" rel="noopener">All 3 fit, buy for €49 →</a>
   </div>
   <p style="margin-top:0.9rem;text-align:center;font-size:0.9rem;color:#8f93ad;">Need one last proof pass? <a href="/ship-it-kit/?ref=compare_competitors_verdict_proof_note">See the exact files and setup flow</a>.</p>
 </div>

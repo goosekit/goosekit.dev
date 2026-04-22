@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting to Goosekit Offline Pack checkout…</title>
-  <meta http-equiv="refresh" content="3; url=https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757">
 <style>ins.adsbygoogle{display:none!important}</style>  <script defer src="/posthog.js"></script>
 <style id="gk-homepage-header-copy-styles">
   .site-header {
@@ -238,13 +237,11 @@
         });
       }
 
-      setTimeout(function () {
-        capture('offline_pack_checkout_redirected', {
-          source: source,
-          product: 'offline_pack'
-        });
-        window.location.replace(checkoutUrl);
-      }, 900);
+      capture('offline_pack_checkout_redirected', {
+        source: source,
+        product: 'offline_pack'
+      });
+      window.location.replace(checkoutUrl);
     });
   </script>
 </body>
