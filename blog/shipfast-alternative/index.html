@@ -34,7 +34,7 @@
       {
         "@type": "Question",
         "name": "Does Ship It Kit include Stripe and auth?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Yes. Ship It Kit includes Supabase auth, Stripe Checkout, customer portal, webhook handlers, billing UI, pricing flow, and the starter screens needed to launch faster."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Yes. Ship It Kit includes Supabase auth, Stripe Checkout, customer portal, webhook handlers, billing UI, and transactional email setup."}
       }
     ]
   }
@@ -234,11 +234,6 @@
     .site-nav { right: 10px; left: 10px; }
     .site-nav a { font-size: 0.86rem; }
   }
-  .nav-dropdown { position:relative; display:inline-block; }
-  .nav-dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(10,10,26,0.95); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 0; min-width:180px; z-index:100; }
-  .nav-dropdown-content a { display:block; padding:8px 16px; color:#c8c8e0; text-decoration:none; font-size:0.9rem; }
-  .nav-dropdown-content a:hover { background:rgba(255,72,0,0.1); color:#fff; }
-  .nav-dropdown:hover .nav-dropdown-content { display:block; }
 </style>
 <script defer src="/site-header.js"></script>
 </head>
@@ -254,19 +249,15 @@
       <span></span>
     </button>
     <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
-      <div class="nav-dropdown">
-        <a href="/tools/">Tools ▾</a>
-        <div class="nav-dropdown-content">
-          <a href="/tools/">Browse all tools</a>
-          <a href="/collections/">Collections</a>
-          <a href="/tools/for-developers/">For developers</a>
-          <a href="/tools/for-designers/">For designers</a>
-          <a href="/tools/for-students/">For students</a>
-        </div>
-      </div>
-      <a href="/compare/">Compare</a>
+      <a href="/tools/">Tools</a>
+      <a href="/tools/for-developers/">Developers</a>
+      <a href="/tools/for-designers/">Designers</a>
+      <a href="/tools/for-students/">Students</a>
+      <a href="/compare/goosekit-vs-tinywow/">Compare</a>
       <a href="/blog/">Blog</a>
-      <a href="/offline-pack/">Offline Pack</a>
+      <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
+      <a href="/api/">API</a>
+      <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener">Extension</a>
       <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
     </nav>
   </div>
@@ -318,7 +309,7 @@
     <p>Ship It Kit gives you Next.js 15, Supabase auth, Stripe checkout + portal, webhook handling, billing pages, and AI-friendly structure without premium-starter pricing.</p>
     <p style="margin-top:10px;color:#b8b8cc;">€49 one-time, instant GitHub access, unlimited projects, lifetime updates, and a 30-day money-back guarantee.</p>
     <a href="/go/ship-it-kit/product-from-shipfast-alternative/?source=blog_shipfast_alternative">See Ship It Kit for €49 →</a>
-    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Instant GitHub access after checkout. Prefer proof before buying? <a href="/ship-it-kit/?ref=blog_shipfast_alternative_proof#proof">See the exact files first</a>. Need a quick sanity check after that? Use the <a href="/ship-it-kit-checklist/?ref=blog_shipfast_alternative_checklist">free checklist</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Instant GitHub access after checkout. Need a quick sanity check before buying? Use the <a href="/ship-it-kit-quick-fit/?ref=blog_shipfast_alternative_quick_fit">30-second proof-first router</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
   </div>
 
   <h2>Related comparisons</h2>
@@ -332,10 +323,10 @@
   <p>The main reason is value and focus. Ship It Kit is €49 one-time and focuses on the fastest path to launch: auth, billing, settings, UI, and AI-assisted customization.</p>
 
   <h3>Does Ship It Kit include Stripe and auth?</h3>
-  <p>Yes. Ship It Kit includes Supabase auth, Stripe Checkout, customer portal, webhook handlers, billing UI, pricing flow, and the starter screens needed to launch faster.</p>
+  <p>Yes. Ship It Kit includes Supabase auth, Stripe Checkout, customer portal, webhook handlers, billing UI, and transactional email setup.</p>
 </main>
 <footer>
-  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/ship-it-kit/?ref=blog_shipfast_alternative_footer_proof#proof">See the exact files first</a></p>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/go/ship-it-kit/product-from-shipfast-alternative/?source=blog_shipfast_alternative">Ship It Kit</a></p>
   <p style="margin-top:8px;">Built with 🪿 by Goosekit</p>
 </footer>
 <script>
@@ -354,7 +345,7 @@
       page_type: 'shipfast_alternative_entry'
     });
 
-    document.querySelectorAll('a[href*="product-from-shipfast-alternative"], a[href*="ship-it-kit-checklist"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="/ship-it-kit/?ref=blog_shipfast_alternative"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="product-from-shipfast-alternative"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,

@@ -242,11 +242,6 @@
     .site-nav { right: 10px; left: 10px; }
     .site-nav a { font-size: 0.86rem; }
   }
-  .nav-dropdown { position:relative; display:inline-block; }
-  .nav-dropdown-content { display:none; position:absolute; top:100%; left:0; background:rgba(10,10,26,0.95); backdrop-filter:blur(14px); border:1px solid rgba(255,255,255,0.06); border-radius:8px; padding:8px 0; min-width:180px; z-index:100; }
-  .nav-dropdown-content a { display:block; padding:8px 16px; color:#c8c8e0; text-decoration:none; font-size:0.9rem; }
-  .nav-dropdown-content a:hover { background:rgba(255,72,0,0.1); color:#fff; }
-  .nav-dropdown:hover .nav-dropdown-content { display:block; }
 </style>
 <script defer src="/site-header.js"></script>
 </head>
@@ -262,19 +257,15 @@
       <span></span>
     </button>
     <nav class="site-nav" id="site-navigation" aria-label="Primary navigation">
-      <div class="nav-dropdown">
-        <a href="/tools/">Tools ▾</a>
-        <div class="nav-dropdown-content">
-          <a href="/tools/">Browse all tools</a>
-          <a href="/collections/">Collections</a>
-          <a href="/tools/for-developers/">For developers</a>
-          <a href="/tools/for-designers/">For designers</a>
-          <a href="/tools/for-students/">For students</a>
-        </div>
-      </div>
-      <a href="/compare/">Compare</a>
+      <a href="/tools/">Tools</a>
+      <a href="/tools/for-developers/">Developers</a>
+      <a href="/tools/for-designers/">Designers</a>
+      <a href="/tools/for-students/">Students</a>
+      <a href="/compare/goosekit-vs-tinywow/">Compare</a>
       <a href="/blog/">Blog</a>
-      <a href="/offline-pack/">Offline Pack</a>
+      <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
+      <a href="/api/">API</a>
+      <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener">Extension</a>
       <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
     </nav>
   </div>
@@ -357,7 +348,7 @@
       <a href="/go/ship-it-kit/checkout-nextjs-stripe-boilerplate/?source=blog_nextjs_stripe_boilerplate_cta">Get instant access for €49 →</a>
       <a class="cta-secondary" href="/blog/ship-it-kit-review/?ref=blog_nextjs_stripe_boilerplate">Read the review first</a>
     </div>
-    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Prefer proof before buying? <a href="/ship-it-kit/?ref=blog_nextjs_stripe_boilerplate_proof#proof">See the exact files first</a>. Need a quick sanity check first? Use the <a href="/ship-it-kit-checklist/?ref=blog_nextjs_stripe_boilerplate_checklist">free checklist</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+    <p style="margin-top:12px;font-size:0.95rem;color:#b8b8cc;">Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-nextjs-stripe-boilerplate/?source=blog_nextjs_stripe_boilerplate_overview">See the full overview</a>. Need a quick sanity check first? Use the <a href="/ship-it-kit-quick-fit/?ref=blog_nextjs_stripe_boilerplate_quick_fit">30-second proof-first router</a>. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
   </div>
 
   <p style="margin:1.2rem 0 0;color:#b8b8cc;">Related buyer guides: <a href="/blog/ship-it-kit-vs-supastarter/">Ship It Kit vs Supastarter</a> · <a href="/blog/supastarter-alternative/">Best Supastarter Alternative</a> · <a href="/blog/ship-saas-mvp-nextjs/">How to Ship a SaaS MVP in a Weekend</a></p>
@@ -386,7 +377,7 @@
 </main>
 
 <footer>
-  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/ship-it-kit/?ref=blog_nextjs_stripe_boilerplate_footer_proof#proof">See the exact files first</a></p>
+  <p><a href="/">Goosekit</a> · <a href="/blog/">Blog</a> · <a href="/go/ship-it-kit/product-from-nextjs-stripe-boilerplate/?source=blog_nextjs_stripe_boilerplate_footer">Ship It Kit</a></p>
   <p style="margin-top:8px;">Built with 🪿 by Goosekit</p>
 </footer>
 <script>
@@ -405,7 +396,7 @@
       page_type: 'stripe_boilerplate_entry'
     });
 
-    document.querySelectorAll('a[href*="checkout-nextjs-stripe-boilerplate"], a[href*="ship-it-kit-review"], a[href*="product-from-nextjs-stripe-boilerplate"], a[href*="/ship-it-kit/?ref=blog_nextjs_stripe_boilerplate"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-vs-"], a[href*="nextjs-auth-billing-starter"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="checkout-nextjs-stripe-boilerplate"], a[href*="ship-it-kit-review"], a[href*="product-from-nextjs-stripe-boilerplate"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="ship-it-kit-vs-"], a[href*="nextjs-auth-billing-starter"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,

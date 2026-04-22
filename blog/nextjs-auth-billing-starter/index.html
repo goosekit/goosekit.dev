@@ -339,34 +339,6 @@
       font-size: 0.94rem;
     }
 
-    .rendered-proof {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
-      margin: 0 0 22px;
-    }
-
-    .proof-shot {
-      padding: 12px;
-      overflow: hidden;
-    }
-
-    .proof-shot img {
-      display: block;
-      width: 100%;
-      height: auto;
-      border-radius: 12px;
-      border: 1px solid rgba(148, 163, 184, 0.14);
-      background: #08111f;
-    }
-
-    .proof-shot p {
-      margin: 10px 2px 0;
-      color: var(--muted);
-      font-size: 0.92rem;
-      line-height: 1.5;
-    }
-
     .price-card {
       display: grid;
       grid-template-columns: 1.1fr 0.9fr;
@@ -437,7 +409,6 @@
 
     @media (max-width: 980px) {
       .hero,
-      .rendered-proof,
       .proof-grid,
       .price-card,
       .fit-grid,
@@ -481,7 +452,7 @@
           <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-hero/">Get the starter, €49</a>
           <a class="btn-secondary" href="#fit">Check if your stack fits</a>
         </div>
-        <p class="price-note" style="max-width:680px;margin-top:0;">Instant repo access after checkout, no sales call or manual onboarding queue. Prefer hard proof first? <a href="/ship-it-kit/?ref=auth_billing_hero_proof#proof">See the exact files first</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? Use the <a href="/ship-it-kit-checklist/?ref=auth_billing_hero_checklist">free checklist</a> first.</p>
+        <p class="price-note" style="max-width:680px;margin-top:0;">Instant repo access after checkout, no sales call or manual onboarding queue. Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_hero_full_offer">See the full offer</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=auth_billing_hero_quick_fit">30-second proof-first router</a> first.</p>
         <ul class="hero-points">
           <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
           <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
@@ -495,7 +466,7 @@
         <h2>For builders blocked by the same two jobs.</h2>
         <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
-        <p class="price-note">Instant repo access, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
+        <p class="price-note">Instant starter download, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
           <span class="mini-pill">Billing already wired</span>
@@ -575,21 +546,7 @@
       <div class="section-head">
         <div class="eyebrow">Concrete proof</div>
         <h2>Show the plumbing, not startup poetry.</h2>
-        <p class="section-sub">Trust comes from showing the files and screens that usually take time: auth wiring, session-aware app gating, webhook handling, and schema basics.</p>
-      </div>
-      <div class="rendered-proof" aria-label="Rendered starter screenshots">
-        <div class="panel proof-shot">
-          <img src="/ship-it-kit/proof/starter-landing-hero.png" alt="Rendered Ship It Kit landing page hero from the starter">
-          <p>Actual landing hero from the starter, not a mockup.</p>
-        </div>
-        <div class="panel proof-shot">
-          <img src="/ship-it-kit/proof/starter-pricing-page.png" alt="Rendered Ship It Kit pricing page from the starter">
-          <p>Actual pricing page with the auth + billing path already wired.</p>
-        </div>
-        <div class="panel proof-shot">
-          <img src="/ship-it-kit/proof/starter-auth-screen.png" alt="Rendered Ship It Kit auth screen from the starter">
-          <p>Actual auth screen from the same codebase buyers get.</p>
-        </div>
+        <p class="section-sub">Trust comes from showing the files that usually take time: middleware, webhook handling, auth wiring, and schema basics.</p>
       </div>
       <div class="proof-grid">
         <div class="panel">
@@ -615,7 +572,7 @@ supabase/
             </div>
             <div class="path-item">
               <strong>src/middleware.ts</strong>
-              The route matcher scaffold is included, while session-aware app gating currently happens inside the app pages.
+              Route protection is already in place, so the dashboard shell is not a fake screenshot.
             </div>
             <div class="path-item">
               <strong>supabase/schema.sql + src/types/database.ts</strong>
@@ -627,7 +584,7 @@ supabase/
           <h3>What this removes from the next MVP</h3>
           <ul class="price-list">
             <li><span class="check">✓</span><span>Signup and login flow.</span></li>
-            <li><span class="check">✓</span><span>Protected app areas with session-aware gating.</span></li>
+            <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
             <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
             <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
             <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
@@ -688,7 +645,7 @@ supabase/
             <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-pricing/">Get instant repo access</a>
             <a class="btn-secondary" href="#fit">Check fit before buying</a>
           </div>
-          <p class="price-note" style="margin-top:16px;">Still unsure? <a href="/ship-it-kit/?ref=auth_billing_price_proof#proof">See the exact files first</a>, or use the free <a href="/ship-it-kit-checklist/?ref=auth_billing_price_checklist">Ship It Kit checklist</a> before buying.</p>
+          <p class="price-note" style="margin-top:16px;">Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=auth_billing_price_quick_fit">30-second proof-first router</a> first, then buy only if the stack and timing are right.</p>
         </div>
       </div>
     </section>
@@ -699,9 +656,9 @@ supabase/
       <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
         <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-bottom/">Get the starter, €49</a>
-        <a class="btn-secondary" href="/ship-it-kit/?ref=auth_billing_bottom_proof#proof">See the exact files first</a>
+        <a class="btn-secondary" href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer">See the full offer</a>
       </div>
-      <p style="margin-top:14px;">Instant repo access after checkout, no sales call or manual onboarding queue. Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a>, <a href="/ship-it-kit/?ref=auth_billing_bottom_proof_note#proof">see the exact files first</a>, or use the <a href="/ship-it-kit-checklist/?ref=auth_billing_bottom_checklist">free checklist</a> first. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+      <p style="margin-top:14px;">Instant repo access after checkout, no sales call or manual onboarding queue. Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a>, <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer_note">see the full offer</a>, or use the <a href="/ship-it-kit-quick-fit/?ref=auth_billing_bottom_quick_fit">30-second proof-first router</a> first. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
     </section>
   </main>
 
@@ -727,7 +684,7 @@ supabase/
       page_type: 'auth_billing_entry'
     });
 
-    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-review"], a[href*="/ship-it-kit/?ref=auth_billing_"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
+    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="ship-it-kit-review"], a[href*="product-from-auth-billing"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
