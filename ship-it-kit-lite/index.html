@@ -103,6 +103,27 @@
     </a>
   </div>
 
+  <div id="launch-banner" class="launch-banner" role="region" aria-label="Launch week pricing">
+    <a class="launch-banner-link" href="https://shipitstudio.lemonsqueezy.com/buy/a48ab188-2bd0-4587-bba3-141aabc95366?ref=launch_banner" data-ph-event="ship_it_kit_lite_cta_clicked" data-ph-location="launch_banner">🚀 Launch week pricing — ends April 30</a>
+    <button class="launch-banner-close" type="button" aria-label="Dismiss launch banner">×</button>
+  </div>
+  <style>
+    .launch-banner { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 8px 16px; background: #0b0b14; border-bottom: 1px solid rgba(255, 72, 0, 0.4); color: #f5f7ff; font-size: 13px; font-weight: 600; line-height: 1.4; }
+    .launch-banner-link { color: #f5f7ff; text-decoration: none; border-bottom: 1px dashed rgba(255, 72, 0, 0.6); padding-bottom: 1px; }
+    .launch-banner-link:hover { color: #ff9040; text-decoration: none; border-bottom-color: #ff9040; }
+    .launch-banner-close { background: transparent; border: 0; color: #6b6b8a; font-size: 18px; line-height: 1; cursor: pointer; padding: 2px 8px; border-radius: 4px; margin-left: 4px; }
+    .launch-banner-close:hover { color: #f5f7ff; background: rgba(255,255,255,0.05); }
+    .launch-banner[hidden] { display: none !important; }
+  </style>
+  <script>
+    (function () {
+      var b = document.getElementById('launch-banner'); if (!b) return;
+      try { if (localStorage.getItem('gk_launch_banner_dismissed') === '1') { b.hidden = true; return; } } catch (e) {}
+      var c = b.querySelector('.launch-banner-close');
+      if (c) c.addEventListener('click', function () { b.hidden = true; try { localStorage.setItem('gk_launch_banner_dismissed', '1'); } catch (e) {} });
+    })();
+  </script>
+
   <div class="container">
     <div class="breadcrumb">
       <a href="/">Goosekit</a><span>›</span>
