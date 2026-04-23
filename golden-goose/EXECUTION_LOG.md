@@ -165,3 +165,28 @@ See `golden-goose/DISTRIBUTION_PUSH.md` for the full prioritized list.
 - Added a compact “Buy this if all 3 are true” checklist inside the hero card, directly under the proof pills
 - Added explicit Lemon Squeezy checkout context in the same block so buyers see stack fit + checkout trust before scrolling
 **Why it matters:** `/ship-it-kit/` had 83 product-page visits vs 56 checkout-route visits on 2026-04-21, so the highest-leverage fix was making the main paid-entry page qualify and reassure buyers earlier.
+
+## 2026-04-22 22:33 UTC
+### ✅ Deployed uncommitted buyer-path improvements
+**Files:** `ship-it-kit/index.html`, `compare/ship-it-kit-vs-shipfast/index.html`, `blog/*`, `ship-it-kit/proof/*`
+**What changed:**
+- Deployed proof screenshots to Ship It Kit product page and ShipFast comparison page
+- Updated CTA copy across blog posts and comparison pages
+- Fixed canonical URLs and Open Graph metadata
+- Merged remote changes (new `compare/` index, `ship-it-kit-vs-makerkit/` comparison, `ship-it-kit-lite/` €19 page)
+- Pushed commit `983bcdd`
+
+## 2026-04-22 22:46 UTC
+### ✅ Submitted updated URLs to IndexNow
+**Submitted:** 8 recently changed URLs to Bing/Yahoo via IndexNow API
+**Response:** HTTP 200
+
+## 2026-04-23 01:06 UTC
+### ✅ Created missing distribution assets
+**Files added to `golden-goose/marketing/`:**
+- `TWITTER_SHIPITKIT_LAUNCH.md` — 5-tweet thread ready to copy-paste
+- `REDDIT_IIB_POSTING_PACKAGE.md` — r/SideProject + r/webdev post drafts with timing rules
+- `SHIP_IT_KIT_OUTREACH_PACKAGE.md` — 3 warm outreach templates (friend, community, Twitter DM)
+- `SAASHUB_SUBMISSION_PACKAGE.md` — Product details and submission steps
+**Why it matters:** All distribution packages referenced in `DISTRIBUTION_PUSH.md` now actually exist. Arthur has zero excuse for not executing outreach — every template is written and ready.
+**Pushed:** Commit `a903fa1`
