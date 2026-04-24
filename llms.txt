@@ -39,7 +39,6 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 
 ## Paid builder products
 - Ship It Kit (€49): https://goosekit.dev/ship-it-kit/ — Next.js 15 + Supabase + Stripe starter with auth, checkout, billing portal, webhooks, dashboard
-- Ship It Kit Lite (€19): https://goosekit.dev/ship-it-kit-lite/ — Lighter version with auth + dashboard + basic Stripe setup
 - Offline Pack (€29): https://goosekit.dev/offline-pack/ — Privacy-focused offline tool bundle
 
 ## Comparison pages

@@ -113,7 +113,6 @@ Goosekit is a website of free browser-based tools. The core promise is speed, no
 
 ## Paid products
 - Ship It Kit (€49): https://goosekit.dev/ship-it-kit/ — Full Next.js 15 + Supabase + Stripe starter with auth, checkout, billing portal, webhooks, team page, dashboard, settings
-- Ship It Kit Lite (€19): https://goosekit.dev/ship-it-kit-lite/ — Lighter version with auth + dashboard + basic Stripe setup
 - Offline Pack (€29): https://goosekit.dev/offline-pack/ — Privacy-focused offline tool bundle with 10-15 essential tools
 
 ## Revenue/SEO pages
