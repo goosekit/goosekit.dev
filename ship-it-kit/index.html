@@ -600,12 +600,12 @@
   <header>
     <div class="container topbar">
       <a class="brand" href="#top">Ship It <span>Kit</span> by Goosekit</a>
-      <a class="nav-cta" href="/go/ship-it-kit/checkout-product-sticky/">Get instant repo access</a>
+      <a class="nav-cta" href="/go/ship-it-kit/checkout-product-sticky/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="nav">Get instant repo access</a>
     </div>
   </header>
 
   <div id="launch-banner" class="launch-banner" role="region" aria-label="Launch week pricing">
-    <a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner">🚀 Launch week pricing — ends April 30</a>
+    <a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">🚀 Launch week pricing — ends April 30</a>
     <button class="launch-banner-close" type="button" aria-label="Dismiss launch banner">×</button>
   </div>
   <style>
@@ -626,13 +626,13 @@
   </script>
 
   <main class="container" id="top">
-    <section class="hero">
+    <section class="hero" id="hero">
       <div class="hero-copy">
         <div class="pill">Focused starter by Goosekit</div>
         <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
         <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
-          <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/">Get the starter, €49</a>
+          <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero">Get the starter, €49</a>
           <a class="btn-secondary" href="#proof">See the exact files first</a>
         </div>
         <ul class="hero-points">
@@ -893,7 +893,7 @@ supabase/
             <li><span class="check">✓</span><span>Priced for a single painful setup loop, not for enterprise feature theater.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
-            <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/">Get instant repo access</a>
+            <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="pricing">Get instant repo access</a>
             <a class="btn-secondary" href="/ship-it-kit-quick-fit/?ref=product_price_quick_fit_top">Run the 30-second fit check</a>
           </div>
           <div class="buy-check">
@@ -974,7 +974,7 @@ supabase/
       <h2>Stop rewiring auth and Stripe for every MVP.</h2>
       <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
-        <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/">Get the starter, €49</a>
+        <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom">Get the starter, €49</a>
         <a class="btn-secondary" href="#included">Review what is included</a>
       </div>
       <p class="price-note" style="margin-top:16px;">€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=product_bottom_quick_fit">30-second proof-first router</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
@@ -991,6 +991,7 @@ supabase/
   document.addEventListener('DOMContentLoaded', function () {
     var params = new URLSearchParams(window.location.search);
     var ref = params.get('ref') || 'direct';
+    var lastVisibleSection = 'unknown';
     var capture = function (eventName, props) {
       if (window.posthog && typeof window.posthog.capture === 'function') {
         window.posthog.capture(eventName, props || {});
@@ -1003,12 +1004,44 @@ supabase/
       page_type: 'product'
     });
 
+    // Track which section is currently visible
+    var trackedSections = ['hero', 'proof', 'setup', 'fit', 'included', 'pricing', 'faq', 'next-step'];
+    var sectionObserver = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          lastVisibleSection = entry.target.id || 'unknown';
+        }
+      });
+    }, { threshold: 0.2 });
+    trackedSections.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+
+    // Track data-ph-event clicks (explicit CTAs)
+    document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture(el.getAttribute('data-ph-event'), {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'product',
+          section: lastVisibleSection,
+          location: el.getAttribute('data-ph-location') || 'unknown',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+
+    // Also track checkout-related links without data-ph-event (backward compat)
     document.querySelectorAll('a[href*="checkout"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="nextjs-auth-billing-starter"], a[href*="best-nextjs-saas-starter-template-2026"], a[href*="ship-it-kit-review"], a[href*="ship-it-kit-vs-"], a[href^="mailto:"]').forEach(function (el) {
+      if (el.hasAttribute('data-ph-event')) return; // skip already-tracked
       el.addEventListener('click', function () {
         capture('ship_it_kit_cta_clicked', {
           ref: ref,
           path: window.location.pathname,
           page_type: 'product',
+          section: lastVisibleSection,
           cta_text: (el.textContent || '').trim(),
           target_href: el.getAttribute('href') || null
         });
