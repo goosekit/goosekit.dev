@@ -190,3 +190,27 @@ See `golden-goose/DISTRIBUTION_PUSH.md` for the full prioritized list.
 - `SAASHUB_SUBMISSION_PACKAGE.md` — Product details and submission steps
 **Why it matters:** All distribution packages referenced in `DISTRIBUTION_PUSH.md` now actually exist. Arthur has zero excuse for not executing outreach — every template is written and ready.
 **Pushed:** Commit `a903fa1`
+
+## 2026-04-24 02:45 UTC
+### ✅ Added section-level funnel tracking to Offline Pack and Ship It Kit
+**Files changed:** `offline-pack/index.html`, `ship-it-kit/index.html`
+**Commit:** `7807a0e`
+
+**What changed — Offline Pack (P1):**
+- Added section IDs: `hero`, `why-this-exists`, `included-tools`, `screenshots`, `how-it-works`, `faq`, `checkout`
+- Added IntersectionObserver: `lastVisibleSection` updates on scroll (threshold 0.2)
+- Every `offline_pack_cta_clicked` PostHog event now includes `section: lastVisibleSection`
+- Result: Arthur can now see which section of the page converts users (hero → checkout bottom, or FAQ → checkout, etc.)
+
+**What changed — Ship It Kit (P2):**
+- Added `data-ph-event="ship_it_kit_cta_clicked" data-ph-location` to 5 key CTAs: nav, launch_banner, hero, pricing, bottom
+- Added `id="hero"` to hero section
+- Extended PostHog handler: explicit `data-ph-event` clicks now include `section` + `location` fields
+- Backward-compat fallback still covers other checkout/email links that lack the attribute
+- Result: Ship It Kit tracking is now as granular as Offline Pack
+
+**Constraints respected:**
+- No homepage banner changes (product page banners kept, non-pushy with dismiss)
+- No /pro/ or API Pro changes
+- No ads on the site
+- IndexNow: no workflow exists; changed pages are existing URLs (GitHub Pages auto-deploys on push to main)
