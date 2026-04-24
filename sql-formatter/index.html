@@ -299,7 +299,15 @@ pre.output-code {
   line-height: 1.6;
 }
 
-footer {
+footer { text-align: center; padding: 24px 20px; border-top: 1px solid var(--border); color: var(--text-muted); font-size: 12px; }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; }
+.footer-label { font-size: 13px; color: var(--text-dim); margin-right: 4px; }
+.footer-link { font-size: 13px; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
+.footer-link:hover { color: var(--blue); border-color: var(--blue); }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 14px; }
+.footer-label { font-size: 13px; color: var(--text-dim); margin-right: 4px; }
+.footer-link { font-size: 13px; color: var(--text-muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color 0.15s, border-color 0.15s; }
+.footer-link:hover { color: var(--blue); border-color: var(--blue); }
   text-align: center;
   padding: 24px 20px;
   border-top: 1px solid var(--border);
@@ -609,9 +617,19 @@ footer {
 
 </div>
 <footer>
+  <div class="footer-inner">
+    <span class="footer-label">More tools:</span>
+    <a class="footer-link" href="/screenshot/" title="Screenshot tool">ScreenSnap</a>
+    <a class="footer-link" href="/og-preview/" title="OG Preview checker">OG Preview</a>
+    <a class="footer-link" href="/json/" title="JSON formatter">JSON Formatter</a>
+    <a class="footer-link" href="/base64/" title="Base64 encoder/decoder">Base64 Tool</a>
+    <a class="footer-link" href="/regex/" title="Regular expression tester">Regex Tester</a>
+    <span class="footer-label" style="margin-left:8px;">·</span>
+    <a class="footer-link" href="/offline-pack/" title="Run offline — no data leaves your device">Offline Pack</a>
+  </div>
+</footer>
   <p>SQL Formatter — Part of <a href="/" style="color:var(--accent);text-decoration:none;">Goosekit</a>, a collection of free developer tools.</p>
 </footer>
-
 <div class="toast" id="toast"></div>
 
 <script>
