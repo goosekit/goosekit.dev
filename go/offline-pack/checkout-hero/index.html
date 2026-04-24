@@ -250,7 +250,8 @@
         source: source,
         product: 'offline_pack'
       });
-      window.location.replace(checkoutUrl);
+      var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
+      window.location.replace(checkoutUrl + glue + params.toString());
     });
   </script>
 </body>

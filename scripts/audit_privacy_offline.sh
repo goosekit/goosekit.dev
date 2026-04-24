@@ -73,8 +73,8 @@ check_checkout_helper() {
   local file="$2"
   local expected_ls="https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757"
 
-  if [[ ! -f "$file" ]]; then
-    fail "$name — file missing ($file)"
+  if [[ -z "$file" ]] || [[ ! -f "$file" ]]; then
+    fail "$name — file missing or empty path ($file)"
     return
   fi
 
@@ -97,6 +97,13 @@ check_checkout_helper() {
     pass "$name — has source fallback value"
   else
     fail "$name — missing source fallback/default"
+  fi
+
+  # 2d: appends URL params (source/ref/utm_*) to LS checkout URL
+  if grep -q "params.toString\|glue.*params\|params.*checkoutUrl" "$file"; then
+    pass "$name — appends URL params to LS checkout URL"
+  else
+    fail "$name — does NOT forward URL params to LS checkout URL"
   fi
 }
 
