@@ -104,10 +104,12 @@ def activate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None:
     text = path.read_text()
     replacements = [
         ('€49 one-time.', '€29 until April 30.', False),
-        ('🚨 Ship It Kit Launch — €49 ends April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
+        ('🚨 Ship It Kit Launch — €49 ends April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', False),
+        ('🚨 Ship It Kit Weekend Build — €49 one-time', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
         ('/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', True),
         ('💳 Get instant repo access, €49 →', '💳 Get instant repo access, €29 →', True),
-        ('⚡ Launch window — €49 ends April 30 · Regular price goes up after', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', True),
+        ('⚡ Launch window — €49 ends April 30 · Regular price goes up after', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', False),
+        ('⚡ Weekend build angle — get auth + billing wired before Monday', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', True),
         ("What if I'm not ready for €49?", "What if I'm not ready for €29?", True),
         ('€49 one-time. Ship your first paying customer this month.', '€29 until April 30. Ship your first paying customer this month.', False),
         ('/go/ship-it-kit/checkout-weekend-bottom/?source=ship_it_kit_weekend_bottom', '/go/ship-it-kit/checkout-flash-bottom/?source=ship_it_kit_weekend_bottom', True),
