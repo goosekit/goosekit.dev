@@ -10,7 +10,12 @@ import argparse
 import shutil
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
+
+PARIS_TZ = ZoneInfo("Europe/Paris")
+SALE_END_AT = datetime(2026, 4, 30, 23, 59, 59, tzinfo=PARIS_TZ)
 
 
 def replace_exact(text: str, old: str, new: str, label: str) -> str:
@@ -126,12 +131,25 @@ def run_checks(root: Path) -> int:
     return result.returncode
 
 
+def assert_apply_guard(args: argparse.Namespace) -> None:
+    if not args.apply:
+        return
+    if not args.price_verified_49:
+        raise RuntimeError("Refusing --apply until Lemon Squeezy checkout has been restored to €49. Re-run with --price-verified-49 after manual verification.")
+    now = datetime.now(PARIS_TZ)
+    if now < SALE_END_AT and not args.allow_early:
+        raise RuntimeError(f"Refusing --apply before sale end ({SALE_END_AT.isoformat()}). Use --allow-early only for isolated tests, not production.")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Deactivate Ship It Kit flash sale after restoring LS price to €49")
     parser.add_argument("--root", default=".", help="Goosekit repo root")
     parser.add_argument("--apply", action="store_true", help="write changes; otherwise dry-run only")
+    parser.add_argument("--price-verified-49", action="store_true", help="required with --apply after verifying Lemon Squeezy checkout displays €49")
+    parser.add_argument("--allow-early", action="store_true", help="test-only escape hatch for isolated pre-sale rollback simulations")
     parser.add_argument("--run-checks", action="store_true", help="run normal post-sale revenue checks after changes")
     args = parser.parse_args()
+    assert_apply_guard(args)
 
     root = Path(args.root).resolve()
     changed: list[str] = []
