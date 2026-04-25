@@ -151,16 +151,28 @@ fi
 echo ""
 
 # ----------------------------------------------------------
-# CHECK 4 — No active flash-sale routes
+# CHECK 4 — Flash sale is preview-only before activation
 # ----------------------------------------------------------
-echo "--- Check 4: No active flash-sale routes ---"
+echo "--- Check 4: Flash sale preview is not an active checkout path ---"
 
-FLASH_LINKS=$(grep -rlE "ship-it-kit-flash|/flash/" "$ROOT" --include="*.html" 2>/dev/null || true)
-if [[ -n "$FLASH_LINKS" ]]; then
-  fail "flash-sale route referenced in site:"
-  echo "    Files: $(echo "$FLASH_LINKS" | tr '\n' ' ')"
+FLASH_PAGE="$ROOT/ship-it-kit-flash/index.html"
+FLASH_CHECKOUT_LINKS=$(grep -rlE "/go/ship-it-kit/checkout-flash|/flash/" "$ROOT" --include="*.html" 2>/dev/null || true)
+if [[ -n "$FLASH_CHECKOUT_LINKS" ]]; then
+  fail "active flash checkout route referenced in site:"
+  echo "    Files: $(echo "$FLASH_CHECKOUT_LINKS" | tr '\n' ' ')"
 else
-  pass "No ship-it-kit-flash routes referenced"
+  pass "No active flash checkout routes referenced"
+fi
+
+if [[ -f "$FLASH_PAGE" ]]; then
+  if grep -q "The checkout opens when the flash sale starts" "$FLASH_PAGE" && \
+     ! grep -qE "/go/ship-it-kit/checkout-flash|shipitstudio\.lemonsqueezy\.com/checkout/buy" "$FLASH_PAGE"; then
+    pass "ship-it-kit-flash — preview page only, no live checkout"
+  else
+    fail "ship-it-kit-flash — not clearly preview-only or links to checkout"
+  fi
+else
+  info "ship-it-kit-flash not found (OK before sale activation)"
 fi
 
 echo ""

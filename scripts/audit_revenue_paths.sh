@@ -21,6 +21,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT="${1:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 
 run_and_report() {
   local label="$1"
@@ -35,7 +36,7 @@ run_and_report() {
   fi
   local output
   local exit_code=0
-  output=$(bash "$script" 2>&1) || exit_code=$?
+  output=$(bash "$script" "$ROOT" 2>&1) || exit_code=$?
   echo "$output"
   # Extract and echo the summary line for visibility
   local summary
