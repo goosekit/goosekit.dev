@@ -37,28 +37,46 @@ fail() { echo "  ❌ $1"; FAILED=$((FAILED+1)); }
 info() { echo "  ℹ️  $1"; }
 
 # ----------------------------------------------------------
-# CHECK 1 — Ship It Kit main page shows €49 (not €29)
+# CHECK 1 — Ship It Kit main page price state
 # ----------------------------------------------------------
-echo "--- Check 1: Ship It Kit main page — €49 displayed ---"
+FLASH_ACTIVE="${SHIPITKIT_FLASH_SALE_ACTIVE:-0}"
+if [[ "$FLASH_ACTIVE" == "1" ]]; then
+  echo "--- Check 1: Ship It Kit main page — active €29 flash-sale price displayed ---"
+else
+  echo "--- Check 1: Ship It Kit main page — €49 displayed ---"
+fi
 
 SIK_FILE="$ROOT/ship-it-kit/index.html"
 if [[ ! -f "$SIK_FILE" ]]; then
   fail "ship-it-kit/index.html missing"
 else
-  if grep -q "€49" "$SIK_FILE"; then
-    pass "ship-it-kit — displays €49 price"
+  if [[ "$FLASH_ACTIVE" == "1" ]]; then
+    if grep -q "€29" "$SIK_FILE"; then
+      pass "ship-it-kit — displays €29 flash-sale price"
+    else
+      fail "ship-it-kit — missing €29 flash-sale price display"
+    fi
+    if grep -q '"price": "29"' "$SIK_FILE"; then
+      pass "ship-it-kit JSON-LD price is 29"
+    else
+      fail "ship-it-kit JSON-LD price missing or not 29"
+    fi
   else
-    fail "ship-it-kit — missing €49 price display"
-  fi
-  if grep -q '"price": "49"' "$SIK_FILE"; then
-    pass "ship-it-kit JSON-LD price is 49"
-  else
-    fail "ship-it-kit JSON-LD price missing or not 49"
-  fi
-  if grep -qE "€29.*[Ss]hip.It.Kit|[Ss]hip.It.Kit.*€29" "$SIK_FILE"; then
-    fail "ship-it-kit — stale €29 flash-sale copy found"
-  else
-    pass "ship-it-kit — no stale €29 flash-sale copy"
+    if grep -q "€49" "$SIK_FILE"; then
+      pass "ship-it-kit — displays €49 price"
+    else
+      fail "ship-it-kit — missing €49 price display"
+    fi
+    if grep -q '"price": "49"' "$SIK_FILE"; then
+      pass "ship-it-kit JSON-LD price is 49"
+    else
+      fail "ship-it-kit JSON-LD price missing or not 49"
+    fi
+    if grep -qE "€29.*[Ss]hip.It.Kit|[Ss]hip.It.Kit.*€29" "$SIK_FILE"; then
+      fail "ship-it-kit — stale €29 flash-sale copy found"
+    else
+      pass "ship-it-kit — no stale €29 flash-sale copy"
+    fi
   fi
 fi
 
@@ -151,28 +169,43 @@ fi
 echo ""
 
 # ----------------------------------------------------------
-# CHECK 4 — Flash sale is preview-only before activation
+# CHECK 4 — Flash sale state
 # ----------------------------------------------------------
-echo "--- Check 4: Flash sale preview is not an active checkout path ---"
-
 FLASH_PAGE="$ROOT/ship-it-kit-flash/index.html"
-FLASH_CHECKOUT_LINKS=$(grep -rlE "/go/ship-it-kit/checkout-flash|/flash/" "$ROOT" --include="*.html" 2>/dev/null || true)
-if [[ -n "$FLASH_CHECKOUT_LINKS" ]]; then
-  fail "active flash checkout route referenced in site:"
-  echo "    Files: $(echo "$FLASH_CHECKOUT_LINKS" | tr '\n' ' ')"
-else
-  pass "No active flash checkout routes referenced"
-fi
-
-if [[ -f "$FLASH_PAGE" ]]; then
-  if grep -q "The checkout opens when the flash sale starts" "$FLASH_PAGE" && \
-     ! grep -qE "/go/ship-it-kit/checkout-flash|shipitstudio\.lemonsqueezy\.com/checkout/buy" "$FLASH_PAGE"; then
-    pass "ship-it-kit-flash — preview page only, no live checkout"
+if [[ "$FLASH_ACTIVE" == "1" ]]; then
+  echo "--- Check 4: Flash sale is active checkout path ---"
+  if [[ -f "$FLASH_PAGE" ]]; then
+    if grep -q "Limited Time" "$FLASH_PAGE" && \
+       grep -q "data-countdown-target=\"2026-04-30T23:59:59+02:00\"" "$FLASH_PAGE" && \
+       grep -qE "/go/ship-it-kit/checkout-flash-(hero|bottom)/" "$FLASH_PAGE" && \
+       ! grep -q "mailto:" "$FLASH_PAGE"; then
+      pass "ship-it-kit-flash — active sale page links to flash checkout"
+    else
+      fail "ship-it-kit-flash — active sale page is missing checkout/end-state requirements"
+    fi
   else
-    fail "ship-it-kit-flash — not clearly preview-only or links to checkout"
+    fail "ship-it-kit-flash missing during active sale"
   fi
 else
-  info "ship-it-kit-flash not found (OK before sale activation)"
+  echo "--- Check 4: Flash sale preview is not an active checkout path ---"
+  FLASH_CHECKOUT_LINKS=$(grep -rlE "/go/ship-it-kit/checkout-flash|/flash/" "$ROOT" --include="*.html" 2>/dev/null || true)
+  if [[ -n "$FLASH_CHECKOUT_LINKS" ]]; then
+    fail "active flash checkout route referenced in site:"
+    echo "    Files: $(echo "$FLASH_CHECKOUT_LINKS" | tr '\n' ' ')"
+  else
+    pass "No active flash checkout routes referenced"
+  fi
+
+  if [[ -f "$FLASH_PAGE" ]]; then
+    if grep -q "The checkout opens when the flash sale starts" "$FLASH_PAGE" && \
+       ! grep -qE "/go/ship-it-kit/checkout-flash|shipitstudio\.lemonsqueezy\.com/checkout/buy" "$FLASH_PAGE"; then
+      pass "ship-it-kit-flash — preview page only, no live checkout"
+    else
+      fail "ship-it-kit-flash — not clearly preview-only or links to checkout"
+    fi
+  else
+    info "ship-it-kit-flash not found (OK before sale activation)"
+  fi
 fi
 
 echo ""
