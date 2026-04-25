@@ -9,9 +9,13 @@ from __future__ import annotations
 import argparse
 import subprocess
 import sys
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 LS_URL = "https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a"
+PARIS_TZ = ZoneInfo("Europe/Paris")
+SALE_START_AT = datetime(2026, 4, 28, 0, 0, 0, tzinfo=PARIS_TZ)
 SALE_END = "2026-04-30T23:59:59+02:00"
 
 CHECKOUT_TEMPLATE = f'''<!DOCTYPE html>
@@ -144,12 +148,25 @@ def run_checks(root: Path) -> int:
     return result.returncode
 
 
+def assert_apply_guard(args: argparse.Namespace) -> None:
+    if not args.apply:
+        return
+    if not args.price_verified_29:
+        raise RuntimeError("Refusing --apply until Lemon Squeezy checkout has been verified at €29. Re-run with --price-verified-29 after manual verification.")
+    now = datetime.now(PARIS_TZ)
+    if now < SALE_START_AT and not args.allow_early:
+        raise RuntimeError(f"Refusing --apply before sale start ({SALE_START_AT.isoformat()}). Use --allow-early only for isolated tests, not production.")
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Activate Ship It Kit flash sale after LS price verification")
     parser.add_argument("--root", default=".", help="Goosekit repo root")
     parser.add_argument("--apply", action="store_true", help="write changes; otherwise dry-run only")
+    parser.add_argument("--price-verified-29", action="store_true", help="required with --apply after verifying Lemon Squeezy checkout displays €29")
+    parser.add_argument("--allow-early", action="store_true", help="test-only escape hatch for isolated pre-sale activation simulations")
     parser.add_argument("--run-checks", action="store_true", help="run active-sale checks after changes")
     args = parser.parse_args()
+    assert_apply_guard(args)
 
     root = Path(args.root).resolve()
     changed: list[str] = []
