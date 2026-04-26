@@ -79,6 +79,8 @@ def deactivate_product_page(root: Path, apply: bool, changed: list[str]) -> None
     path = root / "ship-it-kit" / "index.html"
     text = path.read_text()
     replacements = [
+        ('<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>', '<a class="launch-banner-link" href="/ship-it-kit/?ref=post_flash_launch_banner#proof" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_post_flash">Flash sale ended — Ship It Kit is back to €49. Check stack fit before buying.</a>'),
+        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Flash sale starts April 28 — €29 for 48 hours. Check fit before buying.</a>', '<a class="launch-banner-link" href="/ship-it-kit/?ref=post_flash_launch_banner#proof" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_post_flash">Flash sale ended — Ship It Kit is back to €49. Check stack fit before buying.</a>'),
         ('€29 until April 30.', '€49 one-time.'),
         ('worth €29 to you', 'worth €49 to you'),
         ('"price": "29"', '"price": "49"'),
@@ -98,8 +100,13 @@ def deactivate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None
     path = root / "ship-it-kit-weekend" / "index.html"
     text = path.read_text()
     replacements = [
+        ('<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>', '<a class="launch-banner-link" href="/ship-it-kit/?ref=post_flash_launch_banner#proof" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_post_flash">Flash sale ended — Ship It Kit is back to €49. Check stack fit before buying.</a>'),
+        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Flash sale starts April 28 — €29 for 48 hours. Check fit before buying.</a>', '<a class="launch-banner-link" href="/ship-it-kit/?ref=post_flash_launch_banner#proof" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_post_flash">Flash sale ended — Ship It Kit is back to €49. Check stack fit before buying.</a>'),
         ('€29 until April 30.', '€49 one-time.'),
         ('🚨 Ship It Kit Flash Sale — €29 ends April 30', '🚨 Ship It Kit Launch — €49 ended April 30'),
+        ('🚨 Flash sale starts April 28 — Ship It Kit will be €29 for 48 hours', '🚨 Ship It Kit Launch — €49 ended April 30'),
+        ('/ship-it-kit-flash/?ref=weekend_topbar_flash', '/ship-it-kit/?ref=weekend_topbar_proof#proof'),
+        ('Check the €29 window →', 'See the exact files first →'),
         ('/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', '/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero'),
         ('💳 Get instant repo access, €29 →', '💳 Get instant repo access, €49 →'),
         ('⚡ Flash sale — €29 ends April 30 · Regular price goes back after', '⚡ Launch window ended April 30 · Regular price is back'),
