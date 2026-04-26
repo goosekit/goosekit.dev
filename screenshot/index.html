@@ -505,6 +505,30 @@
       transition: border-color var(--transition);
     }
     .seo-content a:hover { border-color: var(--accent2); }
+    .builder-cta {
+      margin: 28px 0;
+      padding: 20px;
+      border: 1px solid rgba(255,72,0,0.22);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,72,0,0.10), rgba(124,58,237,0.08));
+    }
+    .builder-cta strong {
+      display: block;
+      color: var(--text);
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+    .builder-cta a {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 10px 14px;
+      border: 0;
+      border-radius: 12px;
+      background: rgba(255,72,0,0.92);
+      color: #fff;
+      font-weight: 700;
+    }
+    .builder-cta a:hover { background: #ff4800; }
 
     /* ── Responsive ── */
     @media (max-width: 768px) {
@@ -1817,6 +1841,12 @@
 
   <h2>Why use ScreenSnap?</h2>
   <p>Unlike cloud-based screenshot tools, ScreenSnap never uploads your images anywhere — your data stays on your machine. It's built as a single HTML file with zero dependencies, so it loads instantly and works offline. Whether you're preparing visuals for a blog post, a product launch, or a social media thread, ScreenSnap gives you professional results without the complexity of Figma or Photoshop. Explore more free tools on <a href="/">Goosekit</a>, from <a href="/sql-formatter/">SQL formatting</a> to <a href="/diff/">text comparison</a>.</p>
+
+  <div class="builder-cta" aria-label="Ship It Kit for product builders">
+    <strong>Turning these screenshots into a real SaaS launch?</strong>
+    <p>Ship It Kit is a one-time Next.js, Supabase, and Stripe starter for getting auth, billing, and a product foundation in place faster.</p>
+    <a href="/go/ship-it-kit/product-from-screenshot-beautifier/">See the Ship It Kit starter</a>
+  </div>
 
   <h2>Related Tools</h2>
   <p>Pair ScreenSnap with our <a href="/background-remover/">Background Remover</a>, <a href="/image-compressor/">Image Compressor</a>, <a href="/image-resizer/">Image Resizer</a>, and <a href="/placeholder-image/">Placeholder Image Generator</a> for a faster content workflow.</p>
