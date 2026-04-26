@@ -1,0 +1,15 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Goosekit//Ship It Kit Flash Sale//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:ship-it-kit-flash-sale-20260428@goosekit.dev
+DTSTAMP:20260426T175400Z
+DTSTART:20260427T220000Z
+DTEND:20260430T215900Z
+SUMMARY:Ship It Kit flash sale — €29
+DESCRIPTION:Ship It Kit is €29 from April 28 00:00 CEST to April 30 23:59 CEST. Check stack fit before buying: https://goosekit.dev/ship-it-kit-flash/
+URL:https://goosekit.dev/ship-it-kit-flash/
+END:VEVENT
+END:VCALENDAR
