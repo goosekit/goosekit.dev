@@ -409,6 +409,26 @@
     .seo-content a { color: #7b8cff; text-decoration: none; }
     .seo-content a:hover { text-decoration: underline; }
     .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+    .builder-cta {
+      margin: 28px 0;
+      padding: 18px 20px;
+      border: 1px solid rgba(255,72,0,0.22);
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,72,0,0.10), rgba(63,185,80,0.08));
+      color: #b8b8cc;
+    }
+    .builder-cta strong { display: block; color: #fff; font-size: 1rem; margin-bottom: 8px; }
+    .builder-cta p { line-height: 1.6; margin-bottom: 10px; }
+    .builder-cta a {
+      display: inline-flex;
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(255,72,0,0.92);
+      color: #fff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .builder-cta a:hover { background: #ff4800; color: #fff; text-decoration: none; }
   </style>
 <script defer src="/posthog.js"></script>
 <style id="gk-homepage-header-copy-styles">
@@ -738,6 +758,13 @@
   <p>A hash is a fixed-length fingerprint of any data. The same input always produces the same result.</p>
   <h3>SHA-256 vs MD5?</h3>
   <p>Use SHA-256 for security-sensitive work. MD5 is faster but collision-prone, so keep it for non-security checksums only.</p>
+
+  <div class="builder-cta" aria-label="Ship It Kit for security-minded app builders">
+    <strong>Building the app around this security work?</strong>
+    <p>Ship It Kit is a one-time Next.js, Supabase, and Stripe starter for getting auth, billing, and a product foundation in place faster.</p>
+    <a href="/go/ship-it-kit/product-from-hash-generator/">See the Ship It Kit starter</a>
+  </div>
+
   <h2>Related Tools</h2>
   <p>More tools: <a href="/base64/">Base64 Encoder</a>, <a href="/jwt/">JWT Decoder</a>, <a href="/password/">Password Generator</a>. <a href="/offline-pack/">Goosekit Offline Pack</a> brings 12 of these tools into one portable folder you can run offline.</p>
   <h2>Related Guides</h2>
