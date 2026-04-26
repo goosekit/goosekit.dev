@@ -233,7 +233,7 @@
 
   <p>Cron is one of those tools developers use all the time and still double-check every single time. The syntax is compact, but it is also easy to misread. One swapped field can turn a harmless daily task into a job that runs every minute. That is why searches for a <strong>free online cron expression generator</strong> keep showing up: people do not want to memorize five space-separated fields when they just need a correct schedule fast.</p>
 
-  <p>A good cron expression generator helps you build schedules visually, validate the meaning, and copy a valid expression back into your server, CI pipeline, or app config. That matters whether you are scheduling backups, running queue workers, rotating logs, sending reports, or kicking off database cleanup jobs.</p>
+  <p>A good cron expression generator helps you build schedules visually, validate the meaning, and copy a valid expression back into your server, CI pipeline, or app config. If you need a refresher on the basics before building a schedule, Goosekit also has a <a href="/blog/what-is-a-cron-job-beginner-guide/">beginner cron job guide</a>. That matters whether you are scheduling backups, running queue workers, rotating logs, sending reports, or kicking off database cleanup jobs.</p>
 
   <div style="margin:1.5rem 0;padding:1rem 1.25rem;border-radius:12px;border:1px solid rgba(127,127,127,.25);background:rgba(127,127,127,.08)"><strong>🪿 Goosekit tool callout:</strong> use <a href="https://goosekit.dev/cron/">Goosekit's free Cron Expression Generator</a> to build and verify cron schedules in your browser, with no signup and no installation.</div>
 
@@ -264,7 +264,7 @@ minute</code></pre>
     <li>Instant feedback without needing a terminal or server access</li>
   </ul>
 
-  <p>That last point matters more than it sounds. A lot of cron work happens in the middle of debugging or deployment, when the goal is speed and certainty, not syntax trivia.</p>
+  <p>That last point matters more than it sounds. A lot of cron work happens in the middle of debugging or deployment, when the goal is speed and certainty, not syntax trivia. If you are translating a schedule between UTC and local time, Goosekit’s <a href="/timestamp/">timestamp converter</a> is a useful companion check.</p>
 
   <h2>Real examples developers actually need</h2>
 
@@ -308,6 +308,8 @@ cron.schedule(schedule, async () =&gt; {
     <li>Moving schedules between Linux crontab, GitHub Actions, and app-level schedulers</li>
     <li>Checking that a “simple” expression really means what you think it means</li>
   </ul>
+
+  <p>If the scheduled script also needs executable permissions, Goosekit’s <a href="/chmod/">chmod calculator</a> can save another round-trip to the terminal.</p>
 
   <div style="margin:1.5rem 0;padding:1rem 1.25rem;border-radius:12px;border:1px solid rgba(127,127,127,.25);background:rgba(127,127,127,.08)"><strong>🪿 Quick win:</strong> open <a href="https://goosekit.dev/cron/">Goosekit Cron Generator</a>, pick the schedule pattern, verify the output, then paste the final expression into your crontab or scheduler config.</div>
 

@@ -251,7 +251,7 @@
 
   <p>If you build web apps, APIs, templates, emails, or CMS integrations, you eventually run into the same annoying problem: text that should render safely in HTML starts behaving like markup. Angle brackets disappear, ampersands break query strings, and quotes turn attribute values into a mess. That is exactly why developers keep searching for a <strong>free online HTML entity encoder</strong>.</p>
 
-  <p>A good HTML entity encoder is not just a teaching tool for beginners. It is a fast debugging utility for escaping user-facing strings, testing email templates, cleaning up snippets for documentation, and decoding legacy content you inherited from old systems. When you only need to encode or decode text quickly, a browser-based tool is often faster than reaching for a package, writing a one-off script, or hunting through framework docs.</p>
+  <p>A good HTML entity encoder is not just a teaching tool for beginners. It is a fast debugging utility for escaping user-facing strings, testing email templates, cleaning up snippets for documentation, and decoding legacy content you inherited from old systems. If the snippet is headed into docs or rendered content, Goosekit’s <a href="/markdown/">Markdown previewer</a> is a useful next check after encoding. When you only need to encode or decode text quickly, a browser-based tool is often faster than reaching for a package, writing a one-off script, or hunting through framework docs.</p>
 
   <div class="callout"><strong>🪿 Goosekit tool callout:</strong> use the <a href="https://goosekit.dev/html-entity/">Goosekit HTML Entity Encoder</a> to encode special characters, switch between named or numeric entities, and decode them back instantly in your browser.</div>
 
@@ -269,7 +269,7 @@
   <p>Sometimes a string is technically correct data, but it breaks the UI because the output context is wrong. A browser-based encoder lets you test the escaped version immediately without spinning up a local script.</p>
 
   <h3>2. Preparing content for docs, blogs, and emails</h3>
-  <p>Documentation often needs raw HTML to appear as visible text. The same goes for product emails or CMS fields that expect encoded values. If you publish technical content, you will reach for this more often than you think.</p>
+  <p>Documentation often needs raw HTML to appear as visible text. The same goes for product emails or CMS fields that expect encoded values. If you publish technical content, pairing this with Goosekit’s <a href="/blog/free-online-markdown-previewer-for-developers/">Markdown previewer guide</a> makes it easier to check the final rendered output. You will reach for this more often than you think.</p>
 
   <h3>3. Decoding legacy or imported content</h3>
   <p>Plenty of old systems store text as entity-encoded HTML. When you migrate content, inspect exports, or troubleshoot data quality, decoding is as important as encoding.</p>
@@ -310,7 +310,7 @@
 
   <h2>HTML entities and security, briefly</h2>
 
-  <p>Encoding characters is not a complete XSS defense strategy by itself. Context still matters. Escaping for HTML text nodes is different from escaping for attributes, JavaScript strings, CSS, or URLs. But entity encoding remains a useful building block for safe output and for understanding what your app is really rendering.</p>
+  <p>Encoding characters is not a complete XSS defense strategy by itself. Context still matters. Escaping for HTML text nodes is different from escaping for attributes, JavaScript strings, CSS, or URLs. When the value belongs in a query string or redirect parameter, Goosekit’s <a href="/url-encode/">URL Encoder/Decoder</a> is the right companion tool. But entity encoding remains a useful building block for safe output and for understanding what your app is really rendering.</p>
 
   <p>That is another reason these tools are valuable. They help you inspect the exact transformed string before it lands in the page, which is often enough to catch mistakes early.</p>
 

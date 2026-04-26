@@ -150,7 +150,7 @@
 
   <p>A <strong>free online URL encoder/decoder for developers</strong> is one of those tools you do not think about until you urgently need it. Then it becomes essential. You are debugging a callback URL, cleaning up a query string, building an OAuth redirect, inspecting analytics parameters, or trying to understand why an API endpoint is rejecting a request. In those moments, percent-encoding details suddenly matter a lot.</p>
 
-  <p>Yes, the browser and most frameworks already provide encoding functions. But when you are moving fast, a browser-based utility is often the quickest way to paste a value, see the converted result, verify the output, and continue your work. That is especially true when you are handling long URLs, nested query parameters, or encoded characters that are hard to read at a glance.</p>
+  <p>Yes, the browser and most frameworks already provide encoding functions. But when you are moving fast, a browser-based utility is often the quickest way to paste a value, see the converted result, verify the output, and continue your work. If you want the deeper rules behind <code>encodeURI()</code> vs <code>encodeURIComponent()</code>, Goosekit also has a <a href="/blog/url-encoding-decoding-explained/">full URL encoding guide</a>. That is especially true when you are handling long URLs, nested query parameters, or encoded characters that are hard to read at a glance.</p>
 
   <div class="callout"><strong>🪿 Goosekit tool callout:</strong> open the <a href="https://goosekit.dev/url-encode/">Goosekit URL Encoder/Decoder</a> to encode full URLs, decode percent-encoded strings, or convert individual URL components instantly in your browser.</div>
 
@@ -171,7 +171,7 @@
     <li>Verifying whether a backend expects a full encoded URL or just encoded components</li>
   </ul>
 
-  <p>These are tiny tasks, but they show up everywhere. That is exactly the kind of workflow where a focused online dev tool earns its keep.</p>
+  <p>These are tiny tasks, but they show up everywhere. When the URL sits next to a webhook example or API request, pairing this with Goosekit’s <a href="/curl-converter/">cURL to code converter</a> or <a href="/json/">JSON formatter</a> makes the debugging loop even faster. That is exactly the kind of workflow where a focused online dev tool earns its keep.</p>
 
   <h2>Encode the full URL or only a component?</h2>
 
