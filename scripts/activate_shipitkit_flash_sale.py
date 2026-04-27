@@ -62,7 +62,7 @@ def activate_flash_page(root: Path, apply: bool, changed: list[str]) -> None:
     path = root / "ship-it-kit-flash" / "index.html"
     text = path.read_text()
     replacements = [
-        ("Ship It Kit flash sale starts April 28 — €29 for 48 hours, then back to €49", "Ship It Kit flash sale ends April 30 at midnight CEST — €29 now, then back to €49", "topbar"),
+        ("Ship It Kit flash sale starts April 28 — €29 until April 30, then back to €49", "Ship It Kit flash sale ends April 30 at midnight CEST — €29 now, then back to €49", "topbar"),
         ('<div class="badge">Coming Soon</div>', '<div class="badge">Limited Time</div>', "badge"),
         ('<span class="price-was">Regular price €49</span>', '<span class="price-was">Was €49</span>', "was price"),
         ('The checkout opens when the flash sale starts. Until then, use the product page to check fit honestly.', 'The flash sale is live. Buy only if the stack matches your project: Next.js + Supabase + Stripe.', "sale-open note"),
@@ -88,7 +88,7 @@ def activate_product_page(root: Path, apply: bool, changed: list[str]) -> None:
     path = root / "ship-it-kit" / "index.html"
     text = path.read_text()
     replacements = [
-        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Flash sale starts April 28 — €29 for 48 hours. Check fit before buying.</a>', '<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>'),
+        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Flash sale starts April 28 — €29 until April 30. Check fit before buying.</a>', '<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>'),
         ('€49 one-time.', '€29 until April 30.'),
         ('worth €49 to you', 'worth €29 to you'),
         ('"price": "49"', '"price": "29"'),
@@ -112,7 +112,7 @@ def activate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None:
     replacements = [
         ('€49 one-time.', '€29 until April 30.', False),
         ('🚨 Ship It Kit Launch — €49 ends April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', False),
-        ('🚨 Flash sale starts April 28 — Ship It Kit will be €29 for 48 hours', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
+        ('🚨 Flash sale starts April 28 — Ship It Kit will be €29 until April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
         ('/ship-it-kit-flash/?ref=weekend_topbar_flash', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_topbar', True),
         ('Check the €29 window →', 'Get instant repo access, €29 →', True),
         ('/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', True),
