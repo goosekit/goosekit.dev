@@ -197,7 +197,7 @@ else
   fi
 
   if [[ -f "$FLASH_PAGE" ]]; then
-    if (grep -q "The checkout opens when the flash sale starts" "$FLASH_PAGE" || grep -q "Sale Ended" "$FLASH_PAGE") && \
+    if (grep -q "The checkout opens when the flash sale starts" "$FLASH_PAGE" || grep -q "checkout stays closed until Lemon Squeezy shows €29" "$FLASH_PAGE" || grep -q "Sale Ended" "$FLASH_PAGE") && \
        ! grep -qE "/go/ship-it-kit/checkout-flash|shipitstudio\.lemonsqueezy\.com/checkout/buy" "$FLASH_PAGE"; then
       pass "ship-it-kit-flash — inactive sale page, no live checkout"
     else

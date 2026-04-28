@@ -62,20 +62,20 @@ def activate_flash_page(root: Path, apply: bool, changed: list[str]) -> None:
     path = root / "ship-it-kit-flash" / "index.html"
     text = path.read_text()
     replacements = [
-        ("Ship It Kit flash sale starts April 28 — €29 until April 30, then back to €49", "Ship It Kit flash sale ends April 30 at midnight CEST — €29 now, then back to €49", "topbar"),
-        ('<div class="badge">Coming Soon</div>', '<div class="badge">Limited Time</div>', "badge"),
+        ("Ship It Kit €29 launch-window sale — checkout opens after price verification", "Ship It Kit flash sale ends April 30 at midnight CEST — €29 now, then back to €49", "topbar"),
+        ('<div class="badge">Price Switch Pending</div>', '<div class="badge">Limited Time</div>', "badge"),
         ('<span class="price-was">Regular price €49</span>', '<span class="price-was">Was €49</span>', "was price"),
-        ('The checkout opens when the flash sale starts. Until then, use the product page to check fit honestly.', 'The flash sale is live. Buy only if the stack matches your project: Next.js + Supabase + Stripe.', "sale-open note"),
-        ('data-countdown-target="2026-04-28T00:00:00+02:00"', f'data-countdown-target="{SALE_END}"', "countdown target"),
-        ('Sale starts April 28', 'Sale ends April 30', "countdown fallback"),
-        ('href="/go/ship-it-kit/notify-flash/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_hero_notify">Remind me when it starts</a>', 'href="/go/ship-it-kit/checkout-flash-hero/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_hero_buy">Get instant repo access — €29</a>', "hero CTA"),
-        ('href="/go/ship-it-kit/notify-flash/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_bottom_notify">Remind me when it starts</a>', 'href="/go/ship-it-kit/checkout-flash-bottom/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_bottom_buy">Get instant repo access — €29</a>', "bottom CTA"),
-        ('<a class="btn btn-secondary" href="/ship-it-kit-flash-sale.ics" data-ph-event="ship_it_kit_flash_calendar_clicked" data-ph-location="flash_hero_calendar">Add sale to calendar</a>', '', "hero calendar CTA"),
-        ('<a class="btn btn-secondary" href="/ship-it-kit-flash-sale.ics" data-ph-event="ship_it_kit_flash_calendar_clicked" data-ph-location="flash_bottom_calendar">Add sale to calendar</a>', '', "bottom calendar CTA"),
-        ('<h3 style="margin:0 0 8px;color:#fff;">When does the sale start and end?</h3>\n        <p style="margin:0 0 18px;color:#cbd5e1;">It starts April 28 at 00:00 CEST and ends April 30 at 23:59 CEST.</p>', '<h3 style="margin:0 0 8px;color:#fff;">What happens after April 30?</h3>\n        <p style="margin:0 0 18px;color:#cbd5e1;">The flash-sale page closes and the product returns to the regular €49 price.</p>', "FAQ sale window"),
+        ('The sale window is open, but checkout stays closed until Lemon Squeezy shows €29. Use the product page to check fit honestly first.', 'The flash sale is live. Buy only if the stack matches your project: Next.js + Supabase + Stripe.', "sale-open note"),
+        ('<div class="countdown">Checkout opens after price verification</div>', f'<div class="countdown" data-countdown-target="{SALE_END}">Sale ends April 30</div>', "countdown target"),
+        
+        ('href="/ship-it-kit/?ref=flash_pending_hero" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_hero_fit_check">Check stack fit first</a>', 'href="/go/ship-it-kit/checkout-flash-hero/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_hero_buy">Get instant repo access — €29</a>', "hero CTA"),
+        ('href="/ship-it-kit/?ref=flash_pending_bottom" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_bottom_fit_check">Check stack fit first</a>', 'href="/go/ship-it-kit/checkout-flash-bottom/" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_bottom_buy">Get instant repo access — €29</a>', "bottom CTA"),
+        ('<a class="btn btn-secondary" href="/ship-it-kit/#pricing" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_hero_pricing_check">See current product page</a>', '', "hero secondary CTA"),
+        ('<a class="btn btn-secondary" href="/ship-it-kit/#pricing" data-ph-event="ship_it_kit_flash_cta_clicked" data-ph-location="flash_bottom_pricing_check">See current product page</a>', '', "bottom secondary CTA"),
+        ('<h3 style="margin:0 0 8px;color:#fff;">Is the €29 checkout open?</h3>\n        <p style="margin:0 0 18px;color:#cbd5e1;">Not yet. The sale window is open, but checkout stays closed until the Lemon Squeezy price is verified at €29.</p>', '<h3 style="margin:0 0 8px;color:#fff;">What happens after April 30?</h3>\n        <p style="margin:0 0 18px;color:#cbd5e1;">The flash-sale page closes and the product returns to the regular €49 price.</p>', "FAQ sale window"),
         ('This is a launch-window price to get the starter into more real projects quickly and learn from serious builders. After April 30, the price goes back to €49.', 'This is a short launch-window price to get the starter into more real projects quickly. After April 30, the product goes back to €49.', "temporary price"),
-        ('The sale starts April 28. Check the stack fit now; buy only if it matches your project.', 'The sale is live until April 30. Check the stack fit first; buy only if it matches your project.', "bottom sub"),
-        ('€29 window starts April 28. If the stack does not match, skip it honestly.', '€29 window ends April 30 at midnight CEST. If the stack does not match, skip it honestly.', "footer"),
+        ('The sale window is open. Checkout appears here after price verification; check the stack fit first.', 'The sale is live until April 30. Check the stack fit first; buy only if it matches your project.', "bottom sub"),
+        ('€29 window is queued until April 30. If the stack does not match, skip it honestly.', '€29 window ends April 30 at midnight CEST. If the stack does not match, skip it honestly.', "footer"),
         ("if (diff <= 0) { el.textContent = 'Sale is live'; return; }", "if (diff <= 0) { el.textContent = 'Sale ended'; return; }", "countdown ended"),
         ("el.textContent = 'Starts in ' + days + 'd ' + pad(hours) + 'h ' + pad(minutes) + 'm';", "el.textContent = 'Ends in ' + days + 'd ' + pad(hours) + 'h ' + pad(minutes) + 'm';", "countdown label"),
     ]
@@ -88,7 +88,7 @@ def activate_product_page(root: Path, apply: bool, changed: list[str]) -> None:
     path = root / "ship-it-kit" / "index.html"
     text = path.read_text()
     replacements = [
-        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Flash sale starts April 28 — €29 until April 30. Check fit before buying.</a>', '<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>'),
+        ('<a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">€29 sale window is queued until April 30. Checkout opens after price verification — check fit first.</a>', '<a class="launch-banner-link" href="/go/ship-it-kit/checkout-product-sticky/?source=launch_banner" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="launch_banner">Flash sale is live — get Ship It Kit for €29 until April 30</a>'),
         ('€49 one-time.', '€29 until April 30.'),
         ('worth €49 to you', 'worth €29 to you'),
         ('"price": "49"', '"price": "29"'),
@@ -112,9 +112,9 @@ def activate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None:
     replacements = [
         ('€49 one-time.', '€29 until April 30.', False),
         ('🚨 Ship It Kit Launch — €49 ends April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', False),
-        ('🚨 Flash sale starts April 28 — Ship It Kit will be €29 until April 30', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
+        ('🚨 Ship It Kit €29 sale window is queued until April 30 — checkout opens after price verification', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
         ('/ship-it-kit-flash/?ref=weekend_topbar_flash', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_topbar', True),
-        ('Check the €29 window →', 'Get instant repo access, €29 →', True),
+        ('Check stack fit first →', 'Get instant repo access, €29 →', True),
         ('/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', True),
         ('💳 Get instant repo access, €49 →', '💳 Get instant repo access, €29 →', True),
         ('⚡ Launch window — €49 ends April 30 · Regular price goes up after', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', False),
