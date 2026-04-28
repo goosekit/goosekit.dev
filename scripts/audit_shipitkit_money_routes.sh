@@ -73,7 +73,11 @@ else
       fail "ship-it-kit JSON-LD price missing or not 49"
     fi
     if grep -qE "€29.*[Ss]hip.It.Kit|[Ss]hip.It.Kit.*€29" "$SIK_FILE"; then
-      fail "ship-it-kit — stale €29 flash-sale copy found"
+      if grep -q "Checkout opens after Lemon Squeezy shows €29" "$SIK_FILE" && ! grep -qE "/go/ship-it-kit/checkout-product-(hero|pricing|bottom|sticky)/" "$SIK_FILE"; then
+        pass "ship-it-kit — pending €29 copy has no active product checkout CTAs"
+      else
+        fail "ship-it-kit — stale or unsafe €29 flash-sale copy found"
+      fi
     else
       pass "ship-it-kit — no stale €29 flash-sale copy"
     fi

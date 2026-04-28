@@ -99,6 +99,11 @@ def activate_product_page(root: Path, apply: bool, changed: list[str]) -> None:
         ('€49 <span>one-time</span>', '€29 <span>until April 30</span>'),
         ('Why only €49?', 'Why only €29 during the flash sale?'),
         ('€49 one-time, instant repo access, lifetime starter updates, 30-day money-back guarantee.', '€29 until April 30, instant repo access, lifetime starter updates, 30-day money-back guarantee.'),
+        ('href="/ship-it-kit-quick-fit/?ref=product_nav_pending" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="nav_pending_fit">Check fit before €29 checkout</a>', 'href="/go/ship-it-kit/checkout-product-sticky/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="nav">Skip auth + billing setup</a>'),
+        ('href="/ship-it-kit-quick-fit/?ref=product_hero_pending" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero_pending_fit">Check fit before the €29 checkout opens</a>', 'href="/go/ship-it-kit/checkout-product-hero/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero">Skip auth + billing setup — €29</a>'),
+        ('href="/ship-it-kit-quick-fit/?ref=product_next_step_pending">Check fit before the €29 checkout opens</a>', 'href="/go/ship-it-kit/checkout-product-pricing/?ref=product_next_step_checkout">Go straight to checkout — €29</a>'),
+        ('href="/ship-it-kit-quick-fit/?ref=product_pricing_pending" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="pricing_pending_fit">Check fit before the €29 checkout opens</a>', 'href="/go/ship-it-kit/checkout-product-pricing/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="pricing">Get the starter — €29</a>'),
+        ('href="/ship-it-kit-quick-fit/?ref=product_bottom_pending" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom_pending_fit">Check fit before the €29 checkout opens</a>', 'href="/go/ship-it-kit/checkout-product-bottom/" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom">Skip auth + billing setup — €29</a>'),
     ]
     for old, new in replacements:
         if old in text:
@@ -115,14 +120,13 @@ def activate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None:
         ('🚨 Ship It Kit €29 sale window is queued until April 30 — checkout opens after price verification', '🚨 Ship It Kit Flash Sale — €29 ends April 30', True),
         ('/ship-it-kit-flash/?ref=weekend_topbar_flash', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_topbar', True),
         ('Check stack fit first →', 'Get instant repo access, €29 →', True),
-        ('/go/ship-it-kit/checkout-weekend-hero/?source=ship_it_kit_weekend_hero', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', True),
-        ('💳 Get instant repo access, €49 →', '💳 Get instant repo access, €29 →', True),
+        ('/ship-it-kit-quick-fit/?ref=weekend_hero_pending', '/go/ship-it-kit/checkout-flash-hero/?source=ship_it_kit_weekend_hero', True),
+        ('Check fit before the €29 checkout opens →', '💳 Get instant repo access, €29 →', True),
         ('⚡ Launch window — €49 ends April 30 · Regular price goes up after', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', False),
         ('⚡ Weekend build angle — get auth + billing wired before Monday', '⚡ Flash sale — €29 ends April 30 · Regular price goes back after', True),
-        ("What if I'm not ready for €49?", "What if I'm not ready for €29?", True),
-        ('€49 one-time. Ship your first paying customer this month.', '€29 until April 30. Ship your first paying customer this month.', False),
-        ('/go/ship-it-kit/checkout-weekend-bottom/?source=ship_it_kit_weekend_bottom', '/go/ship-it-kit/checkout-flash-bottom/?source=ship_it_kit_weekend_bottom', True),
-        ('💳 Get instant repo access — €49 →', '💳 Get instant repo access — €29 →', True),
+        ("What if I'm not ready for €29?", "What if I'm not ready for €29?", True),
+        ('€29 launch-window price after verification, regular €49. Ship your first paying customer this month.', '€29 until April 30. Ship your first paying customer this month.', False),
+        ('/ship-it-kit-quick-fit/?ref=weekend_bottom_pending', '/go/ship-it-kit/checkout-flash-bottom/?source=ship_it_kit_weekend_bottom', True),
     ]
     for old, new, required in replacements:
         if old in text:
