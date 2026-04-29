@@ -56,6 +56,7 @@ Goosekit is a website of free browser-based tools. The core promise is speed, no
 - Notepad: https://goosekit.dev/notepad/
 - OG Preview Generator: https://goosekit.dev/og-preview/
 - Password Generator: https://goosekit.dev/password/
+- PDF Editor: https://goosekit.dev/pdf-editor/
 - PDF Merger: https://goosekit.dev/pdf-merge/
 - Percentage Calculator: https://goosekit.dev/percentage-calculator/
 - Placeholder Image Generator: https://goosekit.dev/placeholder-image/
