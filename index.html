@@ -2225,10 +2225,10 @@
         const deadline = new Date('2026-04-30T21:59:59Z');
         const now = new Date();
         const days = Math.ceil((deadline - now) / 86400000);
-        let text = '⚡ Launch window — order before April 30';
-        if (days > 1) text = `⚡ Launch window — ${days} days left at €49`;
-        else if (days === 1) text = '⚡ Launch window — 1 day left at €49';
-        else if (days === 0) text = '⚡ Launch window closes today — €49';
+        let text = '⚡ Ship It Kit paid link is held until price verification';
+        if (days > 1) text = `⚡ ${days} days left in the launch window — check fit first`;
+        else if (days === 1) text = '⚡ 1 day left in the launch window — check fit first';
+        else if (days === 0) text = '⚡ Launch window closes today — check fit first';
         els.forEach(el => { el.textContent = text; });
       }
 
