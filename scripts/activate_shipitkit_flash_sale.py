@@ -137,8 +137,18 @@ def activate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None:
 
 
 def create_checkout_helpers(root: Path, apply: bool, changed: list[str]) -> None:
-    for name in ["checkout-flash-hero", "checkout-flash-bottom"]:
-        path = root / "go" / "ship-it-kit" / name / "index.html"
+    """Restore every checkout helper after the Lemon Squeezy price is verified.
+
+    During pending price verification, checkout helper routes are intentionally
+    parked on the quick-fit page so old indexed/shared links cannot open the
+    wrong-price checkout. Once Arthur verifies the checkout price, this rewrites
+    the whole helper surface back to Lemon Squeezy.
+    """
+    base = root / "go" / "ship-it-kit"
+    existing = sorted(path.parent.name for path in base.glob("checkout-*/index.html")) if base.exists() else []
+    names = sorted(set(existing + ["checkout-flash-hero", "checkout-flash-bottom"]))
+    for name in names:
+        path = base / name / "index.html"
         if path.exists() and path.read_text() == CHECKOUT_TEMPLATE:
             continue
         changed.append(str(path))

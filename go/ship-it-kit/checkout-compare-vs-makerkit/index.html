@@ -4,18 +4,28 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Redirecting…</title>
   <meta http-equiv="refresh" content="0; url=/ship-it-kit-quick-fit/?ref=compare_makerkit_pending_redirect">
+  <title>Check fit first…</title>
   <script>
     (function () {
       var params = new URLSearchParams(window.location.search);
       if (!params.get('ref')) params.set('ref', 'compare_makerkit_pending_redirect');
+      if (!params.get('pending')) params.set('pending', 'price_verification');
       var target = '/ship-it-kit-quick-fit/?' + params.toString();
       window.location.replace(target);
     })();
   </script>
+  <script defer src="/posthog.js"></script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; font-family: system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #e2e8f0; background: #0f172a; }
+    .card { max-width: 620px; padding: 28px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(15,23,42,.82); }
+    a { color: #ff4800; }
+  </style>
 </head>
 <body>
-  <p>Redirecting to the Ship It Kit quick-fit page… <a href="/ship-it-kit-quick-fit/?ref=compare_makerkit_pending_redirect">Continue</a></p>
+  <main class="card">
+    <h1>Check fit before the paid link</h1>
+    <p>The Ship It Kit paid link is held until price verification is complete. If it does not open automatically, <a href="/ship-it-kit-quick-fit/?ref=compare_makerkit_pending_redirect">continue to the quick-fit page</a>.</p>
+  </main>
 </body>
 </html>

@@ -16,6 +16,31 @@ from zoneinfo import ZoneInfo
 
 PARIS_TZ = ZoneInfo("Europe/Paris")
 SALE_END_AT = datetime(2026, 4, 30, 23, 59, 59, tzinfo=PARIS_TZ)
+LS_URL = "https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a"
+
+CHECKOUT_TEMPLATE = f'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Opening secure checkout…</title>
+  <meta http-equiv="refresh" content="3; url={LS_URL}">
+  <script>
+    (function () {{
+      var params = new URLSearchParams(window.location.search);
+      if (!params.get('ref')) params.set('ref', 'ship_it_kit_checkout');
+      var target = '{LS_URL}';
+      var glue = target.indexOf('?') === -1 ? '?' : '&';
+      window.location.replace(target + glue + params.toString());
+    }})();
+  </script>
+  <script defer src="/posthog.js"></script>
+  <style>body{{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e2e8f0;background:#0f172a}}.card{{max-width:620px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:20px;background:rgba(15,23,42,.82)}}a{{color:#ff4800}}</style>
+</head>
+<body><main class="card"><h1>Opening secure checkout…</h1><p>If it does not open automatically, <a href="{LS_URL}">continue to Lemon Squeezy</a>.</p></main></body>
+</html>
+'''
 
 
 def replace_exact(text: str, old: str, new: str, label: str) -> str:
@@ -138,6 +163,23 @@ def deactivate_weekend_page(root: Path, apply: bool, changed: list[str]) -> None
     write_if_changed(path, text, apply, changed)
 
 
+def restore_checkout_helpers(root: Path, apply: bool, changed: list[str]) -> None:
+    """Restore checkout helpers after the regular €49 price is verified.
+
+    This also recovers any pending-verification quick-fit redirects if the sale
+    never activates or after the flash-sale rollback completes.
+    """
+    base = root / "go" / "ship-it-kit"
+    if not base.exists():
+        return
+    for index in sorted(base.glob("checkout-*/index.html")):
+        if index.read_text() == CHECKOUT_TEMPLATE:
+            continue
+        changed.append(str(index))
+        if apply:
+            index.write_text(CHECKOUT_TEMPLATE)
+
+
 def remove_flash_checkout_helpers(root: Path, apply: bool, changed: list[str]) -> None:
     for name in ["checkout-flash-hero", "checkout-flash-bottom"]:
         path = root / "go" / "ship-it-kit" / name
@@ -181,6 +223,7 @@ def main() -> int:
     deactivate_flash_page(root, args.apply, changed)
     deactivate_product_page(root, args.apply, changed)
     deactivate_weekend_page(root, args.apply, changed)
+    restore_checkout_helpers(root, args.apply, changed)
     remove_flash_checkout_helpers(root, args.apply, changed)
 
     mode = "APPLIED" if args.apply else "DRY_RUN"
