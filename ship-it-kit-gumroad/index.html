@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ship It Kit — Quick Checkout</title>
-  <meta name="description" content="Quick checkout page for Ship It Kit. Focused Next.js 15 + Supabase + Stripe auth and billing starter. €49 one-time payment.">
+  <title>Ship It Kit — Quick Fit Check</title>
+  <meta name="description" content="Quick fit page for Ship It Kit. Focused Next.js 15 + Supabase + Stripe auth and billing starter. Paid link held until price verification is complete.">
   <meta name="robots" content="noindex,follow">
   <link rel="canonical" href="https://goosekit.dev/ship-it-kit/">
   <style>
@@ -50,7 +50,7 @@
         var end = new Date('2026/04/30 23:59:59 Europe/Paris');
         var diff = end - now;
         if (diff <= 0) {
-          document.getElementById('countdown').textContent = 'Offer ended';
+          document.getElementById('countdown').textContent = 'Paid link is held until price verification is complete';
           document.getElementById('countdown').style.color = '#888';
           return;
         }
@@ -58,8 +58,7 @@
         var h = Math.floor((diff % 86400000) / 3600000);
         var m = Math.floor((diff % 3600000) / 60000);
         var s = Math.floor((diff % 60000) / 1000);
-        document.getElementById('countdown').textContent =
-          pad(d) + 'd ' + pad(h) + 'h ' + pad(m) + 'm ' + pad(s) + 's';
+        document.getElementById('countdown').textContent = 'Paid link is held until price verification is complete — check fit first';
       }
       updateCountdown();
       setInterval(updateCountdown, 1000);
@@ -99,9 +98,9 @@
 <div class="card">
     <div class="trust-row">
       <span class="trust-badge">🔒 30-day money-back guarantee</span>
-      <span class="trust-badge">⚡ Launch pricing ends April 30</span>
+      <span class="trust-badge">⚡ Paid link held until verification</span>
     </div>
-    <h1>Ship It Kit, quick checkout</h1>
+    <h1>Ship It Kit, quick fit check</h1>
     <p class="subtitle">Focused auth + billing starter for founders who want product work back on the table fast</p>
 
     <div class="stack">
@@ -112,8 +111,8 @@
       <span>Stripe Billing</span>
     </div>
 
-    <div class="price">€49</div>
-    <p class="price-note">one-time payment · lifetime updates · 30-day refund</p>
+    <div class="price">Check fit first</div>
+    <p class="price-note">paid link held until price verification is complete · lifetime updates · 30-day refund policy</p>
 
     <div class="savings">
       💸 Pays for itself in one weekend of saved debugging — that's ~2 days × your hourly rate
@@ -129,24 +128,24 @@
     </div>
 
     <div style="background:#1f2937;border:1px solid #374151;border-radius:8px;padding:.6rem .85rem;margin-bottom:.75rem;text-align:left;">
-      <p style="font-size:.8rem;color:#d1d5db;margin:0 0 .35rem;font-weight:600;">⚡ What happens after you buy:</p>
+      <p style="font-size:.8rem;color:#d1d5db;margin:0 0 .35rem;font-weight:600;">⚡ What happens after price verification:</p>
       <ol style="font-size:.78rem;color:#9ca3af;margin:0;padding-left:1.1rem;line-height:1.6;">
-        <li>License email arrives immediately from Lemon Squeezy</li>
-        <li>Follow the access instructions and grab the starter repo</li>
+        <li>The paid link opens only after the price has been verified</li>
+        <li>If the stack fits, follow the access instructions and grab the starter repo</li>
         <li>Clone, add your Supabase + Stripe keys, start building</li>
       </ol>
     </div>
 
     <div id="countdown" style="font-size:.8rem;color:#ff4800;font-weight:700;margin-bottom:1rem;letter-spacing:.05em;"></div>
 
-    <a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" class="primary-btn" target="_blank" rel="noopener">
-      All 3 fit, get instant access for €49 →
+    <a href="/ship-it-kit-quick-fit/?ref=ship_it_kit_gumroad_pending" class="primary-btn">
+      All 3 fit? Run the quick fit check →
     </a>
-    <p style="font-size:.72rem;color:#6b7280;margin-bottom:.75rem;">Card or PayPal · Lemon Squeezy handles checkout securely · License email arrives immediately after payment</p>
-    <p style="font-size:.74rem;color:#9ca3af;margin:-.15rem 0 .85rem;">Not sure yet? Check the product proof below before you pay.</p>
+    <p style="font-size:.72rem;color:#6b7280;margin-bottom:.75rem;">No checkout link is shown until price verification is complete · check stack fit first</p>
+    <p style="font-size:.74rem;color:#9ca3af;margin:-.15rem 0 .85rem;">Not sure yet? Check the product proof before asking for the paid link.</p>
 
-    <a href="/ship-it-kit/" class="secondary-btn">
-      See the product page first →
+    <a href="/ship-it-kit/?ref=ship_it_kit_gumroad_pending_product#proof" class="secondary-btn">
+      See the product proof first →
     </a>
 
     <div class="divider"></div>
@@ -161,7 +160,7 @@
     </ul>
 
     <div class="back">
-      <a href="/ship-it-kit/">← Back to product page</a>
+      <a href="/ship-it-kit-quick-fit/?ref=ship_it_kit_gumroad_back">← Back to quick-fit page</a>
     </div>
   </div>
 </body>
