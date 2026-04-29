@@ -132,6 +132,14 @@ check_sik_helper() {
     return
   fi
 
+  # Some legacy checkout-named routes are intentionally parked on quick-fit
+  # while Lemon Squeezy price verification is pending, so stale cached links
+  # do not send visitors to a wrong-price checkout.
+  if grep -q "/ship-it-kit-quick-fit/" "$file" && grep -q "pending_redirect" "$file"; then
+    pass "$name — pending verification redirects to quick-fit"
+    return
+  fi
+
   # 3a: correct LS URL
   if grep -q "$EXPECTED_LS_URL" "$file"; then
     pass "$name — correct LS URL"
