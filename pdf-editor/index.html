@@ -4,20 +4,21 @@
   <link rel="canonical" href="https://goosekit.dev/pdf-editor/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PDF Editor — Free Online PDF Editor with Text, Draw &amp; Sign</title>
-  <meta name="description" content="Edit PDFs in your browser: add text, draw, highlight, place images, and sign — plus reorder, rotate and delete pages. Annotations are flattened on export. No upload, no signup." />
-  <meta property="og:title" content="PDF Editor — Free Online PDF Editor with Text, Draw &amp; Sign" />
-  <meta property="og:description" content="Add text, draw, highlight, stamp images, sign — plus reorder/rotate/delete pages. 100% in your browser." />
+  <title>Free Online PDF Editor — Annotate, Sign &amp; Reorder Pages in Browser</title>
+  <meta name="description" content="Free online PDF editor. Edit PDF in your browser: add text, draw, highlight, place images, sign — plus reorder, rotate and delete pages. Annotations flatten on export. No upload, no signup." />
+  <meta name="keywords" content="free online PDF editor, edit PDF in browser, sign PDF online, annotate PDF online, reorder PDF pages, delete PDF pages, rotate PDF pages, browser PDF editor, no signup PDF editor" />
+  <meta property="og:title" content="Free Online PDF Editor — Annotate, Sign &amp; Reorder Pages in Browser" />
+  <meta property="og:description" content="Edit PDFs in your browser: add text, draw, highlight, stamp images, sign — plus reorder, rotate and delete pages. No upload, no signup." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://goosekit.dev/pdf-editor/" />
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png" />
-  <meta property="og:image:alt" content="Preview image for PDF Editor — Free Online PDF Editor with Text, Draw &amp; Sign">
+  <meta property="og:image:alt" content="Preview image for Free Online PDF Editor — Annotate, Sign &amp; Reorder Pages in Browser">
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="PDF Editor — Free Online PDF Editor with Text, Draw &amp; Sign">
-  <meta name="twitter:description" content="Add text, draw, highlight, stamp images, sign — plus reorder/rotate/delete pages. 100% in your browser.">
+  <meta name="twitter:title" content="Free Online PDF Editor — Annotate, Sign &amp; Reorder Pages in Browser">
+  <meta name="twitter:description" content="Edit PDFs in your browser: add text, draw, highlight, stamp images, sign — plus reorder, rotate and delete pages. No upload, no signup.">
   <meta name="twitter:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:image:alt" content="Preview image for PDF Editor — Free Online PDF Editor with Text, Draw &amp; Sign">
+  <meta name="twitter:image:alt" content="Preview image for Free Online PDF Editor — Annotate, Sign &amp; Reorder Pages in Browser">
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <script type="application/ld+json">
   {
@@ -28,6 +29,70 @@
     "applicationCategory": "UtilityApplication",
     "operatingSystem": "Any",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Is this PDF editor really free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. The editor is free, has no signup, no watermark, and no per-file limit. It runs entirely in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does my PDF get uploaded to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Your PDF is opened locally in your browser using pdf.js and pdf-lib. The file never leaves your device."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I edit existing text inside a PDF, like in Adobe Acrobat?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. This tool adds new text, drawings, highlights, images, and signatures as overlays. The original embedded text and images on each page are not rewritten. If you need to rewrite the underlying text in an existing PDF, you will need a desktop tool like Acrobat."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I sign a PDF online?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Open the PDF, choose the Sign tool, and either draw your signature with the mouse or trackpad or upload a PNG or JPG of your signature. Click anywhere on the page to place it, then drag and resize to taste. Export to download a flattened, signed PDF."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I reorder, rotate, or delete pages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Each page in the left strip has up, down, rotate, and delete controls. The exported PDF reflects the new order, rotation, and removed pages."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are the limitations of a browser-based PDF editor?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It does not OCR scanned PDFs, does not edit existing embedded text, and does not currently support form-field editing or password-protected files. Very large PDFs can be slow because everything is processed in your browser."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are annotations editable after I download the PDF?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Annotations are flattened into the page content on export so the result behaves like a standard PDF in any reader. Keep the original file if you want to come back and re-edit later."
+        }
+      }
+    ]
   }
   </script>
   <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
@@ -278,6 +343,91 @@
     .related a { color: var(--cyan); text-decoration: none; font-size: 13px; }
     .related a:hover { text-decoration: underline; }
 
+    /* SEO content sections below the tool */
+    .seo-section {
+      margin-top: 36px; padding: 22px 20px; border: 1px solid var(--border);
+      border-radius: 12px; background: var(--surface);
+    }
+    .seo-section h2 {
+      font-size: 1.25rem; margin-bottom: 6px; font-weight: 800; letter-spacing: -0.01em;
+    }
+    .seo-section .seo-lede {
+      color: var(--muted); font-size: 13px; margin-bottom: 16px; max-width: 760px; line-height: 1.55;
+    }
+    .seo-section p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+    .seo-section a { color: var(--cyan); text-decoration: none; }
+    .seo-section a:hover { text-decoration: underline; }
+
+    .feature-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .feature-grid .feat {
+      padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2);
+    }
+    .feature-grid .feat h3 {
+      font-size: 0.95rem; margin-bottom: 6px; color: var(--text); font-weight: 700;
+    }
+    .feature-grid .feat p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+    .howto {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; counter-reset: step;
+    }
+    .howto .step {
+      padding: 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2);
+      position: relative;
+    }
+    .howto .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; top: -10px; left: 12px;
+      width: 22px; height: 22px; border-radius: 50%; background: var(--green); color: #000;
+      font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg);
+    }
+    .howto .step h3 { font-size: 0.95rem; margin: 4px 0 6px; color: var(--text); font-weight: 700; }
+    .howto .step p { font-size: 12.5px; color: var(--muted); line-height: 1.55; }
+
+    .cases-list {
+      list-style: none; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 18px;
+    }
+    .cases-list li {
+      font-size: 13px; color: var(--muted); line-height: 1.5;
+      padding-left: 18px; position: relative;
+    }
+    .cases-list li::before {
+      content: '→'; position: absolute; left: 0; color: var(--cyan); font-weight: 700;
+    }
+    .cases-list li strong { color: var(--text); font-weight: 700; }
+
+    .limits-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .limits-list li {
+      font-size: 13px; color: var(--muted); line-height: 1.55;
+      padding: 10px 12px; background: var(--surface-2); border: 1px solid var(--border); border-radius: 8px;
+    }
+    .limits-list li strong { color: var(--text); font-weight: 700; }
+
+    .faq details {
+      border: 1px solid var(--border); border-radius: 8px; background: var(--surface-2);
+      padding: 10px 14px; margin-bottom: 8px;
+    }
+    .faq summary {
+      cursor: pointer; font-weight: 700; color: var(--text); font-size: 14px;
+      list-style: none; padding: 2px 0; display: flex; justify-content: space-between; align-items: center; gap: 12px;
+    }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::after { content: '+'; color: var(--cyan); font-size: 16px; }
+    .faq details[open] summary::after { content: '−'; }
+    .faq details p {
+      margin-top: 8px; color: var(--muted); font-size: 13px; line-height: 1.6;
+    }
+    .faq details p a { color: var(--cyan); text-decoration: none; }
+    .faq details p a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+      .feature-grid, .howto { grid-template-columns: 1fr; }
+      .cases-list { grid-template-columns: 1fr; }
+      .seo-section { padding: 18px 14px; }
+    }
+
     .ship-cta {
       margin-top: 22px; padding: 12px 14px; border-radius: 10px;
       background: rgba(255,72,0,0.06); border: 1px solid rgba(255,72,0,0.2);
@@ -525,8 +675,8 @@
 </header>
 
 <main>
-  <h1>📝 PDF Editor</h1>
-  <p class="subtitle">Add text, draw, highlight, stamp images, sign — and reorder, rotate or delete pages. Everything stays in your browser.</p>
+  <h1>📝 Free Online PDF Editor</h1>
+  <p class="subtitle">Edit PDF in your browser — add text, draw, highlight, stamp images, sign, and reorder, rotate or delete pages. No upload, no signup, no watermark.</p>
   <p class="honest"><strong>Honest scope:</strong> edits are added as overlays and flattened into the exported PDF. The original embedded text and images on each page are not rewritten — this isn't desktop Acrobat, it's a practical browser editor for annotations, signatures, and page-level changes.</p>
 
   <!-- Drop zone (initial) -->
@@ -606,12 +756,130 @@
     <a href="/go/ship-it-kit/pdf-editor/">Take a look →</a>
   </div>
 
+  <section class="seo-section seo-features" aria-labelledby="seo-features-heading">
+    <h2 id="seo-features-heading">A free online PDF editor that runs in your browser</h2>
+    <p class="seo-lede">Edit PDF files without an account, watermark, or upload. The editor opens your file locally, lets you annotate and rearrange pages, then flattens everything into a clean output PDF you can download in one click.</p>
+    <div class="feature-grid">
+      <div class="feat">
+        <h3>Add text and notes</h3>
+        <p>Drop a text box anywhere on the page, pick a color and size, and edit inline. Helpful for filling out forms, leaving review notes, or adding labels.</p>
+      </div>
+      <div class="feat">
+        <h3>Draw, highlight, and shape</h3>
+        <p>Freehand pen for diagrams and ticks, translucent highlights for emphasis, and solid rectangles for redaction-style cover blocks.</p>
+      </div>
+      <div class="feat">
+        <h3>Sign PDFs online</h3>
+        <p>Draw a signature with your mouse or trackpad, or upload a PNG/JPG of an existing one. Place it on any page, then drag and resize.</p>
+      </div>
+      <div class="feat">
+        <h3>Stamp images</h3>
+        <p>Drop logos, screenshots, or photo IDs onto a page as PNG or JPG, then position and resize them with handles.</p>
+      </div>
+      <div class="feat">
+        <h3>Reorder, rotate, delete pages</h3>
+        <p>Use the page strip on the left to move pages up or down, rotate by 90°, or remove pages you do not want in the final document.</p>
+      </div>
+      <div class="feat">
+        <h3>Private by default</h3>
+        <p>Your PDF stays in your browser. No upload, no signup, no per-file limit. Close the tab and the file is gone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seo-section seo-howto" aria-labelledby="seo-howto-heading">
+    <h2 id="seo-howto-heading">How to edit a PDF in three steps</h2>
+    <p class="seo-lede">No installs, no plugins. Drop the file, edit, download.</p>
+    <div class="howto">
+      <div class="step">
+        <h3>Open your PDF</h3>
+        <p>Drag a PDF onto the drop zone or click to browse. Pages render as thumbnails in the strip on the left.</p>
+      </div>
+      <div class="step">
+        <h3>Edit pages and content</h3>
+        <p>Use the page strip to reorder, rotate, or delete pages. Pick a page and use the toolbar to add text, draw, highlight, place an image, or sign.</p>
+      </div>
+      <div class="step">
+        <h3>Download the edited PDF</h3>
+        <p>Click <em>Download edited PDF</em>. Annotations are flattened into the page content so the result opens cleanly in any PDF reader.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="seo-section seo-cases" aria-labelledby="seo-cases-heading">
+    <h2 id="seo-cases-heading">Common things people use this for</h2>
+    <p class="seo-lede">If your task is annotation-, signing-, or page-shape-related, this editor likely covers it.</p>
+    <ul class="cases-list">
+      <li><strong>Sign a contract or NDA</strong> without printing, scanning, or installing Acrobat.</li>
+      <li><strong>Fill in a flat PDF form</strong> by dropping text boxes onto each field.</li>
+      <li><strong>Annotate a PDF for review</strong> with highlights, freehand marks, and comments.</li>
+      <li><strong>Reorder PDF pages</strong> from a scanner or merged document into the right order.</li>
+      <li><strong>Rotate PDF pages</strong> that scanned in sideways or upside down.</li>
+      <li><strong>Delete PDF pages</strong> like cover sheets, blank pages, or internal-only sections.</li>
+      <li><strong>Redact</strong> sensitive areas with solid rectangles before sharing externally.</li>
+      <li><strong>Stamp a logo, watermark, or initials</strong> onto every page that needs it.</li>
+    </ul>
+  </section>
+
+  <section class="seo-section seo-limits" aria-labelledby="seo-limits-heading">
+    <h2 id="seo-limits-heading">Honest limitations</h2>
+    <p class="seo-lede">This is a practical browser editor, not a full desktop PDF suite. Here is what it does <em>not</em> do, so you know before you start.</p>
+    <ul class="limits-list">
+      <li><strong>Existing embedded text is not rewritten.</strong> Edits are added as overlays and flattened on export. To rewrite the original underlying text in a PDF, you need a desktop tool like Adobe Acrobat.</li>
+      <li><strong>No OCR for scanned PDFs.</strong> If your file is a scan with no text layer, you can still annotate and sign it, but you cannot select or edit the scanned text.</li>
+      <li><strong>No form-field editing.</strong> You can place text on top of form fields, but you cannot create new interactive AcroForm fields here.</li>
+      <li><strong>Password-protected PDFs are not supported.</strong> Decrypt the file in your PDF reader first, then bring it here.</li>
+      <li><strong>Very large PDFs may be slow.</strong> Everything runs in your browser, so a several-hundred-page file with images can take noticeable time to render and export.</li>
+    </ul>
+  </section>
+
+  <section class="seo-section faq" aria-labelledby="seo-faq-heading">
+    <h2 id="seo-faq-heading">Frequently asked questions</h2>
+    <p class="seo-lede">Quick answers about the editor, privacy, and what it can and cannot do.</p>
+
+    <details>
+      <summary>Is this PDF editor really free?</summary>
+      <p>Yes. The editor is free, has no signup, no watermark, and no per-file limit. It runs entirely in your browser.</p>
+    </details>
+    <details>
+      <summary>Does my PDF get uploaded to a server?</summary>
+      <p>No. Your PDF is opened locally in your browser using <code>pdf.js</code> and <code>pdf-lib</code>. The file never leaves your device. You can verify by opening DevTools → Network and watching no request go out when you load and edit a file.</p>
+    </details>
+    <details>
+      <summary>Can I edit existing text inside a PDF, like in Adobe Acrobat?</summary>
+      <p>No. This tool adds new text, drawings, highlights, images, and signatures as overlays on top of the page. The original embedded text and images are not rewritten. If you need to rewrite the underlying text in an existing PDF, a desktop tool like Acrobat is the right choice.</p>
+    </details>
+    <details>
+      <summary>How do I sign a PDF online with this tool?</summary>
+      <p>Open your PDF, click the <strong>Sign</strong> tool, and either draw your signature with the mouse or trackpad or upload a PNG/JPG of an existing signature. Click anywhere on the page to place it, then drag and resize. Click <em>Download edited PDF</em> to get a flattened, signed PDF.</p>
+    </details>
+    <details>
+      <summary>How do I reorder, rotate, or delete pages?</summary>
+      <p>Each page in the left strip has up, down, rotate (90°), and delete controls. The exported PDF reflects the new order, the rotation, and any pages you removed. The action is non-destructive until you download — clear the file to start over.</p>
+    </details>
+    <details>
+      <summary>What format does it export?</summary>
+      <p>A standard PDF file. Annotations are flattened into the page content so the output opens cleanly in any PDF reader, browser, or email attachment, with no missing fonts or extra layers.</p>
+    </details>
+    <details>
+      <summary>Does it work on mobile?</summary>
+      <p>Yes for light edits — annotations, signatures, and page-level reorder/rotate/delete work on phones and tablets. For heavy editing, a laptop with a real cursor is much more comfortable.</p>
+    </details>
+    <details>
+      <summary>How is this different from <a href="/pdf-merge/">PDF Merge</a> and <a href="/image-to-pdf/">Image to PDF</a>?</summary>
+      <p><a href="/pdf-merge/">PDF Merge</a> combines several PDF files into one. <a href="/image-to-pdf/">Image to PDF</a> turns photos or screenshots into a PDF. This editor is for edits to a single existing PDF — annotations, signatures, and page rearrangement — and works best after you have already merged or generated the file.</p>
+    </details>
+  </section>
+
   <section class="related">
     <h2>Related browser-based tools</h2>
     <ul>
       <li><a href="/pdf-merge/">PDF Merge</a></li>
       <li><a href="/image-to-pdf/">Image to PDF</a></li>
       <li><a href="/image-compressor/">Image Compressor</a></li>
+      <li><a href="/image-resizer/">Image Resizer</a></li>
+      <li><a href="/image-cropper/">Image Cropper</a></li>
+      <li><a href="/svg-to-png/">SVG to PNG</a></li>
       <li><a href="/all-tools/">All tools</a></li>
     </ul>
   </section>
