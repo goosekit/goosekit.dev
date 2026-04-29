@@ -156,7 +156,7 @@
 
   <p>JSON is precise, but it is not always pleasant to read in large blocks. YAML is usually easier on the eyes, especially for configuration. Teams use it for Docker Compose files, GitHub Actions, Kubernetes resources, CI jobs, and plenty of internal tooling. So even if JSON is the source format, YAML is often the format people actually want to edit or review.</p>
 
-  <p>This creates a constant small need: convert once, check the structure, copy the result, move on. That is exactly the sort of repetitive task where a browser tool beats a manual workflow.</p>
+  <p>This creates a constant small need: convert once, check the structure, copy the result, move on. That is exactly the sort of repetitive task where a browser tool beats a manual workflow. If the source payload is still messy, start with Goosekit's <a href="/json/">JSON formatter</a> or the <a href="/blog/best-json-formatter-2026/">best JSON formatter guide</a> before converting it.</p>
 
   <h2>When a browser converter is better than a quick script</h2>
 
@@ -238,7 +238,7 @@ regions:
 
   <p>JSON is great when machines are doing the talking. It is strict, universal, and easy to parse. YAML is often better when humans need to read or edit the result. That does not mean YAML is always superior. It just means the formats serve slightly different moments in a workflow.</p>
 
-  <p>If you are moving data between API responses and configuration files, you will probably use both. A converter lets you switch formats without treating it like a real project.</p>
+  <p>If you are moving data between API responses and configuration files, you will probably use both. A converter lets you switch formats without treating it like a real project. And if the same payload later needs types in app code, Goosekit's <a href="/json-to-typescript/">JSON to TypeScript tool</a> keeps the workflow moving.</p>
 
   <h2>Mistakes people make when converting by hand</h2>
 

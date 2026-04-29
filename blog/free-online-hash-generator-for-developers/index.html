@@ -274,6 +274,8 @@
 
   <p>In all of these cases, the hard part is rarely the hash algorithm itself. The annoying part is context switching. You stop what you are doing, look up the right shell command, remember which flag is different on macOS versus Linux, then rerun the command because you hashed the wrong string format.</p>
 
+  <p>If the checksum problem is only one step in a bigger debugging chain, Goosekit's <a href="/blog/free-online-diff-checker-for-developers/">diff checker guide</a> helps with before/after comparisons, and the <a href="/blog/free-jwt-decoder-online-client-side/">JWT decoder guide</a> is useful when the same workflow also includes signed tokens.</p>
+
   <h2>Why a browser-based hash tool is useful even if you know the CLI</h2>
 
   <p>Yes, you can hash data from the command line. Most experienced developers already do. But a browser-based tool is still useful because it makes quick checks faster. It is especially handy when you want to compare multiple algorithms side by side, paste an expected checksum, or test a file locally without building a one-off script.</p>
@@ -327,7 +329,7 @@ console.log({ sha256, sha512 });</code></pre>
     <li>Avoid treating MD5 or SHA-1 as secure choices for new security-sensitive systems.</li>
   </ul>
 
-  <p>That does not mean MD5 is useless. It still appears in old build systems, mirrors, and internal tools. But if you are choosing from scratch, SHA-256 is the safer everyday default.</p>
+  <p>That does not mean MD5 is useless. It still appears in old build systems, mirrors, and internal tools. But if you are choosing from scratch, SHA-256 is the safer everyday default. For a fuller breakdown, see <a href="/blog/md5-vs-sha256-vs-sha512/">MD5 vs SHA256 vs SHA512</a>.</p>
 
   <div class="callout"><strong>Practical shortcut:</strong> open <a href="https://goosekit.dev/hash/">Goosekit Hash Generator</a>, paste your text or drop a file, and compare MD5, SHA-1, SHA-256, SHA-384, and SHA-512 outputs in one browser tab.</div>
 
