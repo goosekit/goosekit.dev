@@ -15,3 +15,8 @@ Disallow: /TOOLS.md
 Disallow: /USER.md
 
 Sitemap: https://goosekit.dev/sitemap.xml
+
+# AI reference and answer-engine context
+# llms.txt: https://goosekit.dev/llms.txt
+# llms-full.txt: https://goosekit.dev/llms-full.txt
+# AI reference: https://goosekit.dev/for-ai/
