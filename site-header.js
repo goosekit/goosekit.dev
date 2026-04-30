@@ -1,6 +1,6 @@
 (function () {
   var HEADER_ID = 'gk-global-header';
-  var STYLE_ID = 'gk-global-header-style';
+  var STYLE_ID = 'gk-homepage-header-style';
 
   var navLinks = [
     ['Tools', '/tools/'],
@@ -9,7 +9,9 @@
     ['Students', '/tools/for-students/'],
     ['Compare', '/compare/'],
     ['Blog', '/blog/'],
-    ['Offline Pack', '/offline-pack/']
+    ['Offline Pack', '/offline-pack/?ref=global_nav'],
+    ['API', '/api/'],
+    ['Extension', 'https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend'],
   ];
 
   function injectStyles() {
@@ -17,23 +19,31 @@
     var style = document.createElement('style');
     style.id = STYLE_ID;
     style.textContent = '' +
-      '.gk-global-header{position:sticky;top:0;z-index:10000;width:100%;background:rgba(10,10,26,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}' +
-      '.gk-global-header *{box-sizing:border-box}' +
-      '.gk-global-header__inner{width:100%;min-height:56px;padding:8px 16px 8px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px}' +
-      '.gk-global-header__brand{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;margin-right:10px}' +
-      '.gk-global-header__brand img{width:100px;height:auto;display:block}' +
-      '.gk-global-header__nav{display:flex;align-items:center;justify-content:flex-end;gap:4px;flex:1;min-width:0}' +
-      '.gk-global-header__nav a{color:#cbd5e1;text-decoration:none;font-size:.9rem;font-weight:600;padding:8px 10px;border-radius:10px;white-space:nowrap;transition:background .16s ease,color .16s ease,transform .16s ease}' +
-      '.gk-global-header__nav a:hover{color:#fff;background:rgba(255,255,255,.07);transform:translateY(-1px)}' +
-      '.gk-global-header__cta{margin-left:4px!important;background:linear-gradient(135deg,#ff4800,#fb923c)!important;color:#fff!important;font-weight:800!important;box-shadow:0 10px 24px rgba(255,72,0,.22)}' +
-      '.gk-global-header__toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:44px;height:44px;margin-left:auto;border:1px solid rgba(255,255,255,.10);border-radius:12px;background:rgba(15,23,42,.92);color:#e2e8f0;cursor:pointer;-webkit-tap-highlight-color:transparent}' +
-      '.gk-global-header__toggle span{display:block;width:18px;height:2px;border-radius:999px;background:currentColor}' +
-      '@media (max-width:900px){.gk-global-header__inner{padding:8px 12px}.gk-global-header__brand img{width:98px}.gk-global-header__toggle{display:flex}.gk-global-header__nav{position:absolute;left:10px;right:10px;top:calc(100% + 8px);display:none;flex-direction:column;align-items:stretch;gap:4px;padding:10px;border:1px solid rgba(255,255,255,.10);border-radius:16px;background:rgba(10,10,26,.98);box-shadow:0 20px 40px rgba(0,0,0,.32)}.gk-global-header__nav.is-open{display:flex}.gk-global-header__nav a{width:100%;padding:11px 12px}.gk-global-header__cta{margin-left:0!important;text-align:center}}';
+      'html,body{margin-top:0!important;}' +
+      'body{margin-left:0!important;margin-right:0!important;}' +
+      '.site-header{position:sticky;top:0;z-index:10000;background:rgba(10,10,26,0.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,0.06);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;margin:0!important;width:100%;}' +
+      '.site-header *{box-sizing:border-box;}' +
+      '.site-header-inner{width:100%;margin:0;padding:8px 16px 8px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px;}' +
+      '.site-brand{display:inline-flex;align-items:center;text-decoration:none;flex-shrink:0;margin-right:10px;}' +
+      '.site-brand img{width:100px;height:auto;display:block;}' +
+      '.site-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;flex:1;gap:8px 14px;}' +
+      '.site-nav a{color:var(--text-muted,#94a3b8);text-decoration:none;font-size:0.9rem;font-weight:600;line-height:1;transition:color .18s ease,background .18s ease,border-color .18s ease;}' +
+      '.site-nav a:hover{color:var(--text,#f8fafc);}' +
+      '.site-nav .nav-cta{color:#fff;background:rgba(255,72,0,0.95);border:1px solid rgba(255,72,0,0.9);padding:8px 12px;border-radius:11px;box-shadow:0 8px 22px rgba(255,72,0,0.16);}' +
+      '.site-nav .nav-cta:hover{color:#fff;background:#ff4800;border-color:#ff4800;}' +
+      '.site-menu-toggle{display:none;align-items:center;justify-content:center;flex-direction:column;gap:4px;width:44px;height:44px;margin-left:auto;border:1px solid rgba(255,255,255,0.08);border-radius:12px;background:rgba(15,23,42,0.92);color:#e2e8f0;cursor:pointer;-webkit-tap-highlight-color:transparent;}' +
+      '.site-menu-toggle span{display:block;width:18px;height:2px;border-radius:999px;background:currentColor;}' +
+      '@media (max-width:900px){.site-header-inner{padding:8px 12px;}.site-brand img{width:98px;}.site-menu-toggle{display:flex;}.site-nav{position:absolute;left:10px;right:10px;top:calc(100% + 8px);display:none;flex-direction:column;align-items:stretch;gap:4px;padding:10px;border:1px solid rgba(255,255,255,0.10);border-radius:16px;background:rgba(10,10,26,0.98);box-shadow:0 20px 40px rgba(0,0,0,0.32);}.site-nav.is-open{display:flex;}.site-nav a{width:100%;padding:11px 12px;}.site-nav .nav-cta{margin-left:0;text-align:center;}}';
     document.head.appendChild(style);
   }
 
+  function isGlobalHeader(el) {
+    return el && el.id === HEADER_ID;
+  }
+
   function shouldRemoveExistingHeader(el) {
-    if (!el || el.id === HEADER_ID) return false;
+    if (!el || isGlobalHeader(el)) return false;
+    if (el.classList && el.classList.contains('hero')) return false;
     if (el.classList && el.classList.contains('site-header')) return true;
     if (el.querySelector && el.querySelector('.site-brand')) return true;
     if (el.querySelector && el.querySelector('.site-menu-toggle')) return true;
@@ -45,8 +55,7 @@
   }
 
   function removeOldHeaders() {
-    var candidates = Array.prototype.slice.call(document.querySelectorAll('header'));
-    candidates.forEach(function (header) {
+    Array.prototype.slice.call(document.querySelectorAll('header')).forEach(function (header) {
       if (shouldRemoveExistingHeader(header)) header.remove();
     });
   }
@@ -54,23 +63,27 @@
   function buildHeader() {
     var header = document.createElement('header');
     header.id = HEADER_ID;
-    header.className = 'gk-global-header';
+    header.className = 'site-header';
     header.innerHTML = '' +
-      '<div class="gk-global-header__inner">' +
-        '<a class="gk-global-header__brand" href="/" aria-label="Goosekit home"><img src="/brand/logo-dark.png" alt="Goosekit"></a>' +
-        '<button class="gk-global-header__toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="gk-global-header-nav"><span></span><span></span><span></span></button>' +
-        '<nav class="gk-global-header__nav" id="gk-global-header-nav" aria-label="Main navigation">' +
-          navLinks.map(function (link) { return '<a href="' + link[1] + '">' + link[0] + '</a>'; }).join('') +
-          '<a class="gk-global-header__cta" href="/ship-it-kit/">Ship It Kit</a>' +
+      '<div class="site-header-inner">' +
+        '<a class="site-brand" href="/" aria-label="Goosekit home"><img src="/logo-dark.png" alt="Goosekit"></a>' +
+        '<button class="site-menu-toggle" type="button" aria-label="Open navigation menu" aria-controls="site-navigation" aria-expanded="false"><span></span><span></span><span></span></button>' +
+        '<nav class="site-nav" id="site-navigation" aria-label="Primary navigation">' +
+          navLinks.map(function (link) {
+            var external = link[1].indexOf('http') === 0;
+            return '<a href="' + link[1] + '"' + (external ? ' target="_blank" rel="noopener"' : '') + '>' + link[0] + '</a>';
+          }).join('') +
+          '<a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>' +
         '</nav>' +
       '</div>';
     return header;
   }
 
   function setupMobile(header) {
-    var toggle = header.querySelector('.gk-global-header__toggle');
-    var nav = header.querySelector('.gk-global-header__nav');
-    if (!toggle || !nav) return;
+    var toggle = header.querySelector('.site-menu-toggle');
+    var nav = header.querySelector('.site-nav');
+    if (!toggle || !nav || nav.dataset.mobileHeaderBound === 'true') return;
+    nav.dataset.mobileHeaderBound = 'true';
     var mq = window.matchMedia('(max-width: 900px)');
 
     function closeMenu() {
