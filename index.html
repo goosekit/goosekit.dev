@@ -1164,6 +1164,10 @@
   <main>
     <p class="tools-count" id="tools-count">50 tools available</p>
 
+    <div id="search-empty" role="status" aria-live="polite" hidden style="margin:0 auto 24px;max-width:760px;padding:18px 22px;border:1px solid rgba(255,255,255,0.08);border-radius:16px;background:rgba(255,255,255,0.035);color:var(--text-muted);text-align:center;">
+      No Goosekit tool matched that search. Try <strong>json</strong>, <strong>regex</strong>, <strong>jwt</strong>, <strong>hash</strong>, <strong>base64</strong>, or <strong>screenshot</strong>.
+    </div>
+
     <div class="grid" id="grid" role="list">
 
       <!-- ScreenSnap -->
@@ -2230,6 +2234,53 @@
         else if (days === 1) text = '⚡ 1 day left in the launch window — check fit first';
         else if (days === 0) text = '⚡ Launch window closes today — check fit first';
         els.forEach(el => { el.textContent = text; });
+      }
+
+
+      const searchInput = document.getElementById('search');
+      const grid = document.getElementById('grid');
+      const toolsCount = document.getElementById('tools-count');
+      const emptyState = document.getElementById('search-empty');
+
+      if (searchInput && grid && toolsCount) {
+        const cards = Array.from(grid.querySelectorAll('.card[data-search]'));
+        const total = cards.length;
+
+        function cardText(card) {
+          return [
+            card.getAttribute('data-search') || '',
+            card.querySelector('.card-title')?.textContent || '',
+            card.querySelector('.card-desc')?.textContent || '',
+            card.textContent || ''
+          ].join(' ').toLowerCase();
+        }
+
+        const indexedCards = cards.map(card => ({ card, haystack: cardText(card) }));
+
+        function updateSearch() {
+          const query = searchInput.value.trim().toLowerCase();
+          let visible = 0;
+
+          indexedCards.forEach(({ card, haystack }) => {
+            const match = !query || haystack.includes(query);
+            card.hidden = !match;
+            if (match) visible += 1;
+          });
+
+          if (!query) {
+            toolsCount.textContent = `${total} tools available`;
+          } else if (visible === 1) {
+            toolsCount.textContent = `1 tool found for “${searchInput.value.trim()}”`;
+          } else {
+            toolsCount.textContent = `${visible} tools found for “${searchInput.value.trim()}”`;
+          }
+
+          if (emptyState) emptyState.hidden = visible !== 0;
+        }
+
+        searchInput.addEventListener('input', updateSearch);
+        searchInput.addEventListener('search', updateSearch);
+        updateSearch();
       }
 
       const countEl = document.querySelector('[data-count-target]');
