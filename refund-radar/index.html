@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refund Radar — spot churn and refund risks before they spread</title>
+  <meta name="description" content="Refund Radar is an early SaaS concept for indie founders: connect Stripe, Lemon Squeezy, or Paddle signals and get weekly retention actions, winback emails, and churn reasons.">
+  <link rel="canonical" href="https://goosekit.dev/refund-radar/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://goosekit.dev/brand/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Refund Radar — churn signals into retention actions">
+  <meta property="og:description" content="A weekly churn doctor for indie SaaS: refund reasons, cancellation patterns, failed-payment risks, and the next retention action to ship.">
+  <meta property="og:url" content="https://goosekit.dev/refund-radar/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Refund Radar">
+  <meta name="twitter:description" content="Turn refunds and cancellations into concrete retention actions.">
+  <script defer src="/posthog.js"></script>
+  <script defer src="/site-header.js?v=20260430-homeexact4"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Refund Radar",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "url": "https://goosekit.dev/refund-radar/",
+    "description": "An early SaaS concept that turns refunds, cancellations, failed payments, and churn reasons into weekly retention actions for indie SaaS teams.",
+    "brand": { "@type": "Brand", "name": "Goosekit" }
+  }
+  </script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 18% 0%,rgba(255,72,0,.18),transparent 30%),radial-gradient(circle at 84% 12%,rgba(248,113,113,.13),transparent 28%),#080b14;color:#f8fafc;line-height:1.6;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}.wrap{width:min(1120px,calc(100% - 40px));margin:0 auto}.hero{padding:84px 0 46px}.hero-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.92fr);gap:34px;align-items:center}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:8px 13px;border-radius:999px;border:1px solid rgba(255,72,0,.28);background:rgba(255,72,0,.12);color:#ffc2a8;font-weight:850;font-size:.88rem;margin-bottom:18px}h1{font-size:clamp(2.45rem,5.7vw,5rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}.lead{font-size:clamp(1.05rem,1.9vw,1.24rem);color:#c7d2e5;max-width:690px;margin:0 0 24px}.subtle{color:#9aa8be}.cta-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:24px 0 12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:13px 18px;border-radius:14px;border:1px solid rgba(255,255,255,.1);font-weight:820;transition:transform .18s ease,border-color .18s ease}.btn:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.2)}.btn-primary{background:linear-gradient(135deg,#ff4800,#ef4444);border-color:rgba(255,72,0,.7);box-shadow:0 18px 42px rgba(255,72,0,.23);color:#fff}.btn-secondary{background:rgba(255,255,255,.045);color:#e8eefb}.proof{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;color:#b4c0d4;font-size:.93rem}.proof span{border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.035);border-radius:999px;padding:7px 10px}.dashboard{border:1px solid rgba(255,255,255,.09);border-radius:26px;background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));box-shadow:0 28px 90px rgba(0,0,0,.36);overflow:hidden}.dash-top{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;border-bottom:1px solid rgba(255,255,255,.09);background:rgba(8,11,20,.58)}.signal{padding:18px;border-bottom:1px solid rgba(255,255,255,.075)}.signal:last-child{border-bottom:0}.metric{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px}.metric strong{font-size:1.05rem}.badge{font-size:.78rem;border-radius:999px;padding:5px 8px;color:#ffd4c4;border:1px solid rgba(255,72,0,.22);background:rgba(255,72,0,.08)}.signal p{margin:0;color:#aebbd0}.risk{color:#fecaca}.ok{color:#86efac}section{padding:52px 0}.section-head{max-width:770px;margin-bottom:22px}h2{font-size:clamp(1.8rem,3vw,2.6rem);line-height:1.08;letter-spacing:-.035em;margin:0 0 12px}.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.box{border:1px solid rgba(255,255,255,.09);border-radius:22px;background:rgba(255,255,255,.045);padding:20px}.box h3{margin:0 0 8px}.box p,.box li{color:#9aa8be;margin:0}.box ul{padding-left:18px;margin:10px 0 0}.flow{display:grid;grid-template-columns:1fr 1fr;gap:18px}.action-list{counter-reset:step;display:grid;gap:12px}.action{position:relative;padding:18px 18px 18px 54px;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(255,255,255,.04)}.action::before{counter-increment:step;content:counter(step);position:absolute;left:18px;top:18px;width:25px;height:25px;display:grid;place-items:center;border-radius:50%;background:#ff4800;color:#fff;font-weight:850;font-size:.84rem}.action strong{display:block;margin-bottom:3px}.action span{color:#9aa8be}.waitlist{border:1px solid rgba(255,72,0,.24);border-radius:28px;background:linear-gradient(135deg,rgba(255,72,0,.15),rgba(255,255,255,.045));padding:28px;box-shadow:0 28px 90px rgba(0,0,0,.36)}form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}input,select,textarea{width:100%;min-height:50px;border-radius:14px;border:1px solid rgba(255,255,255,.11);background:rgba(8,11,20,.74);color:#f8fafc;padding:0 14px;font:inherit}textarea{grid-column:1/-1;min-height:96px;padding:13px 14px;resize:vertical}.form-actions{grid-column:1/-1;display:flex;gap:12px;flex-wrap:wrap;align-items:center}.note{color:#aebbd0;font-size:.9rem;margin:8px 0 0}footer{padding:42px 0 54px;color:#8e9bb1;border-top:1px solid rgba(255,255,255,.09)}footer a{color:#d6deed}@media(max-width:860px){.hero{padding-top:62px}.hero-grid,.flow,.grid-3,form{grid-template-columns:1fr}.wrap{width:min(100% - 28px,1120px)}}
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="wrap hero-grid">
+        <div>
+          <div class="eyebrow">📡 Refund Radar · early SaaS concept</div>
+          <h1>Know why users are about to leave before they leave.</h1>
+          <p class="lead">Refund Radar turns refunds, cancellations, failed payments, and support friction into a short weekly retention action plan for indie SaaS founders.</p>
+          <div class="cta-row"><a class="btn btn-primary" href="#early-access" data-refund-radar-cta="hero">Request early access →</a><a class="btn btn-secondary" href="#sample-report">See sample actions</a></div>
+          <p class="subtle">No vanity analytics. The output is: why money is leaking, what to fix, and which winback email to send.</p>
+          <div class="proof"><span>Stripe / Lemon Squeezy / Paddle signals</span><span>Refund reasons</span><span>Winback emails</span><span>Weekly actions</span></div>
+        </div>
+        <aside class="dashboard" aria-label="Refund Radar example dashboard">
+          <div class="dash-top"><strong>Retention radar</strong><span class="badge">7-day scan</span></div>
+          <div class="signal"><div class="metric"><strong>3 refunds mention setup friction</strong><span class="risk">High</span></div><p>Action: add a 10-minute setup checklist and send it before the refund window.</p></div>
+          <div class="signal"><div class="metric"><strong>Failed payments rose 18%</strong><span class="risk">Medium</span></div><p>Action: trigger a softer dunning email with product value recap.</p></div>
+          <div class="signal"><div class="metric"><strong>2 cancellations after trial day 2</strong><span class="ok">Fixable</span></div><p>Action: move the “first win” email to the first session.</p></div>
+        </aside>
+      </div>
+    </section>
+
+    <section>
+      <div class="wrap"><div class="section-head"><h2>The product wedge</h2><p class="subtle">Refund Radar is not another analytics dashboard. It is a churn doctor for small products that need action, not charts.</p></div><div class="grid-3">
+        <article class="box"><h3>Money events</h3><p>Refunds, cancellations, failed payments, plan downgrades, and refund-window risk.</p></article>
+        <article class="box"><h3>Reason capture</h3><p>Simple cancellation/refund forms that ask why, then group answers into useful buckets.</p></article>
+        <article class="box"><h3>Retention actions</h3><p>Weekly fixes: FAQ changes, onboarding emails, winback copy, pricing objections, and product gaps.</p></article>
+      </div></div>
+    </section>
+
+    <section id="sample-report">
+      <div class="wrap flow"><div class="section-head"><h2>A weekly report that tells you what to fix.</h2><p class="subtle">The buyer should never open Refund Radar and wonder what to do next.</p></div><div class="action-list">
+        <div class="action"><strong>Fix onboarding before refunds</strong><span>Users refund after “too hard to set up”. Ship a first-run checklist and send it after purchase.</span></div>
+        <div class="action"><strong>Send a targeted winback</strong><span>Cancelled users who mention pricing get a “smaller plan / one-time setup help” email.</span></div>
+        <div class="action"><strong>Patch pricing objections</strong><span>Update the pricing FAQ with the top refund reason and add a refund-policy reassurance near checkout.</span></div>
+      </div></div>
+    </section>
+
+    <section>
+      <div class="wrap"><div class="section-head"><h2>MVP scope</h2><p class="subtle">Start narrow enough to ship and sell quickly.</p></div><div class="grid-3">
+        <article class="box"><h3>Connect later, import now</h3><ul><li>CSV export from Stripe/LS/Paddle first</li><li>Webhook integrations after demand</li><li>No dashboard until reports convert</li></ul></article>
+        <article class="box"><h3>Pricing hypothesis</h3><ul><li>€9/mo up to 100 customers</li><li>€19/mo up to 1k customers</li><li>€49/mo with winback segments</li></ul></article>
+        <article class="box"><h3>Fast validation</h3><ul><li>Manual-assisted first report</li><li>Ask for last 10 churn/refund reasons</li><li>Deliver 3 concrete fixes</li></ul></article>
+      </div></div>
+    </section>
+
+    <section id="early-access">
+      <div class="wrap waitlist"><h2>Want Refund Radar for your SaaS?</h2><p class="subtle">Send a short brief. The first version can be manual-assisted: a sample of cancellations/refunds in, a retention action report out.</p>
+        <form id="refund-radar-form">
+          <input id="rr-email" type="email" autocomplete="email" placeholder="you@example.com" aria-label="Email" required>
+          <input id="rr-site" type="url" placeholder="https://your-saas.com" aria-label="Your SaaS URL">
+          <select id="rr-platform" aria-label="Payment platform"><option value="">Payment platform</option><option>Stripe</option><option>Lemon Squeezy</option><option>Paddle</option><option>Other</option></select>
+          <input id="rr-volume" placeholder="Monthly customers / refunds" aria-label="Monthly customers and refunds">
+          <textarea id="rr-problem" placeholder="What churn/refund problem do you want to understand?"></textarea>
+          <div class="form-actions"><button class="btn btn-primary" type="submit">Open email brief →</button><p class="note">Opens an email draft. No hidden backend or fake waitlist.</p></div>
+        </form>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">Refund Radar is an early Goosekit product concept. <a href="/">Goosekit</a> · <a href="/goose-monitor/">Goose Monitor</a> · <a href="/ship-it-kit/">Ship It Kit</a></div></footer>
+  <script>
+    (function(){function capture(n,p){if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(n,p||{})}capture('refund_radar_page_viewed',{product:'refund_radar',stage:'early_access'});document.querySelectorAll('[data-refund-radar-cta]').forEach(function(el){el.addEventListener('click',function(){capture('refund_radar_cta_clicked',{source:el.getAttribute('data-refund-radar-cta')||'unknown'})})});var form=document.getElementById('refund-radar-form');if(!form)return;form.addEventListener('submit',function(e){e.preventDefault();var email=document.getElementById('rr-email').value.trim();var site=document.getElementById('rr-site').value.trim();var platform=document.getElementById('rr-platform').value;var volume=document.getElementById('rr-volume').value.trim();var problem=document.getElementById('rr-problem').value.trim();capture('refund_radar_brief_submitted',{has_email:!!email,has_site:!!site,platform:platform||'unknown'});var subject=encodeURIComponent('Refund Radar early access');var body=encodeURIComponent('Hi Goosekit,\n\nI want to test Refund Radar.\n\nEmail: '+email+'\nSite: '+site+'\nPayment platform: '+platform+'\nMonthly customers / refunds: '+volume+'\n\nProblem to understand:\n'+problem+'\n');window.location.href='mailto:hello@goosekit.dev?subject='+subject+'&body='+body;});})();
+  </script>
+</body>
+</html>

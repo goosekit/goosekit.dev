@@ -1,0 +1,6 @@
+email,event,amount,reason,created_at
+a@example.com,refund,49,Setup was confusing and I could not get first result,2026-04-28
+b@example.com,cancellation,19,Too expensive for my current usage,2026-04-29
+c@example.com,failed payment,19,Card declined after invoice retry,2026-04-29
+d@example.com,cancellation,19,Missing Stripe integration I needed,2026-04-30
+e@example.com,refund,49,Not using it enough to justify the price,2026-04-30

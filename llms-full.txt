@@ -168,3 +168,9 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Status: early access concept, not yet a mature paid product.
 - Purpose: watch competitor pages, pricing, launches, and distribution signals, then turn changes into weekly SEO and distribution actions for indie SaaS teams.
 - Positioning: practical action report rather than a noisy analytics dashboard.
+
+## Refund Radar
+- URL: https://goosekit.dev/refund-radar/
+- Status: early access concept, not yet a mature paid product.
+- Purpose: turn refunds, cancellations, failed payments, and churn reasons into weekly retention actions for indie SaaS teams.
+- Positioning: a weekly churn doctor report rather than a generic analytics dashboard.
