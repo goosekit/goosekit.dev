@@ -11,6 +11,7 @@
     ['Compare', '/compare/'],
     ['Blog', '/blog/'],
     ['Offline Pack', '/offline-pack/?ref=global_nav'],
+    ['Goose Monitor', '/goose-monitor/?ref=global_nav'],
     ['API', '/api/'],
     ['Extension', 'https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend'],
   ];

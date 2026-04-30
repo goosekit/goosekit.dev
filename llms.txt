@@ -86,3 +86,9 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 
 ## Full reference
 - https://goosekit.dev/llms-full.txt
+
+## Goose Monitor
+- URL: https://goosekit.dev/goose-monitor/
+- Status: early access concept, not yet a mature paid product.
+- Purpose: watch competitor pages, pricing, launches, and distribution signals, then turn changes into weekly SEO and distribution actions for indie SaaS teams.
+- Positioning: practical action report rather than a noisy analytics dashboard.

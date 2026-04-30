@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Goose Monitor early access</title>
+  <script defer src="/posthog.js"></script>
+  <script defer src="/site-header.js?v=20260430-homeexact4"></script>
+  <style>
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; font-family: system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #e2e8f0; background: #080b14; }
+    .card { max-width: 620px; padding: 28px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(15,23,42,.82); text-align: center; }
+    .pill { display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,72,0,.12); border:1px solid rgba(255,72,0,.24); color:#ffbf9f; font-weight:700; margin-bottom:16px; }
+    a { color: #ff4800; font-weight: 700; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="pill">Goose Monitor · early access</div>
+    <h1>Opening the early access page…</h1>
+    <p>If nothing happens automatically, <a href="/goose-monitor/#early-access" data-manual-link="true">continue to Goose Monitor</a>.</p>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || params.get('ref') || 'goose_monitor_early_access_route';
+      function capture(eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(eventName, props || {});
+      }
+      capture('goose_monitor_early_access_route_viewed', { source: source, product: 'goose_monitor' });
+      var manual = document.querySelector('[data-manual-link]');
+      if (manual) manual.addEventListener('click', function () { capture('goose_monitor_early_access_manual_click', { source: source }); });
+      setTimeout(function () { window.location.replace('/goose-monitor/#early-access'); }, 350);
+    });
+  </script>
+</body>
+</html>
