@@ -62,7 +62,11 @@ p, li, .card-desc, .muted, .subtitle, .hero-subtitle {
   text-wrap: pretty;
 }
 
-.logo-text, .brand-text, .nav-logo span, .site-logo span, .badge, .pill, .eyebrow, .kicker, code, pre, .mono {
+.logo-text, .brand-text, .nav-logo span, .site-logo span, .badge, .pill, .eyebrow, .kicker, .mono {
+  font-family: var(--goose-brand-font) !important;
+}
+
+code, pre {
   font-family: var(--goose-brand-font) !important;
 }
 
