@@ -106,28 +106,6 @@ a.card:hover, .card:hover {
   filter: saturate(1.12) contrast(1.04);
 }
 
-/* Goosekit-specific texture: useful/dev, not generic AI SaaS glassmorphism. */
-.hero, main > section:first-of-type {
-  position: relative;
-  isolation: isolate;
-}
-
-.hero::after, main > section:first-of-type::after {
-  content: "";
-  position: absolute;
-  right: clamp(1rem, 5vw, 5rem);
-  top: clamp(4rem, 12vw, 9rem);
-  width: clamp(120px, 16vw, 210px);
-  height: clamp(120px, 16vw, 210px);
-  pointer-events: none;
-  opacity: 0.12;
-  background:
-    linear-gradient(90deg, var(--goose-orange) 2px, transparent 2px) 0 0 / 18px 18px,
-    linear-gradient(var(--goose-orange) 2px, transparent 2px) 0 0 / 18px 18px;
-  transform: rotate(-7deg);
-  border-radius: 28px;
-}
-
 /* Homepage: preserve hero/nav/logo, refine tool wall. */
 .tools-grid, .grid, .cards-grid {
   gap: clamp(1rem, 2vw, 1.35rem) !important;
@@ -197,70 +175,5 @@ article code, article pre, .blog-post code, .blog-post pre {
 
   .hero::after, main > section:first-of-type::after {
     display: none;
-  }
-}
-
-/* Homepage density pass: keep the hero identity, but stop the first screen from feeling empty. */
-body:has(#grid) .hero {
-  padding-top: clamp(34px, 5vw, 56px) !important;
-  padding-bottom: clamp(34px, 5vw, 54px) !important;
-}
-
-body:has(#grid) .hero img[alt*="Goosekit"] {
-  width: min(78vw, 420px) !important;
-  margin-bottom: 18px !important;
-}
-
-body:has(#grid) .hero h1 {
-  max-width: 920px;
-  margin-left: auto;
-  margin-right: auto;
-  font-size: clamp(2.15rem, 5.1vw, 3.65rem) !important;
-}
-
-body:has(#grid) .hero p {
-  max-width: 720px !important;
-  margin-bottom: 18px !important;
-}
-
-body:has(#grid) .hero-proof {
-  margin-top: 18px !important;
-}
-
-body:has(#grid) main {
-  margin-top: -10px !important;
-}
-
-body:has(#grid) .tools-count {
-  margin-bottom: 18px !important;
-  color: rgba(247, 241, 232, 0.62) !important;
-}
-
-body:has(#grid) .grid {
-  align-items: stretch;
-}
-
-body:has(#grid) .card {
-  padding: 22px 20px 18px !important;
-}
-
-body:has(#grid) .card-icon {
-  width: 42px !important;
-  height: 42px !important;
-}
-
-@media (min-width: 980px) {
-  body:has(#grid) .grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  }
-}
-
-@media (max-width: 760px) {
-  body:has(#grid) .hero img[alt*="Goosekit"] {
-    width: min(86vw, 340px) !important;
-  }
-
-  body:has(#grid) main {
-    margin-top: 0 !important;
   }
 }
