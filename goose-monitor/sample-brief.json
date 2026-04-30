@@ -1,0 +1,14 @@
+{
+  "project_name": "TinyDev CRM",
+  "question": "Which competitor moves should become SEO or distribution actions this week?",
+  "watch": [
+    {
+      "name": "Competitor homepage",
+      "url": "https://example.com/"
+    },
+    {
+      "name": "Competitor changelog",
+      "url": "https://www.iana.org/domains/reserved"
+    }
+  ]
+}
