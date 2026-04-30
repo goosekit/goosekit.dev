@@ -4,29 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta http-equiv="refresh" content="0; url=/ship-it-kit-quick-fit/?ref=checkout_landing_bottom_pending_redirect">
-  <title>Check fit first…</title>
-  <script>
-    (function () {
-      var params = new URLSearchParams(window.location.search);
-      if (!params.get('ref')) params.set('ref', 'checkout_landing_bottom_pending_redirect');
-      if (!params.get('pending')) params.set('pending', 'price_verification');
-      var target = '/ship-it-kit-quick-fit/?' + params.toString();
-      window.location.replace(target);
-    })();
-  </script>
+  <title>Redirecting to Ship It Kit checkout…</title>
   <script defer src="/posthog.js"></script>
   <style>
     body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; font-family: system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; color: #e2e8f0; background: #0f172a; }
-    .card { max-width: 620px; padding: 28px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(15,23,42,.82); }
-    a { color: #ff4800; }
+    .card { max-width: 620px; padding: 28px; border: 1px solid rgba(255,255,255,.1); border-radius: 20px; background: rgba(15,23,42,.82); text-align: center; }
+    .pill { display:inline-block; padding:8px 14px; border-radius:999px; background:rgba(255,72,0,.12); border:1px solid rgba(255,72,0,.24); color:#ffbf9f; font-weight:700; margin-bottom:16px; }
+    a { color: #ff4800; font-weight: 700; text-decoration: none; }
   </style>
 <script defer src="/site-header.js?v=20260430-homeexact4"></script>
 </head>
 <body>
   <main class="card">
-    <h1>Check fit before the paid link</h1>
-    <p>The Ship It Kit paid link is held until price verification is complete. If it does not open automatically, <a href="/ship-it-kit-quick-fit/?ref=checkout_landing_bottom_pending_redirect">continue to the quick-fit page</a>.</p>
+    <div class="pill">Ship It Kit · €49 one-time</div>
+    <h1>Redirecting to checkout…</h1>
+    <p>If nothing happens automatically, use the link below. Checkout is handled by Lemon Squeezy and includes the 30-day money-back guarantee.</p>
+    <p><a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a" data-manual-checkout-link="true">Continue to checkout →</a></p>
   </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var checkoutUrl = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || params.get('ref') || 'checkout_landing_bottom';
+      var capture = function (eventName, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') {
+          window.posthog.capture(eventName, props || {});
+        }
+      };
+      capture('ship_it_kit_checkout_redirect_viewed', { source: source, path: window.location.pathname, product: 'ship_it_kit', price_eur: 49 });
+      var manual = document.querySelector('[data-manual-checkout-link]');
+      if (manual) {
+        manual.addEventListener('click', function () {
+          capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit', price_eur: 49 });
+        });
+      }
+      params.set('source', source);
+      capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit', price_eur: 49 });
+      var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
+      window.location.replace(checkoutUrl + glue + params.toString());
+    });
+  </script>
 </body>
 </html>
