@@ -38,7 +38,9 @@
     if (el.querySelector && el.querySelector('.site-brand')) return true;
     if (el.querySelector && el.querySelector('.site-menu-toggle')) return true;
     if (el.querySelector && el.querySelector('.site-nav')) return true;
-    if (el.querySelector && el.querySelector('.topbar') && el.querySelector('a[href="/"]')) return true;
+    if (el.querySelector && el.querySelector('.topbar')) return true;
+    if (el.querySelector && el.querySelector('.brand') && el.querySelector('.nav-cta')) return true;
+    if (el.querySelector && el.querySelector('.brand') && el.querySelector('nav')) return true;
     return false;
   }
 
