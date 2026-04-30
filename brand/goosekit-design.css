@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --goose-orange: #ff4800;
+  --goose-orange-rgb: 255, 72, 0;
+  --goose-ink: #f7f1e8;
+  --goose-paper: #fff7ed;
+  --goose-night: #070b13;
+  --goose-panel: rgba(17, 24, 39, 0.72);
+  --goose-line: rgba(255, 247, 237, 0.13);
+  --goose-title-font: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --goose-body-font: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --goose-brand-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+  --goose-radius-sm: 12px;
+  --goose-radius: 18px;
+  --goose-radius-lg: 28px;
+  --goose-shadow: 0 24px 70px rgba(0, 0, 0, 0.34);
+}
+
+html {
+  text-rendering: geometricPrecision;
+  font-feature-settings: "kern" 1, "ss01" 1;
+}
+
+body {
+  font-family: var(--goose-body-font) !important;
+  letter-spacing: -0.011em;
+  background-color: var(--goose-night);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.014) 1px, transparent 1px),
+    radial-gradient(circle at 15% 12%, rgba(var(--goose-orange-rgb), 0.16), transparent 28rem),
+    radial-gradient(circle at 86% 22%, rgba(56, 189, 248, 0.07), transparent 24rem);
+  background-size: 46px 46px, 46px 46px, auto, auto;
+  mask-image: linear-gradient(to bottom, black 0%, black 45%, transparent 100%);
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
+}
+
+h1, h2, h3, .hero-title, .section-title, .card-title, .tool-name, .price, .headline {
+  font-family: var(--goose-title-font) !important;
+  letter-spacing: -0.055em;
+}
+
+h1, .hero h1 {
+  letter-spacing: -0.07em;
+  text-wrap: balance;
+}
+
+p, li, .card-desc, .muted, .subtitle, .hero-subtitle {
+  text-wrap: pretty;
+}
+
+.logo-text, .brand-text, .nav-logo span, .site-logo span, .badge, .pill, .eyebrow, .kicker, code, pre, .mono {
+  font-family: var(--goose-brand-font) !important;
+}
+
+.badge, .pill, .eyebrow, .kicker {
+  letter-spacing: 0.025em;
+}
+
+/* Keep the existing orange and nav shape, but make interactions feel crafted instead of template-y. */
+a, button, .btn, .cta, .nav-cta, .hero-cta, .primary-cta {
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, box-shadow 160ms ease, color 160ms ease;
+}
+
+.btn:hover, .cta:hover, .nav-cta:hover, .hero-cta:hover, .primary-cta:hover,
+a.card:hover, .card:hover {
+  transform: translateY(-2px);
+}
+
+.nav-cta, .hero-cta, .primary-cta, .btn-primary, .cta-primary {
+  background: linear-gradient(135deg, var(--goose-orange), #ff6a1a) !important;
+  color: #fffaf5 !important;
+  box-shadow: 0 10px 28px rgba(var(--goose-orange-rgb), 0.22), inset 0 1px 0 rgba(255,255,255,0.28) !important;
+}
+
+.card, .panel, .price-card, .day-card, .feature, .tool-card, .category-card, .hero-card, .hero-shot, .proof-card, .step-card {
+  border-color: var(--goose-line) !important;
+  box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 18px 48px rgba(0,0,0,0.22) !important;
+  backdrop-filter: blur(14px);
+}
+
+.card, .panel, .price-card, .day-card, .feature, .tool-card, .category-card, .proof-card, .step-card {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018)),
+    radial-gradient(circle at 100% 0%, rgba(var(--goose-orange-rgb),0.10), transparent 12rem) !important;
+}
+
+.card-icon, .icon, .tool-icon {
+  filter: saturate(1.12) contrast(1.04);
+}
+
+/* Goosekit-specific texture: useful/dev, not generic AI SaaS glassmorphism. */
+.hero, main > section:first-of-type {
+  position: relative;
+  isolation: isolate;
+}
+
+.hero::after, main > section:first-of-type::after {
+  content: "";
+  position: absolute;
+  right: clamp(1rem, 5vw, 5rem);
+  top: clamp(4rem, 12vw, 9rem);
+  width: clamp(120px, 16vw, 210px);
+  height: clamp(120px, 16vw, 210px);
+  pointer-events: none;
+  opacity: 0.12;
+  background:
+    linear-gradient(90deg, var(--goose-orange) 2px, transparent 2px) 0 0 / 18px 18px,
+    linear-gradient(var(--goose-orange) 2px, transparent 2px) 0 0 / 18px 18px;
+  transform: rotate(-7deg);
+  border-radius: 28px;
+}
+
+/* Homepage: preserve hero/nav/logo, refine tool wall. */
+.tools-grid, .grid, .cards-grid {
+  gap: clamp(1rem, 2vw, 1.35rem) !important;
+}
+
+.card-title, .tool-name {
+  color: var(--goose-ink);
+}
+
+.card-link, .tool-link {
+  font-family: var(--goose-brand-font) !important;
+  font-size: 0.86rem;
+}
+
+/* Latest experiments / revenue pages: same family, more personality. */
+body:has(.hero-shot) .hero-shot,
+body:has(.price-card) .price-card,
+body:has(.final-cta) .final-cta {
+  border-radius: var(--goose-radius-lg) !important;
+}
+
+body:has(.hero-shot) .hero-shot::before,
+body:has(.price-card) .price-card::before {
+  content: "";
+  display: block;
+  height: 7px;
+  margin: -1px -1px 18px;
+  border-radius: var(--goose-radius-lg) var(--goose-radius-lg) 0 0;
+  background: repeating-linear-gradient(90deg, var(--goose-orange) 0 14px, rgba(255,255,255,0.18) 14px 20px, transparent 20px 26px);
+}
+
+/* for-ai was intentionally simple; give it an authored Goosekit doc feel. */
+body:has(a[href="/llms.txt"]) main,
+body:has(a[href="/llms-full.txt"]) main {
+  max-width: 940px !important;
+}
+
+body:has(a[href="/llms.txt"]) .card,
+body:has(a[href="/llms-full.txt"]) .card {
+  border-radius: 22px !important;
+}
+
+/* Blog/comparison pages: calmer reading, less template shine. */
+.blog-post, article, .content {
+  font-family: var(--goose-body-font) !important;
+}
+
+article h1, article h2, article h3, .blog-post h1, .blog-post h2, .blog-post h3 {
+  font-family: var(--goose-title-font) !important;
+}
+
+article code, article pre, .blog-post code, .blog-post pre {
+  font-family: var(--goose-brand-font) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  body::before {
+    background-size: 34px 34px, 34px 34px, auto, auto;
+  }
+
+  .hero::after, main > section:first-of-type::after {
+    display: none;
+  }
+}
