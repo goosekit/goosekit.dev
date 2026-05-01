@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Next.js Auth + Billing Setup Help — Ship It Kit by Goosekit</title>
+  <meta name="description" content="Paid setup help for founders who want the Ship It Kit auth + billing path adapted to an existing Next.js + Supabase + Stripe repo.">
+  <link rel="canonical" href="https://goosekit.dev/auth-billing-setup-help/">
+  <meta property="og:title" content="Next.js Auth + Billing Setup Help">
+  <meta property="og:description" content="A paid setup-help path for existing Next.js + Supabase + Stripe repos when the self-serve starter is not enough.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://goosekit.dev/auth-billing-setup-help/">
+  <script defer src="/posthog.js"></script>
+  <script defer src="/site-header-homefix.js?v=20260501-homefix1"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    :root { color-scheme: dark; --bg:#090914; --panel:#121225; --panel2:#17172d; --text:#f7f4ee; --muted:#b6b3c6; --line:rgba(255,255,255,.12); --accent:#ff4800; --green:#4ade80; }
+    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.22),transparent 34%),var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55} a{color:#ffd1bf} .wrap{width:min(1080px,92vw);margin:0 auto;padding:28px 0 56px}.top{display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:58px}.brand{font-weight:900;text-decoration:none;color:var(--text);font-size:1.1rem}.brand span{color:var(--accent)}.nav{font-size:.92rem;color:var(--muted)} .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:start}.pill{display:inline-flex;border:1px solid rgba(255,72,0,.35);background:rgba(255,72,0,.12);color:#ffd1bf;border-radius:999px;padding:7px 11px;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}h1{font-size:clamp(2.4rem,7vw,5rem);letter-spacing:-.07em;line-height:.92;margin:18px 0}h2{font-size:clamp(1.7rem,4vw,2.6rem);letter-spacing:-.045em;line-height:1.02;margin:0 0 12px}h3{margin:0 0 8px}.lead{font-size:1.18rem;color:#ddd8e9;max-width:680px}.panel{border:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.035));border-radius:24px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.24)}.price{font-size:3.7rem;font-weight:950;letter-spacing:-.07em;line-height:1}.price span{font-size:1rem;color:var(--muted);letter-spacing:0}.note,.muted{color:var(--muted)}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.btn{display:inline-flex;justify-content:center;align-items:center;border-radius:14px;padding:13px 16px;font-weight:850;text-decoration:none}.primary{background:var(--accent);color:white;box-shadow:0 14px 32px rgba(255,72,0,.25)}.secondary{border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.04)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}.section{margin-top:42px}.list{padding-left:20px;color:#e7e2ef}.list li{margin:8px 0}.check{color:var(--green);font-weight:900}.small{font-size:.92rem;color:var(--muted)}.footer{margin-top:34px;color:#77738b;font-size:.9rem}@media(max-width:860px){.hero,.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="top">
+      <a class="brand" href="/">Goose<span>kit</span></a>
+      <div class="nav"><a href="/ship-it-kit/">Ship It Kit</a> · <a href="/blog/nextjs-auth-billing-starter/">Auth + billing guide</a></div>
+    </div>
+
+    <section class="hero">
+      <div>
+        <div class="pill">New: paid setup help</div>
+        <h1>Need auth + billing wired into an existing Next.js repo?</h1>
+        <p class="lead">Ship It Kit is still the €49 self-serve starter. This page is the more direct path for founders who already have a repo and want the auth + payment plumbing adapted instead of starting from a blank starter.</p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Auth%20%2B%20Billing%20Setup%20Help&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20paid%20auth%20%2B%20billing%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20I%20need%20wired%3A%0ADeadline%3A%0ABudget%20range%3A%0A" data-ph-event="ship_it_kit_setup_help_clicked" data-ph-location="setup_help_hero_email">Ask for setup help</a>
+          <a class="btn secondary" href="/ship-it-kit/?ref=setup_help_self_serve" data-ph-event="ship_it_kit_secondary_click" data-ph-location="setup_help_self_serve">Buy the €49 starter instead</a>
+        </div>
+        <p class="small">Manual, case-by-case. If the stack is not Next.js + Supabase + Stripe, the honest answer may be “not a fit”.</p>
+      </div>
+      <aside class="panel">
+        <div class="price">from €199 <span>setup help</span></div>
+        <p class="note">A lightweight paid slot for wiring the same Ship It Kit path into a real project: Supabase auth, protected routes, Stripe Checkout, portal, webhook handling, and deployment notes.</p>
+        <ul class="list">
+          <li><span class="check">✓</span> Best for an existing Next.js app that is stuck before payments.</li>
+          <li><span class="check">✓</span> Quote confirmed by email before any work starts.</li>
+          <li><span class="check">✓</span> Self-serve starter remains available at €49.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="grid">
+        <div class="panel"><h3>Good fit</h3><p class="muted">You have a Next.js app, want Supabase auth, and need Stripe Checkout/portal/webhooks wired cleanly.</p></div>
+        <div class="panel"><h3>Not a big agency offer</h3><p class="muted">This is a narrow setup-help path, not a promise to build the whole SaaS, design the product, or own long-term maintenance.</p></div>
+        <div class="panel"><h3>Why this exists</h3><p class="muted">Some buyers do not need another starter. They need the painful auth + billing loop removed from the repo they already started.</p></div>
+      </div>
+    </section>
+
+    <section class="section panel">
+      <h2>What to send in the email</h2>
+      <ul class="list">
+        <li>Your current stack and whether Supabase/Stripe are already created.</li>
+        <li>A short repo-state summary: blank MVP, existing app, or migration.</li>
+        <li>What needs to be wired: auth, protected routes, Checkout, portal, webhooks, schema, or docs.</li>
+        <li>Your deadline and rough budget range.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Auth%20%2B%20Billing%20Setup%20Help&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20paid%20auth%20%2B%20billing%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20I%20need%20wired%3A%0ADeadline%3A%0ABudget%20range%3A%0A" data-ph-event="ship_it_kit_setup_help_clicked" data-ph-location="setup_help_bottom_email">Email the setup request</a>
+      </div>
+    </section>
+
+    <p class="footer">Built by Arthur Pierrey. Checkout for the self-serve starter is handled by Lemon Squeezy; setup help is manual and quoted by email.</p>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('ship_it_kit_page_viewed', { page_type: 'setup_help', path: window.location.pathname });
+      }
+    });
+  </script>
+</body>
+</html>
