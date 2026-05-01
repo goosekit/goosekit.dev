@@ -45,11 +45,6 @@
       var el = document.getElementById(id);
       if (el) el.remove();
     });
-    Array.prototype.slice.call(document.querySelectorAll('style')).forEach(function (style) {
-      if (style.id === STYLE_ID) return;
-      var css = style.textContent || '';
-      if (css.indexOf('.site-header') !== -1 && css.indexOf('.site-header-inner') !== -1 && css.indexOf('.nav-cta') !== -1) style.remove();
-    });
   }
 
 
