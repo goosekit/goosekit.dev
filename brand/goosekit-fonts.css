@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:ital,wght@0,400..800;1,400..800&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --goose-title-font: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --goose-body-font: "Instrument Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --goose-mono-font: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+body {
+  font-family: var(--goose-body-font);
+}
+
+h1,
+h2,
+h3,
+.card-title,
+.tool-name,
+.section-title {
+  font-family: var(--goose-title-font);
+}
+
+.card-link,
+.tags span,
+.badge,
+.pill,
+.eyebrow,
+.kicker,
+code,
+pre {
+  font-family: var(--goose-mono-font);
+}
