@@ -60,6 +60,7 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 - Ship It Kit vs ShipFast: https://goosekit.dev/compare/ship-it-kit-vs-shipfast/
 - Ship It Kit vs MakerKit: https://goosekit.dev/compare/ship-it-kit-vs-makerkit/
 - Ship It Kit vs competitors: https://goosekit.dev/compare/ship-it-kit-vs-competitors/
+- Ship It Kit vs free Next.js starter: https://goosekit.dev/compare/ship-it-kit-vs-free-nextjs-starter/
 - Goosekit vs competitors: https://goosekit.dev/compare/ (hub with all comparisons)
 
 ## Popular blog posts
