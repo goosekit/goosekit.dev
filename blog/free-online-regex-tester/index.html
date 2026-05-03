@@ -332,7 +332,7 @@
   <li><strong>Negative lookahead</strong> <code>(?!...)</code> — succeeds if the pattern ahead does <em>not</em> match. <code>\d+(?! dollars)</code> matches "100" in "100 euros" but not in "100 dollars".</li>
 </ul>
 
-<p>Lookaheads are essential for password validation patterns where you need to assert multiple conditions (contains uppercase, contains digit, etc.) at the same position.</p>
+<p>Lookaheads are essential for password validation patterns where you need to assert multiple conditions (contains uppercase, contains digit, etc.) at the same position. If you are designing password rules, pair this with the <a href="https://goosekit.dev/password/">Goosekit secure password generator</a> so you can test real examples without reusing sensitive credentials.</p>
 
 <h3>Lookbehinds</h3>
 
@@ -427,7 +427,7 @@ grep -oP 'https?://[^\s"]+' page.html</code></pre>
   <li><strong>No setup required</strong> — No npm packages, no Python REPLs, no Docker containers. Open a browser tab and start testing. It works on any device, including tablets and phones.</li>
 </ul>
 
-<p>Whether you are a seasoned developer debugging a complex parser or a student writing your first <code>grep</code> command, having a regex tester open in a browser tab will save you time every single day.</p>
+<p>Whether you are a seasoned developer debugging a complex parser or a student writing your first <code>grep</code> command, having a regex tester open in a browser tab will save you time every single day. For adjacent cleanup work, Goosekit also has a <a href="https://goosekit.dev/text-case/">text case converter</a> and <a href="https://goosekit.dev/html-entity/">HTML entity encoder/decoder</a> that stay in the same no-signup browser workflow.</p>
 
 <div class="cta">
   <h3>Ready to test your regex?</h3>

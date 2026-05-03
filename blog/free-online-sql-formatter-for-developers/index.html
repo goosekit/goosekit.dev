@@ -230,7 +230,7 @@
 
   <p>Formatting is often dismissed as cosmetic, but messy SQL creates real engineering friction. Reviewers miss conditions hidden inside long lines. Developers accidentally duplicate filters because they cannot see query structure clearly. Analysts share queries in Slack or docs that nobody wants to touch because they look fragile. Formatting fixes that by making intent visible.</p>
 
-  <p>Readable SQL also helps when you need to compare two versions of a query. If one is compressed into a single line and the other uses inconsistent spacing, a diff is almost useless. Once both queries are formatted consistently, the actual logical changes stand out immediately.</p>
+  <p>Readable SQL also helps when you need to compare two versions of a query. If one is compressed into a single line and the other uses inconsistent spacing, a diff is almost useless. Once both queries are formatted consistently, the actual logical changes stand out immediately in a <a href="https://goosekit.dev/diff/">browser-based diff checker</a>.</p>
 
   <h2>What a SQL formatter actually does</h2>
 
@@ -276,7 +276,7 @@ LIMIT 50;</code></pre>
 
   <h2>When an online SQL formatter is better than your IDE</h2>
 
-  <p>Database IDEs and code editors often include formatting, but a browser-based tool is still useful in everyday work. Maybe you are on a locked-down machine. Maybe the query lives in a ticket, Google Doc, or customer message. Maybe you want to format SQL quickly without opening your full project. In those moments, a free online tool is faster.</p>
+  <p>Database IDEs and code editors often include formatting, but a browser-based tool is still useful in everyday work. Maybe you are on a locked-down machine. Maybe the query lives in a ticket, Google Doc, or customer message. Maybe you want to format SQL quickly without opening your full project. In those moments, a free online tool is faster — especially alongside quick utilities like the <a href="https://goosekit.dev/json/">JSON formatter</a> for API payloads and the <a href="https://goosekit.dev/cron/">cron expression generator</a> for scheduled jobs.</p>
 
   <p>It is also helpful for ad hoc tasks like:</p>
 
