@@ -310,13 +310,13 @@ interface User {
   <h2>Common use cases for developers</h2>
 
   <h3>API integration</h3>
-  <p>When an API returns a large response, converting a representative sample gives you a quick model for your client code. It is especially helpful before you write fetch wrappers, React Query hooks, or validation schemas.</p>
+  <p>When an API returns a large response, converting a representative sample gives you a quick model for your client code. It is especially helpful before you write fetch wrappers, React Query hooks, or validation schemas. If you are starting from an HTTP example, the <a href="/curl-converter/">cURL to Code Converter</a> can help turn the request into working client code first.</p>
 
   <h3>Frontend prototyping</h3>
   <p>Designing UI around real-looking data is easier when your mock objects have types. Paste the mock JSON, generate the interface, and your components get autocomplete immediately.</p>
 
   <h3>Webhook documentation</h3>
-  <p>Webhook payloads often arrive as JSON examples. Converting them to TypeScript makes internal docs more useful for teams building handlers in Node.js, Next.js, or serverless functions.</p>
+  <p>Webhook payloads often arrive as JSON examples. Converting them to TypeScript makes internal docs more useful for teams building handlers in Node.js, Next.js, or serverless functions. For auth-heavy payloads, the <a href="/jwt/">JWT Decoder</a> is a useful companion when you need to inspect token claims before modeling them.</p>
 
   <h3>Refactoring untyped code</h3>
   <p>If a project has grown with too many <code>any</code> values, sample payloads can help you introduce types gradually. Generate a first draft, review it, then replace the loose parts of the codebase one object at a time.</p>
@@ -337,7 +337,7 @@ interface User {
 
   <p>Goosekit is built for quick, no-signup developer utilities. The JSON to TypeScript converter is a good fit when you need a clean starting interface for API responses, mocks, webhooks, config files, or typed frontend data. It helps you skip repetitive field typing while keeping the review step in your hands.</p>
 
-  <p>If you want to clean a payload before generating types, start with the <a href="/json/">JSON Formatter</a>. And if the same data also needs to move into config files or spreadsheet exports, the <a href="/blog/free-online-json-to-yaml-converter-for-developers/">JSON to YAML guide</a> and <a href="/blog/free-online-json-to-csv-converter-for-developers/">JSON to CSV guide</a> cover those adjacent workflows too.</p>
+  <p>If you want to clean a payload before generating types, start with the <a href="/json/">JSON Formatter</a>. And if the same data also needs to move into config files or spreadsheet exports, the <a href="/blog/free-online-json-to-yaml-converter-for-developers/">JSON to YAML guide</a> and <a href="/blog/free-online-json-to-csv-converter-for-developers/">JSON to CSV guide</a> cover those adjacent workflows too. For a wider toolkit, browse the <a href="/tools/for-developers/">developer tools collection</a>.</p>
 
   <div class="cta">
     <h2>Try Goosekit's JSON to TypeScript Converter</h2>
