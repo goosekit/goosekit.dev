@@ -12,7 +12,7 @@
 <meta property="og:title" content="IP Address Lookup — What Is My IP? Free IP Info Tool">
 <meta property="og:description" content="Find your public IP address, geolocation, ISP, timezone and more. Lookup any IP instantly.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://ipinfo-lac.vercel.app/">
+<meta property="og:url" content="https://goosekit.dev/ip-lookup/">
   <meta property="og:site_name" content="Goosekit">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IP Address Lookup — What Is My IP?">
@@ -324,7 +324,7 @@ footer a{color:var(--accent2)}
 <footer>
 <div class="container">
 <p>Part of <a href="https://goosekit.dev/">Goosekit</a> — Free developer tools, no signup, no tracking.</p>
-<p style="margin-top:4px">Data from <a href="https://ip-api.com" target="_blank" rel="noopener">ip-api.com</a> (free, non-commercial use)</p>
+<p style="margin-top:4px">Data from <a href="https://ipinfo.io" target="_blank" rel="noopener">IPinfo</a></p>
 </div>
 </footer>
 <script>
@@ -353,16 +353,18 @@ async function fetchIP(ip) {
 
   try {
     const url = ip
-      ? `http://ip-api.com/json/${encodeURIComponent(ip)}?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,asname,mobile,proxy,hosting,query`
-      : `http://ip-api.com/json/?fields=status,message,country,countryCode,region,regionName,city,zip,lat,lon,timezone,isp,org,as,asname,mobile,proxy,hosting,query`;
+      ? `https://ipinfo.io/${encodeURIComponent(ip)}/json`
+      : 'https://ipinfo.io/json';
 
     const res = await fetch(url);
-    const data = await res.json();
+    if (!res.ok) throw new Error(`Lookup service returned ${res.status}`);
 
-    if (data.status === 'fail') {
-      throw new Error(data.message || 'Invalid IP address');
+    const raw = await res.json();
+    if (raw.error) {
+      throw new Error(raw.error.message || 'Invalid IP address');
     }
 
+    const data = normalizeIpinfo(raw);
     currentIP = data.query;
     renderResults(data);
   } catch (err) {
@@ -371,6 +373,34 @@ async function fetchIP(ip) {
   } finally {
     $('loading').style.display = 'none';
   }
+}
+
+
+function normalizeIpinfo(raw) {
+  if (!raw.ip) throw new Error('Invalid IP lookup response');
+
+  const [lat, lon] = String(raw.loc || ',').split(',').map(Number);
+  const orgMatch = String(raw.org || '').match(/^(AS\d+)\s+(.+)$/);
+
+  return {
+    query: raw.ip,
+    country: raw.country,
+    countryCode: raw.country,
+    region: raw.region,
+    regionName: raw.region,
+    city: raw.city,
+    zip: raw.postal,
+    lat: Number.isFinite(lat) ? lat : '',
+    lon: Number.isFinite(lon) ? lon : '',
+    timezone: raw.timezone,
+    isp: orgMatch ? orgMatch[2] : raw.org,
+    org: raw.org,
+    as: orgMatch ? orgMatch[1] : '',
+    asname: orgMatch ? orgMatch[2] : raw.org,
+    mobile: false,
+    proxy: false,
+    hosting: Boolean(raw.anycast)
+  };
 }
 
 function renderResults(d) {
