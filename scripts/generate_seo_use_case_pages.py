@@ -19,7 +19,7 @@ PAGES = [
         "steps": ["Paste the raw JSON response from your API client, logs, webhook dashboard, or browser console.", "Format it into an indented tree so nested objects and arrays are easier to inspect.", "Check for invalid JSON before blaming your API client or frontend parsing code.", "Use adjacent converters when you need TypeScript types, CSV export, or YAML config."],
         "cases": ["Inspecting webhook payloads before writing handlers", "Debugging a failed REST API response", "Checking nested auth/user objects returned by Supabase, Stripe, or Auth.js"],
         "faq": [("Is the JSON sent to a server?", "No. Goosekit's browser tools are designed for quick client-side utility work."), ("Can I use this for private API payloads?", "For highly sensitive production data, prefer sanitized samples. For everyday debugging, the browser-based workflow avoids account creation and upload friction."), ("What should I do after formatting JSON?", "If the payload becomes part of app code, convert it to TypeScript types or document the fields in your API contract.")],
-        "related": ["jwt-decoder-authjs", "base64-decoder-api-debugging", "webhook-payload-debugging"],
+        "related": ["api-error-response-debugging", "jwt-decoder-authjs", "base64-decoder-api-debugging"],
     },
     {
         "slug": "jwt-decoder-authjs",
@@ -103,7 +103,7 @@ PAGES = [
         "steps": ["Copy the timestamp from your log, token, or payload.", "Convert it to a readable date and check the time zone assumptions.", "For JWTs, compare exp and iat values against the current time.", "For scheduling bugs, verify whether the system expects UTC or local time."],
         "cases": ["Checking JWT expiration", "Reading server logs", "Debugging scheduled jobs and webhook timestamps"],
         "faq": [("Seconds or milliseconds?", "Many APIs use seconds, while JavaScript Date values often use milliseconds. If the date looks wildly wrong, check the unit."), ("Why is the time off by one or two hours?", "Usually time zone or daylight-saving assumptions. Store UTC and display local time deliberately."), ("Can timestamps prove event order?", "They help, but distributed systems can have clock drift. Pair timestamps with IDs or logs when possible.")],
-        "related": ["jwt-decoder-authjs", "json-formatter-api-responses", "url-encoder-api-requests"],
+        "related": ["api-error-response-debugging", "jwt-decoder-authjs", "json-formatter-api-responses"],
     },
     {
         "slug": "curl-converter-api-clients",
@@ -117,7 +117,7 @@ PAGES = [
         "steps": ["Copy the cURL command from docs, DevTools, or an API client.", "Convert it into the code format you need for your app or debugging snippet.", "Check headers, auth tokens, content-type, and JSON body before pasting into production code.", "Remove secrets before sharing the converted example publicly."],
         "cases": ["Turning API docs into fetch examples", "Reproducing a failing request from DevTools", "Sharing bug reports without losing headers or body structure"],
         "faq": [("Should I paste production tokens?", "No. Replace secrets with placeholders before converting or sharing examples."), ("Why does converted code still fail?", "Check CORS, auth scopes, content-type, and environment-specific headers."), ("Is cURL enough for API testing?", "It is great for reproduction, but pair it with real tests for important flows.")],
-        "related": ["json-formatter-api-responses", "url-encoder-api-requests", "webhook-payload-debugging"],
+        "related": ["api-error-response-debugging", "json-formatter-api-responses", "url-encoder-api-requests"],
     },
     {
         "slug": "webhook-payload-debugging",
@@ -132,6 +132,21 @@ PAGES = [
         "cases": ["Inspecting Stripe, Clerk, Supabase, or GitHub webhook bodies", "Debugging signature verification failures", "Checking whether a webhook retry sent a different payload", "Preparing a sanitized bug report without exposing customer data"],
         "faq": [("Should I format JSON before verifying a webhook signature?", "No. Verify signatures against the raw request body exactly as received. Use formatting only for human inspection after you preserve the original body."), ("What should I sanitize before sharing a webhook payload?", "Remove customer identifiers, emails, tokens, addresses, internal IDs, and any secret headers. Keep only the fields needed to reproduce the bug."), ("Why does a webhook work locally but fail in production?", "Common causes are different raw-body handling, wrong endpoint secret, clock skew, replay windows, missing headers, or middleware that parses the body before verification.")],
         "related": ["json-formatter-api-responses", "timestamp-converter-unix", "curl-converter-api-clients"],
+    },
+
+    {
+        "slug": "api-error-response-debugging",
+        "title": "API Error Response Debugging Workflow",
+        "description": "Debug API error responses with JSON formatting, HTTP status lookup, cURL conversion, timestamps, and payload comparison. A practical browser workflow for failed requests.",
+        "h1": "API error response debugging workflow",
+        "eyebrow": "API debugging",
+        "problem": "A failed API request rarely fails for just one reason. The status code, JSON body, auth header, timestamp, and reproduced request all need to line up before the bug becomes obvious.",
+        "primary_tool": {"name": "Start with the JSON Formatter", "url": "/json/"},
+        "tools": [("JSON Formatter", "/json/"), ("HTTP Status Reference", "/http-status/"), ("cURL Converter", "/curl-converter/"), ("Timestamp Converter", "/timestamp/"), ("Diff Checker", "/diff/")],
+        "steps": ["Copy the raw response body, status code, and request details from DevTools, server logs, an API client, or a failed test.", "Format the JSON error body first so fields like code, message, details, validation errors, request_id, and retry_after are easy to scan.", "Look up the HTTP status code and check whether the failure is authentication, validation, rate limiting, conflict, or server-side behavior.", "Convert a sanitized cURL reproduction into the client code or snippet you need, keeping headers and body structure intact.", "Compare a working and failing payload with diff when the response looks similar but only one request fails."],
+        "cases": ["Debugging 400 and 422 validation errors from REST APIs", "Checking 401 or 403 auth failures before changing backend code", "Investigating 409 conflicts, 429 rate limits, and retry behavior", "Preparing a sanitized API bug report with enough context to reproduce the issue"],
+        "faq": [("What should I capture before debugging an API error?", "Capture the status code, response body, request method, URL, relevant headers, request body, timestamp, and a request ID if the API returns one."), ("Should I share the full failed request with support?", "No. Replace tokens, cookies, customer IDs, emails, addresses, and internal identifiers with placeholders before sharing."), ("Why does the same API call work in one client but fail in another?", "Common causes are missing headers, different content-type, stale auth tokens, encoded query parameters, CORS context, or environment-specific base URLs.")],
+        "related": ["json-formatter-api-responses", "curl-converter-api-clients", "timestamp-converter-unix"],
     },
     {
         "slug": "sql-formatter-query-debugging",
