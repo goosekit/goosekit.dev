@@ -190,6 +190,21 @@ PAGES = [
         "faq": [("Are generated UUIDs guaranteed unique?", "UUIDs are designed to make collisions extremely unlikely for normal development use."), ("Can I use these in production?", "Use your application or database UUID generation for production records. This tool is best for quick manual work and examples."), ("Why use UUIDs instead of incremental IDs?", "UUIDs are useful for distributed systems, public IDs, and sanitized examples where sequential IDs leak too much context.")],
         "related": ["json-formatter-api-responses", "timestamp-converter-unix", "hash-generator-checksums"],
     },
+    {
+        "slug": "graphql-response-debugging",
+        "title": "GraphQL Response Debugging Workflow",
+        "description": "Debug GraphQL API responses with JSON formatting, error path inspection, cURL reproduction, timestamps, and payload comparison. A practical browser workflow for developers.",
+        "h1": "GraphQL response debugging workflow",
+        "eyebrow": "API debugging",
+        "problem": "GraphQL failures can hide inside a 200 response: partial data, nested errors, path arrays, auth-related extensions, stale timestamps, or variables that differ from the request you meant to send.",
+        "primary_tool": {"name": "Start with the JSON Formatter", "url": "/json/"},
+        "tools": [("JSON Formatter", "/json/"), ("cURL Converter", "/curl-converter/"), ("Diff Checker", "/diff/"), ("JWT Decoder", "/jwt/"), ("Timestamp Converter", "/timestamp/"), ("URL Encoder", "/url-encode/")],
+        "steps": ["Copy the full GraphQL response, including data, errors, extensions, and request ID fields when they exist.", "Format the JSON so each error message, path, location, and partial data branch is visible without scrolling through one long line.", "Compare the variables object from a working and failing request; many GraphQL bugs are caused by one null, enum, ID, or pagination cursor value.", "Decode the bearer token or session JWT only when auth claims matter, and replace secrets before sharing any reproduction.", "Convert a sanitized request cURL into a compact reproduction that preserves headers, operationName, query, and variables."],
+        "cases": ["Debugging GraphQL 200 responses that still contain errors", "Finding which nested resolver failed from errors.path", "Comparing GraphQL variables across frontend, playground, and server logs", "Preparing a sanitized support ticket or teammate handoff for a failing operation"],
+        "faq": [("Why does GraphQL return HTTP 200 with errors?", "Many GraphQL APIs return a successful HTTP transport response while reporting resolver, validation, or authorization errors inside the JSON errors array."), ("What should I inspect first in a GraphQL error response?", "Check errors[].message, errors[].path, errors[].extensions.code, operationName, variables, auth headers, and any request or trace ID returned by the API."), ("Should I share my full GraphQL request publicly?", "No. Remove tokens, cookies, emails, customer IDs, internal IDs, and sensitive variables. Keep only the operation shape and safe sample values needed to reproduce the issue.")],
+        "related": ["json-formatter-api-responses", "api-error-response-debugging", "api-request-header-debugging"],
+    },
+
 ]
 
 SLUG_TO_PAGE = {p["slug"]: p for p in PAGES}

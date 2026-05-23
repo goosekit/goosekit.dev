@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GraphQL Response Debugging Workflow | Goosekit</title>
+  <meta name="description" content="Debug GraphQL API responses with JSON formatting, error path inspection, cURL reproduction, timestamps, and payload comparison. A practical browser workflow for developers.">
+  <link rel="canonical" href="https://goosekit.dev/use-cases/graphql-response-debugging/">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="GraphQL Response Debugging Workflow">
+  <meta property="og:description" content="Debug GraphQL API responses with JSON formatting, error path inspection, cURL reproduction, timestamps, and payload comparison. A practical browser workflow for developers.">
+  <meta property="og:url" content="https://goosekit.dev/use-cases/graphql-response-debugging/">
+  <meta property="og:site_name" content="Goosekit">
+  <script defer src="/posthog.js"></script>
+  <script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
+  <script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "GraphQL response debugging workflow", "description": "Debug GraphQL API responses with JSON formatting, error path inspection, cURL reproduction, timestamps, and payload comparison. A practical browser workflow for developers.", "mainEntityOfPage": "https://goosekit.dev/use-cases/graphql-response-debugging/", "publisher": {"@type": "Organization", "name": "Goosekit", "url": "https://goosekit.dev"}, "dateModified": "2026-05-23"}</script>
+  <style>*,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e8e8f2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.7}a{color:#ff6a2a;text-decoration:none}a:hover{text-decoration:underline}.wrap{width:min(1080px,calc(100% - 40px));margin:0 auto}.hero{padding:72px 0 42px;background:radial-gradient(circle at 20% 0%,rgba(255,72,0,.18),transparent 34%),#0f0f19}.eyebrow{display:inline-flex;border:1px solid rgba(255,72,0,.28);background:rgba(255,72,0,.1);color:#ffb08a;border-radius:999px;padding:7px 11px;font-size:.83rem;font-weight:750;margin-bottom:16px}h1{font-size:clamp(2.25rem,5vw,4.35rem);line-height:1.02;letter-spacing:-.055em;margin:0 0 18px;color:#fff}.lead{font-size:clamp(1.04rem,2vw,1.24rem);color:#c9c9d8;max-width:760px;margin:0 0 24px}.cta-row{display:flex;gap:12px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 17px;border-radius:12px;font-weight:780;border:1px solid rgba(255,255,255,.11);background:rgba(255,255,255,.045);color:#fff}.btn-primary{background:#ff4800;border-color:#ff4800;box-shadow:0 16px 34px rgba(255,72,0,.22)}main{padding:36px 0 70px}.grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}.card{border:1px solid rgba(255,255,255,.09);background:#181825;border-radius:18px;padding:24px;margin-bottom:18px}.card h2{font-size:1.45rem;margin:0 0 12px;color:#fff}.card h3{font-size:1.05rem;margin:18px 0 8px;color:#fff}.card p,.card li{color:#bebed0}.tool-list{display:grid;gap:9px}.tool-list a,.related a{display:block;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:12px;padding:10px 12px;color:#f4f4fb}.steps{counter-reset:step;list-style:none;padding:0;margin:0}.steps li{counter-increment:step;position:relative;padding-left:42px;margin:0 0 14px}.steps li::before{content:counter(step);position:absolute;left:0;top:0;width:28px;height:28px;display:grid;place-items:center;border-radius:999px;background:#ff4800;color:#fff;font-weight:800}.faq details{border-top:1px solid rgba(255,255,255,.08);padding:13px 0}.faq summary{cursor:pointer;color:#fff;font-weight:760}.muted{color:#9393a8;font-size:.94rem}.site-header{position:sticky;top:0;z-index:30;background:rgba(10,10,26,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}.site-header-inner{width:100%;min-height:56px;padding:8px 16px 8px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px}.site-brand img{width:100px;height:auto;display:block}.site-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;flex:1;gap:8px 14px}.site-nav a{color:#94a3b8;text-decoration:none;font-size:.9rem;font-weight:600;line-height:1}.site-nav a:hover{color:#e2e8f0}.site-nav .nav-cta{color:#fff;background:rgba(255,72,0,.95);border:1px solid rgba(255,72,0,.9);padding:8px 12px;border-radius:11px;box-shadow:0 8px 22px rgba(255,72,0,.16)}footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 0;color:#7f7f97;text-align:center;background:#121222}@media(max-width:820px){.grid{grid-template-columns:1fr}.hero{padding-top:46px}.wrap{width:min(100% - 28px,1080px)}}</style>
+</head>
+<body data-seo-use-case="graphql-response-debugging">
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/"><img src="/logo-dark.png" alt="Goosekit"></a><nav class="site-nav"><a href="/tools/">Tools</a><a href="/use-cases/">Use cases</a><a href="/compare/">Compare</a><a href="/blog/">Blog</a><a href="/ship-it-kit/" class="nav-cta">Ship It Kit</a></nav></div></header>
+<section class="hero"><div class="wrap">
+  <span class="eyebrow">API debugging</span>
+  <h1>GraphQL response debugging workflow</h1>
+  <p class="lead">GraphQL failures can hide inside a 200 response: partial data, nested errors, path arrays, auth-related extensions, stale timestamps, or variables that differ from the request you meant to send.</p>
+  <div class="cta-row"><a class="btn btn-primary" href="/json/" data-use-case-tool-click="graphql-response-debugging">Start with the JSON Formatter</a><a class="btn" href="/use-cases/">Browse use cases</a></div>
+</div></section>
+<main><div class="wrap grid">
+  <article>
+    <section class="card"><h2>How to use this workflow</h2><ol class="steps"><li>Copy the full GraphQL response, including data, errors, extensions, and request ID fields when they exist.</li>
+<li>Format the JSON so each error message, path, location, and partial data branch is visible without scrolling through one long line.</li>
+<li>Compare the variables object from a working and failing request; many GraphQL bugs are caused by one null, enum, ID, or pagination cursor value.</li>
+<li>Decode the bearer token or session JWT only when auth claims matter, and replace secrets before sharing any reproduction.</li>
+<li>Convert a sanitized request cURL into a compact reproduction that preserves headers, operationName, query, and variables.</li></ol></section>
+    <section class="card"><h2>When this helps</h2><ul><li>Debugging GraphQL 200 responses that still contain errors</li>
+<li>Finding which nested resolver failed from errors.path</li>
+<li>Comparing GraphQL variables across frontend, playground, and server logs</li>
+<li>Preparing a sanitized support ticket or teammate handoff for a failing operation</li></ul></section>
+    <section class="card faq"><h2>Quick answers</h2><details><summary>Why does GraphQL return HTTP 200 with errors?</summary><p>Many GraphQL APIs return a successful HTTP transport response while reporting resolver, validation, or authorization errors inside the JSON errors array.</p></details>
+<details><summary>What should I inspect first in a GraphQL error response?</summary><p>Check errors[].message, errors[].path, errors[].extensions.code, operationName, variables, auth headers, and any request or trace ID returned by the API.</p></details>
+<details><summary>Should I share my full GraphQL request publicly?</summary><p>No. Remove tokens, cookies, emails, customer IDs, internal IDs, and sensitive variables. Keep only the operation shape and safe sample values needed to reproduce the issue.</p></details></section>
+  </article>
+  <aside>
+    <section class="card"><h2>Tools in this workflow</h2><div class="tool-list"><a href="/json/">JSON Formatter →</a>
+<a href="/curl-converter/">cURL Converter →</a>
+<a href="/diff/">Diff Checker →</a>
+<a href="/jwt/">JWT Decoder →</a>
+<a href="/timestamp/">Timestamp Converter →</a>
+<a href="/url-encode/">URL Encoder →</a></div></section>
+    <section class="card related"><h2>Related use cases</h2><a href="/use-cases/json-formatter-api-responses/">JSON formatter for API responses →</a>
+<a href="/use-cases/api-error-response-debugging/">API error response debugging workflow →</a>
+<a href="/use-cases/api-request-header-debugging/">API request header debugging workflow →</a></section>
+    <section class="card"><h2>Why Goosekit?</h2><p class="muted">Fast browser tools for everyday debugging: no account wall, no heavy dashboard, and clear links between related tasks.</p></section>
+  </aside>
+</div></main>
+<footer><div class="wrap">Goosekit — free browser tools for developers, creators, and small teams.</div></footer>
+<script>
+(function() {
+  var slug = document.body.getAttribute('data-seo-use-case');
+  function capture(name, props) {
+    if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
+  }
+  capture('seo_use_case_page_viewed', { slug: slug, page_type: 'seo_use_case' });
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('[data-use-case-tool-click]');
+    if (!link) return;
+    capture('seo_use_case_tool_clicked', { slug: slug, target_url: link.getAttribute('href'), link_text: link.textContent.trim() });
+  });
+})();
+</script>
+</body>
+</html>
