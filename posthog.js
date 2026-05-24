@@ -24,4 +24,40 @@
     site: 'goosekit',
     hostname: window.location.hostname
   });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+      if (el.__goosekitPosthogBound) return;
+      el.__goosekitPosthogBound = true;
+
+      el.addEventListener('click', function () {
+        var eventName = el.getAttribute('data-ph-event');
+        if (!eventName || !window.posthog || typeof window.posthog.capture !== 'function') return;
+
+        var href = el.getAttribute('href') || '';
+        var product = el.getAttribute('data-ph-product') ||
+          (href.indexOf('/offline-pack') !== -1 || href.indexOf('/go/offline-pack') !== -1 ? 'offline_pack' :
+          (href.indexOf('/ship-it-kit') !== -1 || href.indexOf('/go/ship-it-kit') !== -1 ? 'ship_it_kit' : 'unknown'));
+
+        window.posthog.capture(eventName, {
+          site: 'goosekit',
+          product: product,
+          location: el.getAttribute('data-ph-location') || 'unknown',
+          path: window.location.pathname,
+          target_href: href || null,
+          ref: new URLSearchParams(window.location.search).get('ref') || null
+        });
+
+        if (href.indexOf('/go/offline-pack') !== -1 || href.indexOf('f897713c-9cd2-4aaa-bd95-abd5ecd6b757') !== -1) {
+          window.posthog.capture('offline_pack_checkout_intent', {
+            site: 'goosekit',
+            product: 'offline_pack',
+            location: el.getAttribute('data-ph-location') || 'unknown',
+            path: window.location.pathname,
+            target_href: href
+          });
+        }
+      });
+    });
+  });
 }());

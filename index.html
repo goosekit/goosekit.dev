@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- SEO -->
-  <title>50 Free Online Tools for Developers, Designers & Students | Goosekit</title>
+  <title>50 Free Online Tools for Developers + Private Local Toolkit | Goosekit</title>
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <meta name="description" content="50 free online tools for developers, designers, and students. JSON formatter, regex tester, JWT decoder, hash generator, Base64, screenshot beautifier, and more. Browser-based, no signup." />
+  <meta name="description" content="50 free online tools for developers, designers, and students. JSON formatter, regex tester, JWT decoder, hash generator, Base64, and more. Browser-based, no signup, with a paid local toolkit for private/offline work." />
   <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
   <meta name="theme-color" content="#0b1120" />
   <link rel="canonical" href="https://goosekit.dev/" />
@@ -19,8 +19,8 @@
 
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="50 Free Online Tools for Developers, Designers & Students | Goosekit" />
-  <meta property="og:description" content="50 free online tools for developers, designers, and students. JSON formatter, regex tester, JWT decoder, hash generator, Base64, screenshot beautifier, and more. Browser-based, no signup." />
+  <meta property="og:title" content="50 Free Online Tools for Developers + Private Local Toolkit | Goosekit" />
+  <meta property="og:description" content="50 free online tools for developers, designers, and students. JSON formatter, regex tester, JWT decoder, hash generator, Base64, and more. Browser-based, no signup, with a paid local toolkit for private/offline work." />
   <meta property="og:url" content="https://goosekit.dev/" />
   <meta property="og:site_name" content="Goosekit" />
   <meta property="og:image" content="https://goosekit.dev/brand/og-image.png" />
@@ -28,7 +28,7 @@
 
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="50 Free Online Tools for Developers, Designers & Students | Goosekit" />
+  <meta name="twitter:title" content="50 Free Online Tools for Developers + Private Local Toolkit | Goosekit" />
   <meta name="twitter:image" content="https://goosekit.dev/brand/og-image.png" />
   <meta name="twitter:image:alt" content="Preview image for 50 Free Online Tools for Developers, Designers & Students" />
   <meta name="twitter:description" content="50 free online tools for developers, designers, and students. Browser-based, no signup, no tracking." />
@@ -1129,10 +1129,10 @@
       <a href="/tools/for-students/">Students</a>
       <a href="/compare/">Compare</a>
       <a href="/blog/">Blog</a>
-      <a href="/offline-pack/?ref=homepage_nav">Offline Pack</a>
+      <a href="/offline-pack/?ref=homepage_nav" data-ph-event="offline_pack_cta_clicked" data-ph-location="homepage_nav_link" data-ph-product="offline_pack">Offline Pack</a>
       <a href="/api/">API</a>
       <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" target="_blank" rel="noopener">Extension</a>
-      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
+      <a class="nav-cta" href="/offline-pack/?ref=homepage_nav_cta" data-ph-event="offline_pack_cta_clicked" data-ph-location="homepage_nav_cta" data-ph-product="offline_pack">Private Local Toolkit</a>
     </nav>
   </div>
 </header>
@@ -1162,8 +1162,8 @@
       <span class="spark">🪿</span>
       <span>Already <span class="count" data-count-target="3475">3,475</span>+ people only swear by the Goose</span>
     </div>
-    <p style="margin:18px auto 0;max-width:640px;font-size:0.96rem;color:#a7b0c5;">
-      Building a SaaS MVP too? <a href="/go/ship-it-kit/homepage-hero-soft/?source=homepage_soft_cta" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="homepage_hero_soft" style="color:#fed7aa;font-weight:700;text-decoration:none;">Ship It Kit gives you a focused Next.js + Supabase + Stripe starter</a> — no popup, just a shortcut if that stack fits.
+    <p style="margin:18px auto 0;max-width:760px;font-size:0.96rem;color:#a7b0c5;">
+      Need the paid Goosekit path? <a href="/offline-pack/?ref=homepage_hero_local_toolkit" data-ph-event="offline_pack_cta_clicked" data-ph-location="homepage_hero_primary" data-ph-product="offline_pack" style="color:#fed7aa;font-weight:700;text-decoration:none;">The Private Local Toolkit gives you 12 Goosekit tools in one offline folder</a> for JSON, JWT, regex, SQL, diff, and payload work. Building on Next.js + Supabase + Stripe instead? <a href="/go/ship-it-kit/homepage-hero-secondary/?source=homepage_hero_secondary" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="homepage_hero_secondary" data-ph-product="ship_it_kit" style="color:#ffb08a;font-weight:700;text-decoration:none;">Ship It Kit is the exact-fit starter</a>.
     </p>
 
   </header>
@@ -2237,9 +2237,9 @@
       <div class="footer-links">
         <a href="/blog/">Blog</a>
         <a href="/collections/">Collections</a>
+        <a href="/offline-pack/?ref=homepage_footer" data-ph-event="offline_pack_cta_clicked" data-ph-location="homepage_footer" data-ph-product="offline_pack">Local Toolkit</a>
         <a href="/api/">API</a>
         <a href="/go/ship-it-kit/product-from-home-promo/">Ship It Kit</a>
-        <a href="/offline-pack/">Offline Pack</a>
         <a href="/goose-monitor/">Goose Monitor</a>
         <a href="/refund-radar/">Refund Radar</a>
       </div>
@@ -2253,7 +2253,7 @@
         const deadline = new Date('2026-04-30T21:59:59Z');
         const now = new Date();
         const days = Math.ceil((deadline - now) / 86400000);
-        let text = '⚡ Ship It Kit checkout is open at €49';
+        let text = '🔒 Goosekit Local Toolkit is open at €29';
         if (days > 1) text = `⚡ ${days} days left in the current offer — check fit first`;
         else if (days === 1) text = '⚡ 1 day left in the current offer — check fit first';
         else if (days === 0) text = '⚡ Current offer closes today — check fit first';
@@ -2340,9 +2340,21 @@
         }
       }
 
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture(el.getAttribute('data-ph-event'), {
+              location: el.getAttribute('data-ph-location') || 'unknown',
+              product: el.getAttribute('data-ph-product') || 'unknown',
+              page: 'homepage',
+              target_href: el.getAttribute('href') || null
+            });
+          }
+        });
+      });
+
       loadVisitorCount();
     })();
   </script>
 </body>
 </html>
-

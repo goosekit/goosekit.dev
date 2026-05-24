@@ -206,7 +206,6 @@
   <url><loc>https://goosekit.dev/use-cases/uuid-generator-test-data/</loc><lastmod>2026-05-20</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <url><loc>https://goosekit.dev/use-cases/webhook-payload-debugging/</loc><lastmod>2026-05-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
-
   <url><loc>https://goosekit.dev/use-cases/api-error-response-debugging/</loc><lastmod>2026-05-21</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <url><loc>https://goosekit.dev/use-cases/api-request-header-debugging/</loc><lastmod>2026-05-22</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
@@ -214,4 +213,10 @@
   <url><loc>https://goosekit.dev/use-cases/graphql-response-debugging/</loc><lastmod>2026-05-23</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <url><loc>https://goosekit.dev/use-cases/api-pagination-debugging/</loc><lastmod>2026-05-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <url><loc>https://goosekit.dev/blog/format-json-locally-without-upload/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/blog/offline-jwt-decoder/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/blog/private-developer-tools/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/blog/local-regex-tester/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/blog/developer-toolkit-for-sensitive-data/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
 </urlset>

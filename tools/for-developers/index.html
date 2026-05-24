@@ -287,8 +287,8 @@
       </div>
       <a href="/compare/">Compare</a>
       <a href="/blog/">Blog</a>
-      <a href="/offline-pack/">Offline Pack</a>
-      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
+      <a href="/offline-pack/?ref=developers_nav_link" data-ph-event="offline_pack_cta_clicked" data-ph-location="developers_nav_link" data-ph-product="offline_pack">Offline Pack</a>
+      <a class="nav-cta" href="/offline-pack/?ref=developers_nav_cta" data-ph-event="offline_pack_cta_clicked" data-ph-location="developers_nav_cta" data-ph-product="offline_pack">Local Toolkit</a>
     </nav>
   </div>
 </header>
@@ -380,10 +380,10 @@
       </ul>
     </div>
 
-    <section class="builder-cta" aria-label="Ship It Kit for developer tool users">
-      <strong>Using these tools while building a SaaS?</strong>
-      <p>Ship It Kit is a one-time Next.js, Supabase, and Stripe starter for getting auth, billing, and a product foundation in place faster.</p>
-      <a href="/go/ship-it-kit/product-from-developer-tools-page/">See the Ship It Kit starter</a>
+    <section class="builder-cta" aria-label="Paid Goosekit options for developer tool users">
+      <strong>Want the paid Goosekit version first?</strong>
+      <p><a href="/offline-pack/?ref=developers_page_builder_cta" data-ph-event="offline_pack_cta_clicked" data-ph-location="developers_builder_primary" data-ph-product="offline_pack">Goosekit Local Toolkit is the private local developer toolkit</a>: 12 browser tools in one portable folder for offline JSON, regex, JWT, diff, SQL, and API work.</p>
+      <p style="margin-top:.75rem;">Building a SaaS on Next.js + Supabase + Stripe? <a href="/go/ship-it-kit/product-from-developer-tools-page/?source=developers_builder_secondary" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="developers_builder_secondary" data-ph-product="ship_it_kit">Ship It Kit is the exact-fit starter</a>.</p>
     </section>
 
     <div class="outro" style="margin-top:2rem">
@@ -395,5 +395,21 @@
   <footer>
     <p>© 2026 <a href="https://goosekit.dev">Goosekit</a> — Free online tools, zero tracking.</p>
   </footer>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('[data-ph-event]').forEach(function (el) {
+        el.addEventListener('click', function () {
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture(el.getAttribute('data-ph-event'), {
+              location: el.getAttribute('data-ph-location') || 'unknown',
+              product: el.getAttribute('data-ph-product') || 'unknown',
+              page: 'tools_for_developers',
+              target_href: el.getAttribute('href') || null
+            });
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

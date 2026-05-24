@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecting to Goosekit Offline Pack checkout…</title>
+  <title>Redirecting to Goosekit Local Toolkit checkout…</title>
 <script defer src="/posthog.js"></script>
 <style id="gk-homepage-header-copy-styles">
   .site-header {
@@ -209,14 +209,14 @@
       <a href="/compare/">Compare</a>
       <a href="/blog/">Blog</a>
       <a href="/offline-pack/">Offline Pack</a>
-      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
+      <a class="nav-cta" href="/offline-pack/?ref=nav_primary">Local Toolkit</a>
     </nav>
   </div>
 </header>
 
 <div style="max-width:560px;text-align:center;">
-    <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,0.12);border:1px solid rgba(255,72,0,0.24);color:#ffbf9f;font-weight:700;margin-bottom:16px;">Goosekit Offline Pack</div>
-    <h1 style="margin:0 0 12px;font-size:2rem;">Redirecting to checkout…</h1>
+    <div style="display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,0.12);border:1px solid rgba(255,72,0,0.24);color:#ffbf9f;font-weight:700;margin-bottom:16px;">Private Local Toolkit</div>
+    <h1 style="margin:0 0 12px;font-size:2rem;">Opening secure checkout…</h1>
     <p style="margin:0 0 16px;color:#9fb0c9;line-height:1.6;">If nothing happens automatically, use the link below.</p>
     <p style="margin:0;"><a href="https://shipitstudio.lemonsqueezy.com/checkout/buy/f897713c-9cd2-4aaa-bd95-abd5ecd6b757" data-manual-checkout-link="true" style="color:#ff4800;font-weight:700;text-decoration:none;">Continue to checkout →</a></p>
   </div>
@@ -234,7 +234,9 @@
       capture('offline_pack_checkout_redirect_viewed', {
         source: source,
         path: window.location.pathname,
-        product: 'offline_pack'
+        product: 'offline_pack',
+        offer: 'private_local_developer_toolkit',
+        price_eur: 29
       });
 
       var manual = document.querySelector('[data-manual-checkout-link]');
@@ -242,14 +244,18 @@
         manual.addEventListener('click', function () {
           capture('offline_pack_checkout_manual_click', {
             source: source,
-            product: 'offline_pack'
+            product: 'offline_pack',
+            offer: 'private_local_developer_toolkit',
+            price_eur: 29
           });
         });
       }
 
       capture('offline_pack_checkout_redirected', {
         source: source,
-        product: 'offline_pack'
+        product: 'offline_pack',
+        offer: 'private_local_developer_toolkit',
+        price_eur: 29
       });
       var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
       window.location.replace(checkoutUrl + glue + params.toString());
