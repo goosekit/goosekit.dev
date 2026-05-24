@@ -205,6 +205,21 @@ PAGES = [
         "related": ["json-formatter-api-responses", "api-error-response-debugging", "api-request-header-debugging"],
     },
 
+    {
+        "slug": "api-pagination-debugging",
+        "title": "API Pagination Debugging Workflow",
+        "description": "Debug cursor and page-based API pagination with JSON formatting, URL parameter checks, cURL reproduction, timestamps, and response comparison.",
+        "h1": "API pagination debugging workflow",
+        "eyebrow": "API debugging",
+        "problem": "Pagination bugs often look like missing data, duplicate rows, empty next pages, or infinite loops, but the cause is usually one cursor, query parameter, sort order, or timestamp boundary.",
+        "primary_tool": {"name": "Start with the JSON Formatter", "url": "/json/"},
+        "tools": [("JSON Formatter", "/json/"), ("URL Encoder", "/url-encode/"), ("cURL Converter", "/curl-converter/"), ("Timestamp Converter", "/timestamp/"), ("Diff Checker", "/diff/")],
+        "steps": ["Copy the full paginated response, including items, next_cursor, previous_cursor, page, limit, total, has_more, and any request ID fields.", "Format the JSON so pagination metadata is visible next to the returned records instead of buried in one long response.", "Decode and compare the request URL parameters for page, cursor, limit, offset, order, since, until, and filters before changing backend code.", "Convert a sanitized cURL request when you need to reproduce the exact failing page with headers and query parameters preserved.", "Diff a working page and a failing page to spot changed cursors, duplicated IDs, unstable sort fields, or time-window boundaries."],
+        "cases": ["Debugging duplicate or missing records in cursor pagination", "Checking page, offset, limit, and sort parameters in REST APIs", "Investigating infinite scroll loops that keep fetching the same page", "Preparing a sanitized API bug report for a pagination issue"],
+        "faq": [("What should I capture for a pagination bug?", "Capture the request URL, query parameters, response body, pagination metadata, first and last item IDs, sort field, timestamp filters, status code, and a request ID if available."), ("Why does cursor pagination return duplicates?", "Common causes are unstable sorting, records changing during pagination, reusing an old cursor, mixing filters between pages, or treating an opaque cursor as an editable value."), ("Should I edit cursor values by hand?", "Usually no. Treat provider cursors as opaque strings. Decode URLs only to inspect parameters safely, not to invent new cursors unless the API documents that behavior.")],
+        "related": ["api-error-response-debugging", "graphql-response-debugging", "curl-converter-api-clients"],
+    },
+
 ]
 
 SLUG_TO_PAGE = {p["slug"]: p for p in PAGES}
