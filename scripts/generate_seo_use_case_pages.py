@@ -33,7 +33,7 @@ PAGES = [
         "steps": ["Paste a JWT from a cookie, Authorization header, or test request.", "Read the header and payload without changing the token.", "Check common claims like exp, iat, aud, iss, sub, role, and provider-specific metadata.", "Use the timestamp converter for Unix expiry values and JSON formatter for copied claims."],
         "cases": ["Debugging Auth.js session tokens", "Checking Supabase JWT role claims", "Inspecting API tokens before testing a protected endpoint"],
         "faq": [("Does decoding verify the signature?", "No. Decoding helps inspect token contents; signature verification requires the appropriate secret or public key."), ("Is it safe to paste real JWTs?", "Prefer short-lived development tokens or sanitized examples. Never share production tokens in public threads or bug reports."), ("Why does my token look valid but fail?", "Check expiry, audience, issuer, and whether the backend expects a different signing key or algorithm.")],
-        "related": ["json-formatter-api-responses", "timestamp-converter-unix", "base64-decoder-api-debugging"],
+        "related": ["oauth-callback-url-debugging", "json-formatter-api-responses", "timestamp-converter-unix"],
     },
     {
         "slug": "regex-tester-javascript",
@@ -89,7 +89,7 @@ PAGES = [
         "steps": ["Paste the URL, callback, or query parameter you need to inspect.", "Decode it to see the real target, nested redirect, or search parameters.", "Encode only the parameter value when building API URLs; avoid encoding the entire URL unless that is required.", "Use the diff checker if two URLs look identical but behave differently."],
         "cases": ["Debugging OAuth callback URLs", "Building API query strings", "Checking redirect URLs in email or checkout flows"],
         "faq": [("What is double encoding?", "It happens when an already encoded value is encoded again, often turning % into %25."), ("Should spaces be + or %20?", "It depends on context. Query form encoding often uses +, while general URL encoding uses %20."), ("Can I decode tracking links?", "Yes, but be careful not to open unknown targets you do not trust.")],
-        "related": ["curl-converter-api-clients", "regex-tester-javascript", "json-formatter-api-responses"],
+        "related": ["oauth-callback-url-debugging", "curl-converter-api-clients", "json-formatter-api-responses"],
     },
     {
         "slug": "timestamp-converter-unix",
@@ -174,7 +174,7 @@ PAGES = [
         "steps": ["Copy the failing request as cURL from DevTools, your API client, server logs, or the provider dashboard.", "Check the Authorization header first: decode bearer JWT claims, inspect expiry timestamps, and replace secrets with placeholders before sharing anything.", "Decode Basic Auth or encoded header fragments with the Base64 tool, then verify whether the decoded value is text, JSON, or a token-shaped string.", "Confirm content-type, accept, idempotency, signature, and webhook timestamp headers against the API docs before changing application code.", "Use the cURL converter to preserve method, headers, and body while building a clean reproduction for a teammate, support ticket, or test case."],
         "cases": ["Debugging 401, 403, and 415 API responses", "Checking Authorization and Basic Auth headers without exposing secrets", "Reproducing webhook signature or timestamp failures", "Preparing a sanitized API bug report that keeps headers and body structure intact"],
         "faq": [("Which headers should I inspect first?", "Start with Authorization, content-type, accept, idempotency keys, signature headers, request IDs, and provider-specific timestamp headers."), ("Should I paste production tokens into browser tools?", "Prefer development tokens or sanitized samples. Never publish real tokens, cookies, API keys, or customer identifiers in bug reports."), ("Why does my request work in Postman but fail in the app?", "Common causes are missing headers, different content-type, expired tokens, CORS context, double-encoded values, or middleware changing the raw body before signature verification.")],
-        "related": ["api-error-response-debugging", "jwt-decoder-authjs", "base64-decoder-api-debugging"],
+        "related": ["oauth-callback-url-debugging", "api-error-response-debugging", "jwt-decoder-authjs"],
     },
     {
         "slug": "uuid-generator-test-data",
@@ -218,6 +218,20 @@ PAGES = [
         "cases": ["Debugging duplicate or missing records in cursor pagination", "Checking page, offset, limit, and sort parameters in REST APIs", "Investigating infinite scroll loops that keep fetching the same page", "Preparing a sanitized API bug report for a pagination issue"],
         "faq": [("What should I capture for a pagination bug?", "Capture the request URL, query parameters, response body, pagination metadata, first and last item IDs, sort field, timestamp filters, status code, and a request ID if available."), ("Why does cursor pagination return duplicates?", "Common causes are unstable sorting, records changing during pagination, reusing an old cursor, mixing filters between pages, or treating an opaque cursor as an editable value."), ("Should I edit cursor values by hand?", "Usually no. Treat provider cursors as opaque strings. Decode URLs only to inspect parameters safely, not to invent new cursors unless the API documents that behavior.")],
         "related": ["api-error-response-debugging", "graphql-response-debugging", "curl-converter-api-clients"],
+    },
+    {
+        "slug": "oauth-callback-url-debugging",
+        "title": "OAuth Callback URL Debugging Workflow",
+        "description": "Debug OAuth callback URLs, redirect_uri mismatches, state parameters, JWT claims, and failed auth redirects with practical browser tools.",
+        "h1": "OAuth callback URL debugging workflow",
+        "eyebrow": "Auth debugging",
+        "problem": "OAuth failures often look vague in the browser, but the cause is usually concrete: a mismatched redirect_uri, double-encoded callback, expired state value, wrong audience claim, or a callback URL that differs between local, preview, and production environments.",
+        "primary_tool": {"name": "Start with the URL Encoder", "url": "/url-encode/"},
+        "tools": [("URL Encoder", "/url-encode/"), ("JWT Decoder", "/jwt/"), ("Timestamp Converter", "/timestamp/"), ("JSON Formatter", "/json/"), ("cURL Converter", "/curl-converter/"), ("Diff Checker", "/diff/")],
+        "steps": ["Copy the full failing callback URL from the browser address bar, network tab, auth provider log, or local server log.", "Decode the query string and inspect redirect_uri, state, code, error, error_description, scope, client_id, and provider-specific parameters separately.", "Compare the decoded redirect URI against the exact callback URL registered in your OAuth provider for local, preview, and production environments.", "Decode only development or sanitized JWTs when token claims matter, then check issuer, audience, expiry, subject, and provider metadata.", "Use diff when two callback URLs look the same but one fails; double encoding, trailing slashes, ports, and protocol changes are easy to miss."],
+        "cases": ["Fixing redirect_uri_mismatch errors from OAuth providers", "Debugging Auth.js, Supabase, Clerk, or custom OAuth callback failures", "Checking state, nonce, and callback parameters without sharing real tokens", "Comparing local, preview, and production auth redirect URLs before changing app config"],
+        "faq": [("What should I capture for an OAuth callback bug?", "Capture the full callback URL, decoded query parameters, provider error message, environment, registered redirect URI, timestamp, and relevant request or trace ID. Replace tokens and user identifiers before sharing."), ("Why does OAuth work locally but fail in production?", "Common causes are a different protocol, host, port, path, trailing slash, preview domain, stale provider configuration, or an environment variable that still points at localhost."), ("Should I paste real authorization codes or tokens into tools?", "Use short-lived development examples when possible and sanitize anything shared. Authorization codes, JWTs, cookies, and refresh tokens should be treated as secrets.")],
+        "related": ["url-encoder-api-requests", "jwt-decoder-authjs", "api-request-header-debugging"],
     },
 
 ]

@@ -219,4 +219,5 @@
   <url><loc>https://goosekit.dev/blog/private-developer-tools/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/local-regex-tester/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/developer-toolkit-for-sensitive-data/</loc><lastmod>2026-05-23</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/oauth-callback-url-debugging/</loc><lastmod>2026-05-25</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 </urlset>
