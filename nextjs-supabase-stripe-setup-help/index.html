@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next.js + Supabase + Stripe Setup Help — Auth, Billing, Webhooks</title>
+  <meta name="description" content="Scoped setup help for Next.js apps using Supabase auth and Stripe billing. Get auth callbacks, checkout, customer portal, webhooks, env variables, and paid-user state reviewed or wired.">
+  <link rel="canonical" href="https://goosekit.dev/nextjs-supabase-stripe-setup-help/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://goosekit.dev/brand/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Next.js + Supabase + Stripe Setup Help">
+  <meta property="og:description" content="Scoped help for auth callbacks, Stripe checkout, billing portal, webhooks, env drift, and paid-user state in a real repo.">
+  <meta property="og:url" content="https://goosekit.dev/nextjs-supabase-stripe-setup-help/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.16),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.68}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:56px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:28px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 16px}h3{margin:0 0 10px;font-size:1.12rem}p,li{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:20px;padding:24px}.price{font-size:2.7rem;letter-spacing:-.05em;font-weight:950;margin:10px 0 0}.fine,.muted{color:#9090aa;font-size:.94rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.primary:hover{background:#e13f00;text-decoration:none}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.secondary:hover{border-color:#ff9040;text-decoration:none}.section{margin-top:58px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}ul{list-style:none;padding:0;margin:0}li{position:relative;padding-left:27px;margin:10px 0}li::before{content:'✓';position:absolute;left:0;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.steps{counter-reset:step}.step{position:relative;padding-left:56px}.step::before{counter-increment:step;content:counter(step);position:absolute;left:20px;top:23px;width:26px;height:26px;border-radius:999px;background:#ff4800;color:#fff;display:grid;place-items:center;font-weight:900}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.tag{display:inline-block;border:1px solid #34344e;border-radius:999px;padding:5px 9px;color:#d8d8e5;font-size:.82rem;margin:4px 4px 0 0}@media(max-width:860px){.hero,.grid3,.grid2{grid-template-columns:1fr}nav{margin-bottom:36px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav><a href="/">← Goosekit</a><a href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=setup_help_nav_checklist">Setup checklist</a></nav>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Scoped setup help for SaaS builders</div>
+        <h1>Next.js + Supabase + Stripe setup help.</h1>
+        <p class="lead">For founders who already have a repo and need the boring revenue plumbing finished: Supabase auth callbacks, protected routes, Stripe checkout, customer portal, webhooks, environment variables, and paid-user state.</p>
+        <p class="lead">This is not a full agency build. Send the current repo state and the exact blocker. If it is narrow enough to scope safely, you get a fixed-scope quote. If not, you get a straight no.</p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_hero">Request setup help →</a>
+          <a class="btn secondary" href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=setup_help_hero_checklist" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_checklist">Use the checklist first</a>
+        </div>
+        <p class="fine">Typical first scope starts at €199. Availability is manual and case-by-case.</p>
+      </div>
+      <aside class="card strip">
+        <h2>Best first scope</h2>
+        <div class="price">€199+ <span class="fine">fixed scope</span></div>
+        <p>Most useful when you are close to launch but stuck in auth/billing wiring instead of product validation.</p>
+        <div>
+          <span class="tag">Next.js App Router</span><span class="tag">Supabase auth</span><span class="tag">Stripe Checkout</span><span class="tag">Webhooks</span><span class="tag">Vercel envs</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section grid3">
+      <div class="card"><h3>Auth callback review</h3><p>Confirm Supabase callback routes, middleware/session handling, redirect allowlists, password recovery, OAuth, and protected route behavior.</p></div>
+      <div class="card"><h3>Stripe billing wiring</h3><p>Review checkout sessions, customer references, portal route, live/test env split, success/cancel URLs, and paid-user gating.</p></div>
+      <div class="card"><h3>Webhook sanity pass</h3><p>Check raw-body signature handling, idempotency, event coverage, database updates, local Stripe CLI testing, and production endpoint config.</p></div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>This is a fit if…</h2>
+        <ul>
+          <li>Your app is already Next.js, Supabase, and Stripe or very close.</li>
+          <li>You can share the repo state, screenshots/logs, or exact error path.</li>
+          <li>The request is setup/review/integration, not “build my SaaS from scratch”.</li>
+          <li>You want a small fixed-scope pass that gets you back to product work.</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h2>Common blockers this catches</h2>
+        <ul>
+          <li>OAuth or magic-link callback works locally but fails on Vercel.</li>
+          <li>Stripe checkout returns to the wrong domain or loses the app user.</li>
+          <li>Webhook fires but the Supabase paid state is not updated reliably.</li>
+          <li>Customer portal exists but cancellation/downgrade state is unclear.</li>
+          <li>Preview, production, and local environment variables drift apart.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section steps grid3">
+      <div class="card step"><h3>1. Send context</h3><p>Stack, repo state, what is broken, current deployment, and the exact outcome you want.</p></div>
+      <div class="card step"><h3>2. Scope or decline</h3><p>If the request can be done safely as a small pass, you get a fixed quote and expected output. If not, it is declined instead of becoming vague consulting.</p></div>
+      <div class="card step"><h3>3. Setup pass</h3><p>The output is practical: reviewed routes/config, implementation notes, or a narrow wiring pass depending on agreed scope.</p></div>
+    </section>
+
+    <section class="section card">
+      <h2>What to include in the first email</h2>
+      <ul>
+        <li>Current stack: Next.js version/router, Supabase package pattern, Stripe mode, deployment host.</li>
+        <li>Repo state: new app, existing app, Ship It Kit purchase, or custom codebase.</li>
+        <li>Exact blocker: auth callback, route protection, checkout, portal, webhook, paid state, env variables, or deployment.</li>
+        <li>What “done” means for this pass: review notes, fixed route, webhook debug, or launch sanity check.</li>
+        <li>Deadline and budget range, even if rough.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_bottom">Send setup request →</a>
+        <a class="btn secondary" href="/ship-it-kit/?ref=nextjs_setup_help_bottom_product" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_product">Need the starter instead?</a>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>FAQ for this stack</h2>
+      <div class="grid2">
+        <div>
+          <h3>How is this different from a free starter?</h3>
+          <p>Free starters are useful, but the last mile is usually project-specific: callback URLs, Supabase auth package choices, Stripe product IDs, webhook secrets, database sync, and deployment envs. This offer is for that last-mile setup/debug pass.</p>
+        </div>
+        <div>
+          <h3>Does this replace Ship It Kit?</h3>
+          <p>No. Ship It Kit is the starter. Setup help is for people who already have a repo, bought a starter, or copied a free example and need the auth + billing flow adapted safely.</p>
+        </div>
+        <div>
+          <h3>What is not included?</h3>
+          <p>No full SaaS build, enterprise RBAC, compliance review, custom multi-tenant architecture, or unlimited support. Those need a different scope.</p>
+        </div>
+        <div>
+          <h3>What evidence should I send?</h3>
+          <p>Send the failing route, screenshots/logs, package versions, deployment host, Supabase redirect settings, Stripe webhook status, and what the paid-user state should become after checkout.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card"><h2>Starter vs setup help</h2><p><strong>Buy Ship It Kit</strong> if you want a clean Next.js + Supabase + Stripe starter and can adapt it yourself. <strong>Ask for setup help</strong> if you already have a real repo and need billing/auth wiring reviewed or adapted.</p></div>
+      <div class="card"><h2>No fake certainty</h2><p>Some repos are too custom for a small pass. In that case, the honest answer is to decline or suggest the smallest diagnostic step, not pretend every integration can be fixed for a flat fee.</p></div>
+    </section>
+  </main>
+</body>
+</html>
