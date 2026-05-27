@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Webhook Not Updating Supabase Paid Status? Next.js Debug Checklist</title>
+  <meta name="description" content="A practical checklist for Next.js + Supabase apps where Stripe checkout succeeds but paid-user state, subscriptions, or portal access do not update correctly.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-webhook-supabase-paid-status/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Webhook Not Updating Supabase Paid Status?">
+  <meta property="og:description" content="Debug checkout success, webhook signatures, Supabase user mapping, subscription state, and paid route access in a Next.js app.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-webhook-supabase-paid-status/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.25rem,6vw,4.5rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.75rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:790px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=webhook_guide_nav">Setup help</a></div>
+    <div class="eyebrow">Next.js billing debug</div>
+    <h1>Stripe webhook not updating Supabase paid status?</h1>
+    <p class="lead">The awkward failure mode is common: checkout succeeds, Stripe shows a customer or subscription, but your Next.js app still treats the user as free. Use this checklist to find whether the bug is in the webhook, user mapping, database update, or route gate.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">Start with the likely failure</h2>
+      <p>If the user paid but the app did not unlock, do not keep changing the checkout button. Follow the path: checkout metadata → webhook signature → event handler → Supabase write → app-side paid-state read.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=webhook_guide_top" data-ph-event="setup_help_interest" data-ph-location="webhook_paid_status_top">Need a setup/debug pass?</a>
+        <a class="btn secondary" href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=webhook_guide_top_checklist" data-ph-event="setup_help_secondary_clicked" data-ph-location="webhook_paid_status_checklist">Full setup checklist</a>
+      </div>
+      <p class="note">Fixed-scope setup help starts at €199 when the repo and blocker are narrow enough to review safely.</p>
+    </section>
+
+    <section>
+      <h2>1. Confirm checkout is carrying the right app user</h2>
+      <ul class="checklist">
+        <li>Pass a stable internal user ID in Stripe Checkout metadata, for example <span class="code">supabase_user_id</span>.</li>
+        <li>Store or reuse the Stripe customer ID for that same internal user. Avoid creating a new customer on every checkout attempt.</li>
+        <li>Check the successful Checkout Session in Stripe Dashboard and confirm the metadata is present there, not only in your code.</li>
+        <li>Make the success URL cosmetic only. Unlocking paid access should come from webhook-confirmed state, not from visiting <span class="code">/success</span>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Verify the webhook signature with the raw body</h2>
+      <p>In Next.js, many webhook bugs come from parsing the request before Stripe verifies the signature. Stripe needs the exact raw request body plus the correct signing secret for that endpoint.</p>
+      <ul class="checklist warn">
+        <li>Use the webhook signing secret for the same endpoint and mode: local CLI, test dashboard, and live dashboard are different.</li>
+        <li>Do not verify against already-parsed JSON.</li>
+        <li>Log rejected signature errors separately from handler errors so you know whether the event reached your business logic.</li>
+        <li>In production, confirm Stripe is posting to your real domain, not a preview or old Vercel URL.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Handle the subscription events that change access</h2>
+      <p>For a subscription SaaS, <span class="code">checkout.session.completed</span> is not enough. It starts the story; later events keep the app state honest.</p>
+      <div class="grid2">
+        <div class="card"><h3>Minimum events</h3><ul class="checklist"><li><span class="code">checkout.session.completed</span></li><li><span class="code">customer.subscription.updated</span></li><li><span class="code">customer.subscription.deleted</span></li><li><span class="code">invoice.paid</span></li><li><span class="code">invoice.payment_failed</span></li></ul></div>
+        <div class="card"><h3>State to store</h3><ul class="checklist"><li>Stripe customer ID</li><li>Subscription ID</li><li>Price/plan ID</li><li>Status: trialing, active, past_due, canceled</li><li>Last webhook event ID and timestamp</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Make Supabase writes idempotent and server-only</h2>
+      <ul class="checklist">
+        <li>Use a server-side Supabase client with the correct service role only inside the webhook route or trusted backend code.</li>
+        <li>Upsert by a stable unique key such as user ID, customer ID, or subscription ID.</li>
+        <li>Record processed Stripe event IDs so duplicate webhook delivery does not create inconsistent state.</li>
+        <li>Fail closed: if the update fails, log it and keep the user unpaid until a real webhook/database write succeeds.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Test the app-side gate separately</h2>
+      <p>Sometimes Stripe and Supabase are correct, but the dashboard still reads stale state or checks the wrong table.</p>
+      <ul class="checklist">
+        <li>Inspect the exact Supabase row after a test payment. Confirm it has the expected user ID and paid status.</li>
+        <li>Test with a brand-new browser profile and a brand-new user, not only your admin account.</li>
+        <li>Make the protected route read from your internal paid-state table, not directly from Stripe on every request.</li>
+        <li>Add a small internal debug view before launch: user ID, customer ID, subscription status, last webhook time.</li>
+      </ul>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">When to stop debugging alone</h2>
+      <p>If checkout succeeds but access still fails after checking metadata, signature verification, webhook events, Supabase writes, and route gating, the next useful step is a narrow repo review — not another generic tutorial.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20%2B%20Supabase%20paid%20status%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20debugging%20Stripe%20webhooks%20%2B%20Supabase%20paid-user%20state.%0A%0AStack%3A%20Next.js%20%2F%20Supabase%20%2F%20Stripe%0AWhat%20works%3A%0AWhat%20fails%3A%0AStripe%20event(s)%20seen%3A%0ASupabase%20row%20state%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_paid_status_bottom_mailto">Request setup help →</a>
+        <a class="btn secondary" href="/ship-it-kit/?ref=webhook_guide_bottom_product" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="webhook_paid_status_product">Need a cleaner starter?</a>
+      </div>
+      <p class="note">No fake certainty: some repos need a larger architecture pass. The first useful output is a small, honest scope or a clear decline.</p>
+    </section>
+  </main>
+</body>
+</html>
