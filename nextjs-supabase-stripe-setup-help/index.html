@@ -31,9 +31,10 @@
         <p class="lead">For founders who already have a repo and need the boring revenue plumbing finished: Supabase auth callbacks, protected routes, Stripe checkout, customer portal, webhooks, environment variables, and paid-user state.</p>
         <p class="lead">This is not a full agency build. Send the current repo state and the exact blocker. If it is narrow enough to scope safely, you get a fixed-scope quote. If not, you get a straight no.</p>
         <div class="actions">
-          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_hero">Request setup help →</a>
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADebug%20artifacts%20I%20can%20send%20%28logs%2C%20screenshots%2C%20settings%2C%20file%20paths%29%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_hero">Request setup help →</a>
           <a class="btn secondary" href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=setup_help_hero_checklist" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_checklist">Use the checklist first</a>
           <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=setup_help_hero_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_webhook_guide">Webhook paid-state debug</a>
+          <a class="btn secondary" href="/blog/supabase-auth-callback-vercel-production/?ref=setup_help_hero_auth_callback" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_auth_callback_guide">Auth callback debug</a>
         </div>
         <p class="fine">Typical first scope starts at €199. Availability is manual and case-by-case.</p>
       </div>
@@ -91,8 +92,38 @@
         <li>Deadline and budget range, even if rough.</li>
       </ul>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_bottom">Send setup request →</a>
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADebug%20artifacts%20I%20can%20send%20%28logs%2C%20screenshots%2C%20settings%2C%20file%20paths%29%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="nextjs_setup_help_bottom">Send setup request →</a>
         <a class="btn secondary" href="/ship-it-kit/?ref=nextjs_setup_help_bottom_product" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_product">Need the starter instead?</a>
+      </div>
+    </section>
+
+
+    <section class="section card">
+      <h2>Debug artifacts that make this cheaper to scope</h2>
+      <p>Do not send secrets in the first email. Send sanitized evidence that shows where the flow breaks, then repo access can be handled only if the scope is real.</p>
+      <div class="grid2">
+        <div>
+          <h3>For auth callback bugs</h3>
+          <ul>
+            <li>Production URL, callback route path, and the exact final URL after login fails.</li>
+            <li>Supabase Site URL plus redirect allowlist summary, with secrets removed.</li>
+            <li>Vercel env variable names used for app URL / Supabase URL, not secret values.</li>
+            <li>Relevant auth files or file paths: login action, callback route, middleware, Supabase client helpers.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>For Stripe billing bugs</h3>
+          <ul>
+            <li>Checkout Session ID or test event ID, with customer email/token data redacted.</li>
+            <li>Webhook endpoint mode, recent delivery status, and any signature/handler error.</li>
+            <li>Expected Supabase row/table state after checkout and the actual row state.</li>
+            <li>Success/cancel URL behavior and whether the app unlocks from webhook state or URL visits.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn secondary" href="/blog/supabase-auth-callback-vercel-production/?ref=setup_help_artifacts_auth" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_auth">Auth callback checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=setup_help_artifacts_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_webhook">Stripe webhook checklist</a>
       </div>
     </section>
 
