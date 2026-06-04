@@ -131,6 +131,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - ShipFast alternative: https://goosekit.dev/blog/shipfast-alternative/
 - AI SaaS starter template: https://goosekit.dev/blog/ai-saas-starter-template/
 - Next.js Supabase Stripe setup checklist: https://goosekit.dev/blog/nextjs-supabase-stripe-setup-checklist/
+- Stripe webhook signature verification fails in production: https://goosekit.dev/blog/stripe-webhook-signature-verification-failed-production/
 - Stripe webhook 307/308/401/403 on Vercel: https://goosekit.dev/blog/stripe-webhook-307-308-401-403-vercel/
 - Stripe webhook not updating Supabase paid status: https://goosekit.dev/blog/stripe-webhook-supabase-paid-status/
 - Supabase Auth callback fails on Vercel: https://goosekit.dev/blog/supabase-auth-callback-vercel-production/
