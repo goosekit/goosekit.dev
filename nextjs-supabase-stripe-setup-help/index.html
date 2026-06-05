@@ -41,6 +41,7 @@
           <a class="btn secondary" href="/blog/vercel-preview-production-callback-stripe-supabase/?ref=setup_help_hero_url_drift" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_url_drift_guide">Preview/prod URL debug</a>
           <a class="btn secondary" href="/blog/stripe-webhook-307-308-401-403-vercel/?ref=setup_help_hero_webhook_status" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_webhook_status_guide">Webhook 307/401 debug</a>
           <a class="btn secondary" href="/blog/stripe-webhook-signature-verification-failed-production/?ref=setup_help_hero_signature" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_signature_guide">Webhook signature debug</a>
+          <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_hero_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_rls_guide">Supabase RLS webhook debug</a>
           <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=setup_help_hero_portal" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_portal_guide">Portal cancel debug</a>
         </div>
         <p class="fine">Typical first scope starts at €199. Availability is manual and case-by-case.</p>
@@ -80,6 +81,7 @@
           <li>Webhook fires but the Supabase paid state is not updated reliably.</li>
           <li>Stripe webhook delivery returns 307, 308, 401, or 403 in production.</li>
           <li>Stripe webhook signature verification fails only in production.</li>
+          <li>Supabase RLS blocks Stripe webhook inserts or paid-state updates in production.</li>
           <li>Payment succeeds but the webhook cannot map the Stripe customer/subscription to the Supabase user or workspace.</li>
           <li>Customer portal exists but cancellation/downgrade state is unclear.</li>
           <li>Preview, production, and local environment variables drift apart.</li>
@@ -140,6 +142,7 @@
         <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=setup_help_artifacts_user_mapping" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_user_mapping">User mapping checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-307-308-401-403-vercel/?ref=setup_help_artifacts_webhook_status" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_webhook_status">Webhook status checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-signature-verification-failed-production/?ref=setup_help_artifacts_signature" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_signature">Signature verification checklist</a>
+        <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_artifacts_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_rls">Supabase RLS webhook checklist</a>
         <a class="btn secondary" href="/blog/vercel-preview-production-callback-stripe-supabase/?ref=setup_help_artifacts_url_drift" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_url_drift">Preview/prod URL checklist</a>
         <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=setup_help_artifacts_portal" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_portal">Portal cancel checklist</a>
         <a class="btn secondary" href="/blog/stripe-test-mode-live-mode-production/?ref=setup_help_artifacts_live_mode" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_live_mode">Live-mode billing checklist</a>
