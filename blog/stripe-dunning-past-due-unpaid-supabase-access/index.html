@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe past_due or unpaid leaving Supabase access wrong?</title>
+  <meta name="description" content="Debug Stripe dunning, past_due, unpaid, invoice.payment_failed, and payment recovery states that leave a Next.js + Supabase SaaS granting or revoking access incorrectly.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-dunning-past-due-unpaid-supabase-access/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe past_due or unpaid leaving Supabase access wrong?">
+  <meta property="og:description" content="A practical checklist for mapping Stripe dunning, failed invoices, past_due, unpaid, canceled, and grace periods to Supabase product access.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-dunning-past-due-unpaid-supabase-access/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=dunning_nav">Setup help</a></div>
+    <div class="eyebrow">Stripe dunning + Supabase access</div>
+    <h1>Stripe past_due or unpaid leaving Supabase access wrong?</h1>
+    <p class="lead">Failed renewals are not a single boolean. A subscription can be <span class="code">active</span>, <span class="code">past_due</span>, <span class="code">unpaid</span>, <span class="code">canceled</span>, or recovering through Smart Retries while your SaaS needs a separate product-access decision in Supabase.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The production failure: “Do I revoke access now or wait?”</h2>
+      <p>Many Next.js + Supabase apps start with <span class="code">is_paid = subscription.status === 'active'</span>. That is too blunt for dunning. It can lock out real customers during a recoverable card failure, or keep non-paying customers active forever after Stripe moves the invoice to unpaid or the subscription is canceled.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=dunning_top" data-ph-event="setup_help_interest" data-ph-location="dunning_top">Need dunning/access help?</a>
+        <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=dunning_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="dunning_portal_related">Portal entitlement checklist</a>
+      </div>
+      <p class="note">Fixed-scope setup help starts at €199 when the Stripe event sequence, billing policy, and Supabase entitlement schema are narrow enough to review safely.</p>
+    </section>
+
+    <section>
+      <h2>1. Separate Stripe billing status from product access</h2>
+      <p>Stripe status tells you what is happening in billing. Your product access policy decides what the customer can use right now. Store both instead of collapsing them into one <span class="code">is_paid</span> flag.</p>
+      <div class="grid2">
+        <div class="card"><h3>Billing state</h3><p>Subscription status, invoice status, retry schedule, latest payment failure, collection method, cancellation state, and whether payment recovery is still possible.</p></div>
+        <div class="card"><h3>Access state</h3><p>Current plan, feature limits, grace period end, readonly/limited mode, hard lockout date, and the user-facing billing warning.</p></div>
+      </div>
+      <ul class="checklist">
+        <li>Record <span class="code">stripe_status</span> exactly as Stripe sends it; do not overwrite it with your own labels.</li>
+        <li>Record <span class="code">access_state</span> separately: <span class="code">full</span>, <span class="code">grace</span>, <span class="code">limited</span>, <span class="code">locked</span>, or whatever names match your product.</li>
+        <li>Record <span class="code">grace_until</span> and <span class="code">locked_at</span> explicitly so retries and late webhooks do not create ambiguous access.</li>
+        <li>Show billing warnings from local state, but let Stripe-hosted invoice/payment-method flows handle payment collection.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Treat dunning as a policy table, not scattered if statements</h2>
+      <p>The right answer depends on your product. A B2B app may keep access for 7 days. A compute-heavy API may limit usage immediately. A paid community might keep read-only access. Make that policy explicit.</p>
+      <pre><code>const accessPolicy = {
+  trialing: { access: 'full' },
+  active: { access: 'full' },
+  past_due: { access: 'grace', graceDays: 7, showBillingBanner: true },
+  unpaid: { access: 'limited', showBillingBanner: true },
+  paused: { access: 'limited', showBillingBanner: true },
+  canceled: { access: 'locked' },
+  incomplete: { access: 'locked' },
+  incomplete_expired: { access: 'locked' }
+};</code></pre>
+      <p class="note">Do not copy this policy blindly. It is a safe shape, not universal business advice. The important part is that billing status, grace periods, and feature access are intentionally mapped and tested.</p>
+    </section>
+
+    <section>
+      <h2>3. Listen to the events that actually move dunning</h2>
+      <p>For subscriptions, Stripe recommends handling webhook events because billing changes are asynchronous. Dunning usually involves invoice and subscription events, not just Checkout success.</p>
+      <ul class="checklist">
+        <li><span class="code">invoice.payment_failed</span>: start or refresh the billing-warning/grace path; store the invoice ID and failure context you can safely show.</li>
+        <li><span class="code">invoice.paid</span>: clear dunning warnings, restore full access if the subscription snapshot supports it, and update period dates.</li>
+        <li><span class="code">customer.subscription.updated</span>: sync <span class="code">status</span>, <span class="code">current_period_end</span>, <span class="code">cancel_at_period_end</span>, <span class="code">pause_collection</span>, and current price.</li>
+        <li><span class="code">customer.subscription.deleted</span>: lock or downgrade access according to your cancellation policy.</li>
+        <li>Fetch the current Stripe Subscription before final writes when event ordering or retry timing could make a stale event misleading.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Store enough Supabase fields to recover cleanly</h2>
+      <p>Dunning bugs become much easier to debug when the row explains both the current billing snapshot and the product-access decision.</p>
+      <pre><code>alter table public.subscriptions add column if not exists stripe_status text;
+alter table public.subscriptions add column if not exists access_state text default 'locked';
+alter table public.subscriptions add column if not exists grace_until timestamptz;
+alter table public.subscriptions add column if not exists current_period_end timestamptz;
+alter table public.subscriptions add column if not exists latest_invoice_id text;
+alter table public.subscriptions add column if not exists latest_payment_failed_at timestamptz;
+alter table public.subscriptions add column if not exists payment_recovered_at timestamptz;
+alter table public.subscriptions add column if not exists last_stripe_event_id text;
+alter table public.subscriptions add column if not exists last_stripe_event_created_at timestamptz;</code></pre>
+      <ul class="checklist">
+        <li>Use a server-only Supabase client for webhook writes; RLS and user-scoped clients often block billing-table updates.</li>
+        <li>Use Stripe customer/subscription IDs for mapping; email is not a reliable billing foreign key.</li>
+        <li>Keep idempotency/event ledger logic so Stripe retries do not duplicate or roll back access state.</li>
+        <li>Keep older events from overwriting newer subscription snapshots by comparing event timestamps or fetching fresh from Stripe.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Test the unhappy paths before launch</h2>
+      <p>Checkout success is the easiest case. The revenue leaks and support tickets usually appear when payment fails after the first month.</p>
+      <ul class="checklist warn">
+        <li>Test a failed renewal and confirm the app shows a billing warning instead of silently pretending everything is fine.</li>
+        <li>Test successful recovery after a failed invoice and confirm access returns without manual database edits.</li>
+        <li>Test what happens after all retries fail: canceled, unpaid, or past_due depending on your Stripe Billing setting.</li>
+        <li>Test an old <span class="code">invoice.payment_failed</span> retry after a newer <span class="code">invoice.paid</span> event; it must not relock access.</li>
+        <li>Test user-facing copy: “payment issue, update your card” is clearer than “your account is unpaid”.</li>
+      </ul>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to send for a dunning/access review</h2>
+      <p>Do not send secrets. Send the minimum artifacts needed to compare Stripe billing state with Supabase product access.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20dunning%20%2F%20Supabase%20access%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20Stripe%20dunning%20%2F%20past_due%20%2F%20unpaid%20access%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AStripe%20Billing%20retry%20setting%20%28Smart%20Retries%20%2F%20custom%20%2F%20unknown%29%3A%0ASubscription%20status%3A%0ALatest%20invoice%20status%3A%0ARelevant%20event%20types%20and%20order%20%28invoice.payment_failed%2C%20invoice.paid%2C%20customer.subscription.updated%2Fdeleted%29%3A%0ACurrent%20Supabase%20subscription%2Fentitlement%20schema%20%28no%20secrets%29%3A%0AWhat%20access%20the%20app%20currently%20grants%3A%0AWhat%20access%20you%20want%20during%20grace%20%2F%20after%20retry%20failure%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="dunning_bottom">Request dunning help →</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-event-ordering-supabase/?ref=dunning_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="dunning_ordering_related">Webhook ordering checklist</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Related debugging paths</h2>
+      <ul class="checklist">
+        <li><a href="/blog/stripe-webhook-event-ordering-supabase/?ref=dunning_related_list">Stripe subscription webhooks arriving out of order</a></li>
+        <li><a href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=dunning_related_list">Duplicate Stripe webhook processing and idempotency</a></li>
+        <li><a href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=dunning_related_list">Customer Portal plan changes and Supabase entitlements</a></li>
+        <li><a href="/blog/supabase-rls-blocks-stripe-webhook/?ref=dunning_related_list">Supabase RLS blocking Stripe webhook writes</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
