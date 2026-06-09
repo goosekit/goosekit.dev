@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next.js + Supabase + Stripe Setup Checklist for SaaS MVPs</title>
+  <meta name="description" content="A practical setup checklist for Next.js, Supabase auth, Stripe checkout, customer portal, webhooks, environment variables, callbacks, and paid-user state.">
+  <link rel="canonical" href="https://goosekit.dev/blog/nextjs-supabase-stripe-setup-checklist/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Next.js + Supabase + Stripe Setup Checklist">
+  <meta property="og:description" content="Use this checklist before your SaaS MVP loses a weekend to auth callbacks, Stripe webhooks, portal state, and env drift.">
+  <meta property="og:url" content="https://goosekit.dev/blog/nextjs-supabase-stripe-setup-checklist/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:940px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:800;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.35rem,6vw,4.75rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.75rem;line-height:1.16;letter-spacing:-.035em;margin:48px 0 14px;color:#fff}h3{font-size:1.15rem;margin:24px 0 8px;color:#fff}.lead{font-size:1.18rem;color:#b9b9cc;max-width:780px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.toc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.toc a{display:block;background:#10101d;border:1px solid #27273c;border-radius:12px;padding:12px 14px;text-decoration:none;color:#d9d9e8}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:800}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.muted{color:#9b9bb7}.note{font-size:.94rem;color:#9b9bb7}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}@media(max-width:720px){.toc{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/ship-it-kit/?ref=setup_checklist_nav">Ship It Kit</a></div>
+    <div class="eyebrow">SaaS setup checklist</div>
+    <h1>Next.js + Supabase + Stripe setup checklist.</h1>
+    <p class="lead">Use this before your MVP loses a weekend to auth callbacks, Stripe webhooks, portal state, environment variables, or “it works locally” billing bugs.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The short version</h2>
+      <p>If your product is not ready for users, do not spend weeks polishing infrastructure. But if people can sign up or pay, the auth + billing layer must be boringly reliable.</p>
+      <div class="actions">
+        <a class="btn primary" href="/ship-it-kit-quick-fit/?ref=setup_checklist_top" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="setup_checklist_top_fit">Check if Ship It Kit fits</a>
+        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=setup_checklist_top_help" data-ph-event="setup_help_interest" data-ph-location="setup_checklist_top_help">Need setup help?</a>
+      </div>
+    </section>
+
+    <section class="card toc">
+      <a href="#auth">1. Supabase auth</a>
+      <a href="#routes">2. Protected routes</a>
+      <a href="#stripe">3. Stripe checkout</a>
+      <a href="#webhooks">4. Webhooks</a>
+      <a href="#state">5. Paid-user state</a>
+      <a href="#deploy">6. Deployment checks</a>
+    </section>
+
+    <section id="auth">
+      <h2>1. Supabase auth callback checklist</h2>
+      <ul class="checklist">
+        <li>Create a server-side <span class="code">/auth/callback</span> route that exchanges the code for a session.</li>
+        <li>Test email confirmation, password recovery, OAuth login, logout, and expired links separately.</li>
+        <li>Confirm all email template URLs point to your production domain, not localhost or a preview URL.</li>
+        <li>Handle the “session loading” state explicitly so protected content does not flash open.</li>
+        <li>Keep service-role/admin Supabase keys server-only. Never expose them to client components.</li>
+      </ul>
+    </section>
+
+    <section id="routes">
+      <h2>2. Protected routes and dashboard access</h2>
+      <ul class="checklist">
+        <li>Decide which routes require only login and which require an active paid status.</li>
+        <li>Fail closed for dashboard, billing, settings, and account routes.</li>
+        <li>Redirect unauthenticated users to login with a safe return URL.</li>
+        <li>Add a visible empty/error state when session refresh fails instead of looping forever.</li>
+        <li>Test protected routes in a clean browser profile, not only with your dev account.</li>
+      </ul>
+    </section>
+
+    <section id="stripe">
+      <h2>3. Stripe checkout and customer portal</h2>
+      <ul class="checklist">
+        <li>Use one internal product/price mapping instead of hardcoding Stripe IDs across components.</li>
+        <li>Pass a stable user/customer reference into checkout metadata.</li>
+        <li>Set success and cancel URLs for production, preview, and local development intentionally.</li>
+        <li>Create a customer portal route for billing updates and cancellations.</li>
+        <li>Test checkout with a brand-new user, an existing free user, and an already-paid user.</li>
+      </ul>
+    </section>
+
+    <section id="webhooks">
+      <h2>4. Stripe webhook checklist</h2>
+      <ul class="checklist">
+        <li>Verify webhook signatures using the raw request body, not parsed JSON.</li>
+        <li>Handle duplicate webhook delivery idempotently.</li>
+        <li>Store enough event/customer/subscription data to debug billing state later.</li>
+        <li>Listen for checkout completed, subscription updated, subscription deleted, invoice paid, and invoice payment failed.</li>
+        <li>Test local webhooks with the Stripe CLI and production webhooks with a real endpoint.</li>
+      </ul>
+    </section>
+
+    <section id="state">
+      <h2>5. Model paid-user state inside your app</h2>
+      <p>Do not make the whole app ask Stripe on every page. Your app needs a small internal truth layer.</p>
+      <ul class="checklist">
+        <li>Track user/customer ID, subscription ID, plan, status, current period, and last webhook time.</li>
+        <li>Define states like free, checkout_started, active, trialing, past_due, canceled, and test/admin.</li>
+        <li>Make feature gates read from your internal state, not raw Stripe event names.</li>
+        <li>Add a manual admin/debug view before you need it in production support.</li>
+      </ul>
+    </section>
+
+    <section id="deploy">
+      <h2>6. Final deployment sanity checks</h2>
+      <ul class="checklist warn">
+        <li>Environment variables differ between local, preview, and production. Check all three.</li>
+        <li>OAuth callback URLs must match the exact deployed domain.</li>
+        <li>Stripe webhook endpoint must use the live signing secret in production.</li>
+        <li>Supabase redirect allowlist must include your production and preview URLs intentionally.</li>
+        <li>Run one full flow: sign up → confirm email → checkout → return → access paid route → open billing portal → cancel/test downgrade.</li>
+      </ul>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">Buy a starter or ask for help?</h2>
+      <p><strong>Buy Ship It Kit</strong> if you want a focused Next.js + Supabase + Stripe starter and you can adapt it yourself.</p>
+      <p><strong>Ask for setup help</strong> if you already have a real repo and need auth, checkout, portal, webhooks, or paid-user state adapted safely.</p>
+      <p><strong>Skip both</strong> if your stack is not close to Next.js + Supabase + Stripe.</p>
+      <div class="actions">
+        <a class="btn primary" href="/ship-it-kit/?ref=setup_checklist_bottom_product" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="setup_checklist_bottom_product">See Ship It Kit</a>
+        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=setup_checklist_bottom_help" data-ph-event="setup_help_interest" data-ph-location="setup_checklist_bottom_help">Request setup help</a>
+      </div>
+      <p class="note">No hype: if your product is still unvalidated, keep the setup small. The goal is to get back to product validation, not collect boilerplate features.</p>
+    </section>
+  </main>
+</body>
+</html>

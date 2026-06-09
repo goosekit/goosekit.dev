@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Webhook Gets 307, 308, 401, or 403 on Vercel?</title>
+  <meta name="description" content="Debug Stripe webhook delivery failures in Next.js on Vercel: 307/308 redirects, 401/403 middleware blocks, wrong endpoint paths, trailing slashes, and raw-body signature handling.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-webhook-307-308-401-403-vercel/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Webhook Gets 307, 308, 401, or 403 on Vercel?">
+  <meta property="og:description" content="A practical checklist for production Stripe webhook failures caused by redirects, protected routes, endpoint mismatch, or Next.js/Vercel routing behavior.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-webhook-307-308-401-403-vercel/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.2rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:790px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=webhook_status_guide_nav">Setup help</a></div>
+    <div class="eyebrow">Stripe webhook delivery status debug</div>
+    <h1>Stripe webhook gets 307, 308, 401, or 403 in Vercel production?</h1>
+    <p class="lead">If Stripe says your webhook endpoint failed in production, do not start by rewriting subscription logic. First prove that Stripe can POST to the exact endpoint URL without being redirected, authenticated like a browser user, blocked by middleware, or parsed before signature verification.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">A webhook endpoint is not a protected app route</h2>
+      <p>Stripe needs a public POST URL that returns a fast 2xx after verifying the <span class="code">stripe-signature</span> header. Redirects and login walls that are harmless for browser pages can break webhook delivery completely.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=webhook_status_guide_top" data-ph-event="setup_help_interest" data-ph-location="webhook_status_top">Need a production webhook pass?</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=webhook_status_paid_state" data-ph-event="setup_help_secondary_clicked" data-ph-location="webhook_status_paid_state_guide">Paid-state checklist</a>
+      </div>
+      <p class="note">Fixed-scope setup help starts at €199 when the endpoint, delivery logs, and route files are narrow enough to inspect safely.</p>
+    </section>
+
+    <section>
+      <h2>1. Match the Stripe endpoint URL to the deployed route exactly</h2>
+      <p>In App Router, the production route is usually a <span class="code">route.ts</span> file such as <span class="code">app/api/stripe/webhook/route.ts</span>, which maps to <span class="code">/api/stripe/webhook</span>. Stripe must call that exact production URL.</p>
+      <ul class="checklist warn">
+        <li>Check the endpoint in Stripe Dashboard, not only your code comments.</li>
+        <li>Use the canonical production host: avoid old Vercel branch domains, localhost, or non-www/www mismatch.</li>
+        <li>Remove trailing slash ambiguity. If Vercel or Next.js redirects <span class="code">/api/stripe/webhook/</span> to <span class="code">/api/stripe/webhook</span>, Stripe may record a 307/308 instead of a success.</li>
+        <li>Confirm the route accepts POST. A GET health check returning 200 does not prove Stripe POST delivery works.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Treat 307/308 as URL canonicalization bugs first</h2>
+      <p>A 307 or 308 usually means the request reached something that wants a different URL: http to https, apex to www, www to apex, slash to no-slash, or an app-level redirect. Stripe webhook endpoints should not depend on following redirects.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>Common redirect causes</h3>
+          <ul class="checklist warn">
+            <li>Endpoint uses <span class="code">example.com</span> while Vercel redirects to <span class="code">www.example.com</span>, or the reverse.</li>
+            <li>Trailing slash setting changes the route URL.</li>
+            <li>Middleware redirects unknown unauthenticated paths to login.</li>
+            <li>A root-domain redirect rule catches <span class="code">/api/*</span> accidentally.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Fast check</h3>
+          <pre><code>curl -i -X POST https://example.com/api/stripe/webhook
+
+# You want no Location header redirect.
+# A 400 for missing Stripe signature is okay.
+# A 307/308 means fix the URL/routing first.</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>3. Treat 401/403 as middleware or auth guard leaks</h2>
+      <p>Your webhook handler should verify Stripe's signature, not require a Supabase session, Clerk session, NextAuth user, CSRF cookie, or admin role. If middleware protects all routes by default, explicitly exclude the webhook path.</p>
+      <pre><code>// middleware.ts / proxy.ts matcher example
+export const config = {
+  matcher: [
+    '/((?!api/stripe/webhook|_next/static|_next/image|favicon.ico).*)',
+  ],
+};</code></pre>
+      <ul class="checklist warn">
+        <li>If Stripe delivery says 401, search middleware, route wrappers, auth helpers, and API protection utilities.</li>
+        <li>If Stripe delivery says 403, check role gates, CSRF checks, bot protection, firewall rules, and platform protection settings.</li>
+        <li>Do not solve this by disabling signature verification. The endpoint is public, but only signed Stripe events should be trusted.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Verify raw body and runtime after the route is reachable</h2>
+      <p>Once the status is no longer redirect/unauthorized, then debug signature errors. Stripe signature verification needs the unmodified request body and the correct webhook signing secret for that exact endpoint and mode.</p>
+      <pre><code>export async function POST(req: Request) {
+  const body = await req.text();
+  const signature = req.headers.get('stripe-signature');
+
+  if (!signature) {
+    return new Response('Missing stripe-signature', { status: 400 });
+  }
+
+  const event = stripe.webhooks.constructEvent(
+    body,
+    signature,
+    process.env.STRIPE_WEBHOOK_SECRET!
+  );
+
+  // handle event idempotently...
+  return Response.json({ received: true });
+}</code></pre>
+      <ul class="checklist">
+        <li>Use the Dashboard endpoint signing secret in production; the Stripe CLI secret is only for local forwarding.</li>
+        <li>Keep test-mode and live-mode endpoint secrets separate.</li>
+        <li>Read <span class="code">req.text()</span> once before parsing JSON.</li>
+        <li>Return quickly; move slow email/analytics work out of the critical webhook response path.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Use Stripe delivery logs as the source of truth</h2>
+      <p>The browser success page can load while the webhook is still failing. For billing state, inspect Stripe's event delivery attempts and your Vercel function logs for the same timestamp.</p>
+      <div class="grid2">
+        <div class="card">
+          <h3>In Stripe</h3>
+          <ul class="checklist">
+            <li>Endpoint URL and mode: test or live.</li>
+            <li>HTTP status: 307, 308, 401, 403, 400, 500, or timeout.</li>
+            <li>Event type and event ID.</li>
+            <li>Response body or redirect <span class="code">Location</span> if shown.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>In Vercel / app logs</h3>
+          <ul class="checklist">
+            <li>Did the function execute at all?</li>
+            <li>Was the route handler reached before middleware?</li>
+            <li>Was <span class="code">stripe-signature</span> present?</li>
+            <li>Was the error signature verification, database write, or app authorization?</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to send for a webhook delivery review</h2>
+      <p>Do not send secrets. Send the Stripe endpoint URL, recent delivery status screenshot, route path/files, middleware matcher, Vercel redirect/domain settings summary, and sanitized webhook handler.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20307%20308%20401%20403%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20a%20Stripe%20webhook%20delivery%20failure%20on%20Vercel%2FNext.js.%0A%0AProduction%20endpoint%20URL%3A%0AStripe%20mode%20%28test%20or%20live%29%3A%0AHTTP%20status%20shown%20by%20Stripe%20%28307%2F308%2F401%2F403%2Fother%29%3A%0ARedirect%20Location%20or%20response%20body%20if%20shown%3A%0ARoute%20file%20path%20%28for%20example%20app%2Fapi%2Fstripe%2Fwebhook%2Froute.ts%29%3A%0AMiddleware%2Fproxy%20matcher%20summary%3A%0AVercel%20domain%20or%20redirect%20rules%20summary%3A%0ARelevant%20handler%20snippet%20%28no%20secrets%29%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_status_bottom">Request webhook delivery help →</a>
+        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=webhook_status_guide_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="webhook_status_setup_help">See setup help scope</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Quick diagnosis table</h2>
+      <div class="grid2">
+        <div class="card"><h3>307 or 308</h3><p>Fix the endpoint URL and redirects first: canonical domain, trailing slash, HTTPS, and any middleware/app redirect touching <span class="code">/api/*</span>.</p></div>
+        <div class="card"><h3>401</h3><p>Your webhook path is probably protected by app auth, an API helper, or middleware. Exclude the path and keep Stripe signature verification inside the handler.</p></div>
+        <div class="card"><h3>403</h3><p>Look for role gates, CSRF checks, bot/firewall protection, deployment protection, or a middleware branch returning forbidden.</p></div>
+        <div class="card"><h3>400 signature error</h3><p>Now debug raw body and signing secret: correct endpoint secret, test/live mode, and no JSON parsing before <span class="code">constructEvent</span>.</p></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

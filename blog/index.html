@@ -6,6 +6,9 @@
   <title>Blog — Goosekit | Free Online Tools</title>
   <meta name="description" content="Tips, guides, and tutorials on free online tools. Learn how to boost productivity, compress images, and get more done with Goosekit.">
   <link rel="canonical" href="https://goosekit.dev/blog/">
+  <link rel="alternate" type="text/plain" title="Goosekit llms.txt" href="https://goosekit.dev/llms.txt">
+  <link rel="alternate" type="text/plain" title="Goosekit full LLM reference" href="https://goosekit.dev/llms-full.txt">
+  <link rel="help" title="Goosekit AI reference" href="https://goosekit.dev/for-ai/">
 
   <meta property="og:type" content="website">
   <meta property="og:title" content="Blog — Goosekit">
@@ -258,7 +261,8 @@
   .nav-dropdown-content a:hover { background:rgba(255,72,0,0.1); color:#fff; }
   .nav-dropdown:hover .nav-dropdown-content { display:block; }
 </style>
-  <link rel="stylesheet" href="/brand/goosekit-design.css">
+<script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
 </head>
 <body>
 
@@ -281,7 +285,7 @@
       <a href="/compare/">Compare</a>
       <a href="/blog/">Blog</a>
       <a href="/offline-pack/">Offline Pack</a>
-      <a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>
+      <a class="nav-cta" href="/offline-pack/?ref=nav_primary">Local Toolkit</a>
     </nav>
   </div>
 </header>
@@ -300,15 +304,171 @@
   </section>
 
   <section class="revenue-card">
-    <div class="revenue-eyebrow">For builders shipping now</div>
-    <h2>Building a Next.js SaaS? The paid-user path is already wired.</h2>
-    <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for people who want landing page, signup, checkout, billing portal, and webhooks already coherent before real product work starts. €49 one-time, instant starter download, 30-day refund.</p>
+    <div class="revenue-eyebrow">Private local toolkit</div>
+    <h2>Working with JSON, JWTs, SQL, cURL, regex, or config you should not upload?</h2>
+    <p>Goosekit Local Toolkit is the paid offline version of the Goosekit workflows developers already use: 12 browser-based tools in one portable folder, €29 one-time, no account, no upload step.</p>
     <div class="revenue-actions">
-      <a class="promo-primary" href="/go/ship-it-kit/checkout-blog-index/?source=blog_index_paid_path_card" data-ph-event="shipitkit_blog_index_checkout_clicked" data-ph-location="paid_path_card_checkout">Get instant starter download</a>
-      <a class="promo-secondary" href="/blog/nextjs-auth-billing-starter/?ref=blog_index_paid_path_card" data-ph-event="shipitkit_blog_index_proof_clicked" data-ph-location="paid_path_card_proof">See the exact files first</a>
+      <a class="promo-primary" href="/offline-pack/?ref=blog_index_local_toolkit_card" data-ph-event="offline_pack_cta_clicked" data-ph-location="blog_index_local_toolkit_card">See the Local Toolkit</a>
+      <a class="promo-secondary" href="/blog/private-developer-tools/?ref=blog_index_local_toolkit_card" data-ph-event="offline_pack_content_clicked" data-ph-location="blog_index_private_tools">When local tools matter</a>
     </div>
-    <p class="promo-foot">Smaller than the giant starters, easier to edit with Cursor, Claude, or Copilot.</p>
+    <p class="promo-foot">Use the free web tools for harmless snippets. Use the local toolkit when payloads, tokens, logs, or configs should stay on your device.</p>
   </section>
+
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-dunning-past-due-unpaid-supabase-access/">Stripe past_due or unpaid leaving Supabase access wrong?</a></h2>
+  <div class="date">June 9, 2026 · 8 min read</div>
+  <p>Debug Stripe dunning, failed renewals, past_due, unpaid, grace periods, and Supabase access states before they cause lockouts or unpaid usage.</p>
+  <span class="tag">Stripe</span> <span class="tag">Dunning</span> <span class="tag">Supabase</span> <span class="tag">Subscriptions</span>
+  <br><a class="read-more" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/">Stripe Customer Portal Plan Changes Not Updating Supabase?</a></h2>
+  <div class="date">June 8, 2026 · 8 min read</div>
+  <p>Debug Customer Portal upgrades, downgrades, cancel-at-period-end, and subscription schedules that leave Supabase with the wrong plan or entitlement window.</p>
+  <span class="tag">Stripe</span> <span class="tag">Customer Portal</span> <span class="tag">Supabase</span> <span class="tag">Entitlements</span>
+  <br><a class="read-more" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-event-ordering-supabase/">Stripe Webhooks Arriving Out of Order?</a></h2>
+  <div class="date">June 7, 2026 · 8 min read</div>
+  <p>Debug Stripe subscription events that land in a surprising order and leave Supabase with stale paid state, missing user mappings, or overwritten statuses.</p>
+  <span class="tag">Stripe</span> <span class="tag">Webhooks</span> <span class="tag">Supabase</span> <span class="tag">Subscriptions</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-event-ordering-supabase/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/">Stripe Webhook Creating Duplicate Subscription Rows?</a></h2>
+  <div class="date">June 6, 2026 · 7 min read</div>
+  <p>Debug duplicate Stripe webhook processing in a Next.js + Supabase app with event ID ledgers, unique constraints, idempotent upserts, and safe retry handling.</p>
+  <span class="tag">Stripe</span> <span class="tag">Webhooks</span> <span class="tag">Supabase</span> <span class="tag">Idempotency</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/supabase-rls-blocks-stripe-webhook/">Supabase RLS Blocking Stripe Webhook Writes?</a></h2>
+  <div class="date">June 5, 2026 · 7 min read</div>
+  <p>Debug Stripe webhooks that verify successfully but cannot insert or update Supabase paid state because RLS blocks anon, publishable-key, or user-scoped clients.</p>
+  <span class="tag">Supabase</span> <span class="tag">RLS</span> <span class="tag">Stripe</span> <span class="tag">Webhooks</span>
+  <br><a class="read-more" href="/blog/supabase-rls-blocks-stripe-webhook/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-signature-verification-failed-production/">Stripe Webhook Signature Verification Fails Only in Production?</a></h2>
+  <div class="date">June 4, 2026 · 7 min read</div>
+  <p>Debug production-only Stripe signature errors caused by Dashboard vs CLI secrets, test/live mode drift, Vercel env targeting, raw body parsing, or runtime issues.</p>
+  <span class="tag">Stripe</span> <span class="tag">Webhooks</span> <span class="tag">Next.js</span> <span class="tag">Vercel</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-signature-verification-failed-production/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-307-308-401-403-vercel/">Stripe Webhook Gets 307, 308, 401, or 403 on Vercel?</a></h2>
+  <div class="date">June 3, 2026 · 6 min read</div>
+  <p>Debug production Stripe webhook delivery failures caused by redirects, protected routes, middleware, endpoint mismatch, trailing slashes, or raw-body signature handling.</p>
+  <span class="tag">Stripe</span> <span class="tag">Webhooks</span> <span class="tag">Vercel</span> <span class="tag">Next.js</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-307-308-401-403-vercel/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/vercel-preview-production-callback-stripe-supabase/">Supabase Auth or Stripe Checkout Returning to the Wrong Vercel URL?</a></h2>
+  <div class="date">June 2, 2026</div>
+  <p>Debug preview-vs-production URL drift across Vercel, Supabase Auth redirect allowlists, Next.js env variables, and Stripe success/cancel URLs.</p>
+  <span class="tag">Next.js</span><span class="tag">Supabase</span><span class="tag">Stripe</span><span class="tag">Vercel</span>
+  <br><a class="read-more" href="/blog/vercel-preview-production-callback-stripe-supabase/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-map-customer-to-supabase-user/">Stripe Payment Succeeds but Webhook Cannot Find the Supabase User?</a></h2>
+  <div class="date">June 1, 2026 · 7 min read</div>
+  <p>A practical checklist for mapping Stripe Checkout customers and subscriptions back to the right Supabase user or organization after payment succeeds.</p>
+  <span class="tag">Stripe</span> <span class="tag">Supabase</span> <span class="tag">Webhooks</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-map-customer-to-supabase-user/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-test-mode-live-mode-production/">Stripe Works in Test Mode but Fails in Live Mode?</a></h2>
+  <div class="date">May 31, 2026 · 6 min read</div>
+  <p>A practical production checklist for Stripe checkout, Customer Portal, webhook secrets, price IDs, Vercel env vars, and Supabase paid-state drift after switching to live mode.</p>
+  <span class="tag">Stripe</span> <span class="tag">Production</span> <span class="tag">Supabase</span>
+  <br><a class="read-more" href="/blog/stripe-test-mode-live-mode-production/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/nextjs-supabase-middleware-redirect-loop/">Next.js + Supabase Middleware Redirect Loop After Login?</a></h2>
+  <div class="date">May 30, 2026 · 6 min read</div>
+  <p>A practical checklist for Supabase auth middleware loops where protected routes keep sending logged-in users back to login after OAuth, magic links, or callbacks.</p>
+  <span class="tag">Supabase</span> <span class="tag">Middleware</span> <span class="tag">Next.js</span>
+  <br><a class="read-more" href="/blog/nextjs-supabase-middleware-redirect-loop/">Read the article →</a>
+</article>
+
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-customer-portal-cancel-supabase-status/">Stripe Customer Portal Cancelled but Supabase Still Says Active?</a></h2>
+  <div class="date">May 29, 2026 · 6 min read</div>
+  <p>A practical checklist for Next.js + Supabase apps where Customer Portal cancellation, downgrade, or subscription state changes do not match app access.</p>
+  <span class="tag">Stripe</span> <span class="tag">Billing Portal</span> <span class="tag">Supabase</span>
+  <br><a class="read-more" href="/blog/stripe-customer-portal-cancel-supabase-status/">Read the article →</a>
+</article>
+
+
+<article class="post-card">
+  <h2><a href="/blog/supabase-auth-callback-vercel-production/">Supabase Auth Callback Works Locally but Fails on Vercel?</a></h2>
+  <div class="date">May 28, 2026 · 6 min read</div>
+  <p>A practical Next.js checklist for Supabase auth redirect, magic-link, OAuth, cookie, and environment bugs between localhost and Vercel production.</p>
+  <span class="tag">Supabase</span> <span class="tag">Auth</span> <span class="tag">Next.js</span>
+  <br><a class="read-more" href="/blog/supabase-auth-callback-vercel-production/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/stripe-webhook-supabase-paid-status/">Stripe Webhook Not Updating Supabase Paid Status?</a></h2>
+  <div class="date">May 27, 2026 · 6 min read</div>
+  <p>A practical debug checklist for Next.js + Supabase apps where Stripe checkout succeeds but paid-user state, subscriptions, or portal access do not update.</p>
+  <span class="tag">Stripe</span> <span class="tag">Supabase</span> <span class="tag">Next.js</span>
+  <br><a class="read-more" href="/blog/stripe-webhook-supabase-paid-status/">Read the article →</a>
+</article>
+
+
+<article class="post-card">
+  <h2><a href="/blog/format-json-locally-without-upload/">Format JSON Locally Without Uploading It</a></h2>
+  <div class="date">May 23, 2026 · 5 min read</div>
+  <p>When JSON payloads include tokens, customer fields, logs, or internal config, local formatting is the safer workflow.</p>
+  <span class="tag">JSON</span> <span class="tag">Privacy</span> <span class="tag">Offline</span>
+  <br><a class="read-more" href="/blog/format-json-locally-without-upload/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/offline-jwt-decoder/">Offline JWT Decoder for Private Auth Debugging</a></h2>
+  <div class="date">May 23, 2026 · 5 min read</div>
+  <p>Decode real auth tokens locally when claims, roles, tenant IDs, or staging data should not leave your machine.</p>
+  <span class="tag">JWT</span> <span class="tag">Auth</span> <span class="tag">Privacy</span>
+  <br><a class="read-more" href="/blog/offline-jwt-decoder/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/private-developer-tools/">Private Developer Tools for Sensitive Payloads</a></h2>
+  <div class="date">May 23, 2026 · 6 min read</div>
+  <p>A practical local-first workflow for JSON, JWT, regex, SQL, cURL, diff, and encoding tasks with sensitive inputs.</p>
+  <span class="tag">Developer tools</span> <span class="tag">Local</span> <span class="tag">Security</span>
+  <br><a class="read-more" href="/blog/private-developer-tools/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/free-online-hash-generator-for-developers/">Free Online Hash Generator for Developers</a></h2>
+  <div class="date">April 29, 2026 · 8 min read</div>
+  <p>Generate MD5, SHA-1, SHA-256, SHA-384, and SHA-512 hashes in your browser. Hash text or files, compare checksums, and test HMAC with no signup.</p>
+  <span class="tag">Hash</span> <span class="tag">Security</span> <span class="tag">Developer</span>
+  <br><a class="read-more" href="/blog/free-online-hash-generator-for-developers/">Read the article →</a>
+</article>
+
+<article class="post-card">
+  <h2><a href="/blog/free-online-url-encoder-decoder-for-developers/">Free Online URL Encoder/Decoder for Developers</a></h2>
+  <div class="date">April 26, 2026 · 9 min read</div>
+  <p>Encode full URLs, decode query strings, and inspect percent-encoded values with a free browser-based URL encoder/decoder built for developer workflows.</p>
+  <span class="tag">URL</span> <span class="tag">Encoding</span> <span class="tag">Developer</span>
+  <br><a class="read-more" href="/blog/free-online-url-encoder-decoder-for-developers/">Read the article →</a>
+</article>
 
   <article class="post-card">
     <h2><a href="/blog/free-online-cron-expression-generator-for-developers/">Free Online Cron Expression Generator for Developers</a></h2>
@@ -674,7 +834,7 @@
   <article class="post-card">
     <h2><a href="/blog/best-json-formatter-2026/">Best Free JSON Formatter &amp; Validator Online (2026)</a></h2>
     <div class="date">April 7, 2026 · 5 min read</div>
-    <p>Compare the best free JSON formatters and validators. Format, beautify, minify, and validate JSON online — no signup, no ads, privacy-first.</p>
+    <p>Compare practical free JSON formatters and validators. Format, beautify, minify, and validate JSON online — no signup, privacy-first.</p>
     <span class="tag">JSON</span> <span class="tag">Developer</span> <span class="tag">Comparison</span>
     <br><a class="read-more" href="/blog/best-json-formatter-2026/">Read the article →</a>
   </article>
@@ -714,6 +874,12 @@
       <a href="/base64/">Base64 Encoder/Decoder</a>
     </p>
   </section>
+
+<section style="margin:2rem 0;padding:1.25rem;border:1px solid rgba(255,255,255,.08);border-radius:16px;background:rgba(255,255,255,.035);">
+  <h2 style="margin-top:0;">Practical developer workflows</h2>
+  <p>New use-case guides connect Goosekit tools into real debugging jobs: API JSON, JWTs, regexes, Base64 payloads, timestamps, and cURL requests.</p>
+  <p><a href="/use-cases/">Browse Goosekit use cases →</a></p>
+</section>
 </main>
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -745,3 +911,9 @@
 </script>
 </body>
 </html>
+<article>
+  <h2><a href="/blog/stripe-trial-ending-supabase-access/">Stripe trial ended but Supabase access did not update?</a></h2>
+  <p>Debug Stripe trialing, trial_will_end, first invoice payment, payment failure, and Supabase access drift in a Next.js SaaS.</p>
+  <br><a class="read-more" href="/blog/stripe-trial-ending-supabase-access/">Read the article →</a>
+</article>
+

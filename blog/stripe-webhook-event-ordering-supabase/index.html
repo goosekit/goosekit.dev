@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Webhooks Arriving Out of Order?</title>
+  <meta name="description" content="Debug Stripe subscription webhooks that arrive out of order in a Next.js + Supabase app. Handle invoice.paid, customer.subscription.updated, and checkout.session.completed without stale paid state.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-webhook-event-ordering-supabase/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Webhooks Arriving Out of Order?">
+  <meta property="og:description" content="A practical checklist for Stripe subscription events that land in a surprising order and leave Supabase with stale or missing paid state.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-webhook-event-ordering-supabase/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=event_ordering_nav">Setup help</a></div>
+    <div class="eyebrow">Stripe webhook ordering + Supabase</div>
+    <h1>Stripe webhooks arriving out of order?</h1>
+    <p class="lead">If <span class="code">customer.subscription.updated</span>, <span class="code">invoice.paid</span>, or <span class="code">checkout.session.completed</span> lands in a surprising order, your Supabase state can show the wrong plan, miss the user mapping, or overwrite an active subscription with stale data.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The production failure: “Stripe says active, my app says incomplete”</h2>
+      <p>Do not design a webhook handler that only works when events arrive in the order you expect from a happy-path test. Subscription flows are asynchronous. Related events can be delivered close together, retried, or processed by your app in a different order than your mental model.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=event_ordering_top" data-ph-event="setup_help_interest" data-ph-location="event_ordering_top">Need webhook ordering help?</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=event_ordering_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="event_ordering_idempotency_related">Idempotency checklist</a>
+      </div>
+      <p class="note">Fixed-scope setup help starts at €199 when the route, event payloads, Supabase schema, and logs are narrow enough to review safely.</p>
+    </section>
+
+    <section>
+      <h2>1. Identify the ordering bug you actually have</h2>
+      <p>Most “out of order” bugs are one of these four shapes.</p>
+      <div class="grid2">
+        <div class="card"><h3>Updated before created</h3><p><span class="code">customer.subscription.updated</span> writes <span class="code">active</span>, then a later-processed <span class="code">created</span> event overwrites the row back to <span class="code">incomplete</span>.</p></div>
+        <div class="card"><h3>Invoice before mapping</h3><p><span class="code">invoice.paid</span> arrives before your app has stored which Supabase user/org owns the Stripe customer or subscription.</p></div>
+        <div class="card"><h3>Checkout owns too much</h3><p><span class="code">checkout.session.completed</span> both creates mapping and grants access, while subscription events also grant access with slightly different data.</p></div>
+        <div class="card"><h3>Retry after partial failure</h3><p>Your handler mutates Supabase, times out or returns 500, then a retry or adjacent event replays an older state transition.</p></div>
+      </div>
+      <ul class="checklist">
+        <li>Log sanitized <span class="code">event.id</span>, <span class="code">event.type</span>, <span class="code">event.created</span>, <span class="code">customer</span>, <span class="code">subscription</span>, <span class="code">invoice</span>, and internal user/org ID.</li>
+        <li>Compare Stripe's event <span class="code">created</span> timestamp with your server <span class="code">received_at</span> and <span class="code">processed_at</span> timestamps.</li>
+        <li>Check whether a lower-fidelity event overwrites a row that a higher-fidelity event already corrected.</li>
+        <li>Separate “delivery order” from “processing order”: concurrent serverless invocations can finish in a different order than they started.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Store raw event facts before deciding business state</h2>
+      <p>A small event ledger gives you enough information to replay, inspect, and avoid stale writes. This is also the foundation for duplicate delivery handling.</p>
+      <pre><code>create table public.stripe_events (
+  id text primary key,
+  type text not null,
+  stripe_created_at timestamptz not null,
+  livemode boolean not null,
+  customer_id text,
+  subscription_id text,
+  invoice_id text,
+  received_at timestamptz not null default now(),
+  processed_at timestamptz,
+  processing_error text
+);</code></pre>
+      <pre><code>await supabaseAdmin.from('stripe_events').insert({
+  id: event.id,
+  type: event.type,
+  stripe_created_at: new Date(event.created * 1000).toISOString(),
+  livemode: event.livemode,
+  customer_id: getCustomerId(event),
+  subscription_id: getSubscriptionId(event),
+  invoice_id: getInvoiceId(event)
+});</code></pre>
+      <p class="note">If this insert hits a unique violation on <span class="code">id</span>, acknowledge the duplicate and do not run side effects again.</p>
+    </section>
+
+    <section>
+      <h2>3. Make subscription writes monotonic</h2>
+      <p>The core fix is to stop older or lower-confidence events from overwriting newer state. In Supabase/Postgres, keep Stripe timestamps and compare before writing.</p>
+      <ul class="checklist">
+        <li>Add <span class="code">last_stripe_event_created_at</span> and <span class="code">last_stripe_event_id</span> to the local subscription row.</li>
+        <li>Only overwrite status when the incoming event is newer than the row's last processed Stripe timestamp, or when the event is the chosen authority for that field.</li>
+        <li>Use <span class="code">stripe_subscription_id</span> as the conflict key, not user email or a temporary Checkout Session ID.</li>
+        <li>Fetch the current Subscription from Stripe when a webhook payload is missing fields needed for a safe decision.</li>
+      </ul>
+      <pre><code>await supabaseAdmin.rpc('apply_stripe_subscription_event', {
+  p_subscription_id: stripeSubscriptionId,
+  p_customer_id: stripeCustomerId,
+  p_status: stripeStatus,
+  p_current_period_end: currentPeriodEnd,
+  p_event_id: event.id,
+  p_event_created_at: new Date(event.created * 1000).toISOString()
+});</code></pre>
+      <pre><code>-- Inside the database function, guard against stale overwrites:
+where subscriptions.last_stripe_event_created_at is null
+   or subscriptions.last_stripe_event_created_at &lt;= p_event_created_at;</code></pre>
+    </section>
+
+    <section>
+      <h2>4. Decide which event owns each job</h2>
+      <p>Out-of-order bugs get worse when every event tries to do every job. Use events as signals, not as duplicate business workflows.</p>
+      <div class="grid2">
+        <div class="card"><h3>Checkout Session</h3><p>Good for linking a checkout attempt to an internal user/org through trusted <span class="code">client_reference_id</span> or metadata. Do not make it the only source for long-term subscription status.</p></div>
+        <div class="card"><h3>Customer Subscription</h3><p>Good for subscription status, plan, cancellation, pause, trial, and quantity changes. Treat it as the ongoing state owner for subscriptions.</p></div>
+        <div class="card"><h3>Invoice Paid</h3><p>Good for recording successful billing periods, extending entitlements, or clearing dunning state. It should attach to an existing customer/subscription mapping or create a pending repair item.</p></div>
+        <div class="card"><h3>Customer Portal events</h3><p>Good for changes after the initial checkout flow. Make sure portal updates cannot be overwritten by an older checkout-created path.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Add a pending state instead of dropping unmapped events</h2>
+      <p>If <span class="code">invoice.paid</span> arrives before your Supabase mapping exists, do not return success and lose it. Store it as pending, then resolve after <span class="code">checkout.session.completed</span> or a Stripe API lookup fills the mapping.</p>
+      <pre><code>create table public.stripe_pending_events (
+  event_id text primary key,
+  event_type text not null,
+  customer_id text,
+  subscription_id text,
+  reason text not null,
+  payload jsonb not null,
+  created_at timestamptz not null default now(),
+  resolved_at timestamptz
+);</code></pre>
+      <ul class="checklist warn">
+        <li>Do not silently skip <span class="code">invoice.paid</span> because <span class="code">user_id</span> is missing.</li>
+        <li>Do not key mapping by email; use Stripe customer/subscription IDs and trusted metadata captured when Checkout starts.</li>
+        <li>Do not let <span class="code">customer.subscription.created</span> overwrite a newer <span class="code">updated</span> status just because it is the “create” event.</li>
+        <li>Do not send customer-facing emails or grant credits until the mapping and dedupe checks pass.</li>
+      </ul>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to send for an event-ordering review</h2>
+      <p>Do not send secrets. Send the event sequence and schema facts that prove whether this is stale overwrite, missing mapping, duplicate processing, or an event-ownership problem.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20event%20ordering%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20Stripe%20webhook%20event%20ordering%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AWebhook%20route%20path%3A%0AEvent%20types%20involved%20%28checkout.session.completed%2C%20customer.subscription.updated%2C%20invoice.paid%2C%20etc.%29%3A%0ASanitized%20event%20IDs%20and%20event.created%20timestamps%3A%0AObserved%20server%20processing%20order%3A%0AWhich%20Supabase%20row%20is%20wrong%20afterward%3A%0ACustomer%2Fsubscription%2Finvoice%20IDs%20%28redacted%20if%20needed%29%3A%0ASubscription%2Fcustomer%2Fstripe_events%20table%20schemas%20%28no%20secrets%29%3A%0AUnique%20constraints%20currently%20present%3A%0AWhat%20done%20means%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="event_ordering_bottom">Request ordering help →</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=event_ordering_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="event_ordering_mapping_related">Customer mapping checklist</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Related debugging paths</h2>
+      <ul class="checklist">
+        <li><a href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=event_ordering_related_list">Stripe webhook creating duplicate subscription rows</a></li>
+        <li><a href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=event_ordering_related_list">Webhook cannot find the Supabase user after payment</a></li>
+        <li><a href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=event_ordering_related_list">Customer Portal cancelled but Supabase still says active</a></li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
