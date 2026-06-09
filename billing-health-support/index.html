@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Billing Health Support — Stripe + Supabase SaaS Monitoring</title>
+  <meta name="description" content="Lightweight monthly billing-health support for live Next.js + Supabase + Stripe apps. Review webhook failures, dunning, trial conversion, and paid-user access drift.">
+  <link rel="canonical" href="https://goosekit.dev/billing-health-support/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Billing Health Support for Stripe + Supabase SaaS">
+  <meta property="og:description" content="A narrow €99/mo support offer for founders who want Stripe/Supabase billing drift checked after launch.">
+  <meta property="og:url" content="https://goosekit.dev/billing-health-support/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.16),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.68}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1080px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:56px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:30px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 16px}h3{margin:0 0 10px;font-size:1.12rem}p,li{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:20px;padding:24px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.price{font-size:3rem;letter-spacing:-.06em;font-weight:950;margin:10px 0 0}.fine,.muted{color:#9090aa;font-size:.94rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.section{margin-top:58px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}ul{list-style:none;padding:0;margin:0}li{position:relative;padding-left:27px;margin:10px 0}li::before{content:'✓';position:absolute;left:0;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.tag{display:inline-block;border:1px solid #34344e;border-radius:999px;padding:5px 9px;color:#d8d8e5;font-size:.82rem;margin:4px 4px 0 0}@media(max-width:860px){.hero,.grid3,.grid2{grid-template-columns:1fr}nav{margin-bottom:36px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav><a href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_nav">← Setup help</a><a href="/">Goosekit</a></nav>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Monthly billing-health support</div>
+        <h1>Keep Stripe + Supabase billing from quietly breaking after launch.</h1>
+        <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, trial conversion bugs, dunning mistakes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
+        <p class="lead">This is not general development support. It starts after an initial setup/debug pass, when there is enough context to review the billing surface safely.</p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%20%28live%20%2F%20pre-launch%29%3A%0AMy%20stack%3A%0AMonthly%20billing%20risk%20I%20want%20covered%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0A" data-ph-event="billing_health_interest" data-ph-location="billing_health_hero">Ask about support →</a>
+          <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_setup_first" data-ph-event="billing_health_secondary_clicked" data-ph-location="setup_first">Need the first setup pass?</a>
+        </div>
+        <p class="fine">Manual availability. Best fit after a €199+ setup/debug pass. No fake monitoring dashboard, no broad agency retainer.</p>
+      </div>
+      <aside class="card strip">
+        <h2>Starting point</h2>
+        <div class="price">€99/mo</div>
+        <p>Lightweight monthly review for a narrow revenue-critical surface.</p>
+        <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Dunning</span><span class="tag">Trials</span><span class="tag">Portal changes</span></div>
+      </aside>
+    </section>
+    <section class="section grid3">
+      <div class="card"><h3>Webhook failure review</h3><p>Check recent Stripe webhook failures, duplicate events, missing handlers, and event-ordering risks.</p></div>
+      <div class="card"><h3>Paid-state sanity check</h3><p>Compare Stripe subscription/invoice states with Supabase entitlement or subscription rows.</p></div>
+      <div class="card"><h3>One small fix/note</h3><p>One prioritized small billing/auth fix, implementation note, or escalation path per month.</p></div>
+    </section>
+    <section class="section grid2">
+      <div class="card"><h2>Good fit</h2><ul><li>Live or near-live SaaS with paying/trial users.</li><li>Next.js + Supabase + Stripe or very close.</li><li>You care about failed renewals, trial conversion, portal changes, and paid access state.</li><li>You want a narrow recurring safety check, not a full-time developer.</li></ul></div>
+      <div class="card warn"><h2>Not a fit</h2><ul><li>No deployed app or Stripe Billing setup yet.</li><li>You need broad feature work or unlimited support.</li><li>Your billing is not Stripe or your access layer is not close to Supabase.</li><li>You cannot share enough safe context to review the system.</li></ul></div>
+    </section>
+    <section class="section card strip">
+      <h2>Why this exists</h2>
+      <p>A one-time starter helps you launch. Recurring revenue depends on the billing loop staying healthy after launch: renewals, failed payments, trial endings, customer portal changes, webhook retries, and entitlement sync. This offer is a small paid wedge to validate whether founders will pay for that ongoing protection.</p>
+      <div class="actions"><a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%3A%0AMy%20stack%3A%0AMain%20billing%20risk%3A%0A" data-ph-event="billing_health_interest" data-ph-location="billing_health_bottom">Ask about billing-health support →</a></div>
+    </section>
+  </main>
+</body>
+</html>

@@ -56,6 +56,7 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 
 ## Paid builder products
 - Ship It Kit (€49): https://goosekit.dev/ship-it-kit/ — Next.js 15 + Supabase + Stripe starter with auth, checkout, billing portal, webhooks, dashboard
+- Billing-health support (€99/mo after first setup/debug pass): https://goosekit.dev/billing-health-support/ — lightweight recurring review for Stripe webhooks, dunning, trial conversion, portal changes, and Supabase paid-access drift
 - Next.js + Supabase + Stripe setup help (€199+ typical first scope, optional €99/mo billing-health support after first pass): https://goosekit.dev/nextjs-supabase-stripe-setup-help/ — scoped setup/debug help for auth callbacks, protected routes, Stripe checkout, webhooks, env drift, paid-user state, and recurring billing-health review for live apps
 - Offline Pack (€29): https://goosekit.dev/offline-pack/ — One-time portable ZIP of 12 browser tools for offline/privacy-sensitive JSON, regex, JWT, Base64, hash, SQL, cURL, diff, URL, cron, UUID, and JSON-to-CSV work
 
