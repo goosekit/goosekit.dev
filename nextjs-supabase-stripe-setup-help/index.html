@@ -45,6 +45,8 @@
           <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_hero_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_rls_guide">Supabase RLS webhook debug</a>
           <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=setup_help_hero_duplicate_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_duplicate_webhook_guide">Duplicate webhook debug</a>
           <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=setup_help_hero_portal_plan_change" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_portal_plan_change_guide">Portal plan-change debug</a>
+          <a class="btn secondary" href="/blog/stripe-duplicate-customers-supabase-user/?ref=setup_help_hero_duplicate_customer" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_duplicate_customer_guide">Duplicate customer debug</a>
+          <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_hero_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_trial_guide">Trial conversion debug</a>
           <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=setup_help_hero_dunning" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_dunning_guide">Dunning/access debug</a>
           <a class="btn secondary" href="/blog/stripe-pause-collection-supabase-access/?ref=setup_help_hero_pause" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_pause_guide">Paused billing debug</a>
           <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_hero_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_trial_guide">Trial/access debug</a>
@@ -92,6 +94,7 @@
           <li>Duplicate Stripe webhook deliveries create duplicate subscription rows, emails, or credit grants.</li>
           <li>Stripe subscription events arrive or finish out of order and overwrite paid state with stale data.</li>
           <li>Payment succeeds but the webhook cannot map the Stripe customer/subscription to the Supabase user or workspace.</li>
+          <li>Duplicate Stripe customers exist for the same app user, workspace, or email and paid access updates the wrong row.</li>
           <li>Customer portal exists but cancellation/downgrade state is unclear.</li>
           <li>Preview, production, and local environment variables drift apart.</li>
           <li>Supabase Auth or Stripe Checkout returns users to a preview Vercel URL instead of the production domain.</li>
@@ -180,6 +183,8 @@
         <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_artifacts_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_rls">Supabase RLS webhook checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=setup_help_artifacts_duplicate_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_duplicate_webhook">Duplicate webhook checklist</a>
         <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=setup_help_artifacts_portal_plan_change" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_portal_plan_change">Portal entitlement checklist</a>
+        <a class="btn secondary" href="/blog/stripe-duplicate-customers-supabase-user/?ref=setup_help_artifacts_duplicate_customer" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_duplicate_customer">Duplicate customer checklist</a>
+        <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_artifacts_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_trial">Trial/access checklist</a>
         <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=setup_help_artifacts_dunning" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_dunning">Dunning/access checklist</a>
         <a class="btn secondary" href="/blog/stripe-pause-collection-supabase-access/?ref=setup_help_artifacts_pause" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_pause">Paused billing checklist</a>
         <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_artifacts_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_trial">Trial/access checklist</a>
