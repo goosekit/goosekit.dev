@@ -605,30 +605,9 @@
   <header>
     <div class="container topbar">
       <a class="brand" href="#top">Ship It <span>Kit</span> by Goosekit</a>
-      <a class="nav-cta" href="/ship-it-kit-quick-fit/?ref=product_nav_current" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="nav_current_fit">Check fit before checkout</a>
+      <a class="nav-cta" href="/go/ship-it-kit/checkout-product-sticky/?source=product_nav" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="nav_checkout">Get Ship It Kit — €49</a>
     </div>
   </header>
-
-  <div id="launch-banner" class="launch-banner" role="region" aria-label="Ship It Kit pricing">
-    <a class="launch-banner-link" href="/ship-it-kit-flash/?ref=product_launch_banner" data-ph-event="ship_it_kit_secondary_click" data-ph-location="launch_banner_flash_preview">Ship It Kit is €49 one-time. Check fit first, then use the current product page.</a>
-    <button class="launch-banner-close" type="button" aria-label="Dismiss launch banner">×</button>
-  </div>
-  <style>
-    .launch-banner { position: sticky; top: 0; z-index: 100; display: flex; align-items: center; justify-content: center; gap: 14px; padding: 8px 16px; background: #0b0b14; border-bottom: 1px solid rgba(255, 72, 0, 0.4); color: #f5f7ff; font-size: 13px; font-weight: 600; line-height: 1.4; }
-    .launch-banner-link { color: #f5f7ff; text-decoration: none; border-bottom: 1px dashed rgba(255, 72, 0, 0.6); padding-bottom: 1px; }
-    .launch-banner-link:hover { color: #ff9040; text-decoration: none; border-bottom-color: #ff9040; }
-    .launch-banner-close { background: transparent; border: 0; color: #6b6b8a; font-size: 18px; line-height: 1; cursor: pointer; padding: 2px 8px; border-radius: 4px; margin-left: 4px; }
-    .launch-banner-close:hover { color: #f5f7ff; background: rgba(255,255,255,0.05); }
-    .launch-banner[hidden] { display: none !important; }
-  </style>
-  <script>
-    (function () {
-      var b = document.getElementById('launch-banner'); if (!b) return;
-      try { if (localStorage.getItem('gk_launch_banner_dismissed') === '1') { b.hidden = true; return; } } catch (e) {}
-      var c = b.querySelector('.launch-banner-close');
-      if (c) c.addEventListener('click', function () { b.hidden = true; try { localStorage.setItem('gk_launch_banner_dismissed', '1'); } catch (e) {} });
-    })();
-  </script>
 
   <main class="container" id="top">
     <section class="hero" id="hero">
@@ -637,7 +616,7 @@
         <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
         <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
         <div class="hero-actions">
-          <a class="btn-primary" href="/ship-it-kit-quick-fit/?ref=product_hero_current" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero_current_fit">Check fit before checkout</a>
+          <a class="btn-primary" href="/go/ship-it-kit/checkout-product-hero/?source=product_hero" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="hero_checkout">Get Ship It Kit — €49 one-time</a>
           <a class="btn-secondary" href="#proof">See the exact files first</a>
         </div>
         <ul class="hero-points">
@@ -654,7 +633,7 @@
         <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
         <div class="price">€49 <span>one-time</span></div>
         <p class="price-note">Instant repo access. Lifetime starter updates and 30-day money-back guarantee still apply.</p>
-        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? Use the <a href="/ship-it-kit-quick-fit/?ref=product_hero_quick_fit">30-second proof-first router</a> before buying.</p>
+        <p class="price-note" style="margin-top:10px;">Not sure if your stack fits? Use the <a href="/ship-it-kit-checklist/?ref=product_hero_checklist">fit checklist</a> before buying.</p>
         <p class="price-note" style="margin-top:10px;">Need more proof first? <a href="/blog/ship-it-kit-review/?ref=product_hero_review">Read the review</a> or <a href="/blog/nextjs-auth-billing-starter/?ref=product_hero_auth_billing">see the auth + billing walkthrough</a>.</p>
         <div class="proof-row">
           <span class="mini-pill">Signup already wired</span>
@@ -688,7 +667,7 @@
         </div>
         <div class="hero-actions" style="margin:0;justify-content:flex-start;">
           <a class="btn-primary" href="/go/ship-it-kit/checkout-product-decision-strip/?source=product_decision_strip" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="product_decision_strip">This is my stack — get access</a>
-          <a class="btn-secondary" href="/ship-it-kit-quick-fit/?ref=product_decision_strip_quick_fit" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="product_decision_strip_quick_fit">Check fit first</a>
+          <a class="btn-secondary" href="/ship-it-kit-checklist/?ref=product_decision_strip_checklist" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="product_decision_strip_checklist">Check fit first</a>
         </div>
       </div>
     </section>
@@ -877,7 +856,7 @@ supabase/
         <div class="panel">
           <h3>I already know this is my stack</h3>
           <p>You want the fastest path to the repo and do not need more comparison first.</p>
-          <p><a href="/ship-it-kit-quick-fit/?ref=product_next_step_current">Check fit before checkout</a></p>
+          <p><a href="/go/ship-it-kit/checkout-product-bottom/?source=product_next_step">Get Ship It Kit — €49 one-time</a></p>
         </div>
         <div class="panel">
           <h3>I am still comparing ShipFast / Makerkit / Supastarter</h3>
@@ -911,8 +890,8 @@ supabase/
             <li><span class="check">✓</span><span>Priced for a single painful setup loop, not for enterprise feature theater.</span></li>
           </ul>
           <div class="hero-actions" style="margin-top:20px;">
-            <a class="btn-primary" href="/ship-it-kit-quick-fit/?ref=product_pricing_current" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="pricing_current_fit">Check fit before checkout</a>
-            <a class="btn-secondary" href="/ship-it-kit-quick-fit/?ref=product_price_quick_fit_top">Run the 30-second fit check</a>
+            <a class="btn-primary" href="/go/ship-it-kit/checkout-product-pricing/?source=product_pricing" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="pricing_checkout">Get Ship It Kit — €49</a>
+            <a class="btn-secondary" href="/ship-it-kit-checklist/?ref=product_price_checklist_top">Check fit first</a>
           </div>
           <div class="buy-check">
             <h3>What arrives right after checkout</h3>
@@ -941,7 +920,7 @@ supabase/
             </ul>
             <p class="price-note" style="margin-top:12px;">If you realize it is the wrong fit for your stack, use the 30-day refund policy instead of forcing it.</p>
           </div>
-          <p class="price-note" style="margin-top:16px;">Still unsure? <a href="/ship-it-kit-quick-fit/?ref=product_price_quick_fit">Run the 30-second fit check</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_price_auth_billing">read the auth + billing guide</a>, <a href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=product_price_setup_checklist">use the setup checklist</a>, or <a href="/compare/ship-it-kit-vs-competitors/?ref=product_price_compare">compare it with bigger starters</a> before you buy.</p>
+          <p class="price-note" style="margin-top:16px;">Still unsure? <a href="/ship-it-kit-checklist/?ref=product_price_checklist">Run through the fit checklist</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_price_auth_billing">read the auth + billing guide</a>, <a href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=product_price_setup_checklist">use the setup checklist</a>, or <a href="/compare/ship-it-kit-vs-competitors/?ref=product_price_compare">compare it with bigger starters</a> before you buy.</p>
         </div>
       </div>
     </section>
@@ -1005,10 +984,10 @@ supabase/
       <h2>Stop rewiring auth and Stripe for every MVP.</h2>
       <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it.</p>
       <div class="cta-actions">
-        <a class="btn-primary" href="/ship-it-kit-quick-fit/?ref=product_bottom_current" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom_current_fit">Check fit before checkout</a>
+        <a class="btn-primary" href="/go/ship-it-kit/checkout-product-bottom/?source=product_bottom" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="bottom_checkout">Get Ship It Kit — €49 one-time</a>
         <a class="btn-secondary" href="#included">Review what is included</a>
       </div>
-      <p class="price-note" style="margin-top:16px;">€49 one-time, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the <a href="/ship-it-kit-quick-fit/?ref=product_bottom_quick_fit">30-second proof-first router</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
+      <p class="price-note" style="margin-top:16px;">€49 one-time, lifetime starter updates, 30-day money-back guarantee. Still unsure? Use the <a href="/ship-it-kit-checklist/?ref=product_bottom_checklist">fit checklist</a>, <a href="/blog/nextjs-auth-billing-starter/?ref=product_bottom_auth_billing">read the auth + billing guide</a>, <a href="/compare/ship-it-kit-vs-shipfast/?ref=product_bottom_compare_shipfast">compare it with ShipFast</a>, or <a href="/blog/ship-it-kit-review/?ref=product_bottom_review">see the review</a>.</p>
     </section>
   </main>
 
