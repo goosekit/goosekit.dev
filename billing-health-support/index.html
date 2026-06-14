@@ -41,6 +41,13 @@
         <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Dunning</span><span class="tag">Trials</span><span class="tag">Portal changes</span></div>
       </aside>
     </section>
+    <section class="section card strip">
+      <h2>Pre-launch live-money gate</h2>
+      <p>Some apps need one paid review before the first live charge: deposit checkout, booking payment, waitlist prepay, add-on purchase, or cart recovery. That first pass checks whether Stripe payment state can be reconciled to local app state before ongoing monthly support makes sense.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_live_money_gate" data-ph-event="billing_health_secondary_clicked" data-ph-location="billing_health_live_money_gate">Request a go-live review first →</a>
+      </div>
+    </section>
     <section class="section grid3">
       <div class="card"><h3>Webhook failure review</h3><p>Check recent Stripe webhook failures, duplicate events, missing handlers, and event-ordering risks.</p></div>
       <div class="card"><h3>Paid-state sanity check</h3><p>Compare Stripe subscription/invoice states with Supabase entitlement or subscription rows.</p></div>

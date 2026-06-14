@@ -28,7 +28,7 @@
       <div>
         <div class="eyebrow">Scoped setup help for SaaS builders</div>
         <h1>Next.js + Supabase + Stripe setup help.</h1>
-        <p class="lead">For founders who already have a repo and need the boring revenue plumbing finished: Supabase auth callbacks, protected routes, Stripe checkout, customer portal, webhooks, environment variables, and paid-user state.</p>
+        <p class="lead">For founders who already have a repo and need the boring revenue plumbing finished: Supabase auth callbacks, protected routes, Stripe checkout, customer portal, webhooks, live-money go-live checks, environment variables, and paid-user state.</p>
         <p class="lead">The first paid pass is fixed-scope. If the app is live or close to live, the follow-up offer is monthly billing-health support so Stripe/Supabase edge cases do not quietly break paid access after launch.</p>
         <p class="lead">This is not a full agency build. Send the current repo state and the exact blocker. If it is narrow enough to scope safely, you get a fixed-scope quote. If not, you get a straight no.</p>
         <div class="actions">
@@ -68,6 +68,35 @@
       <div class="card"><h3>Auth callback review</h3><p>Confirm Supabase callback routes, middleware/session handling, redirect allowlists, password recovery, OAuth, and protected route behavior.</p></div>
       <div class="card"><h3>Stripe billing wiring</h3><p>Review checkout sessions, customer references, portal route, live/test env split, success/cancel URLs, and paid-user gating.</p></div>
       <div class="card"><h3>Webhook sanity pass</h3><p>Check raw-body signature handling, idempotency, event coverage, database updates, local Stripe CLI testing, and production endpoint config.</p></div>
+    </section>
+
+    <section class="section card strip">
+      <h2>Live-money go-live review</h2>
+      <p>If a real Stripe button is about to go live, the paid pass can be scoped as a go/no-go review instead of broad setup help: one checkout, deposit, booking, cart, add-on, or subscription path; the webhook/success/cancel behavior around it; and the local rows that prove paid, unpaid, canceled, refunded, retry, and recovery state.</p>
+      <div class="grid2">
+        <div>
+          <h3>Good go-live scope</h3>
+          <ul>
+            <li>Test/live mode, webhook secret, and production URL are named before merge.</li>
+            <li>Each paid Stripe object maps to exactly one local booking, order, cart, subscription, or entitlement row.</li>
+            <li>The app has a recovery path if the browser never returns after Checkout.</li>
+            <li>Webhook retry and refresh paths are idempotent.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>No-go signals</h3>
+          <ul class="warn">
+            <li>Success URL is the only place that marks paid state.</li>
+            <li>Refund/support cannot find the original PaymentIntent or Checkout Session from the local row.</li>
+            <li>Unpaid/expired local state can reopen a paid or canceled Stripe state.</li>
+            <li>A second click can create a second active Stripe session or subscription accidentally.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Live-money%20Stripe%20go-live%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20live-money%20Stripe%20go-live%20review.%0A%0AFlow%20to%20review%20%28deposit%2C%20subscription%2C%20cart%2C%20booking%2C%20add-on%29%3A%0AStripe%20object%20that%20proves%20payment%2Funpaid%20state%3A%0ALocal%20rows%20that%20should%20change%20after%20payment%3A%0AWebhook%20endpoint%20and%20success%2Fcancel%20routes%3A%0ATest-mode%20event%20or%20Checkout%20Session%20ID%20%28no%20secrets%29%3A%0AWhat%20should%20block%20merge%20or%20live%20enablement%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="live_money_gate_block">Request go-live review →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=live_money_gate_block" data-ph-event="billing_drift_check_clicked" data-ph-location="live_money_gate_block">Run drift check first</a>
+      </div>
     </section>
 
     <section class="section grid2">
