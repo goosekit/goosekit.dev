@@ -37,7 +37,11 @@
         var href = el.getAttribute('href') || '';
         var product = el.getAttribute('data-ph-product') ||
           (href.indexOf('/offline-pack') !== -1 || href.indexOf('/go/offline-pack') !== -1 ? 'offline_pack' :
-          (href.indexOf('/ship-it-kit') !== -1 || href.indexOf('/go/ship-it-kit') !== -1 ? 'ship_it_kit' : 'unknown'));
+          (href.indexOf('/ship-it-kit') !== -1 || href.indexOf('/go/ship-it-kit') !== -1 ? 'ship_it_kit' :
+          (href.indexOf('/stripe-supabase-billing-drift-check') !== -1 ||
+           href.indexOf('/stripe-billing-reliability-checklist') !== -1 ||
+           href.indexOf('/billing-health-support') !== -1 ||
+           href.indexOf('/nextjs-supabase-stripe-setup-help') !== -1 ? 'billing_reliability' : 'unknown')));
 
         window.posthog.capture(eventName, {
           site: 'goosekit',
