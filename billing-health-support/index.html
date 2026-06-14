@@ -55,6 +55,30 @@
         <div><h3>Action check</h3><ul><li>One small fix, test, or logging improvement.</li><li>One risk to ignore for now.</li><li>Clear escalation if the issue is bigger than this support scope.</li></ul></div>
       </div>
     </section>
+    <section class="section card">
+      <h2>What this is not</h2>
+      <p>This sits above Stripe Billing, dunning tools, webhook delivery tools, and Stripe-to-Supabase sync. Those can be useful. They do not automatically answer whether your app should grant access right now.</p>
+      <div class="grid2">
+        <div>
+          <h3>Not replacing</h3>
+          <ul class="warn">
+            <li>Dunning email automation or Smart Retries.</li>
+            <li>Webhook queues, replay infrastructure, or event delivery monitoring.</li>
+            <li>Generic Stripe data sync or ETL into Supabase.</li>
+            <li>Broad product development or unlimited support.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Actually checking</h3>
+          <ul>
+            <li>Whether Stripe billing state and Supabase entitlement state disagree.</li>
+            <li>Whether trials, failed renewals, portal changes, and pauses map to your access policy.</li>
+            <li>Whether a reconciliation query can find silent paid-state drift.</li>
+            <li>Which one small fix would reduce the most revenue risk this month.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
     <section class="section grid2">
       <div class="card"><h2>Good fit</h2><ul><li>Live or near-live SaaS with paying/trial users.</li><li>Next.js + Supabase + Stripe or very close.</li><li>You care about failed renewals, trial conversion, paused billing, portal changes, and paid access state.</li><li>You want a narrow recurring safety check, not a full-time developer.</li></ul></div>
       <div class="card warn"><h2>Not a fit</h2><ul><li>No deployed app or Stripe Billing setup yet.</li><li>You need broad feature work or unlimited support.</li><li>Your billing is not Stripe or your access layer is not close to Supabase.</li><li>You cannot share enough safe context to review the system.</li></ul></div>
