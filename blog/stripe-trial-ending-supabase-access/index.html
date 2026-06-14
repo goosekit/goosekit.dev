@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=trial_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=trial_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=trial_nav">Setup help</a></div>
     <div class="eyebrow">Stripe trials + Supabase access</div>
     <h1>Stripe trial ended but Supabase access did not update?</h1>
     <p class="lead">Trial transitions are a common place for SaaS billing state to drift. Your app may keep trial users active after payment fails, or lock out a customer whose first invoice was paid but whose Supabase row never changed.</p>
@@ -32,6 +32,7 @@
       <p>A Next.js + Supabase app often starts with one flag like <span class="code">is_paid</span>. That breaks down when Stripe moves a subscription from <span class="code">trialing</span> to <span class="code">active</span>, <span class="code">incomplete</span>, <span class="code">past_due</span>, or <span class="code">canceled</span>. Treat trial end as a billing lifecycle, not a checkout-success event.</p>
       <div class="actions">
         <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=trial_top" data-ph-event="setup_help_interest" data-ph-location="trial_top">Need trial/access help?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=trial_top" data-ph-event="billing_drift_check_clicked" data-ph-location="trial_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=trial_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="trial_dunning_related">Dunning/access checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149. Live apps can also ask about founding-5 €29/mo billing-health support after an initial pass.</p>
@@ -95,6 +96,7 @@
       <p>Send artifacts, not secrets: event types, relevant timestamps, subscription status, invoice status, and the Supabase table shape that stores access.</p>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20trial%20%2F%20Supabase%20access%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20Stripe%20trial%20ending%20%2F%20Supabase%20access%20in%20a%20Next.js%20app.%0A%0AStack%3A%0ATrial%20settings%20in%20Stripe%3A%0ASubscription%20status%20before%20and%20after%20trial%20end%3A%0AInvoice%20status%3A%0ARelevant%20events%20and%20order%3A%0ASupabase%20subscription%2Fentitlement%20schema%20%28no%20secrets%29%3A%0AWhat%20access%20the%20app%20currently%20grants%3A%0AWhat%20access%20you%20want%20after%20trial%20end%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="trial_bottom">Request trial/access help →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=trial_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="trial_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=trial_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="trial_setup_help">See setup help scope</a>
       </div>
     </section>
