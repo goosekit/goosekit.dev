@@ -26,10 +26,10 @@
       <div>
         <div class="eyebrow">Founding-5 monthly billing-health support</div>
         <h1>Keep Stripe + Supabase billing from quietly breaking after launch.</h1>
-        <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, trial conversion bugs, paused-billing drift, dunning mistakes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
-        <p class="lead">This is not general development support. It starts after an initial setup/debug pass, when there is enough context to review the billing surface safely.</p>
+        <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, trial conversion bugs, paused-billing drift, dunning mistakes, customer-portal changes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
+        <p class="lead">This is not general development support. It starts after an initial setup/debug pass, when there is enough context to review the billing surface safely and compare Stripe's truth with your Supabase entitlement state.</p>
         <div class="actions">
-          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%20%28live%20%2F%20pre-launch%29%3A%0AMy%20stack%3A%0AMonthly%20billing%20risk%20I%20want%20covered%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0A" data-ph-event="billing_health_interest" data-ph-location="billing_health_hero">Ask about support →</a>
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%20%28live%20%2F%20pre-launch%29%3A%0AMy%20stack%3A%0AMonthly%20billing%20risk%20I%20want%20covered%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0A" data-ph-event="billing_health_interest" data-ph-location="billing_health_hero">Request a billing drift review →</a>
           <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_setup_first" data-ph-event="billing_health_secondary_clicked" data-ph-location="setup_first">Need the first setup pass?</a>
         </div>
         <p class="fine">Manual availability. Best fit after a €99–149 founding setup/debug pass. No fake monitoring dashboard, no broad agency retainer.</p>
@@ -45,6 +45,15 @@
       <div class="card"><h3>Webhook failure review</h3><p>Check recent Stripe webhook failures, duplicate events, missing handlers, and event-ordering risks.</p></div>
       <div class="card"><h3>Paid-state sanity check</h3><p>Compare Stripe subscription/invoice states with Supabase entitlement or subscription rows.</p></div>
       <div class="card"><h3>One small fix/note</h3><p>One prioritized small billing/auth fix, implementation note, or escalation path per month.</p></div>
+    </section>
+    <section class="section card">
+      <h2>Monthly review output</h2>
+      <p>Each month should leave you with a short practical note, not a vague “looks good”. The review focuses on the few states that usually leak revenue in small Stripe/Supabase apps.</p>
+      <div class="grid3">
+        <div><h3>Event check</h3><ul><li>Recent failed webhook deliveries.</li><li>Duplicate or out-of-order subscription events.</li><li>Unhandled billing events worth adding.</li></ul></div>
+        <div><h3>State check</h3><ul><li>Stripe subscriptions vs Supabase paid rows.</li><li>Trial, past-due, unpaid, paused, canceled, and portal-change state.</li><li>Customer/user/workspace mapping drift.</li></ul></div>
+        <div><h3>Action check</h3><ul><li>One small fix, test, or logging improvement.</li><li>One risk to ignore for now.</li><li>Clear escalation if the issue is bigger than this support scope.</li></ul></div>
+      </div>
     </section>
     <section class="section grid2">
       <div class="card"><h2>Good fit</h2><ul><li>Live or near-live SaaS with paying/trial users.</li><li>Next.js + Supabase + Stripe or very close.</li><li>You care about failed renewals, trial conversion, paused billing, portal changes, and paid access state.</li><li>You want a narrow recurring safety check, not a full-time developer.</li></ul></div>
