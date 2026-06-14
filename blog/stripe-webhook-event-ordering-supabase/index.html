@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=event_ordering_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=event_ordering_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=event_ordering_nav">Setup help</a></div>
     <div class="eyebrow">Stripe webhook ordering + Supabase</div>
     <h1>Stripe webhooks arriving out of order?</h1>
     <p class="lead">If <span class="code">customer.subscription.updated</span>, <span class="code">invoice.paid</span>, or <span class="code">checkout.session.completed</span> lands in a surprising order, your Supabase state can show the wrong plan, miss the user mapping, or overwrite an active subscription with stale data.</p>
@@ -32,6 +32,7 @@
       <p>Do not design a webhook handler that only works when events arrive in the order you expect from a happy-path test. Subscription flows are asynchronous. Related events can be delivered close together, retried, or processed by your app in a different order than your mental model.</p>
       <div class="actions">
         <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=event_ordering_top" data-ph-event="setup_help_interest" data-ph-location="event_ordering_top">Need webhook ordering help?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=event_ordering_top" data-ph-event="billing_drift_check_clicked" data-ph-location="event_ordering_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=event_ordering_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="event_ordering_idempotency_related">Idempotency checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149 when the route, event payloads, Supabase schema, and logs are narrow enough to review safely.</p>
@@ -140,6 +141,7 @@ where subscriptions.last_stripe_event_created_at is null
       <p>Do not send secrets. Send the event sequence and schema facts that prove whether this is stale overwrite, missing mapping, duplicate processing, or an event-ownership problem.</p>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20event%20ordering%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20Stripe%20webhook%20event%20ordering%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AWebhook%20route%20path%3A%0AEvent%20types%20involved%20%28checkout.session.completed%2C%20customer.subscription.updated%2C%20invoice.paid%2C%20etc.%29%3A%0ASanitized%20event%20IDs%20and%20event.created%20timestamps%3A%0AObserved%20server%20processing%20order%3A%0AWhich%20Supabase%20row%20is%20wrong%20afterward%3A%0ACustomer%2Fsubscription%2Finvoice%20IDs%20%28redacted%20if%20needed%29%3A%0ASubscription%2Fcustomer%2Fstripe_events%20table%20schemas%20%28no%20secrets%29%3A%0AUnique%20constraints%20currently%20present%3A%0AWhat%20done%20means%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="event_ordering_bottom">Request ordering help →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=event_ordering_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="event_ordering_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=event_ordering_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="event_ordering_mapping_related">Customer mapping checklist</a>
       </div>
     </section>

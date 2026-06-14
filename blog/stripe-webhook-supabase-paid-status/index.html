@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=webhook_guide_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=webhook_paid_status_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=webhook_guide_nav">Setup help</a></div>
     <div class="eyebrow">Next.js billing debug</div>
     <h1>Stripe webhook not updating Supabase paid status?</h1>
     <p class="lead">The awkward failure mode is common: checkout succeeds, Stripe shows a customer or subscription, but your Next.js app still treats the user as free. Use this checklist to find whether the bug is in the webhook, user mapping, database update, or route gate.</p>
@@ -32,6 +32,7 @@
       <p>If the user paid but the app did not unlock, do not keep changing the checkout button. Follow the path: checkout metadata → webhook signature → event handler → Supabase write → app-side paid-state read.</p>
       <div class="actions">
         <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=webhook_guide_top" data-ph-event="setup_help_interest" data-ph-location="webhook_paid_status_top">Need a setup/debug pass?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=webhook_paid_status_top" data-ph-event="billing_drift_check_clicked" data-ph-location="webhook_paid_status_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=webhook_guide_top_checklist" data-ph-event="setup_help_secondary_clicked" data-ph-location="webhook_paid_status_checklist">Full setup checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149 when the repo and blocker are narrow enough to review safely.</p>
@@ -93,6 +94,7 @@
       <p>If checkout succeeds but access still fails after checking metadata, signature verification, webhook events, Supabase writes, and route gating, the next useful step is a narrow repo review — not another generic tutorial.</p>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20%2B%20Supabase%20paid%20status%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20debugging%20Stripe%20webhooks%20%2B%20Supabase%20paid-user%20state.%0A%0AStack%3A%20Next.js%20%2F%20Supabase%20%2F%20Stripe%0AWhat%20works%3A%0AWhat%20fails%3A%0AStripe%20event(s)%20seen%3A%0ASupabase%20row%20state%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_paid_status_bottom_mailto">Request setup help →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=webhook_paid_status_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="webhook_paid_status_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/ship-it-kit/?ref=webhook_guide_bottom_product" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="webhook_paid_status_product">Need a cleaner starter?</a>
       </div>
       <p class="note">No fake certainty: some repos need a larger architecture pass. The first useful output is a small, honest scope or a clear decline.</p>

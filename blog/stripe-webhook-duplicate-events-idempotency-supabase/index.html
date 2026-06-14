@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=duplicate_webhook_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=duplicate_webhook_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=duplicate_webhook_nav">Setup help</a></div>
     <div class="eyebrow">Stripe webhook idempotency + Supabase</div>
     <h1>Stripe webhook creating duplicate subscription rows?</h1>
     <p class="lead">If a single Checkout payment creates two subscription rows, sends two welcome emails, adds credits twice, or flips paid state back and forth, do not assume Stripe is broken. Webhooks are retryable and can arrive more than once. Your handler needs to be idempotent.</p>
@@ -32,6 +32,7 @@
       <p>Stripe can retry events, send duplicate event deliveries, and deliver related events close together. If your handler blindly inserts on every <span class="code">checkout.session.completed</span>, <span class="code">customer.subscription.created</span>, or <span class="code">invoice.paid</span>, Supabase will faithfully store duplicate business state unless the database prevents it.</p>
       <div class="actions">
         <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=duplicate_webhook_top" data-ph-event="setup_help_interest" data-ph-location="duplicate_webhook_top">Need webhook dedupe help?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=duplicate_webhook_top" data-ph-event="billing_drift_check_clicked" data-ph-location="duplicate_webhook_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=duplicate_webhook_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="duplicate_webhook_mapping_related">Customer mapping checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149 when the route, table schema, Stripe events, and logs are narrow enough to inspect safely.</p>
@@ -137,6 +138,7 @@ await supabaseAdmin
       <p>Do not send secrets. Send the evidence that proves whether the duplicate is event-level, business-key-level, concurrency, or endpoint configuration.</p>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20duplicate%20subscription%20rows&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20duplicate%20Stripe%20webhook%20processing%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AWebhook%20route%20path%3A%0AStripe%20event%20type%28s%29%20involved%3A%0ADo%20duplicate%20rows%20share%20the%20same%20event.id%3F%0ADo%20duplicate%20rows%20share%20the%20same%20stripe_subscription_id%20or%20stripe_customer_id%3F%0ASanitized%20Stripe%20delivery%20logs%3A%0ASanitized%20Vercel%2Fserver%20logs%3A%0ASubscription%2Fcustomer%2Fstripe_events%20table%20schemas%20%28no%20secrets%29%3A%0AUnique%20constraints%20currently%20present%3A%0AWhich%20side%20effect%20is%20duplicating%20%28row%2C%20email%2C%20credits%2C%20access%29%3A%0AWhat%20done%20means%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="duplicate_webhook_bottom">Request idempotency help →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=duplicate_webhook_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="duplicate_webhook_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=duplicate_webhook_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="duplicate_webhook_rls_related">RLS webhook checklist</a>
       </div>
     </section>
