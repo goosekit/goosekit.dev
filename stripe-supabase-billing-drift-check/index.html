@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe + Supabase Billing Drift Check — Goosekit</title>
+  <meta name="description" content="Run a quick Stripe + Supabase billing drift check for your SaaS: webhook retries, entitlement state, customer portal changes, dunning, trials, and reconciliation.">
+  <link rel="canonical" href="https://goosekit.dev/stripe-supabase-billing-drift-check/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stripe + Supabase Billing Drift Check">
+  <meta property="og:description" content="Score the billing edge cases that make Stripe say paid while your Supabase app state says something else.">
+  <meta property="og:url" content="https://goosekit.dev/stripe-supabase-billing-drift-check/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.14),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.62}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1100px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:50px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:28px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,5.6vw,4.6rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 14px}h3{margin:0 0 9px;font-size:1.08rem}p,li,label{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:18px;padding:22px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.section{margin-top:52px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.checks{display:grid;gap:11px;margin-top:14px}.check{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;padding:13px 14px;border:1px solid #2a2a41;border-radius:12px;background:rgba(255,255,255,.025)}.check input{width:18px;height:18px;margin-top:2px;accent-color:#ff4800}.score{font-size:3.3rem;letter-spacing:-.06em;font-weight:950;margin:4px 0}.status{font-weight:900;color:#fff;margin:0 0 8px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.fine{color:#9090aa;font-size:.94rem}.resultList{padding-left:1.1rem;margin:10px 0 0}.resultList li{margin:7px 0}@media(max-width:860px){.hero,.grid2{grid-template-columns:1fr}nav{margin-bottom:34px}.score{font-size:2.8rem}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav><a href="/">← Goosekit</a><a href="/stripe-billing-reliability-checklist/?ref=drift_check_nav">Reliability checklist</a><a href="/billing-health-support/?ref=drift_check_nav">Monthly support</a></nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Stripe + Supabase billing drift check</div>
+        <h1>Can your app find when Stripe and Supabase disagree?</h1>
+        <p class="lead">A quick self-check for live or near-live SaaS apps. Score the cases that usually create silent revenue leaks: duplicate webhooks, failed local writes after payment, customer portal changes, dunning, trials, paused billing, and missing reconciliation.</p>
+        <p class="lead">No login. No fake audit. If the result exposes real risk, the paid path is a narrow €99-149 billing review and optional €29/mo founding support after a first pass.</p>
+      </div>
+      <aside class="card strip" aria-live="polite">
+        <h2>Your drift risk</h2>
+        <div class="score"><span id="score">0</span>/10</div>
+        <p class="status" id="status">Start checking the boxes.</p>
+        <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
+        <div class="actions">
+          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-location="drift_check_result">Request a narrow review →</a>
+          <a class="btn secondary" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-location="drift_check_result">See monthly support</a>
+        </div>
+        <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
+      </aside>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>Run the check</h2>
+        <div class="checks" id="checks">
+          <label class="check"><input type="checkbox" data-risk="Duplicate webhook deliveries can duplicate entitlements, emails, credits, or tier updates."><span>Duplicate Stripe webhook deliveries are idempotent by event ID.</span></label>
+          <label class="check"><input type="checkbox" data-risk="A successful Stripe payment can leave Supabase unpaid if the local write fails."><span>There is a recovery path when Stripe succeeds but the Supabase write fails.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Older delayed subscription events can overwrite newer paid access state."><span>Out-of-order subscription events cannot overwrite newer entitlement state.</span></label>
+          <label class="check"><input type="checkbox" data-risk="The success URL can unlock users before the verified webhook updates app state."><span>Paid access does not rely on the checkout success URL alone.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Customer portal cancels, downgrades, and plan changes can drift from app access."><span>Customer portal cancel, downgrade, and plan-change events update Supabase access correctly.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Dunning and failed renewals can either block too early or leak access forever."><span>Past-due, unpaid, retry, and recovery states have an explicit access policy.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Trial endings can fail silently if invoice/subscription events are not mapped to access."><span>Trial ending and trial conversion are tested against the real access gate.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Paused billing can leave ambiguous paid state unless pause_collection is mapped."><span>Paused billing and resumed billing are mapped to the intended Supabase state.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Email-only customer mapping can update the wrong user or workspace."><span>Stripe customer/subscription IDs map to the local user, team, or workspace without relying on email alone.</span></label>
+          <label class="check"><input type="checkbox" data-risk="No recurring scan means paid-in-Stripe/inactive-locally drift can sit unnoticed."><span>A recurring reconciliation query can find Stripe-active/Supabase-inactive and Stripe-inactive/Supabase-active mismatches.</span></label>
+        </div>
+      </div>
+      <div class="card">
+        <h2>What your result means</h2>
+        <p><strong>0-4:</strong> the happy checkout path may work, but the billing loop is probably fragile.</p>
+        <p><strong>5-7:</strong> the core shape exists, but one bad webhook, portal change, or failed write can still leak access or block paid users.</p>
+        <p><strong>8-10:</strong> good foundation. The remaining value is usually monthly drift review and sharper observability, not more launch code.</p>
+        <h3>Unchecked risks</h3>
+        <ul class="resultList" id="risks"><li>Check the boxes to generate the risk list.</li></ul>
+      </div>
+    </section>
+
+    <section class="section card strip">
+      <h2>If the score is low, keep the first paid scope narrow.</h2>
+      <p>The right first step is not a dashboard or a full rebuild. It is one billing drift review: event coverage, idempotency, Stripe-to-Supabase state projection, and the highest-risk mismatch cases.</p>
+      <div class="actions">
+        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=drift_check_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="drift_check_bottom">See €99-149 setup/debug scope →</a>
+        <a class="btn secondary" href="/stripe-billing-reliability-checklist/?ref=drift_check_bottom" data-ph-event="billing_drift_check_secondary" data-ph-location="drift_check_bottom">Read the full checklist</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const inputs = [...document.querySelectorAll('#checks input')];
+    const score = document.getElementById('score');
+    const status = document.getElementById('status');
+    const summary = document.getElementById('summary');
+    const risks = document.getElementById('risks');
+    const emailCta = document.getElementById('emailCta');
+
+    function update() {
+      const checked = inputs.filter(input => input.checked).length;
+      const missing = inputs.filter(input => !input.checked).map(input => input.dataset.risk);
+      score.textContent = checked;
+      if (checked <= 4) {
+        status.textContent = 'High drift risk';
+        summary.textContent = 'The app may pass happy-path checkout while still leaking access, blocking paid users, or missing failed renewals.';
+      } else if (checked <= 7) {
+        status.textContent = 'Medium drift risk';
+        summary.textContent = 'The billing loop has a base, but the edge cases still deserve a focused review before more paid traffic.';
+      } else {
+        status.textContent = 'Lower drift risk';
+        summary.textContent = 'The foundation looks stronger. The value is now recurring review, reconciliation, and observability.';
+      }
+      risks.innerHTML = missing.length ? missing.map(item => `<li>${item}</li>`).join('') : '<li>No unchecked risks in this quick pass. Keep a recurring reconciliation habit.</li>';
+      const body = [
+        'Hi Arthur,',
+        '',
+        'I ran the billing drift check and want a narrow review.',
+        '',
+        'App status (live / pre-launch):',
+        'Stack:',
+        `Check score: ${checked}/10`,
+        'Unchecked billing risks:',
+        ...missing.map(item => `- ${item}`),
+        'Recent Stripe or Supabase issue:',
+        'Repo access situation:',
+        'Budget range if any:'
+      ].join('\n');
+      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent('Stripe + Supabase billing drift review')}&body=${encodeURIComponent(body)}`;
+    }
+    inputs.forEach(input => input.addEventListener('change', update));
+    update();
+  </script>
+</body>
+</html>
