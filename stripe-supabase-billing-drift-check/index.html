@@ -32,13 +32,13 @@
       </div>
       <aside class="card strip" aria-live="polite">
         <h2>Your drift risk</h2>
-        <div class="score"><span id="score">0</span>/10</div>
+        <div class="score"><span id="score">0</span>/<span id="total">11</span></div>
         <p class="status" id="status">Start checking the boxes.</p>
         <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
         <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
         <div class="actions">
-          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="10" data-ph-recommended-scope="unscored">Request a narrow review →</a>
-          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="10" data-ph-recommended-scope="unscored">See monthly support</a>
+          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="11" data-ph-recommended-scope="unscored">Request a narrow review →</a>
+          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="11" data-ph-recommended-scope="unscored">See monthly support</a>
         </div>
         <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
       </aside>
@@ -52,6 +52,7 @@
           <label class="check"><input type="checkbox" data-risk="A successful Stripe payment can leave Supabase unpaid if the local write fails."><span>There is a recovery path when Stripe succeeds but the Supabase write fails.</span></label>
           <label class="check"><input type="checkbox" data-risk="Older delayed subscription events can overwrite newer paid access state."><span>Out-of-order subscription events cannot overwrite newer entitlement state.</span></label>
           <label class="check"><input type="checkbox" data-risk="The success URL can unlock users before the verified webhook updates app state."><span>Paid access does not rely on the checkout success URL alone.</span></label>
+          <label class="check"><input type="checkbox" data-risk="A client-supplied plan, paid flag, or isPro value can unlock paid features without Stripe proof."><span>Server APIs never accept client-supplied plan, paid, or isPro flags as the source of paid access.</span></label>
           <label class="check"><input type="checkbox" data-risk="Customer portal cancels, downgrades, and plan changes can drift from app access."><span>Customer portal cancel, downgrade, and plan-change events update Supabase access correctly.</span></label>
           <label class="check"><input type="checkbox" data-risk="Dunning and failed renewals can either block too early or leak access forever."><span>Past-due, unpaid, retry, and recovery states have an explicit access policy.</span></label>
           <label class="check"><input type="checkbox" data-risk="Trial endings can fail silently if invoice/subscription events are not mapped to access."><span>Trial ending and trial conversion are tested against the real access gate.</span></label>
@@ -64,7 +65,7 @@
         <h2>What your result means</h2>
         <p><strong>0-4:</strong> the happy checkout path may work, but the billing loop is probably fragile.</p>
         <p><strong>5-7:</strong> the core shape exists, but one bad webhook, portal change, or failed write can still leak access or block paid users.</p>
-        <p><strong>8-10:</strong> good foundation. The remaining value is usually monthly drift review and sharper observability, not more launch code.</p>
+        <p><strong>8+:</strong> good foundation. The remaining value is usually monthly drift review and sharper observability, not more launch code.</p>
         <h3>Unchecked risks</h3>
         <ul class="resultList" id="risks"><li>Check the boxes to generate the risk list.</li></ul>
       </div>
@@ -107,6 +108,7 @@
   <script>
     const inputs = [...document.querySelectorAll('#checks input')];
     const score = document.getElementById('score');
+    const total = document.getElementById('total');
     const status = document.getElementById('status');
     const summary = document.getElementById('summary');
     const scope = document.getElementById('scope');
@@ -118,6 +120,7 @@
       const checked = inputs.filter(input => input.checked).length;
       const missing = inputs.filter(input => !input.checked).map(input => input.dataset.risk);
       score.textContent = checked;
+      total.textContent = inputs.length;
       if (checked <= 4) {
         status.textContent = 'High drift risk';
         summary.textContent = 'The app may pass happy-path checkout while still leaking access, blocking paid users, or missing failed renewals.';
@@ -139,7 +142,7 @@
         '',
         'App status (live / pre-launch):',
         'Stack:',
-        `Check score: ${checked}/10`,
+        `Check score: ${checked}/${inputs.length}`,
         `Likely paid scope: ${scope.textContent}`,
         'Unchecked billing risks:',
         ...missing.map(item => `- ${item}`),
@@ -152,7 +155,7 @@
         'Repo access situation:',
         'Budget range if any:'
       ].join('\n');
-      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent(`Stripe + Supabase billing drift review (${checked}/10)`)}&body=${encodeURIComponent(body)}`;
+      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent(`Stripe + Supabase billing drift review (${checked}/${inputs.length})`)}&body=${encodeURIComponent(body)}`;
       emailCta.setAttribute('data-ph-score', String(checked));
       emailCta.setAttribute('data-ph-risk-count', String(missing.length));
       emailCta.setAttribute('data-ph-recommended-scope', scope.textContent);
