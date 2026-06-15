@@ -35,8 +35,9 @@
         <div class="score"><span id="score">0</span>/10</div>
         <p class="status" id="status">Start checking the boxes.</p>
         <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
+        <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
         <div class="actions">
-          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-location="drift_check_result">Request a narrow review →</a>
+          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="10" data-ph-recommended-scope="unscored">Request a narrow review →</a>
           <a class="btn secondary" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-location="drift_check_result">See monthly support</a>
         </div>
         <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
@@ -83,6 +84,7 @@
     const score = document.getElementById('score');
     const status = document.getElementById('status');
     const summary = document.getElementById('summary');
+    const scope = document.getElementById('scope');
     const risks = document.getElementById('risks');
     const emailCta = document.getElementById('emailCta');
 
@@ -93,12 +95,15 @@
       if (checked <= 4) {
         status.textContent = 'High drift risk';
         summary.textContent = 'The app may pass happy-path checkout while still leaking access, blocking paid users, or missing failed renewals.';
+        scope.textContent = '€99-149 first review: webhook coverage, idempotency, Stripe-to-Supabase mapping, and one recovery path for paid-but-inactive users.';
       } else if (checked <= 7) {
         status.textContent = 'Medium drift risk';
         summary.textContent = 'The billing loop has a base, but the edge cases still deserve a focused review before more paid traffic.';
+        scope.textContent = '€99-149 targeted review: the missing edge cases, event-ordering policy, and a reconciliation query before launch or the next billing change.';
       } else {
         status.textContent = 'Lower drift risk';
         summary.textContent = 'The foundation looks stronger. The value is now recurring review, reconciliation, and observability.';
+        scope.textContent = 'Monthly billing-health support: a lightweight recurring check of webhook failures, drift rows, dunning, trials, portal changes, and one small fix.';
       }
       risks.innerHTML = missing.length ? missing.map(item => `<li>${item}</li>`).join('') : '<li>No unchecked risks in this quick pass. Keep a recurring reconciliation habit.</li>';
       const body = [
@@ -109,13 +114,17 @@
         'App status (live / pre-launch):',
         'Stack:',
         `Check score: ${checked}/10`,
+        `Likely paid scope: ${scope.textContent}`,
         'Unchecked billing risks:',
         ...missing.map(item => `- ${item}`),
         'Recent Stripe or Supabase issue:',
         'Repo access situation:',
         'Budget range if any:'
       ].join('\n');
-      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent('Stripe + Supabase billing drift review')}&body=${encodeURIComponent(body)}`;
+      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent(`Stripe + Supabase billing drift review (${checked}/10)`)}&body=${encodeURIComponent(body)}`;
+      emailCta.setAttribute('data-ph-score', String(checked));
+      emailCta.setAttribute('data-ph-risk-count', String(missing.length));
+      emailCta.setAttribute('data-ph-recommended-scope', scope.textContent);
     }
     inputs.forEach(input => input.addEventListener('change', update));
     update();

@@ -49,7 +49,10 @@
           location: el.getAttribute('data-ph-location') || 'unknown',
           path: window.location.pathname,
           target_href: href || null,
-          ref: new URLSearchParams(window.location.search).get('ref') || null
+          ref: new URLSearchParams(window.location.search).get('ref') || null,
+          score: el.getAttribute('data-ph-score') || null,
+          risk_count: el.getAttribute('data-ph-risk-count') || null,
+          recommended_scope: el.getAttribute('data-ph-recommended-scope') || null
         });
 
         if (href.indexOf('/go/offline-pack') !== -1 || href.indexOf('f897713c-9cd2-4aaa-bd95-abd5ecd6b757') !== -1) {
