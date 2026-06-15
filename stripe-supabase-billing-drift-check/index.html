@@ -82,6 +82,19 @@
       </ul>
     </section>
 
+    <section class="section grid2">
+      <div class="card">
+        <h2>First paid review scope</h2>
+        <p><strong>€99 narrow review:</strong> one Stripe event, customer, subscription, session, or invoice path; one local entitlement table or access gate; one expected invariant; written findings plus the smallest fix or test plan.</p>
+        <p><strong>€149 priority review:</strong> live paid users, deposits, missing tenant/workspace provisioning, duplicate grants, portal/dunning/trial drift, or a webhook failure path that can block or leak paid access.</p>
+      </div>
+      <div class="card">
+        <h2>Not a broad rebuild</h2>
+        <p>This is not unlimited development, a billing dashboard, or generic SaaS consulting. If the first pass shows a recurring risk and the app is live, monthly billing-health support can be discussed after the review.</p>
+        <p class="fine">If there is no concrete Stripe/app mismatch yet, start with the checklist and send one reproducible state example first.</p>
+      </div>
+    </section>
+
     <section class="section card strip">
       <h2>If the score is low, keep the first paid scope narrow.</h2>
       <p>The right first step is not a dashboard or a full rebuild. It is one billing drift review: event coverage, idempotency, Stripe-to-Supabase state projection, and the highest-risk mismatch cases.</p>
