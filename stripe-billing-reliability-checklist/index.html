@@ -65,6 +65,23 @@
     </div>
 
     <section class="card strip">
+      <h2>Evidence packet for a paid review</h2>
+      <p>If one check fails, turn it into a small packet before asking for help. The useful packet is one provider object, one app row, one expected state, one actual state, and the webhook delivery result.</p>
+      <table class="matrix">
+        <thead><tr><th>Send</th><th>Example</th><th>Why it matters</th></tr></thead>
+        <tbody>
+          <tr><td>Stripe object id</td><td>Checkout Session, subscription, invoice, event, refund, or customer id</td><td>Anchors the provider state without exposing secrets.</td></tr>
+          <tr><td>Supabase state</td><td>Table name, row id, status/plan/credits/seats fields, sanitized values</td><td>Shows how the app represents paid access.</td></tr>
+          <tr><td>Webhook delivery</td><td>Delivered, failed, retried, duplicate, endpoint mismatch, or not configured</td><td>Separates billing logic bugs from delivery/config bugs.</td></tr>
+          <tr><td>Visible symptom</td><td>Paid but blocked, unpaid but unlocked, wrong workspace, stale entitlement</td><td>Keeps the review tied to revenue impact.</td></tr>
+        </tbody>
+      </table>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_reliability_evidence_packet" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_evidence_packet">See audit scope →</a>
+      </div>
+    </section>
+
+    <section class="card strip">
       <h2>If this already feels familiar</h2>
       <p>The fastest paid scope is not a dashboard. It is one narrow pass over the billing surface: event coverage, idempotency, Supabase paid-state writes, and the top mismatch cases.</p>
       <div class="actions">
