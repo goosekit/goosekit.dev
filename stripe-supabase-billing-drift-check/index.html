@@ -70,6 +70,18 @@
       </div>
     </section>
 
+    <section class="section card">
+      <h2>Debug packet for a paid review</h2>
+      <p>If the score exposes risk, the fastest first pass is a small incident packet. It should show one real mismatch, not a full codebase tour.</p>
+      <ul class="resultList">
+        <li>Stripe object ids: customer, subscription, checkout session, invoice, or event id.</li>
+        <li>Supabase rows or table names that store user, team, subscription, entitlement, credit, or booking state.</li>
+        <li>What the paid user currently sees: blocked, free plan, missing credits, duplicate access, wrong team, or stale portal state.</li>
+        <li>Webhook delivery status: delivered, failed, retried, duplicated, missing handler, or unknown.</li>
+        <li>The one state that must be true after review: paid users unlocked, unpaid users blocked, no duplicate grant, or recurring reconciliation in place.</li>
+      </ul>
+    </section>
+
     <section class="section card strip">
       <h2>If the score is low, keep the first paid scope narrow.</h2>
       <p>The right first step is not a dashboard or a full rebuild. It is one billing drift review: event coverage, idempotency, Stripe-to-Supabase state projection, and the highest-risk mismatch cases.</p>
@@ -118,6 +130,11 @@
         'Unchecked billing risks:',
         ...missing.map(item => `- ${item}`),
         'Recent Stripe or Supabase issue:',
+        'Stripe object ids you can share (customer/subscription/session/invoice/event):',
+        'Supabase rows or table names involved:',
+        'What the paid user currently sees:',
+        'Webhook delivery status or error:',
+        'One state that must be true after review:',
         'Repo access situation:',
         'Budget range if any:'
       ].join('\n');
