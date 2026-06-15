@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe + Supabase Revenue Leak Audit — Next.js SaaS</title>
+  <meta name="description" content="Fixed-scope Stripe + Supabase revenue leak audit for Next.js SaaS apps. Find paid users blocked, unpaid users unlocked, duplicate subscriptions, webhook drift, dunning mistakes, and portal access bugs.">
+  <link rel="canonical" href="https://goosekit.dev/stripe-supabase-revenue-leak-audit/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stripe + Supabase Revenue Leak Audit">
+  <meta property="og:description" content="A fixed-scope audit for founders whose Stripe payments, webhooks, and Supabase access state may disagree.">
+  <meta property="og:url" content="https://goosekit.dev/stripe-supabase-revenue-leak-audit/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.15),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.66}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:52px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);gap:30px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.6rem,3vw,2.3rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 16px}h3{font-size:1.12rem;margin:0 0 10px}p,li{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:20px;padding:24px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.price{font-size:3rem;letter-spacing:-.06em;font-weight:950;margin:8px 0 0}.fine{color:#9090aa;font-size:.94rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.section{margin-top:58px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}ul{list-style:none;padding:0;margin:0}li{position:relative;padding-left:27px;margin:10px 0}li::before{content:'✓';position:absolute;left:0;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.tag{display:inline-block;border:1px solid #34344e;border-radius:999px;padding:5px 9px;color:#d8d8e5;font-size:.82rem;margin:4px 4px 0 0}@media(max-width:860px){.hero,.grid3,.grid2{grid-template-columns:1fr}nav{margin-bottom:34px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav><a href="/">Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_audit_nav">Run drift check</a><a href="/billing-health-support/?ref=revenue_leak_audit_nav">Monthly support</a></nav>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Fixed-scope billing audit for small SaaS</div>
+        <h1>Find where Stripe says paid but your app state leaks revenue.</h1>
+        <p class="lead">For Next.js + Supabase + Stripe apps with live or near-live billing. The audit checks whether real payment states map to the right user, team, credits, seat limits, plan, dunning state, cancellation state, and customer portal outcome.</p>
+        <p class="lead">This is not a broad rebuild or generic SaaS consulting. It is a narrow revenue-leak pass: one billing surface, one expected access policy, and the mismatch cases most likely to block paid users or keep unpaid users unlocked.</p>
+        <div class="actions">
+          <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20revenue%20leak%20audit&body=Hi%20Arthur%2C%0A%0AI%20want%20a%20Stripe%20%2B%20Supabase%20revenue%20leak%20audit.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%20%28Next.js%20router%2C%20Supabase%20package%2C%20Stripe%20Billing%20or%20Checkout%29%3A%0ARevenue%20surface%20to%20audit%20%28subscription%2C%20credits%2C%20seats%2C%20deposit%2C%20booking%2C%20one-time%20checkout%29%3A%0AWhat%20Stripe%20says%3A%0AWhat%20Supabase%20or%20the%20app%20currently%20shows%3A%0ARecent%20customer%20or%20test%20case%20that%20worries%20me%3A%0AStripe%20object%20ids%20I%20can%20share%20%28no%20secrets%29%3A%0ASupabase%20tables%20or%20rows%20involved%3A%0AWebhook%20route%20and%20delivery%20status%3A%0AWhat%20done%20means%20after%20the%20audit%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="revenue_leak_audit_request_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_hero">Request audit scope</a>
+          <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_audit_hero" data-ph-event="billing_drift_check_clicked" data-ph-location="revenue_leak_audit_hero">Run drift check first</a>
+        </div>
+        <p class="fine">Founding validation price: €149 for one focused audit. If the surface is tiny and pre-launch, it may fit the €99 setup/debug pass instead. Optional €29/mo billing-health support only after a first pass.</p>
+      </div>
+      <aside class="card strip">
+        <h2>Audit scope</h2>
+        <div class="price">€149 <span class="fine">fixed founding pass</span></div>
+        <p>One revenue-critical billing surface, written findings, highest-risk mismatch list, and the smallest fix/test plan.</p>
+        <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Customer portal</span><span class="tag">Dunning</span><span class="tag">Reconciliation</span></div>
+      </aside>
+    </section>
+
+    <section class="section grid3">
+      <div class="card"><h3>Paid but blocked</h3><p>Stripe is active or paid, but the app keeps the user on free, blocks credits, hides the workspace, or never provisions access.</p></div>
+      <div class="card"><h3>Unpaid but unlocked</h3><p>Past-due, canceled, paused, refunded, or downgraded customers keep premium access because Supabase state never changed.</p></div>
+      <div class="card"><h3>Duplicate or wrong account</h3><p>Duplicate customers, subscriptions, webhook retries, email-only mapping, or portal changes update the wrong user or team.</p></div>
+    </section>
+
+    <section class="section card">
+      <h2>What gets checked</h2>
+      <div class="grid2">
+        <div>
+          <h3>Provider truth</h3>
+          <ul>
+            <li>Checkout Session, PaymentIntent, customer, subscription, invoice, refund, portal, trial, pause, and dunning states relevant to the app.</li>
+            <li>Webhook delivery status, retries, duplicate events, missing handlers, and signature/environment drift.</li>
+            <li>Which Stripe object is the source of truth for the access decision.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>App truth</h3>
+          <ul>
+            <li>Supabase rows that store plan, status, workspace, credits, seats, entitlements, or booking/payment state.</li>
+            <li>Access-gate behavior for paid, unpaid, canceled, refunded, paused, and recovered customers.</li>
+            <li>Reconciliation query or manual check that can find mismatches before users report them.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>Good fit</h2>
+        <ul>
+          <li>Live or near-live SaaS with Stripe payments, subscriptions, credits, deposits, bookings, or seat limits.</li>
+          <li>Next.js + Supabase + Stripe, or a very close stack with the same billing state problem.</li>
+          <li>You can share sanitized object ids, table names, logs, screenshots, and the expected paid-access policy.</li>
+          <li>You want a bounded audit, not unlimited implementation.</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h2>Not a fit</h2>
+        <ul>
+          <li>No Stripe billing surface exists yet.</li>
+          <li>The request is “build my whole subscription system”.</li>
+          <li>The issue requires private production access before basic evidence is shared.</li>
+          <li>The business cannot name what paid, unpaid, canceled, or refunded should mean in the app.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section card strip">
+      <h2>Audit output</h2>
+      <p>The output is designed to be useful even if no implementation is included: exact mismatch cases, suspected root cause, the smallest reliable test/fix plan, and whether the issue is a one-time setup bug or a recurring billing-health risk.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20revenue%20leak%20audit&body=Hi%20Arthur%2C%0A%0AI%20want%20a%20Stripe%20%2B%20Supabase%20revenue%20leak%20audit.%0A%0AApp%20status%3A%0ARevenue%20surface%3A%0AWhat%20Stripe%20says%3A%0AWhat%20Supabase%20or%20the%20app%20shows%3A%0AStripe%20object%20ids%20I%20can%20share%3A%0ASupabase%20tables%20or%20rows%20involved%3A%0AWebhook%20delivery%20status%3A%0AWhat%20done%20means%3A%0A" data-ph-event="revenue_leak_audit_request_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_bottom">Send audit request</a>
+        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=revenue_leak_audit_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="revenue_leak_audit_bottom">Need setup help instead?</a>
+        <a class="btn secondary" href="/billing-health-support/?ref=revenue_leak_audit_bottom" data-ph-event="setup_help_retainer_interest" data-ph-location="revenue_leak_audit_bottom">See monthly support</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
