@@ -96,6 +96,7 @@ having count(*) > 1;</code></pre>
         <li>If the route performs repair, write a repair record and require provider object idempotency.</li>
         <li>Return clear support/debug evidence when Checkout is paid but local access is not ready.</li>
       </ul>
+      <p>If the purchase creates a hosted tenant or workspace, check the <a href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=checkout_success_hosted_plan_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_hosted_plan_context">hosted-plan entitlement replay path</a> too, because the success URL may look correct while tenant provisioning is still missing.</p>
       <p>If the Checkout Session is only collecting a card, use the narrower <a href="/blog/stripe-setup-mode-card-on-file-subscription-gate/?ref=checkout_success_setup_mode_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_setup_mode_context">setup-mode card gate checklist</a> instead of treating the success URL like paid subscription proof.</p>
     </section>
 
@@ -105,6 +106,7 @@ having count(*) > 1;</code></pre>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Checkout%20success%20route%20%2B%20webhook%20billing%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Checkout%20success%20route%20%2B%20webhook%20billing%20review.%0A%0AStack%3A%0ACheckout%20Session%20id%20or%20shape%20%28no%20secrets%29%3A%0ASuccess%20route%20file%3A%0AWebhook%20handler%20file%3A%0ALocal%20subscription%2Fentitlement%20row%20or%20schema%3A%0AWhich%20path%20currently%20writes%20access%20%28success%20route%2C%20webhook%2C%20reconcile%29%3A%0AReplay%20case%20that%20currently%20fails%20or%20feels%20risky%3A%0AWhat%20the%20paid%20user%20sees%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_webhook_bottom_mailto">Request checkout/webhook review →</a>
         <a class="btn secondary" href="/blog/stripe-setup-mode-card-on-file-subscription-gate/?ref=checkout_success_bottom_setup_mode" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_setup_mode_bottom">Card-on-file setup mode?</a>
+        <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=checkout_success_bottom_hosted_plan" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_bottom_hosted_plan">Hosted-plan provisioning?</a>
         <a class="btn secondary" href="/blog/stripe-charged-customer-not-provisioned-supabase/?ref=checkout_success_webhook_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_webhook_related">Charged but not provisioned?</a>
       </div>
       <p class="note">This is a narrow billing-state review, not a full SaaS rebuild.</p>

@@ -33,6 +33,7 @@
       <p>If Stripe says the customer is paid or active, the app must either have local access state or a visible recovery state. A paid user should not land on an empty dashboard with no way for the system to detect and heal it.</p>
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_top" data-ph-event="billing_drift_check_clicked" data-ph-location="charged_stranded_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_hosted_plan_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_hosted_plan_context">Hosted-plan entitlement drift?</a>
         <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=charged_stranded_top" data-ph-event="setup_help_interest" data-ph-location="charged_stranded_top">Need a narrow review?</a>
       </div>
       <p class="note">Founding charged-and-stranded review scope: €99-149 when the checkout/add-on path and local access tables are narrow enough to review safely.</p>
@@ -108,6 +109,7 @@ where s.status in ('active', 'trialing')
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Charged-and-stranded%20Stripe%20%2B%20Supabase%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20charged-and-stranded%20billing%20review%20for%20a%20Stripe%20%2B%20Supabase%20app.%0A%0AStack%3A%0AStripe%20object%20that%20shows%20payment%2Factive%20state%3A%0ALocal%20row%20missing%20or%20wrong%20%28tenant%2C%20workspace%2C%20subscription%2C%20entitlement%2C%20credits%2C%20seats%29%3A%0ADoes%20success%20route%2C%20webhook%2C%20or%20reconcile%20job%20provision%20access%3A%0AWhat%20the%20paid%20user%20sees%3A%0ARelevant%20file%20paths%20%28no%20secrets%29%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="charged_stranded_bottom_mailto">Request charged-and-stranded review →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="charged_stranded_bottom">Score the drift risk first</a>
+        <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_bottom_hosted_plan" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_hosted_plan">Hosted-plan replay checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=charged_stranded_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="charged_stranded_paid_status_related">Paid-status checklist</a>
       </div>
       <p class="note">No secrets in the first email. Redact IDs until scope is agreed.</p>
