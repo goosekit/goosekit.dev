@@ -113,6 +113,7 @@ where subscriptions.last_stripe_event_created_at is null
         <div class="card"><h3>Invoice Paid</h3><p>Good for recording successful billing periods, extending entitlements, or clearing dunning state. It should attach to an existing customer/subscription mapping or create a pending repair item.</p></div>
         <div class="card"><h3>Customer Portal events</h3><p>Good for changes after the initial checkout flow. Make sure portal updates cannot be overwritten by an older checkout-created path.</p></div>
       </div>
+      <p>If <span class="code">invoice.paid</span> also grants credits, seats, sessions, or usage allowance, pair this event-ordering pass with the <a href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=event_ordering_monthly_credit_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="event_ordering_monthly_credit_context">monthly credit grant replay checklist</a>.</p>
     </section>
 
     <section>
@@ -152,6 +153,7 @@ where subscriptions.last_stripe_event_created_at is null
         <li><a href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=event_ordering_related_list">Stripe webhook creating duplicate subscription rows</a></li>
         <li><a href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=event_ordering_related_list">Webhook cannot find the Supabase user after payment</a></li>
         <li><a href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=event_ordering_related_list">Customer Portal cancelled but Supabase still says active</a></li>
+        <li><a href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=event_ordering_monthly_credit_related">Subscription renewed but monthly credits drifted</a></li>
       </ul>
     </section>
   </main>

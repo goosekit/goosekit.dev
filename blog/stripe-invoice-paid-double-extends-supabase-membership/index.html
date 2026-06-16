@@ -47,6 +47,7 @@
         <li>For retried invoices, avoid extending access again if the invoice was already applied.</li>
         <li>For manual invoices or repairs, require an explicit mapping before changing membership.</li>
       </ul>
+      <p>If renewal invoices also mint credits, sessions, or usage allowance, check the <a href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=invoice_paid_monthly_credit_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="invoice_paid_monthly_credit_context">monthly credit grant replay checklist</a> before treating membership expiry as the only state to reconcile.</p>
       <p>Useful Stripe fields to inspect include <span class="code">invoice.id</span>, <span class="code">invoice.subscription</span>, <span class="code">billing_reason</span>, and the subscription period timestamps.</p>
     </section>
 
@@ -102,6 +103,7 @@ await upsertLocalSubscription({
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20invoice.paid%20%2B%20Supabase%20membership%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20invoice.paid%20billing%20review%20for%20a%20Supabase%20app.%0A%0AStack%3A%0AStripe%20invoice%20ID%20%28safe%20to%20share%2C%20no%20secrets%29%3A%0AStripe%20subscription%20ID%20%28safe%20to%20share%2C%20no%20secrets%29%3A%0ALocal%20subscription%20row%20shape%20%28no%20secrets%29%3A%0AWebhook%20handler%20file%20path%3A%0AMembership%20or%20entitlement%20update%20code%20path%3A%0AObserved%20wrong%20expiry%20or%20membership%20state%3A%0ARelevant%20webhook%20log%20excerpt%20%28no%20secrets%29%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="invoice_paid_double_extend_bottom_mailto">Request invoice.paid review →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=invoice_paid_double_extend_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="invoice_paid_double_extend_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=invoice_paid_double_extend_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="invoice_paid_double_extend_idempotency_related">Webhook idempotency checklist</a>
+        <a class="btn secondary" href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=invoice_paid_monthly_credit_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="invoice_paid_monthly_credit_bottom">Credit grant checklist</a>
       </div>
       <p class="note">No secrets in the first email. Redact customer details until scope is agreed.</p>
     </section>
