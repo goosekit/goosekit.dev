@@ -140,6 +140,7 @@ await supabaseAdmin
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20duplicate%20subscription%20rows&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20duplicate%20Stripe%20webhook%20processing%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AWebhook%20route%20path%3A%0AStripe%20event%20type%28s%29%20involved%3A%0ADo%20duplicate%20rows%20share%20the%20same%20event.id%3F%0ADo%20duplicate%20rows%20share%20the%20same%20stripe_subscription_id%20or%20stripe_customer_id%3F%0ASanitized%20Stripe%20delivery%20logs%3A%0ASanitized%20Vercel%2Fserver%20logs%3A%0ASubscription%2Fcustomer%2Fstripe_events%20table%20schemas%20%28no%20secrets%29%3A%0AUnique%20constraints%20currently%20present%3A%0AWhich%20side%20effect%20is%20duplicating%20%28row%2C%20email%2C%20credits%2C%20access%29%3A%0AWhat%20done%20means%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="duplicate_webhook_bottom">Request idempotency help →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=duplicate_webhook_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="duplicate_webhook_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=duplicate_webhook_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="duplicate_webhook_rls_related">RLS webhook checklist</a>
+        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=duplicate_webhook_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="duplicate_webhook_checkout_success_related">Success URL replay checklist</a>
       </div>
     </section>
 
@@ -147,6 +148,7 @@ await supabaseAdmin
       <h2>Related debugging paths</h2>
       <ul class="checklist">
         <li><a href="/blog/stripe-webhook-supabase-paid-status/?ref=duplicate_webhook_related_list">Stripe webhook not updating Supabase paid status</a></li>
+        <li><a href="/blog/stripe-checkout-success-url-webhook-access/?ref=duplicate_webhook_related_list">Checkout success URL unlocks before the webhook</a></li>
         <li><a href="/blog/stripe-webhook-event-ordering-supabase/?ref=duplicate_webhook_related_list">Stripe subscription webhooks arriving out of order</a></li>
         <li><a href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=duplicate_webhook_related_list">Customer Portal cancelled but Supabase still says active</a></li>
         <li><a href="/blog/stripe-test-mode-live-mode-production/?ref=duplicate_webhook_related_list">Stripe works in test mode but fails in live mode</a></li>

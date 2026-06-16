@@ -44,7 +44,7 @@
         <li>Pass a stable internal user ID in Stripe Checkout metadata, for example <span class="code">supabase_user_id</span>.</li>
         <li>Store or reuse the Stripe customer ID for that same internal user. Avoid creating a new customer on every checkout attempt.</li>
         <li>Check the successful Checkout Session in Stripe Dashboard and confirm the metadata is present there, not only in your code.</li>
-        <li>Make the success URL cosmetic only. Unlocking paid access should come from webhook-confirmed state, not from visiting <span class="code">/success</span>.</li>
+        <li>Make the success URL cosmetic only. Unlocking paid access should come from webhook-confirmed state, not from visiting <span class="code">/success</span>. If that path is already writing access, use the <a href="/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_paid_status_success_url">Checkout success URL replay checklist</a>.</li>
       </ul>
     </section>
 
@@ -95,6 +95,7 @@
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20%2B%20Supabase%20paid%20status%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20debugging%20Stripe%20webhooks%20%2B%20Supabase%20paid-user%20state.%0A%0AStack%3A%20Next.js%20%2F%20Supabase%20%2F%20Stripe%0AWhat%20works%3A%0AWhat%20fails%3A%0AStripe%20event(s)%20seen%3A%0ASupabase%20row%20state%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_paid_status_bottom_mailto">Request setup help →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=webhook_paid_status_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="webhook_paid_status_bottom">Score the drift risk first</a>
+        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_paid_status_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="webhook_paid_status_checkout_success_related">Success URL replay checklist</a>
         <a class="btn secondary" href="/ship-it-kit/?ref=webhook_guide_bottom_product" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="webhook_paid_status_product">Need a cleaner starter?</a>
       </div>
       <p class="note">No fake certainty: some repos need a larger architecture pass. The first useful output is a small, honest scope or a clear decline.</p>

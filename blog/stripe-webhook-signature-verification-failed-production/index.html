@@ -120,7 +120,7 @@ console.log({
       <ul class="checklist warn">
         <li>If using Edge runtime, confirm your Stripe SDK/signature path is compatible. When unsure, force a standard Node.js runtime for the webhook route.</li>
         <li>Do not put the webhook behind Supabase session checks, CSRF checks, route groups that redirect, or “API auth” wrappers.</li>
-        <li>Do not use the checkout success page as proof the webhook worked. Stripe delivery logs and app function logs are the source of truth.</li>
+        <li>Do not use the checkout success page as proof the webhook worked. Stripe delivery logs and app function logs are the source of truth; if your success route also provisions access, replay it with the <a href="/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_signature_success_url">Checkout success URL checklist</a>.</li>
       </ul>
     </section>
 
@@ -130,6 +130,7 @@ console.log({
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20signature%20verification%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20a%20Stripe%20webhook%20signature%20verification%20failure%20in%20production.%0A%0AProduction%20endpoint%20URL%3A%0AStripe%20mode%20%28test%20or%20live%29%3A%0AError%20message%20from%20Stripe%20or%20Vercel%3A%0ADoes%20local%20stripe%20listen%20work%3F%3A%0AWebhook%20endpoint%20secret%20source%20%28Dashboard%20endpoint%20or%20CLI%2C%20no%20secret%20value%29%3A%0AVercel%20env%20target%20checked%20%28Production%2FPreview%2FDevelopment%29%3A%0ARoute%20file%20path%20%28for%20example%20app%2Fapi%2Fstripe%2Fwebhook%2Froute.ts%29%3A%0ASanitized%20handler%20snippet%20showing%20body%20read%20and%20constructEvent%3A%0ARecent%20Stripe%20delivery%20status%20and%20Vercel%20log%20summary%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_signature_bottom">Request signature debug help →</a>
         <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=webhook_signature_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="webhook_signature_setup_help">See setup help scope</a>
+        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_signature_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="webhook_signature_checkout_success_related">Success URL replay checklist</a>
       </div>
     </section>
 
