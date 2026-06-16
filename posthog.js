@@ -41,6 +41,7 @@
           (href.indexOf('/stripe-supabase-billing-drift-check') !== -1 ||
            href.indexOf('/stripe-billing-reliability-checklist') !== -1 ||
            href.indexOf('/billing-health-support') !== -1 ||
+           href.indexOf('/go/billing-reliability') !== -1 ||
            href.indexOf('/nextjs-supabase-stripe-setup-help') !== -1 ? 'billing_reliability' : 'unknown')));
 
         window.posthog.capture(eventName, {

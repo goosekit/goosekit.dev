@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Opening billing-health support request…</title>
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:620px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}a{color:#ff9040;font-weight:800;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <div class="pill">Billing-health support</div>
+    <h1>Opening your support request…</h1>
+    <p>If your email app does not open automatically, use the link below.</p>
+    <p><a href="#" data-manual-link="true">Write the support request</a></p>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || params.get('ref') || 'billing_health_route';
+      var mailto = 'mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%20%28live%20%2F%20pre-launch%29%3A%0AMy%20stack%3A%0AMonthly%20billing%20risk%20I%20want%20covered%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20I%20can%20share%20%28event%2C%20subscription%2C%20invoice%2C%20session%29%3A%0ASupabase%20table%2Frow%20that%20stores%20paid%20access%3A%0AWhat%20should%20be%20checked%20monthly%3A%0A%0ASource%3A%20' + encodeURIComponent(source);
+      function capture(name, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
+      }
+      capture('billing_health_request_route_viewed', { source: source, product: 'billing_reliability', price_eur_monthly: 29 });
+      var manual = document.querySelector('[data-manual-link]');
+      manual.href = mailto;
+      manual.addEventListener('click', function () {
+        capture('billing_health_request_manual_click', { source: source, product: 'billing_reliability', price_eur_monthly: 29 });
+      });
+      setTimeout(function () {
+        capture('billing_health_request_mailto_opened', { source: source, product: 'billing_reliability', price_eur_monthly: 29 });
+        window.location.href = mailto;
+      }, 420);
+    });
+  </script>
+</body>
+</html>
