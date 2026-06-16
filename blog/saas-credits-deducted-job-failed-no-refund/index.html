@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SaaS Credits Deducted but the Job Failed?</title>
+  <meta name="description" content="Debug metered SaaS credits deducted when async jobs fail, outputs are missing, refunds are skipped, or terminal states do not match the billing ledger.">
+  <link rel="canonical" href="https://goosekit.dev/blog/saas-credits-deducted-job-failed-no-refund/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="SaaS Credits Deducted but the Job Failed?">
+  <meta property="og:description" content="A practical checklist for metered credits, async jobs, refunds, and billing ledger repair.">
+  <meta property="og:url" content="https://goosekit.dev/blog/saas-credits-deducted-job-failed-no-refund/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=metered_credit_job_failed_nav">Run drift check</a><a href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_nav">Revenue leak audit</a></div>
+    <div class="eyebrow">Metered credits + async job billing</div>
+    <h1>SaaS credits deducted, but the async job failed?</h1>
+    <p class="lead">This is a money-state bug: the user loses credits, but the product did not deliver the output, did not refund, and did not leave a repairable terminal state.</p>
+    <p class="lead">Do not start by changing prices. Start by proving whether the debit ledger, job/output row, cron/request success state, and user-visible terminal state all describe the same outcome.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>Every metered operation should end as delivered, refunded/reversed, or repair-needed. A debit row without output, refund, or repair state is a revenue leak and a trust leak.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=metered_credit_job_failed_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_top">Map a revenue leak</a>
+      </div>
+      <p class="note">Founding fixed-scope review: EUR99 for one contained debit helper, EUR149 when multiple metered operations or async recovery paths can leak credits or money.</p>
+    </section>
+
+    <section>
+      <h2>1. Separate the debit ledger from the job state</h2>
+      <p>A credit system needs two sources of evidence. The billing ledger says money or credits moved. The job/output row says whether the paid action delivered.</p>
+      <div class="grid2">
+        <div class="card"><h3>Debit evidence</h3><ul class="checklist"><li>Debit helper or cost logger</li><li>Credit ledger row</li><li>User balance before and after</li><li>Idempotency key or request ID</li></ul></div>
+        <div class="card"><h3>Delivery evidence</h3><ul class="checklist"><li>Job/output row</li><li>Async worker or cron/job run status</li><li>Persisted output ID or file</li><li>User-visible terminal state</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Make terminal states explicit</h2>
+      <p>Ambiguous states create false-success bugs. Your app should not treat a request as billable just because a handler returned 200, a cron finished, or a debit helper ran.</p>
+      <ul class="checklist">
+        <li><span class="code">delivered</span>: debit stands and output is visible to the user.</li>
+        <li><span class="code">refunded</span> or <span class="code">reversed</span>: debit is undone because no value was delivered.</li>
+        <li><span class="code">repair_needed</span>: debit happened, delivery is unknown or failed, and an operator/retry can reconcile it.</li>
+        <li><span class="code">failed_no_charge</span>: job failed before a durable debit or the debit was rolled back in the same transaction.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Replay the cases that usually leak credits</h2>
+      <ul class="checklist warn">
+        <li>Insufficient balance: the job must not run and no ledger row should debit credits.</li>
+        <li>Debit success + output delivered: one debit row, one output row, user sees the result.</li>
+        <li>Debit success + downstream failure: refund/reversal or repair-needed row is created.</li>
+        <li>Duplicate retry: the same request does not debit twice or double-refund.</li>
+        <li>Stale cron recovery: a background job can find stranded debits and move them to a terminal state.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Add the stranded-debit query before another user hits it</h2>
+      <p>The exact schema will differ. The shape is: find debits where no delivered output, refund, reversal, or repair record exists.</p>
+      <pre><code>-- Example shape only: adapt table names to your app.
+select
+  l.id as ledger_id,
+  l.user_id,
+  l.amount,
+  l.request_id,
+  l.created_at
+from credit_ledger l
+left join job_outputs o on o.request_id = l.request_id
+left join credit_refunds r on r.ledger_id = l.id
+left join repair_records rr on rr.ledger_id = l.id
+where l.type = 'debit'
+  and o.id is null
+  and r.id is null
+  and rr.id is null;</code></pre>
+      <ul class="checklist">
+        <li>Run it after changing any debit helper, async worker, cron, or output persistence code.</li>
+        <li>Keep the query close to the incident runbook, not buried in an analytics dashboard.</li>
+        <li>Log expected terminal state, actual terminal state, and repair outcome for each row.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. What to send for a narrow review</h2>
+      <p>Send the smallest evidence packet: the debit helper, ledger row, job/output row, cron or request success status, user-visible state, expected terminal state, and the refund or repair record if it exists.</p>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Metered%20credit%20job%20failure%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20metered-credit%20billing%20review.%0A%0AStack%3A%0ADebit%2Fcredit%20helper%20file%3A%0ALedger%20row%20or%20schema%3A%0AJob%2Foutput%20row%20or%20schema%3A%0ACron%2Frequest%20success%20status%3A%0AExpected%20terminal%20state%3A%0AActual%20user-visible%20state%3A%0ARefund%20or%20repair%20record%20if%20any%3A%0AReplay%20case%20that%20currently%20fails%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_bottom_mailto">Request a metered-credit review →</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_bottom">Map the evidence packet first</a>
+      </div>
+      <p class="note">No secrets in the first email. Redact customer IDs until scope is agreed.</p>
+    </section>
+  </main>
+</body>
+</html>
