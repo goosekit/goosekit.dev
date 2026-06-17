@@ -99,6 +99,7 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 - Stripe billing reliability checklist: https://goosekit.dev/stripe-billing-reliability-checklist/ — practical Stripe/Supabase matrix for webhook idempotency, delayed events, paid-state drift, failed payments, portal changes, and reconciliation
 - Stripe Connect transfer reversal checklist: https://goosekit.dev/blog/stripe-connect-transfer-reversed-clawback-ledger/ — replay checks for transfer.reversed handlers, payout balances, commission rows, clawback queues, and local ledger drift
 - Stripe course membership access checklist: https://goosekit.dev/blog/stripe-course-membership-supabase-access/ — replay checks for course memberships, Supabase subscription rows, per-course entitlements, access-code overrides, and protected course route drift
+- Stripe prepaid invoice/account credit checklist: https://goosekit.dev/blog/stripe-prepaid-invoice-account-credit-ledger/ — replay checks for prepaid invoices, customer account-credit ledgers, revenue-recognition timing, Stripe autopay races, and double-counted local money state
 
 ## Full reference
 - https://goosekit.dev/llms-full.txt
