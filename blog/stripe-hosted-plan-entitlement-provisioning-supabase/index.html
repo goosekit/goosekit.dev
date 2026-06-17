@@ -100,7 +100,7 @@ entitlement_resolved -> provisioning_failed -> repair_needed</code></pre>
       </ul>
     </section>
 
-    <section class="card">
+    <section class="card" id="hosted-plan-evidence-packet" data-ph-section="hosted_plan_entitlement_evidence_packet">
       <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
       <p>A useful review starts with one real paid flow, not a broad architecture description. Redact secrets, but keep the ids and row shapes that prove where the state diverged.</p>
       <pre><code>Checkout Session or subscription id:
@@ -127,5 +127,28 @@ One replay command, test, or local repro:</code></pre>
       <p class="note">This is a focused billing-state review, not a full platform migration.</p>
     </section>
   </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var section = document.querySelector('[data-ph-section="hosted_plan_entitlement_evidence_packet"]');
+      if (!section || !('IntersectionObserver' in window)) return;
+      var captured = false;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (captured || !entry.isIntersecting) return;
+          captured = true;
+          observer.disconnect();
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_reliability_section_reached', {
+              site: 'goosekit',
+              product: 'billing_reliability',
+              location: 'hosted_plan_entitlement_evidence_packet',
+              path: window.location.pathname
+            });
+          }
+        });
+      }, { threshold: 0.45 });
+      observer.observe(section);
+    });
+  </script>
 </body>
 </html>
