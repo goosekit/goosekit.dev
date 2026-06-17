@@ -89,11 +89,22 @@
       </ul>
     </section>
 
+    <section>
+      <h2>6. If paid access starts jobs, test the launch gate too</h2>
+      <p>Some products do not just unlock a dashboard. They start paid work: AI runs, automations, exports, campaign generation, or background jobs. In that case the billing gate must check more than a stale local <span class="code">active</span> flag.</p>
+      <ul class="checklist warn">
+        <li>A terminal Stripe status such as <span class="code">canceled</span> or a deleted subscription must beat any old active Supabase row.</li>
+        <li><span class="code">invoice.paid</span> should not accidentally revive a scheduled cancellation or bypass a newer terminal event.</li>
+        <li>The job launch path should check subscription state, tier access, monthly run cap, and credit reservation before work starts.</li>
+        <li>If credit reservation fails after access passes, the job should not launch without a repairable reservation row.</li>
+      </ul>
+    </section>
+
     <section class="card cta">
       <h2 style="margin-top:0">When to stop debugging alone</h2>
       <p>If checkout succeeds but access still fails after checking metadata, signature verification, webhook events, Supabase writes, and route gating, the next useful step is a narrow repo review — not another generic tutorial.</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20%2B%20Supabase%20paid%20status%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20debugging%20Stripe%20webhooks%20%2B%20Supabase%20paid-user%20state.%0A%0AStack%3A%20Next.js%20%2F%20Supabase%20%2F%20Stripe%0AWhat%20works%3A%0AWhat%20fails%3A%0AStripe%20event(s)%20seen%3A%0ASupabase%20row%20state%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_paid_status_bottom_mailto">Request setup help →</a>
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20webhook%20%2B%20Supabase%20paid%20status%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20debugging%20Stripe%20webhooks%20%2B%20Supabase%20paid-user%20state.%0A%0AStack%3A%20Next.js%20%2F%20Supabase%20%2F%20Stripe%0AWhat%20works%3A%0AWhat%20fails%3A%0AStripe%20event(s)%20seen%3A%0ASupabase%20row%20state%3A%0ATerminal%20Stripe%20status%20or%20deleted%20subscription%20case%3A%0AProtected%20job%2Fproxy%2Fautomation%20launch%20path%20%28if%20any%29%3A%0AMonthly%20run%20cap%20or%20credit%20reservation%20row%20%28if%20any%29%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADeadline%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="webhook_paid_status_bottom_mailto">Request setup help →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=webhook_paid_status_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="webhook_paid_status_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_paid_status_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="webhook_paid_status_checkout_success_related">Success URL replay checklist</a>
         <a class="btn secondary" href="/ship-it-kit/?ref=webhook_guide_bottom_product" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="webhook_paid_status_product">Need a cleaner starter?</a>
