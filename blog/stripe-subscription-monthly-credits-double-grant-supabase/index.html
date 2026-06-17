@@ -49,6 +49,9 @@
         <li>Fallback job: Vercel cron, Supabase <span class="code">pg_cron</span>, or replay job that fills missed renewals without additive top-ups.</li>
         <li>Replay result: duplicate provider event plus cron overlap leaves exactly one non-additive reset.</li>
       </ul>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Subscription%20monthly%20credit%20refill%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20subscription%20monthly%20credit%20refill%20review.%0A%0AStack%3A%0AProvider%20renewal%20events%20handled%20%28Stripe%20invoice.paid%2C%20RevenueCat%20RENEWAL%2C%20other%29%3A%0AWebhook%20handler%20file%3A%0ARefill%20cron%20or%20fallback%20job%3A%0ALocal%20subscription%20row%20shape%3A%0Ausage_balances%20row%20shape%3A%0ATier%20cap%20config%20%28creator%2Fagency%2Fother%29%3A%0ACredit%2Fsession%2Fusage%20refill%20function%3A%0ACycle%20idempotency%20key%20used%3A%0AExpected%20refill%20per%20cycle%20%28reset%20vs%20additive%29%3A%0AActual%20bug%20%28missing%20refill%2C%20double%20refill%2C%20wrong%20tier%20cap%29%3A%0AReplay%20test%20or%20cron%20overlap%20evidence%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_refill_packet_mailto">Send refill evidence packet →</a>
+      </div>
     </section>
 
     <section>
