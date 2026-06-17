@@ -94,6 +94,8 @@ if (entitlement.currentPeriodEnd && entitlement.currentPeriodEnd < new Date()) {
         <li>A user-writable profile update cannot change the trusted plan.</li>
         <li>A canceled Stripe subscription removes or downgrades server-trusted access.</li>
         <li>A webhook write failure returns a retryable error or queues repair instead of silently granting access.</li>
+        <li>A failed entitlement write is not acknowledged as done; it leaves a retryable processed-event or repair record.</li>
+        <li>A checkout success page cannot write a Pro profile value that bypasses the trusted entitlement row.</li>
         <li>A stale client cache can show the wrong badge, but the paid API still fails closed.</li>
       </ul>
     </section>
@@ -102,7 +104,7 @@ if (entitlement.currentPeriodEnd && entitlement.currentPeriodEnd < new Date()) {
       <h2 style="margin-top:0">What to send for a paid-access review</h2>
       <p>Send facts, not secrets: the paid route path, where <span class="code">isPro</span>/<span class="code">plan</span>/<span class="code">tier</span> is read, the Supabase table that stores access, and the Stripe webhook code that updates it.</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20paid%20flag%20%2B%20Supabase%20access%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20paid-access%20review%20for%20a%20Supabase%20app.%0A%0AStack%3A%0APaid%20API%20route%20or%20feature%20path%3A%0AWhere%20isPro%2Fpaid%2Fplan%2Ftier%20is%20read%20%28file%20path%29%3A%0ASupabase%20table%20or%20row%20that%20controls%20paid%20access%20%28no%20secrets%29%3A%0AStripe%20webhook%20handler%20file%20path%3A%0AObserved%20risk%20or%20wrong%20access%20state%3A%0ARelevant%20log%20excerpt%20%28no%20secrets%29%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="paid_flag_bypass_bottom_mailto">Request paid-access review →</a>
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20paid%20flag%20%2B%20Supabase%20access%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20paid-access%20review%20for%20a%20Supabase%20app.%0A%0AStack%3A%0APaid%20API%20route%20or%20feature%20path%3A%0AWhere%20isPro%2Fpaid%2Fplan%2Ftier%20is%20read%20%28file%20path%29%3A%0ASupabase%20table%20or%20row%20that%20controls%20paid%20access%20%28no%20secrets%29%3A%0AStripe%20webhook%20handler%20file%20path%3A%0AEntitlement%20write%20retry%20or%20repair%20record%20%28if%20any%29%3A%0AProcessed-event%20row%20or%20idempotency%20record%20%28if%20any%29%3A%0ACheckout%20success%20page%20write%20path%20%28if%20any%29%3A%0AObserved%20risk%20or%20wrong%20access%20state%3A%0ARelevant%20log%20excerpt%20%28no%20secrets%29%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="paid_flag_bypass_bottom_mailto">Request paid-access review →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=paid_flag_bypass_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="paid_flag_bypass_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=paid_flag_bypass_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="paid_flag_bypass_related_paid_status">Paid-status webhook checklist</a>
       </div>
