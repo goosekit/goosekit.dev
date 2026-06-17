@@ -133,6 +133,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Stripe webhook signature verification fails in production: https://goosekit.dev/blog/stripe-webhook-signature-verification-failed-production/
 - Stripe webhook 307/308/401/403 on Vercel: https://goosekit.dev/blog/stripe-webhook-307-308-401-403-vercel/
 - Stripe webhook not updating Supabase paid status: https://goosekit.dev/blog/stripe-webhook-supabase-paid-status/
+- Stripe Connect transfer.reversed clawback ledger check: https://goosekit.dev/blog/stripe-connect-transfer-reversed-clawback-ledger/
 - Supabase Auth callback fails on Vercel: https://goosekit.dev/blog/supabase-auth-callback-vercel-production/
 
 ## Paid products
