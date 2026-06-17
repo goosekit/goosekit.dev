@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stripe Subscription Renewed but Monthly Credits Drifted?</title>
-  <meta name="description" content="Debug Stripe subscription renewals, invoice.paid idempotency, Supabase credit grants, billing event ledgers, and double-grant or missing-grant bugs.">
+  <meta name="description" content="Debug Stripe invoice.paid, RevenueCat RENEWAL, fallback cron, Supabase usage_balances, tier caps, and missing or double monthly credit refill bugs.">
   <link rel="canonical" href="https://goosekit.dev/blog/stripe-subscription-monthly-credits-double-grant-supabase/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
   <meta property="og:type" content="article">
   <meta property="og:title" content="Stripe Subscription Renewed but Monthly Credits Drifted?">
-  <meta property="og:description" content="A replay checklist for subscription renewals that grant monthly credits or usage allowance in Supabase.">
+  <meta property="og:description" content="A replay checklist for Stripe or RevenueCat renewals that refill monthly credits, usage allowance, or tier caps in Supabase.">
   <meta property="og:url" content="https://goosekit.dev/blog/stripe-subscription-monthly-credits-double-grant-supabase/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
@@ -23,19 +23,32 @@
 <body>
   <main class="wrap">
     <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=monthly_credit_grant_nav">Run drift check</a><a href="/stripe-billing-reliability-checklist/?ref=monthly_credit_grant_nav">Billing checklist</a></div>
-    <div class="eyebrow">Stripe subscriptions + monthly credit grants</div>
-    <h1>Stripe subscription renewed but monthly credits drifted?</h1>
-    <p class="lead">Recurring subscriptions often need to grant a monthly credit package, usage allowance, seat quota, or course/session balance. The dangerous bug is not only “did Stripe renew?” It is whether one renewal created exactly one durable local grant.</p>
-    <p class="lead">If <span class="code">invoice.paid</span>, <span class="code">customer.subscription.updated</span>, retries, and local grant functions disagree, paid users can be blocked, or duplicate webhooks can mint extra credits.</p>
+    <div class="eyebrow">Subscription renewals + monthly credit refills</div>
+    <h1>Subscription renewed but monthly credits drifted?</h1>
+    <p class="lead">Recurring subscriptions often need to refill a monthly credit package, usage allowance, seat quota, or course/session balance. The dangerous bug is not only “did the provider renew?” It is whether one paid period produced exactly one durable local credit state.</p>
+    <p class="lead">If <span class="code">invoice.paid</span>, RevenueCat <span class="code">RENEWAL</span>, fallback cron, retries, and <span class="code">usage_balances</span> disagree, paid users can be blocked, or duplicate jobs can mint extra credits.</p>
 
     <section class="card cta">
       <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>One paid subscription cycle should produce one local grant, tied to one subscription, one customer/account, one cycle key, and one billing event ledger state. Checkout success should never grant credits by itself.</p>
+      <p>One paid subscription cycle should produce one local refill or grant, tied to one subscription, one customer/account, one cycle key, and one billing event ledger state. Checkout success should never grant credits by itself.</p>
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=monthly_credit_grant_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_grant_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-invoice-paid-double-extends-supabase-membership/?ref=monthly_credit_grant_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_grant_related">Compare invoice.paid double-extend risk</a>
       </div>
-      <p class="note">Fixed-scope review fit: EUR99 for one renewal/grant path, EUR149 when webhook retry, recency ordering, and usage-credit consumption are all in scope.</p>
+      <p class="note">Fixed-scope review fit: EUR99 for one renewal/grant path, EUR149 when multiple providers, fallback cron, recency ordering, and usage-credit consumption are all in scope.</p>
+    </section>
+
+    <section id="recurring-credit-refill-packet" class="card" data-ph-section="recurring_credit_refill_packet">
+      <h2 style="margin-top:0">Multi-provider refill packet</h2>
+      <p>For apps that accept both Stripe and another subscription source, treat every provider as an input into one local refill decision. Do not let each provider write credits independently.</p>
+      <ul class="checklist">
+        <li>Provider renewal event: Stripe <span class="code">invoice.paid</span>, RevenueCat <span class="code">RENEWAL</span>, or another renewal source.</li>
+        <li>Local balance row: <span class="code">usage_balances</span> before and after refill.</li>
+        <li>Period boundary: <span class="code">current_period_end</span> or provider period used as the cycle key.</li>
+        <li>Tier cap config: creator, agency, or other paid-tier caps for each credit type.</li>
+        <li>Fallback job: Vercel cron, Supabase <span class="code">pg_cron</span>, or replay job that fills missed renewals without additive top-ups.</li>
+        <li>Replay result: duplicate provider event plus cron overlap leaves exactly one non-additive reset.</li>
+      </ul>
     </section>
 
     <section>
@@ -58,12 +71,24 @@ create unique index if not exists credit_grants_cycle_key_key
       <ul class="checklist">
         <li>Build the cycle key from stable provider truth, not a random request id.</li>
         <li>Store the Stripe event id separately from the product grant key.</li>
+        <li>When RevenueCat or another provider can also renew access, normalize both sources into the same cycle key.</li>
         <li>Return the existing grant on duplicate delivery instead of minting another balance.</li>
       </ul>
     </section>
 
     <section>
-      <h2>3. Do not acknowledge failed local dispatch as complete</h2>
+      <h2>3. Reset caps deliberately, do not add credits blindly</h2>
+      <p>Some paid tiers should reset balances to a cap at each period boundary. That is different from adding another grant on top of what remains. Mixing those models is how a renewal job quietly becomes a credit inflation bug.</p>
+      <ul class="checklist">
+        <li>For hard-reset tiers, write <span class="code">campaign_credits = tier_cap</span>, not <span class="code">campaign_credits += tier_cap</span>.</li>
+        <li>Apply the same rule to regeneration credits, video credits, seats, or usage allowance.</li>
+        <li>Keep downgrade and tier-change behavior explicit before the next refill boundary.</li>
+        <li>Log whether a cron run reset, skipped, or repaired each eligible balance row.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Do not acknowledge failed local dispatch as complete</h2>
       <p>A common webhook bug is inserting a received event row, failing the local grant write, then returning 200 forever because future replays see the event row and no-op. Non-terminal event rows must retry dispatch or move to a repair state.</p>
       <ul class="checklist warn">
         <li>Event row exists with <span class="code">received</span> or <span class="code">failed</span>, but the grant row is missing.</li>
@@ -74,7 +99,7 @@ create unique index if not exists credit_grants_cycle_key_key
     </section>
 
     <section>
-      <h2>4. Add a recency guard before local mirrors overwrite each other</h2>
+      <h2>5. Add a recency guard before local mirrors overwrite each other</h2>
       <p>Subscription events can arrive out of order. If an older event writes after a newer event, your local status and grant eligibility can drift away from Stripe.</p>
       <pre><code>-- Example shape only.
 update subscriptions
@@ -91,11 +116,13 @@ where stripe_subscription_id = :stripe_subscription_id
     </section>
 
     <section>
-      <h2>5. Replay the billing path before launch</h2>
+      <h2>6. Replay the billing path before launch</h2>
       <ul class="checklist">
         <li>Checkout completed, but no credits granted until the verified webhook path runs.</li>
         <li>First <span class="code">invoice.paid</span> creates one grant.</li>
+        <li>RevenueCat <span class="code">RENEWAL</span> and Stripe <span class="code">invoice.paid</span> converge on the same local refill path.</li>
         <li>Duplicate <span class="code">invoice.paid</span> returns the same grant.</li>
+        <li>Fallback cron fills a missed renewal without adding on top of an already-reset row.</li>
         <li>Grant write fails, webhook retries, and the second attempt completes the grant.</li>
         <li>Older subscription update arrives after a newer period update and is ignored.</li>
         <li>Deleted or unpaid subscription stops future grants without deleting historical grant evidence.</li>
@@ -104,9 +131,9 @@ where stripe_subscription_id = :stripe_subscription_id
 
     <section class="card cta">
       <h2 style="margin-top:0">What to send for a narrow review</h2>
-      <p>Send the subscription webhook handler, local subscription table shape, billing event ledger, and credit/session grant function. Redact secrets.</p>
+      <p>Send the subscription webhook handler, local subscription table shape, billing event ledger, refill cron, and credit/session grant function. Redact secrets.</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20subscription%20monthly%20credit%20grant%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20subscription%20monthly%20credit%20grant%20review.%0A%0AStack%3A%0ASubscription%20event%20types%20handled%3A%0AWebhook%20handler%20file%3A%0ALocal%20subscription%20row%20shape%3A%0ABilling%20event%20ledger%20shape%3A%0ACredit%2Fsession%2Fusage%20grant%20function%3A%0ACycle%20idempotency%20key%20used%3A%0AExpected%20grant%20per%20cycle%3A%0AActual%20bug%20%28missing%20grant%2C%20double%20grant%2C%20stale%20state%29%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_grant_bottom_mailto">Request renewal/grant review →</a>
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Subscription%20monthly%20credit%20refill%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20subscription%20monthly%20credit%20refill%20review.%0A%0AStack%3A%0AProvider%20renewal%20events%20handled%20%28Stripe%20invoice.paid%2C%20RevenueCat%20RENEWAL%2C%20other%29%3A%0AWebhook%20handler%20file%3A%0ARefill%20cron%20or%20fallback%20job%3A%0ALocal%20subscription%20row%20shape%3A%0Ausage_balances%20row%20shape%3A%0ATier%20cap%20config%20%28creator%2Fagency%2Fother%29%3A%0ACredit%2Fsession%2Fusage%20refill%20function%3A%0ACycle%20idempotency%20key%20used%3A%0AExpected%20refill%20per%20cycle%20%28reset%20vs%20additive%29%3A%0AActual%20bug%20%28missing%20refill%2C%20double%20refill%2C%20wrong%20tier%20cap%29%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_refill_bottom_mailto">Request renewal/refill review →</a>
         <a class="btn secondary" href="/blog/stripe-charged-customer-not-provisioned-supabase/?ref=monthly_credit_grant_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="monthly_credit_grant_related">Charged but not provisioned?</a>
       </div>
       <p class="note">This is a focused billing-state review, not a full SaaS rebuild.</p>
