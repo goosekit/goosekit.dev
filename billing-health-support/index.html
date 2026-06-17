@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Billing Health Support — Stripe + Supabase SaaS Monitoring</title>
-  <meta name="description" content="Founding-5 €29/mo billing-health support for live Next.js + Supabase + Stripe apps. Review webhook failures, dunning, trial conversion, paused billing, and paid-user access drift.">
+  <meta name="description" content="Founding-5 €29/mo billing-health support for live Next.js + Supabase + Stripe apps. Review webhook failures, action queues, dunning, trial conversion, and paid-user access drift.">
   <link rel="canonical" href="https://goosekit.dev/billing-health-support/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
   <meta property="og:type" content="website">
@@ -26,7 +26,7 @@
       <div>
         <div class="eyebrow">Founding-5 monthly billing-health support</div>
         <h1>Keep Stripe + Supabase billing from quietly breaking after launch.</h1>
-        <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, trial conversion bugs, paused-billing drift, dunning mistakes, customer-portal changes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
+        <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, billing action-queue mistakes, trial conversion bugs, paused-billing drift, dunning mistakes, customer-portal changes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
         <p class="lead">This is not general development support. It starts after an initial setup/debug pass, when there is enough context to review the billing surface safely and compare Stripe's truth with your Supabase entitlement state.</p>
         <div class="actions">
           <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_cta" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_hero">Request a billing drift review →</a>
@@ -39,7 +39,7 @@
         <h2>Starting point</h2>
         <div class="price">€29/mo</div>
         <p>Lightweight monthly review for a narrow revenue-critical surface.</p>
-        <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Dunning</span><span class="tag">Trials</span><span class="tag">Portal changes</span></div>
+        <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Action queues</span><span class="tag">Dunning</span><span class="tag">Trials</span><span class="tag">Portal changes</span></div>
       </aside>
     </section>
     <section class="section card strip">
@@ -54,13 +54,37 @@
       <div class="card"><h3>Paid-state sanity check</h3><p>Compare Stripe subscription/invoice states with Supabase entitlement or subscription rows.</p></div>
       <div class="card"><h3>One small fix/note</h3><p>One prioritized small billing/auth fix, implementation note, or escalation path per month.</p></div>
     </section>
+    <section class="section card strip" id="billing-action-queue-review" data-ph-section="billing_action_queue_review">
+      <h2>Billing action queue review</h2>
+      <p>Some teams do not need billing automation to fire more actions. They need billing events to raise the right human-owned card, resolve it at the right time, and leave enough evidence to explain why a customer is in trouble.</p>
+      <div class="grid2">
+        <div>
+          <h3>What gets checked</h3>
+          <ul>
+            <li>Stripe events that raise trouble: failed invoice, past-due subscription, unpaid state, or renewal mismatch.</li>
+            <li>Billing ledger row that makes each raised card idempotent and replayable.</li>
+            <li>Action queue row or retention card shown to the human operator.</li>
+            <li>Resolve rule when payment recovers, subscription changes, or the issue is manually completed.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Failure modes</h3>
+          <ul class="warn">
+            <li>Duplicate webhook delivery creates duplicate cards.</li>
+            <li>Out-of-order recovery hides a newer billing problem.</li>
+            <li>Queue write fails but webhook returns success.</li>
+            <li>Score or rank changes but the human-visible card does not explain the money state.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
     <section class="section card">
       <h2>Monthly review output</h2>
       <p>Each month should leave you with a short practical note, not a vague “looks good”. The review focuses on the few states that usually leak revenue in small Stripe/Supabase apps.</p>
       <div class="grid3">
         <div><h3>Event check</h3><ul><li>Recent failed webhook deliveries.</li><li>Duplicate or out-of-order subscription events.</li><li>Unhandled billing events worth adding.</li></ul></div>
         <div><h3>State check</h3><ul><li>Stripe subscriptions vs Supabase paid rows.</li><li>Trial, past-due, unpaid, paused, canceled, and portal-change state.</li><li>Customer/user/workspace mapping drift.</li></ul></div>
-        <div><h3>Action check</h3><ul><li>One small fix, test, or logging improvement.</li><li>One risk to ignore for now.</li><li>Clear escalation if the issue is bigger than this support scope.</li></ul></div>
+        <div><h3>Action check</h3><ul><li>One small fix, test, or logging improvement.</li><li>One billing action queue or retention-card risk when relevant.</li><li>One risk to ignore for now.</li><li>Clear escalation if the issue is bigger than this support scope.</li></ul></div>
       </div>
     </section>
     <section class="section card strip">
@@ -72,7 +96,7 @@
           <ul>
             <li>Live or pre-launch checkout, subscription, deposit, booking, or add-on flow.</li>
             <li>Stripe event, invoice, subscription, customer, or Checkout Session id available without secrets.</li>
-            <li>Supabase table or row that controls paid access, credits, seats, bookings, or workspace status.</li>
+            <li>Supabase table or row that controls paid access, credits, seats, bookings, workspace status, or a billing action queue.</li>
           </ul>
         </div>
         <div>
@@ -115,7 +139,7 @@
     </section>
     <section class="section card strip">
       <h2>Why this exists</h2>
-      <p>A one-time starter helps you launch. Recurring revenue depends on the billing loop staying healthy after launch: renewals, failed payments, trial endings, paused billing, customer portal changes, webhook retries, and entitlement sync. This founding-5 offer is deliberately small: validate whether founders will pay monthly for ongoing billing reliability before building any dashboard.</p>
+      <p>A one-time starter helps you launch. Recurring revenue depends on the billing loop staying healthy after launch: renewals, failed payments, trial endings, paused billing, customer portal changes, webhook retries, entitlement sync, and billing action queues. This founding-5 offer is deliberately small: validate whether founders will pay monthly for ongoing billing reliability before building any dashboard.</p>
       <div class="actions"><a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_cta" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_bottom">Ask about billing-health support →</a></div>
     </section>
   </main>
