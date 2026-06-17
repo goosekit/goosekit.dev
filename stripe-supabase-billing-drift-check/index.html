@@ -32,14 +32,14 @@
       </div>
       <aside class="card strip" aria-live="polite">
         <h2>Your drift risk</h2>
-        <div class="score"><span id="score">0</span>/<span id="total">12</span></div>
+        <div class="score"><span id="score">0</span>/<span id="total">14</span></div>
         <p class="status" id="status">Start checking the boxes.</p>
         <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
         <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
         <div class="actions">
-          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0ALikely%20paid%20scope%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20ids%20you%20can%20share%20%28customer%2Fsubscription%2Fsession%2Finvoice%2Fevent%29%3A%0ASupabase%20rows%20or%20table%20names%20involved%3A%0AEntitlement%20or%20access%20row%20before%2Fafter%20replay%3A%0ATenant%2Fworkspace%20provisioning%20job%20or%20result%3A%0AWhat%20the%20paid%20user%20currently%20sees%3A%0AWebhook%20delivery%20status%20or%20error%3A%0AOne%20state%20that%20must%20be%20true%20after%20review%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="12" data-ph-recommended-scope="unscored">Request a narrow review →</a>
-          <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="12" data-ph-recommended-scope="unscored">See revenue leak audit</a>
-          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="12" data-ph-recommended-scope="unscored">See monthly support</a>
+          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0ALikely%20paid%20scope%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20ids%20you%20can%20share%20%28customer%2Fsubscription%2Fsession%2Finvoice%2Fevent%29%3A%0ASupabase%20rows%20or%20table%20names%20involved%3A%0AEntitlement%20or%20access%20row%20before%2Fafter%20replay%3A%0ATenant%2Fworkspace%20provisioning%20job%20or%20result%3A%0AMonthly%20credit%2Frefill%20row%20or%20tier%20cap%20config%3A%0AAction%20queue%20or%20retention%20card%20row%3A%0ABilling%20ledger%20or%20processed-event%20row%3A%0AWhat%20the%20paid%20user%20currently%20sees%3A%0AWebhook%20delivery%20status%20or%20error%3A%0AOne%20state%20that%20must%20be%20true%20after%20review%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="14" data-ph-recommended-scope="unscored">Request a narrow review →</a>
+          <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="14" data-ph-recommended-scope="unscored">See revenue leak audit</a>
+          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="14" data-ph-recommended-scope="unscored">See monthly support</a>
         </div>
         <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
       </aside>
@@ -55,11 +55,13 @@
           <label class="check"><input type="checkbox" data-risk="The success URL can unlock users before the verified webhook updates app state."><span>Paid access does not rely on the checkout success URL alone.</span></label>
           <label class="check"><input type="checkbox" data-risk="A client-supplied plan, paid flag, or isPro value can unlock paid features without Stripe proof."><span>Server APIs never accept client-supplied plan, paid, or isPro flags as the source of paid access.</span></label>
           <label class="check"><input type="checkbox" data-risk="Customer portal cancels, downgrades, and plan changes can drift from app access."><span>Customer portal cancel, downgrade, and plan-change events update Supabase access correctly.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Monthly credit, usage, or quota refill can double-grant or miss a paid cycle when Stripe, RevenueCat, and cron overlap."><span>Monthly credit, usage, or quota refills use one cycle key and cannot double-grant from provider retries or fallback cron.</span></label>
           <label class="check"><input type="checkbox" data-risk="Dunning and failed renewals can either block too early or leak access forever."><span>Past-due, unpaid, retry, and recovery states have an explicit access policy.</span></label>
           <label class="check"><input type="checkbox" data-risk="Trial endings can fail silently if invoice/subscription events are not mapped to access."><span>Trial ending and trial conversion are tested against the real access gate.</span></label>
           <label class="check"><input type="checkbox" data-risk="Paused billing can leave ambiguous paid state unless pause_collection is mapped."><span>Paused billing and resumed billing are mapped to the intended Supabase state.</span></label>
           <label class="check"><input type="checkbox" data-risk="Email-only customer mapping can update the wrong user or workspace."><span>Stripe customer/subscription IDs map to the local user, team, or workspace without relying on email alone.</span></label>
           <label class="check"><input type="checkbox" data-risk="Hosted-plan purchases can pay successfully while tenant/workspace provisioning fails, duplicates, or drifts from entitlement state."><span>Hosted-plan, tenant, or workspace provisioning can be replayed from Stripe truth without duplicate access.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Billing trouble can stay hidden if Stripe money events do not raise and resolve durable human-owned action queue cards."><span>Billing trouble events raise and resolve durable action queue or retention cards from a billing ledger row.</span></label>
           <label class="check"><input type="checkbox" data-risk="No recurring scan means paid-in-Stripe/inactive-locally drift can sit unnoticed."><span>A recurring reconciliation query can find Stripe-active/Supabase-inactive and Stripe-inactive/Supabase-active mismatches.</span></label>
         </div>
       </div>
@@ -157,6 +159,9 @@
         'Supabase rows or table names involved:',
         'Entitlement or access row before/after replay:',
         'Tenant/workspace provisioning job or result:',
+        'Monthly credit/refill row or tier cap config:',
+        'Action queue or retention card row:',
+        'Billing ledger or processed-event row:',
         'What the paid user currently sees:',
         'Webhook delivery status or error:',
         'One state that must be true after review:',
