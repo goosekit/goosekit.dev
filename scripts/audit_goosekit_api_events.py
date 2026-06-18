@@ -42,6 +42,7 @@ REQUIRED = {
     "api/production-request/index.html": [
         "Prepare a qualified API request",
         "goosekit_api_production_request_builder_viewed",
+        "goosekit_api_production_request_started",
         "goosekit_api_production_request_completed",
         "goosekit_api_packet_copied",
         "goosekit_api_production_access_clicked",
@@ -57,6 +58,9 @@ REQUIRED = {
         "source_ref",
         "Source ref:",
         "data-ph-ref",
+        "data-ph-required-fields-total",
+        "firstFilledField",
+        "first_field",
         "data-ph-complete",
         "What breaks without production access",
         "Goosekit API production request",
@@ -174,8 +178,12 @@ def main() -> None:
     summary_script = SUMMARY_SCRIPT.read_text(encoding="utf-8")
     for needle in (
         "goosekit_api_production_request_completed",
+        "goosekit_api_production_request_started",
+        "builder_starts",
         "complete_mail_clicks",
         "check_mailbox_before_lead",
+        "inspect_builder_start_friction",
+        "inspect_builder_completion_friction",
         "inspect_builder_field_burden",
         "do_not_update_counters_from_analytics_alone",
         'ref=prop("ref", "source_ref")',

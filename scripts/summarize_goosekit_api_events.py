@@ -24,6 +24,7 @@ API_EVENTS = {
     "goosekit_api_workflow_guide_clicked",
     "goosekit_api_production_request_builder_clicked",
     "goosekit_api_production_request_builder_viewed",
+    "goosekit_api_production_request_started",
     "goosekit_api_production_request_completed",
     "goosekit_api_packet_copied",
     "goosekit_api_production_access_clicked",
@@ -128,6 +129,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
+    builder_starts = counts["goosekit_api_production_request_started"]
     completed = counts["goosekit_api_production_request_completed"]
     packet_copies = counts["goosekit_api_packet_copied"]
     mail_clicks = counts["goosekit_api_production_access_clicked"]
@@ -150,6 +152,12 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     elif mail_clicks:
         action = "investigate_mailto_completion"
         reason = "mail_click_without_complete_packet_or_mailbox_packet"
+    elif builder_starts and not completed:
+        action = "inspect_builder_completion_friction"
+        reason = "builder_started_without_completed_packets"
+    elif builder_views and not builder_starts:
+        action = "inspect_builder_start_friction"
+        reason = "builder_views_without_started_packets"
     elif builder_views and not completed:
         action = "inspect_builder_field_burden"
         reason = "builder_views_without_completed_packets"
@@ -165,6 +173,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "api_events": len(api_events),
         "builder_clicks": builder_clicks,
         "builder_views": builder_views,
+        "builder_starts": builder_starts,
         "completed_packets": completed,
         "packet_copies": packet_copies,
         "mail_clicks": mail_clicks,
@@ -193,6 +202,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"api_events={summary['api_events']}",
         f"builder_clicks={summary['builder_clicks']}",
         f"builder_views={summary['builder_views']}",
+        f"builder_starts={summary['builder_starts']}",
         f"completed_packets={summary['completed_packets']}",
         f"packet_copies={summary['packet_copies']}",
         f"mail_clicks={summary['mail_clicks']}",
