@@ -39,6 +39,7 @@ REQUIRED = {
     "api/production-request/index.html": [
         "Prepare a qualified API request",
         "goosekit_api_production_request_builder_viewed",
+        "goosekit_api_production_request_completed",
         "goosekit_api_packet_copied",
         "goosekit_api_production_access_clicked",
         "production_request_builder_mail",
@@ -47,6 +48,9 @@ REQUIRED = {
         "detailHints",
         "Expected monthly volume",
         "Endpoint-specific details",
+        "Paid access expectation",
+        "required_fields_filled",
+        "data-ph-complete",
         "What breaks without production access",
         "Goosekit API production request",
     ],
