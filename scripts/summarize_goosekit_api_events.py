@@ -38,6 +38,8 @@ BUILDER_REFS = {
     "for_ai_paid_products_api_pilot",
     "production_note",
     "production_request_packet",
+    "endpoints_intro_production",
+    "adjacent_endpoint_request",
     "rate_limits",
     "json_formatter_api_production_packet",
     "json_formatter_api_production_hero",
