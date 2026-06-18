@@ -38,6 +38,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Full tool directory: https://goosekit.dev/all-tools/
 - Blog: https://goosekit.dev/blog/
 - API overview: https://goosekit.dev/api/
+- API production request packet builder: https://goosekit.dev/api/production-request/
 - JSON Formatter API workflow: https://goosekit.dev/use-cases/json-formatter-api/
 - Hash Generator API workflow: https://goosekit.dev/use-cases/hash-generator-api/
 - UUID Generator API workflow: https://goosekit.dev/use-cases/uuid-generator-api/

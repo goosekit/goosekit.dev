@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goosekit API Production Request Packet</title>
+  <meta name="description" content="Prepare a qualified Goosekit API production access request for JSON formatting, hash generation, UUID generation, or password generation.">
+  <link rel="canonical" href="https://goosekit.dev/api/production-request/">
+  <script defer src="/posthog.js"></script>
+  <script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
+  <style>
+    *,*::before,*::after{box-sizing:border-box}
+    body{margin:0;background:#0f0f19;color:#e8e8f2;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.65}
+    a{color:#ff6a2a;text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{width:min(1080px,calc(100% - 40px));margin:0 auto}
+    .hero{padding:64px 0 34px;background:radial-gradient(circle at 20% 0%,rgba(52,211,153,.16),transparent 34%),#0f0f19}
+    .eyebrow{display:inline-flex;border:1px solid rgba(52,211,153,.28);background:rgba(52,211,153,.1);color:#a7f3d0;border-radius:999px;padding:7px 11px;font-size:.83rem;font-weight:750;margin-bottom:16px}
+    h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.03;letter-spacing:-.055em;margin:0 0 16px;color:#fff}
+    .lead{font-size:clamp(1rem,2vw,1.2rem);color:#c9c9d8;max-width:780px;margin:0}
+    main{padding:34px 0 70px}
+    .grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+    .card{border:1px solid rgba(255,255,255,.09);background:#181825;border-radius:18px;padding:24px;margin-bottom:18px}
+    .card h2{font-size:1.35rem;margin:0 0 12px;color:#fff}
+    .card p,.card li,.field span{color:#bebed0}
+    .field{display:grid;gap:7px;margin:0 0 14px}
+    label{color:#fff;font-weight:720}
+    input,select,textarea{width:100%;border:1px solid rgba(255,255,255,.1);border-radius:10px;background:#0f0f19;color:#f5f5fb;padding:11px 12px;font:inherit}
+    textarea{min-height:86px;resize:vertical}
+    .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:11px 15px;border-radius:11px;font-weight:780;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.055);color:#fff;cursor:pointer}
+    .btn-primary{background:#ff4800;border-color:#ff4800}
+    .packet{white-space:pre-wrap;background:#0f0f19;border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:16px;color:#dbeafe;font-family:"SF Mono",SFMono-Regular,Consolas,monospace;font-size:.88rem;min-height:280px}
+    .site-header{position:sticky;top:0;z-index:30;background:rgba(10,10,26,.78);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)}
+    .site-header-inner{width:100%;min-height:56px;padding:8px 16px 8px 10px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .site-brand img{width:100px;height:auto;display:block}
+    .site-nav{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;flex:1;gap:8px 14px}
+    .site-nav a{color:#94a3b8;text-decoration:none;font-size:.9rem;font-weight:600;line-height:1}
+    .site-nav .nav-cta{color:#fff;background:rgba(255,72,0,.95);border:1px solid rgba(255,72,0,.9);padding:8px 12px;border-radius:11px}
+    footer{border-top:1px solid rgba(255,255,255,.08);padding:26px 0;color:#7f7f97;text-align:center;background:#121222}
+    @media(max-width:840px){.grid{grid-template-columns:1fr}.hero{padding-top:44px}.wrap{width:min(100% - 28px,1080px)}}
+  </style>
+</head>
+<body data-page="api-production-request">
+<header class="site-header"><div class="site-header-inner"><a class="site-brand" href="/"><img src="/logo-dark.png" alt="Goosekit"></a><nav class="site-nav"><a href="/tools/">Tools</a><a href="/use-cases/">Use cases</a><a href="/api/">API</a><a href="/blog/">Blog</a><a href="/api/" class="nav-cta">API docs</a></nav></div></header>
+<section class="hero"><div class="wrap">
+  <span class="eyebrow">Production access</span>
+  <h1>Prepare a qualified API request</h1>
+  <p class="lead">Use this packet builder when a Goosekit endpoint is moving from testing into an internal tool, backend job, agent, QA script, or product workflow. It keeps the request narrow enough to price and support honestly.</p>
+</div></section>
+<main><div class="wrap grid">
+  <section class="card">
+    <h2>Request details</h2>
+    <div class="field"><label for="endpoint">Endpoint</label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
+    <div class="field"><label for="volume">Expected monthly volume</label><input id="volume" placeholder="Example: 500k requests/month"></div>
+    <div class="field"><label for="pattern">Traffic pattern</label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
+    <div class="field"><label for="runtime">Where it runs</label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"></div>
+    <div class="field"><label for="specifics">Endpoint-specific details</label><textarea id="specifics" placeholder="JSON operation, hash algorithm and safe-data boundary, UUID format, password policy and handling path"></textarea></div>
+    <div class="field"><label for="commercial">Commercial or client-facing use</label><input id="commercial" placeholder="Internal business, client-facing, paid product integration, personal"></div>
+    <div class="field"><label for="deadline">Deadline or launch date</label><input id="deadline" placeholder="Example: before July launch"></div>
+    <div class="field"><label for="failure">What breaks without production access</label><textarea id="failure" placeholder="What fails if the endpoint stays limited or unavailable?"></textarea></div>
+    <div class="btn-row"><button class="btn btn-primary" id="copyPacket" data-ph-event="goosekit_api_packet_copied" data-ph-product="goosekit_api" data-ph-location="production_request_builder">Copy packet</button><a class="btn" id="mailPacket" href="#" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_request_builder_mail">Open email</a></div>
+  </section>
+  <aside>
+    <section class="card"><h2>Packet preview</h2><div class="packet" id="packet"></div></section>
+    <section class="card"><h2>Lead quality rule</h2><p>Count this as a lead only when there is a real email or reply with endpoint, volume, production context, commercial use, deadline, and willingness-to-pay signal.</p></section>
+  </aside>
+</div></main>
+<footer><div class="wrap">Goosekit API - production utility API pilots for developers.</div></footer>
+<script>
+(function() {
+  var endpoint = document.getElementById('endpoint');
+  var fields = ['volume','pattern','runtime','specifics','commercial','deadline','failure'].map(function(id){ return document.getElementById(id); });
+  var packetEl = document.getElementById('packet');
+  var mail = document.getElementById('mailPacket');
+  function value(el) { return el.value.trim() || '[fill this]'; }
+  function packet() {
+    return [
+      'Goosekit API production request',
+      '',
+      'Endpoint: ' + endpoint.value,
+      'Expected monthly volume: ' + value(fields[0]),
+      'Traffic pattern: ' + value(fields[1]),
+      'Where this will run: ' + value(fields[2]),
+      'Endpoint-specific details: ' + value(fields[3]),
+      'Commercial or client-facing use: ' + value(fields[4]),
+      'Deadline: ' + value(fields[5]),
+      'What breaks without production access: ' + value(fields[6])
+    ].join('\n');
+  }
+  function capture(name, props) {
+    if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
+  }
+  function render() {
+    var text = packet();
+    packetEl.textContent = text;
+    mail.href = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent('Goosekit API production request - ' + endpoint.value) + '&body=' + encodeURIComponent(text);
+  }
+  [endpoint].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
+  document.getElementById('copyPacket').addEventListener('click', function() {
+    var text = packet();
+    navigator.clipboard && navigator.clipboard.writeText(text);
+    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, location: 'production_request_builder' });
+  });
+  mail.addEventListener('click', function() {
+    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, location: 'production_request_builder_mail' });
+  });
+  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api' });
+  render();
+})();
+</script>
+</body>
+</html>
