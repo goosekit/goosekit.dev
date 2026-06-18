@@ -16,6 +16,8 @@ REQUIRED = {
         "/api/production-request/?ref=pricing_production",
         "/api/production-request/?ref=production_note",
         "/api/production-request/?ref=production_request_packet",
+        "/api/production-request/?ref=rate_limits",
+        'data-ph-location="rate_limits"',
         'id="production-request"',
         'data-ph-location="production_request_packet"',
         "Good production fit",
@@ -128,6 +130,7 @@ REQUIRED = {
 FORBIDDEN_API_COPY = [
     "lorem ipsum. Use the free tier",
     "lorem generation",
+    "mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access",
 ]
 
 
