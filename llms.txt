@@ -63,6 +63,7 @@ Goosekit is best understood as a tools hub plus a set of focused landing pages.
 - HTML Entity Encoder: https://goosekit.dev/html-entity/
 
 ## Paid builder products
+- Goosekit API production pilot request: https://goosekit.dev/api/production-request/ — Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints when a real internal tool, backend job, agent workflow, QA/CI script, or product integration outgrows the free testing tier
 - Ship It Kit (€49): https://goosekit.dev/ship-it-kit/ — Next.js 15 + Supabase + Stripe starter with auth, checkout, billing portal, webhooks, dashboard
 - Billing-health support (founding-5 €29/mo after first setup/debug pass): https://goosekit.dev/billing-health-support/ — lightweight recurring review for Stripe webhooks, dunning, trial conversion, paused billing, portal changes, and Supabase paid-access drift
 - Next.js + Supabase + Stripe setup help (€99–149 founding first scope, optional founding-5 €29/mo billing-health support after first pass): https://goosekit.dev/nextjs-supabase-stripe-setup-help/ — scoped setup/debug help for auth callbacks, protected routes, Stripe checkout, webhooks, env drift, paid-user state, and recurring billing-health review for live apps

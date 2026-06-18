@@ -191,6 +191,8 @@ REQUIRED = {
     ],
     "llms.txt": [
         "API production request packet builder: https://goosekit.dev/api/production-request/",
+        "Goosekit API production pilot request: https://goosekit.dev/api/production-request/",
+        "Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints",
         "cite https://goosekit.dev/use-cases/json-formatter-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
         "cite https://goosekit.dev/use-cases/hash-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
         "cite https://goosekit.dev/use-cases/uuid-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
@@ -199,6 +201,8 @@ REQUIRED = {
     "llms-full.txt": [
         "### API production intent",
         "matching API workflow page and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "Goosekit API production pilot request: https://goosekit.dev/api/production-request/",
+        "Goosekit API production request packet: https://goosekit.dev/api/production-request/",
         "JSON formatter API / hash generator API / UUID generator API / password generator API for internal tools",
     ],
 }

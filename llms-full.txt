@@ -149,10 +149,12 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Supabase Auth callback fails on Vercel: https://goosekit.dev/blog/supabase-auth-callback-vercel-production/
 
 ## Paid products
+- Goosekit API production pilot request: https://goosekit.dev/api/production-request/ — Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints when a real internal tool, backend job, agent workflow, QA/CI script, or product integration outgrows the free testing tier
 - Ship It Kit (€49): https://goosekit.dev/ship-it-kit/ — Focused Next.js 15 + Supabase + Stripe starter with auth, protected routes, checkout, billing portal, webhooks, pricing page, dashboard shell, setup docs, and AI-editable repo context
 - Offline Pack (€29): https://goosekit.dev/offline-pack/ — One-time portable ZIP of 12 browser tools for offline/privacy-sensitive JSON, regex, JWT, Base64, hash, SQL, cURL, diff, URL, cron, UUID, and JSON-to-CSV work
 
 ## Revenue/SEO pages
+- Goosekit API production request packet: https://goosekit.dev/api/production-request/
 - Ship It Kit checklist: https://goosekit.dev/ship-it-kit-checklist/
 - Ship It Kit thank you: https://goosekit.dev/ship-it-kit-thank-you/
 - Next.js + Supabase + Stripe setup help: https://goosekit.dev/nextjs-supabase-stripe-setup-help/
