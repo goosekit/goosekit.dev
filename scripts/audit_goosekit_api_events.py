@@ -223,6 +223,12 @@ def main() -> None:
     for needle in (
         "goosekit_api_production_request_completed",
         "goosekit_api_production_request_started",
+        "seo_use_case_page_viewed",
+        "api_workflow_page_views",
+        "workflow_page_views",
+        "API_WORKFLOW_SLUGS",
+        "inspect_workflow_cta_path",
+        "api_workflow_views_without_builder_clicks",
         "builder_starts",
         "complete_mail_clicks",
         "check_mailbox_before_lead",

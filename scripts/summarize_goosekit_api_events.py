@@ -19,6 +19,7 @@ from typing import Any, Iterable
 
 PRODUCT = "goosekit_api"
 API_EVENTS = {
+    "seo_use_case_page_viewed",
     "goosekit_api_free_docs_clicked",
     "goosekit_api_tool_page_clicked",
     "goosekit_api_workflow_guide_clicked",
@@ -39,6 +40,12 @@ BUILDER_REFS = {
     "uuid_generator_api_production_packet",
     "password_generator_api_production_packet",
 }
+API_WORKFLOW_SLUGS = {
+    "json-formatter-api",
+    "hash-generator-api",
+    "uuid-generator-api",
+    "password-generator-api",
+}
 
 
 @dataclass
@@ -52,6 +59,8 @@ class Event:
     complete: str
     required_fields_filled: str
     target_href: str
+    slug: str
+    page_type: str
 
 
 def parse_properties(value: Any) -> dict[str, Any]:
@@ -90,6 +99,8 @@ def event_from_row(row: dict[str, Any]) -> Event:
         complete=prop("complete"),
         required_fields_filled=prop("required_fields_filled"),
         target_href=prop("target_href", "href", "$current_url"),
+        slug=prop("slug"),
+        page_type=prop("page_type"),
     )
 
 
@@ -126,8 +137,14 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     locations = Counter(event.location for event in api_events if event.location)
     endpoints = Counter(event.endpoint for event in api_events if event.endpoint)
     refs = Counter(event.ref for event in api_events if event.ref)
+    workflow_page_views = Counter(
+        event.slug
+        for event in api_events
+        if event.name == "seo_use_case_page_viewed" and event.slug in API_WORKFLOW_SLUGS
+    )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
+    workflow_views = sum(workflow_page_views.values())
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
     builder_starts = counts["goosekit_api_production_request_started"]
     completed = counts["goosekit_api_production_request_completed"]
@@ -137,8 +154,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         1 for event in api_events if event.name == "goosekit_api_production_access_clicked" and is_complete(event.complete)
     )
     incomplete_mail_clicks = mail_clicks - complete_mail_clicks
+    located_api_events = [event for event in api_events if event.name in API_EVENTS and event.name != "seo_use_case_page_viewed"]
     missing_product = sum(1 for event in api_events if event.name in API_EVENTS and not event.product)
-    missing_location = sum(1 for event in api_events if event.name in API_EVENTS and not event.location)
+    missing_location = sum(1 for event in located_api_events if not event.location)
 
     if missing_product or missing_location:
         action = "repair_instrumentation_first"
@@ -164,6 +182,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     elif builder_clicks and not builder_views:
         action = "inspect_builder_navigation"
         reason = "builder_clicks_without_builder_views"
+    elif workflow_views and not builder_clicks:
+        action = "inspect_workflow_cta_path"
+        reason = "api_workflow_views_without_builder_clicks"
     else:
         action = "no_lead_update"
         reason = "no_api_paid_intent_signal"
@@ -172,6 +193,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "events_total": len(events),
         "api_events": len(api_events),
         "builder_clicks": builder_clicks,
+        "api_workflow_page_views": workflow_views,
         "builder_views": builder_views,
         "builder_starts": builder_starts,
         "completed_packets": completed,
@@ -185,6 +207,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "recommended_action": action,
         "reason": reason,
         "builder_refs": dict(sorted(refs.items())),
+        "workflow_page_views": dict(sorted(workflow_page_views.items())),
         "locations": dict(locations.most_common(20)),
         "endpoints": dict(endpoints.most_common(20)),
         "do_not_update_counters_from_analytics_alone": True,
@@ -201,6 +224,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"events_total={summary['events_total']}",
         f"api_events={summary['api_events']}",
         f"builder_clicks={summary['builder_clicks']}",
+        f"api_workflow_page_views={summary['api_workflow_page_views']}",
         f"builder_views={summary['builder_views']}",
         f"builder_starts={summary['builder_starts']}",
         f"completed_packets={summary['completed_packets']}",
@@ -220,6 +244,12 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     for ref in sorted(BUILDER_REFS | set(builder_refs)):
         if builder_refs.get(ref):
             lines.append(f"- {ref}: {builder_refs[ref]}")
+    lines.append("")
+    lines.append("## API workflow page views")
+    workflow_page_views = summary["workflow_page_views"]
+    for slug in sorted(API_WORKFLOW_SLUGS | set(workflow_page_views)):
+        if workflow_page_views.get(slug):
+            lines.append(f"- {slug}: {workflow_page_views[slug]}")
     lines.append("")
     lines.append("## Locations")
     for location, count in summary["locations"].items():
