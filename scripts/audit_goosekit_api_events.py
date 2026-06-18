@@ -277,7 +277,13 @@ def read(path: str) -> str:
     return html
 
 
-def run_summary_fixture(name: str, events: list[dict], expected_action: str, mailbox_packets: int = 0) -> None:
+def run_summary_fixture(
+    name: str,
+    events: list[dict],
+    expected_action: str,
+    mailbox_packets: int = 0,
+    expected_counts: dict[str, int] | None = None,
+) -> None:
     with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8") as tmp:
         json.dump(events, tmp)
         tmp.flush()
@@ -302,6 +308,10 @@ def run_summary_fixture(name: str, events: list[dict], expected_action: str, mai
         raise AssertionError(
             f"{name}: unexpected missing attribution product={missing_product} location={missing_location}"
         )
+    for key, expected in (expected_counts or {}).items():
+        actual = summary.get(key)
+        if actual != expected:
+            raise AssertionError(f"{name}: expected {key}={expected}, got {actual}")
 
 
 def main() -> None:
@@ -329,6 +339,8 @@ def main() -> None:
         "goosekit_api_production_request_started",
         "seo_use_case_page_viewed",
         "api_workflow_page_views",
+        "endpoint_production_clicks",
+        "ENDPOINT_PRODUCTION_REFS",
         "free_docs_clicks",
         "workflow_page_views",
         "API_WORKFLOW_SLUGS",
@@ -430,6 +442,33 @@ def main() -> None:
             },
         ],
         "inspect_docs_to_production_bridge",
+    )
+    run_summary_fixture(
+        "endpoint production clicks are counted separately",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_clicked",
+                "timestamp": "2026-06-18T20:47:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "json_endpoint_production",
+                    "ref": "json_endpoint_production",
+                    "target_href": "/api/production-request/?endpoint=json&ref=json_endpoint_production",
+                },
+            },
+            {
+                "event": "goosekit_api_production_request_builder_clicked",
+                "timestamp": "2026-06-18T20:48:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "uuid_endpoint_production",
+                    "ref": "uuid_endpoint_production",
+                    "target_href": "/api/production-request/?endpoint=uuid&ref=uuid_endpoint_production",
+                },
+            },
+        ],
+        "inspect_builder_navigation",
+        expected_counts={"builder_clicks": 2, "endpoint_production_clicks": 2},
     )
     run_summary_fixture(
         "completed packet requires mailbox check",

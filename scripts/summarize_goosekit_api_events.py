@@ -54,6 +54,12 @@ BUILDER_REFS = {
     "password_generator_api_production_packet",
     "password_generator_api_production_hero",
 }
+ENDPOINT_PRODUCTION_REFS = {
+    "json_endpoint_production",
+    "hash_endpoint_production",
+    "uuid_endpoint_production",
+    "password_endpoint_production",
+}
 API_WORKFLOW_SLUGS = {
     "json-formatter-api",
     "hash-generator-api",
@@ -158,6 +164,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
+    endpoint_production_clicks = sum(refs[ref] for ref in ENDPOINT_PRODUCTION_REFS)
     free_docs_clicks = counts["goosekit_api_free_docs_clicked"]
     workflow_views = sum(workflow_page_views.values())
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
@@ -211,6 +218,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "events_total": len(events),
         "api_events": len(api_events),
         "builder_clicks": builder_clicks,
+        "endpoint_production_clicks": endpoint_production_clicks,
         "free_docs_clicks": free_docs_clicks,
         "api_workflow_page_views": workflow_views,
         "builder_views": builder_views,
@@ -243,6 +251,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"events_total={summary['events_total']}",
         f"api_events={summary['api_events']}",
         f"builder_clicks={summary['builder_clicks']}",
+        f"endpoint_production_clicks={summary['endpoint_production_clicks']}",
         f"free_docs_clicks={summary['free_docs_clicks']}",
         f"api_workflow_page_views={summary['api_workflow_page_views']}",
         f"builder_views={summary['builder_views']}",
