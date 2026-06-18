@@ -73,6 +73,14 @@
   var fields = ['volume','pattern','runtime','specifics','commercial','deadline','failure'].map(function(id){ return document.getElementById(id); });
   var packetEl = document.getElementById('packet');
   var mail = document.getElementById('mailPacket');
+  var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
+  var detailHints = {
+    'JSON formatter': 'JSON operation: format, minify, validate; payload size; output expected by the workflow.',
+    'Hash generator': 'Algorithm(s): MD5, SHA-1, SHA-256, SHA-512; input type; safe-data boundary.',
+    'UUID generator': 'UUID version and format: v4, lowercase, hyphenated, compact; where the IDs go.',
+    'Password generator': 'Policy: length, symbols, numbers, excluded characters; handling path; forced reset; not for long-lived secrets.',
+    'Adjacent utility endpoint': 'Endpoint needed, payload shape, output expected, and why existing endpoints do not fit.'
+  };
   function value(el) { return el.value.trim() || '[fill this]'; }
   function packet() {
     return [
@@ -96,7 +104,12 @@
     packetEl.textContent = text;
     mail.href = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent('Goosekit API production request - ' + endpoint.value) + '&body=' + encodeURIComponent(text);
   }
+  function applyEndpointHint() {
+    var hint = detailHints[endpoint.value] || detailHints['Adjacent utility endpoint'];
+    fields[3].placeholder = hint;
+  }
   [endpoint].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
+  endpoint.addEventListener('change', applyEndpointHint);
   document.getElementById('copyPacket').addEventListener('click', function() {
     var text = packet();
     navigator.clipboard && navigator.clipboard.writeText(text);
@@ -105,7 +118,11 @@
   mail.addEventListener('click', function() {
     capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, location: 'production_request_builder_mail' });
   });
-  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api' });
+  var params = new URLSearchParams(window.location.search);
+  var requestedEndpoint = endpointMap[(params.get('endpoint') || '').toLowerCase()];
+  if (requestedEndpoint) endpoint.value = requestedEndpoint;
+  applyEndpointHint();
+  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: params.get('ref') || '' });
   render();
 })();
 </script>
