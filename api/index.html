@@ -156,12 +156,21 @@
     .fit-card h2 { font-size: 1.15rem; color: #fff; margin-bottom: 10px; }
     .fit-card ul { margin: 0 0 0 18px; color: var(--text-dim); font-size: 0.95rem; }
     .fit-card li { margin: 8px 0; }
+    .workflow-guides { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px; margin: 32px 0; }
+    .workflow-guides h2 { font-size: 1.3rem; color: #fff; margin-bottom: 8px; text-align: center; }
+    .workflow-guides > p { color: var(--text-dim); text-align: center; max-width: 680px; margin: 0 auto 20px; font-size: 0.95rem; }
+    .workflow-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .workflow-card { border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; background: rgba(255,255,255,0.035); color: #f5f7ff; text-decoration: none; }
+    .workflow-card:hover { text-decoration: none; border-color: rgba(52,211,153,0.45); }
+    .workflow-card strong { display: block; color: #fff; margin-bottom: 4px; }
+    .workflow-card span { display: block; color: var(--text-dim); font-size: 0.9rem; }
 
     footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
 
     @media (max-width: 600px) {
       .pricing { grid-template-columns: 1fr; }
       .fit-grid { grid-template-columns: 1fr; }
+      .workflow-grid { grid-template-columns: 1fr; }
       .hero { padding: 50px 0 30px; }
     }
   </style>
@@ -416,6 +425,29 @@
   </div>
 
   <p class="lead-note"><strong>Production access is intentionally manual right now.</strong> The goal is to qualify real API demand before turning this into another generic pricing table: endpoint needed, expected volume, commercial use, and launch timing.</p>
+
+  <section class="workflow-guides" aria-label="Production API workflow guides">
+    <h2>Choose the closest production workflow</h2>
+    <p>These guides separate one-off browser use from API use that belongs in an internal tool, backend job, agent, QA script, or product workflow.</p>
+    <div class="workflow-grid">
+      <a class="workflow-card" href="/use-cases/json-formatter-api/?ref=api_workflow_guides" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="api_workflow_guides_json">
+        <strong>JSON formatter API</strong>
+        <span>Internal tools, agents, backend jobs, and product payload views.</span>
+      </a>
+      <a class="workflow-card" href="/use-cases/hash-generator-api/?ref=api_workflow_guides" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="api_workflow_guides_hash">
+        <strong>Hash generator API</strong>
+        <span>Checksums, import validation, deduplication, and safe non-secret inputs.</span>
+      </a>
+      <a class="workflow-card" href="/use-cases/uuid-generator-api/?ref=api_workflow_guides" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="api_workflow_guides_uuid">
+        <strong>UUID generator API</strong>
+        <span>QA fixtures, import previews, mock payloads, and batch test data.</span>
+      </a>
+      <a class="workflow-card" href="/use-cases/password-generator-api/?ref=api_workflow_guides" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="api_workflow_guides_password">
+        <strong>Password generator API</strong>
+        <span>Controlled admin tooling, temporary credentials, and QA automation.</span>
+      </a>
+    </div>
+  </section>
 
   <div style="background: rgba(255,72,0,0.08); border: 1px solid rgba(255,72,0,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 24px; max-width: 760px; text-align: center;">
     <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0AUse%20case%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A" style="color:#ff4800; text-decoration: underline;" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_note">email Arthur directly</a> with endpoint needs, monthly volume, and launch timing.</p>
