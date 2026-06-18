@@ -326,6 +326,9 @@ def run_summary_fixture(
         if key.startswith("missing_required_fields."):
             field = key.split(".", 1)[1]
             actual = summary.get("missing_required_fields", {}).get(field)
+        elif "." in key:
+            group, field = key.split(".", 1)
+            actual = summary.get(group, {}).get(field)
         else:
             actual = summary.get(key)
         if actual != expected:
@@ -381,6 +384,8 @@ def main() -> None:
         "password_endpoint_production",
         "builder_starts",
         "endpoint_example_views",
+        "endpoint_example_views_by_endpoint",
+        "Endpoint Example Views",
         "complete_mail_clicks",
         "check_mailbox_before_lead",
         "inspect_builder_start_friction",
@@ -439,7 +444,10 @@ def main() -> None:
             },
         ],
         "inspect_builder_start_friction",
-        expected_counts={"endpoint_example_views": 1},
+        expected_counts={
+            "endpoint_example_views": 1,
+            "endpoint_example_views_by_endpoint.JSON formatter": 1,
+        },
     )
     run_summary_fixture(
         "builder start without completion",

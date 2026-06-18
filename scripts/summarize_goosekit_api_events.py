@@ -169,6 +169,11 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         for event in api_events
         if event.name == "seo_use_case_page_viewed" and event.slug in API_WORKFLOW_SLUGS
     )
+    endpoint_example_views_by_endpoint = Counter(
+        event.endpoint
+        for event in api_events
+        if event.name == "goosekit_api_endpoint_examples_viewed" and event.endpoint
+    )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
     endpoint_production_clicks = sum(refs[ref] for ref in ENDPOINT_PRODUCTION_REFS)
@@ -249,6 +254,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "complete_mail_clicks": complete_mail_clicks,
         "incomplete_mail_clicks": incomplete_mail_clicks,
         "missing_required_fields": dict(missing_required_fields.most_common()),
+        "endpoint_example_views_by_endpoint": dict(endpoint_example_views_by_endpoint.most_common()),
         "mailbox_packets": mailbox_packets,
         "api_events_missing_product": missing_product,
         "api_events_missing_location": missing_location,
@@ -305,6 +311,10 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("## Missing Required Fields")
     for field, count in summary["missing_required_fields"].items():
         lines.append(f"- {field}: {count}")
+    lines.append("")
+    lines.append("## Endpoint Example Views")
+    for endpoint, count in summary["endpoint_example_views_by_endpoint"].items():
+        lines.append(f"- {endpoint}: {count}")
     lines.append("")
     lines.append("## Locations")
     for location, count in summary["locations"].items():
