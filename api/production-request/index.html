@@ -34,6 +34,8 @@
     .required-list li{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:10px;padding:8px 10px;color:#a8a8bd;font-size:.88rem}
     .required-list li.is-filled{border-color:rgba(52,211,153,.35);color:#d1fae5;background:rgba(52,211,153,.08)}
     .field-note{color:#9494aa;font-size:.88rem;margin:-4px 0 16px}
+    .source-note{display:none;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:12px;padding:10px 12px;margin:-4px 0 16px;color:#d7d7e7;font-size:.9rem}
+    .source-note strong{color:#fff}
     .field-help{color:#9494aa;font-size:.84rem;line-height:1.45}
     .field-tag{display:inline-flex;align-items:center;margin-left:7px;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:2px 7px;color:#a8a8bd;font-size:.72rem;font-weight:760;text-transform:uppercase;letter-spacing:.02em}
     .field-tag.required{border-color:rgba(52,211,153,.3);color:#a7f3d0;background:rgba(52,211,153,.08)}
@@ -71,6 +73,7 @@
       <li data-required-id="failure">Failure mode</li>
     </ul>
     <p class="field-note">Traffic pattern and deadline help with scoping, but the six marked fields are enough to send a useful request.</p>
+    <p class="source-note" id="sourceNote" data-ph-location="production_request_source_context"></p>
     <div class="field"><label for="endpoint">Endpoint <span class="field-tag required">required</span></label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
     <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"><span class="field-help">A rough range is fine: 10k/month, 500k/month, or bursty batch jobs.</span></div>
     <div class="field"><label for="pattern">Traffic pattern <span class="field-tag">optional</span></label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
@@ -96,12 +99,27 @@
   var packetEl = document.getElementById('packet');
   var mail = document.getElementById('mailPacket');
   var progressText = document.getElementById('progressText');
+  var sourceNote = document.getElementById('sourceNote');
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var completionCaptured = false;
   var startCaptured = false;
   var params = new URLSearchParams(window.location.search);
   var sourceRef = params.get('ref') || '';
   var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
+  var sourceLabels = {
+    json_formatter_api_production_hero: 'JSON Formatter API workflow hero',
+    hash_generator_api_production_hero: 'Hash Generator API workflow hero',
+    uuid_generator_api_production_hero: 'UUID Generator API workflow hero',
+    password_generator_api_production_hero: 'Password Generator API workflow hero',
+    json_formatter_api_production_packet: 'JSON Formatter API workflow packet section',
+    hash_generator_api_production_packet: 'Hash Generator API workflow packet section',
+    uuid_generator_api_production_packet: 'UUID Generator API workflow packet section',
+    password_generator_api_production_packet: 'Password Generator API workflow packet section',
+    pricing_production: 'API pricing section',
+    production_note: 'API production note',
+    production_request_packet: 'API production request section',
+    rate_limits: 'API rate limits section'
+  };
   var detailHints = {
     'JSON formatter': 'JSON operation: format, minify, validate; payload size; output expected by the workflow.',
     'Hash generator': 'Algorithm(s): MD5, SHA-1, SHA-256, SHA-512; input type; safe-data boundary.',
@@ -150,6 +168,12 @@
     requiredItems.forEach(function(item) {
       item.classList.toggle('is-filled', filled(item.getAttribute('data-required-id')));
     });
+  }
+  function renderSourceContext() {
+    var label = sourceLabels[sourceRef];
+    if (!label) return;
+    sourceNote.innerHTML = '<strong>Context:</strong> you came from the ' + label + '. The endpoint is preselected; fill the six required fields to make the request useful.';
+    sourceNote.style.display = 'block';
   }
   function render() {
     var status = completeness();
@@ -205,6 +229,7 @@
   var requestedEndpoint = endpointMap[(params.get('endpoint') || '').toLowerCase()];
   if (requestedEndpoint) endpoint.value = requestedEndpoint;
   applyEndpointHint();
+  renderSourceContext();
   capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef });
   render();
 })();
