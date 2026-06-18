@@ -12,6 +12,7 @@ import json
 import sys
 from collections import Counter
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -118,7 +119,7 @@ def is_complete(value: str) -> bool:
     return value.lower() == "true"
 
 
-def summarize(events: list[Event], mailbox_packets: int) -> str:
+def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     api_events = [event for event in events if event.product == PRODUCT or event.name in API_EVENTS]
     counts = Counter(event.name for event in api_events)
     locations = Counter(event.location for event in api_events if event.location)
@@ -159,36 +160,63 @@ def summarize(events: list[Event], mailbox_packets: int) -> str:
         action = "no_lead_update"
         reason = "no_api_paid_intent_signal"
 
+    return {
+        "events_total": len(events),
+        "api_events": len(api_events),
+        "builder_clicks": builder_clicks,
+        "builder_views": builder_views,
+        "completed_packets": completed,
+        "packet_copies": packet_copies,
+        "mail_clicks": mail_clicks,
+        "complete_mail_clicks": complete_mail_clicks,
+        "incomplete_mail_clicks": incomplete_mail_clicks,
+        "mailbox_packets": mailbox_packets,
+        "api_events_missing_product": missing_product,
+        "api_events_missing_location": missing_location,
+        "recommended_action": action,
+        "reason": reason,
+        "builder_refs": dict(sorted(refs.items())),
+        "locations": dict(locations.most_common(20)),
+        "endpoints": dict(endpoints.most_common(20)),
+        "do_not_update_counters_from_analytics_alone": True,
+    }
+
+
+def format_markdown(summary: dict[str, Any], *, export_source: str, window: str, mailbox_check: str) -> str:
     lines = [
         "# Goosekit API event summary",
         "",
-        f"events_total={len(events)}",
-        f"api_events={len(api_events)}",
-        f"builder_clicks={builder_clicks}",
-        f"builder_views={builder_views}",
-        f"completed_packets={completed}",
-        f"packet_copies={packet_copies}",
-        f"mail_clicks={mail_clicks}",
-        f"complete_mail_clicks={complete_mail_clicks}",
-        f"incomplete_mail_clicks={incomplete_mail_clicks}",
-        f"mailbox_packets={mailbox_packets}",
-        f"api_events_missing_product={missing_product}",
-        f"api_events_missing_location={missing_location}",
-        f"recommended_action={action}",
-        f"reason={reason}",
+        f"export_source={export_source}",
+        f"window={window}",
+        f"mailbox_check={mailbox_check}",
+        f"events_total={summary['events_total']}",
+        f"api_events={summary['api_events']}",
+        f"builder_clicks={summary['builder_clicks']}",
+        f"builder_views={summary['builder_views']}",
+        f"completed_packets={summary['completed_packets']}",
+        f"packet_copies={summary['packet_copies']}",
+        f"mail_clicks={summary['mail_clicks']}",
+        f"complete_mail_clicks={summary['complete_mail_clicks']}",
+        f"incomplete_mail_clicks={summary['incomplete_mail_clicks']}",
+        f"mailbox_packets={summary['mailbox_packets']}",
+        f"api_events_missing_product={summary['api_events_missing_product']}",
+        f"api_events_missing_location={summary['api_events_missing_location']}",
+        f"recommended_action={summary['recommended_action']}",
+        f"reason={summary['reason']}",
         "",
         "## Builder refs",
     ]
-    for ref in sorted(BUILDER_REFS | set(refs)):
-        if refs[ref]:
-            lines.append(f"- {ref}: {refs[ref]}")
+    builder_refs = summary["builder_refs"]
+    for ref in sorted(BUILDER_REFS | set(builder_refs)):
+        if builder_refs.get(ref):
+            lines.append(f"- {ref}: {builder_refs[ref]}")
     lines.append("")
     lines.append("## Locations")
-    for location, count in locations.most_common(20):
+    for location, count in summary["locations"].items():
         lines.append(f"- {location}: {count}")
     lines.append("")
     lines.append("## Endpoints")
-    for endpoint, count in endpoints.most_common(20):
+    for endpoint, count in summary["endpoints"].items():
         lines.append(f"- {endpoint}: {count}")
     lines.append("")
     lines.append("Do not update lead, revenue, or MRR counters from this summary alone.")
@@ -200,11 +228,43 @@ def main() -> int:
     parser.add_argument("export", nargs="?", help="CSV/JSON export path; defaults to stdin")
     parser.add_argument("--format", choices=("auto", "csv", "json"), default="auto")
     parser.add_argument("--mailbox-packets", type=int, default=0)
+    parser.add_argument("--window", default="", help="Export/mailbox window, e.g. 2026-06-18T07:00Z..08:00Z")
+    parser.add_argument("--mailbox-check", default="", help="Human-readable note confirming mailbox check for the same window")
+    parser.add_argument("--json", action="store_true", help="Emit machine-readable JSON instead of markdown")
+    parser.add_argument("--output-dir", help="Write timestamped markdown artifact to this directory")
     args = parser.parse_args()
     if args.mailbox_packets < 0:
         parser.error("--mailbox-packets must be 0 or greater")
+    if args.output_dir and (not args.window or not args.mailbox_check):
+        parser.error("--output-dir requires --window and --mailbox-check")
     events = load_events(Path(args.export) if args.export else None, args.format)
-    print(summarize(events, args.mailbox_packets), end="")
+    export_source = args.export or "stdin"
+    summary = build_summary(events, args.mailbox_packets)
+    summary.update(
+        {
+            "export_source": export_source,
+            "window": args.window,
+            "mailbox_check": args.mailbox_check,
+        }
+    )
+    if args.json:
+        print(json.dumps(summary, indent=2, sort_keys=True))
+    else:
+        markdown = format_markdown(
+            summary,
+            export_source=export_source,
+            window=args.window,
+            mailbox_check=args.mailbox_check,
+        )
+        if args.output_dir:
+            output_dir = Path(args.output_dir)
+            output_dir.mkdir(parents=True, exist_ok=True)
+            stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+            output_path = output_dir / f"GOOSEKIT_API_ANALYTICS_SUMMARY_{stamp}.md"
+            output_path.write_text(markdown, encoding="utf-8")
+            print(output_path)
+        else:
+            print(markdown, end="")
     return 0
 
 

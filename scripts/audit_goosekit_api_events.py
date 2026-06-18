@@ -173,6 +173,9 @@ def main() -> None:
         "complete_mail_clicks",
         "check_mailbox_before_lead",
         "inspect_builder_field_burden",
+        "do_not_update_counters_from_analytics_alone",
+        "--output-dir requires --window and --mailbox-check",
+        "GOOSEKIT_API_ANALYTICS_SUMMARY_",
         "Do not update lead, revenue, or MRR counters",
     ):
         if needle not in summary_script:
