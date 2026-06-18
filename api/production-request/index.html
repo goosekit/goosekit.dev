@@ -34,6 +34,7 @@
     .required-list li{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:10px;padding:8px 10px;color:#a8a8bd;font-size:.88rem}
     .required-list li.is-filled{border-color:rgba(52,211,153,.35);color:#d1fae5;background:rgba(52,211,153,.08)}
     .field-note{color:#9494aa;font-size:.88rem;margin:-4px 0 16px}
+    .field-help{color:#9494aa;font-size:.84rem;line-height:1.45}
     .field-tag{display:inline-flex;align-items:center;margin-left:7px;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:2px 7px;color:#a8a8bd;font-size:.72rem;font-weight:760;text-transform:uppercase;letter-spacing:.02em}
     .field-tag.required{border-color:rgba(52,211,153,.3);color:#a7f3d0;background:rgba(52,211,153,.08)}
     .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
@@ -71,14 +72,14 @@
     </ul>
     <p class="field-note">Traffic pattern and deadline help with scoping, but the six marked fields are enough to send a useful request.</p>
     <div class="field"><label for="endpoint">Endpoint <span class="field-tag required">required</span></label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
-    <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"></div>
+    <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"><span class="field-help">A rough range is fine: 10k/month, 500k/month, or bursty batch jobs.</span></div>
     <div class="field"><label for="pattern">Traffic pattern <span class="field-tag">optional</span></label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
-    <div class="field"><label for="runtime">Where it runs <span class="field-tag required">required</span></label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"></div>
+    <div class="field"><label for="runtime">Where it runs <span class="field-tag required">required</span></label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"><span class="field-help">Examples: support dashboard, CI job, worker script, agent workflow, or customer-facing product.</span></div>
     <div class="field"><label for="specifics">Endpoint-specific details <span class="field-tag required">required</span></label><textarea id="specifics" placeholder="JSON operation, hash algorithm and safe-data boundary, UUID format, password policy and handling path"></textarea></div>
-    <div class="field"><label for="commercial">Commercial or client-facing use <span class="field-tag required">required</span></label><input id="commercial" placeholder="Internal business, client-facing, paid product integration, personal"></div>
-    <div class="field"><label for="budget">Paid access expectation <span class="field-tag required">required</span></label><input id="budget" placeholder="Example: can pay for production access if limits/support fit, or budget range"></div>
+    <div class="field"><label for="commercial">Commercial or client-facing use <span class="field-tag required">required</span></label><input id="commercial" placeholder="Internal business, client-facing, paid product integration, personal"><span class="field-help">Say whether this is personal, internal business use, client-facing, or part of a paid product.</span></div>
+    <div class="field"><label for="budget">Paid access expectation <span class="field-tag required">required</span></label><input id="budget" placeholder="Example: can pay for production access if limits/support fit, or budget range"><span class="field-help">A simple signal is enough: can pay if it fits, needs a quote, or has a monthly budget range.</span></div>
     <div class="field"><label for="deadline">Deadline or launch date <span class="field-tag">optional</span></label><input id="deadline" placeholder="Example: before July launch"></div>
-    <div class="field"><label for="failure">What breaks without production access <span class="field-tag required">required</span></label><textarea id="failure" placeholder="What fails if the endpoint stays limited or unavailable?"></textarea></div>
+    <div class="field"><label for="failure">What breaks without production access <span class="field-tag required">required</span></label><textarea id="failure" placeholder="What fails if the endpoint stays limited or unavailable?"></textarea><span class="field-help">Examples: launch blocked, manual copy-paste stays in the workflow, QA job fails, or customer feature cannot ship.</span></div>
     <div class="btn-row"><button class="btn btn-primary" id="copyPacket" data-ph-event="goosekit_api_packet_copied" data-ph-product="goosekit_api" data-ph-location="production_request_builder">Copy packet</button><a class="btn" id="mailPacket" href="#" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_request_builder_mail">Open email</a></div>
   </section>
   <aside>
