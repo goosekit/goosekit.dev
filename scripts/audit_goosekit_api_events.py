@@ -72,6 +72,15 @@ REQUIRED = {
         "Do not use UUIDs as passwords",
         "/api/#production-request",
     ],
+    "use-cases/password-generator-api/index.html": [
+        "Password Generator API for Internal Tools",
+        "goosekit_api_tool_page_clicked",
+        "goosekit_api_production_access_clicked",
+        'data-ph-product="goosekit_api"',
+        'data-ph-location="password_generator_api_production_packet"',
+        "Do not use a third-party password API",
+        "/api/#production-request",
+    ],
     "use-cases/index.html": [
         "/use-cases/json-formatter-api/",
         "JSON formatter API for internal tools",
@@ -79,6 +88,8 @@ REQUIRED = {
         "Hash generator API for checksums",
         "/use-cases/uuid-generator-api/",
         "UUID generator API for test data",
+        "/use-cases/password-generator-api/",
+        "Password generator API for internal tools",
     ],
 }
 
