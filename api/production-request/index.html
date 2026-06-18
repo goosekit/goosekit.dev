@@ -39,6 +39,10 @@
     .source-note{display:none;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:12px;padding:10px 12px;margin:-4px 0 16px;color:#d7d7e7;font-size:.9rem}
     .source-note strong{color:#fff}
     .field-help{color:#9494aa;font-size:.84rem;line-height:1.45}
+    .endpoint-examples{border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);border-radius:12px;padding:12px 14px;margin:0 0 16px}
+    .endpoint-examples strong{display:block;color:#fff;margin-bottom:6px}
+    .endpoint-examples ul{margin:0;padding-left:18px}
+    .endpoint-examples li{color:#bebed0;font-size:.88rem;line-height:1.45;margin:3px 0}
     .field-tag{display:inline-flex;align-items:center;margin-left:7px;border:1px solid rgba(255,255,255,.1);border-radius:999px;padding:2px 7px;color:#a8a8bd;font-size:.72rem;font-weight:760;text-transform:uppercase;letter-spacing:.02em}
     .field-tag.required{border-color:rgba(52,211,153,.3);color:#a7f3d0;background:rgba(52,211,153,.08)}
     .btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
@@ -78,6 +82,7 @@
     <p class="field-note">Traffic pattern and deadline help with scoping, but the six marked fields are enough to send a useful request.</p>
     <p class="source-note" id="sourceNote" data-ph-location="production_request_source_context"></p>
     <div class="field"><label for="endpoint">Endpoint <span class="field-tag required">required</span></label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
+    <div class="endpoint-examples" id="endpointExamples" data-ph-location="production_request_endpoint_examples"><strong>Useful details for this endpoint</strong><ul><li>JSON operation: format, minify, validate, or normalize.</li><li>Payload size range and where the output is consumed.</li><li>What manual or brittle step this replaces.</li></ul></div>
     <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"><span class="field-help">A rough range is fine: 10k/month, 500k/month, or bursty batch jobs.</span></div>
     <div class="field"><label for="pattern">Traffic pattern <span class="field-tag">optional</span></label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
     <div class="field"><label for="runtime">Where it runs <span class="field-tag required">required</span></label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"><span class="field-help">Examples: support dashboard, CI job, worker script, agent workflow, or customer-facing product.</span></div>
@@ -105,6 +110,7 @@
   var progressText = document.getElementById('progressText');
   var missingNote = document.getElementById('missingNote');
   var sourceNote = document.getElementById('sourceNote');
+  var endpointExamples = document.getElementById('endpointExamples');
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var completionCaptured = false;
   var startCaptured = false;
@@ -153,6 +159,33 @@
     'UUID generator': 'UUID version and format: v4, lowercase, hyphenated, compact; where the IDs go.',
     'Password generator': 'Policy: length, symbols, numbers, excluded characters; handling path; forced reset; not for long-lived secrets.',
     'Adjacent utility endpoint': 'Endpoint needed, payload shape, output expected, and why existing endpoints do not fit.'
+  };
+  var endpointExamplesMap = {
+    'JSON formatter': [
+      'Operation: format, minify, validate, normalize, or produce stable output.',
+      'Payload size range and whether the data is user-submitted or internal.',
+      'Where the formatted JSON goes: support dashboard, worker, QA job, or product flow.'
+    ],
+    'Hash generator': [
+      'Algorithm: MD5, SHA-1, SHA-256, SHA-512, or multiple algorithms.',
+      'Input type and safe-data boundary; do not send passwords or secrets.',
+      'Business use: checksum validation, deduplication, imports, or audit tooling.'
+    ],
+    'UUID generator': [
+      'UUID version/format: v4, lowercase, hyphenated, compact, or batch output.',
+      'Where IDs are stored and whether collisions or ordering matter.',
+      'Batch size, retry behavior, and whether this feeds test data or a product workflow.'
+    ],
+    'Password generator': [
+      'Policy: length, symbols, numbers, excluded characters, and reset flow.',
+      'Handling path: temporary onboarding credentials only, not stored long-lived secrets.',
+      'Who consumes the output and how it is delivered or rotated.'
+    ],
+    'Adjacent utility endpoint': [
+      'Exact endpoint needed, payload shape, expected output, and error handling.',
+      'Why JSON/hash/UUID/password endpoints do not fit the workflow.',
+      'Whether this is internal automation, customer-facing, or a paid product dependency.'
+    ]
   };
   var requiredLabels = {
     volume: 'volume',
@@ -263,6 +296,8 @@
   function applyEndpointHint() {
     var hint = detailHints[endpoint.value] || detailHints['Adjacent utility endpoint'];
     fields[3].placeholder = hint;
+    var examples = endpointExamplesMap[endpoint.value] || endpointExamplesMap['Adjacent utility endpoint'];
+    endpointExamples.innerHTML = '<strong>Useful details for this endpoint</strong><ul>' + examples.map(function(example) { return '<li>' + example + '</li>'; }).join('') + '</ul>';
   }
   [endpoint].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
   endpoint.addEventListener('change', applyEndpointHint);
