@@ -146,13 +146,22 @@
     .auth { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin: 40px 0; }
     .auth h2 { font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
     .auth p { color: var(--text-dim); font-size: 0.95rem; }
+    .auth ul { margin: 14px 0 0 20px; color: var(--text-dim); font-size: 0.95rem; }
+    .auth li { margin: 7px 0; }
     .lead-note { max-width: 760px; margin: -16px auto 32px; color: var(--text-dim); font-size: 0.95rem; text-align: center; }
     .lead-note strong { color: #fff; }
+    .fit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 32px 0 16px; }
+    .fit-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; }
+    .fit-card.good { border-color: rgba(52,211,153,0.45); }
+    .fit-card h2 { font-size: 1.15rem; color: #fff; margin-bottom: 10px; }
+    .fit-card ul { margin: 0 0 0 18px; color: var(--text-dim); font-size: 0.95rem; }
+    .fit-card li { margin: 8px 0; }
 
     footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
 
     @media (max-width: 600px) {
       .pricing { grid-template-columns: 1fr; }
+      .fit-grid { grid-template-columns: 1fr; }
       .hero { padding: 50px 0 30px; }
     }
   </style>
@@ -412,7 +421,37 @@
     <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0AUse%20case%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A" style="color:#ff4800; text-decoration: underline;" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_note">email Arthur directly</a> with endpoint needs, monthly volume, and launch timing.</p>
   </div>
 
-  
+  <div class="fit-grid" aria-label="Goosekit API production fit">
+    <div class="fit-card good">
+      <h2>Good production fit</h2>
+      <ul>
+        <li>Internal tools, scripts, agents, or product flows that need JSON, hash, UUID, or password utility endpoints.</li>
+        <li>You already tested the free endpoint and now need higher limits, a production-friendly setup, or a clearer support path.</li>
+        <li>You can share estimated monthly volume and whether the use case is commercial or client-facing.</li>
+      </ul>
+    </div>
+    <div class="fit-card">
+      <h2>Probably not a fit</h2>
+      <ul>
+        <li>You only need a few manual calls while debugging locally.</li>
+        <li>You need a formal SLA, procurement process, or enterprise contract immediately.</li>
+        <li>You want a broad API marketplace rather than a small utility endpoint pilot.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="auth" id="production-request">
+    <h2>What to include in a production request</h2>
+    <p>A useful request is short but specific. The fastest path is to say which endpoint you need, what will call it, and what volume would make the free testing tier too small.</p>
+    <ul>
+      <li><strong>Endpoint:</strong> JSON formatter, hash generator, UUID generator, password generator, or the adjacent endpoint you need next.</li>
+      <li><strong>Monthly volume:</strong> expected requests per month and whether traffic is steady or bursty.</li>
+      <li><strong>Where it runs:</strong> internal tool, script, agent workflow, backend job, browser app, or customer-facing product.</li>
+      <li><strong>Commercial context:</strong> personal, internal business, client-facing, or paid product integration.</li>
+      <li><strong>Timing:</strong> when you need production access and what breaks if the endpoint is unavailable.</li>
+    </ul>
+    <p style="margin-top:18px;"><a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20request&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0ATraffic%20pattern%20(steady%20or%20bursty)%3A%0AWhere%20this%20will%20run%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A%0AWhat%20breaks%20without%20production%20access%3A" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_request_packet" style="color:#ff4800;font-weight:700;">Send the production request packet →</a></p>
+  </div>
 
   <!-- Auth -->
   <div class="auth">

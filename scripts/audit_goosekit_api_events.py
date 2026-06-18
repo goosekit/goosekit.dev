@@ -16,6 +16,11 @@ REQUIRED = {
         "Endpoint(s)%20I%20need",
         "Estimated%20monthly%20volume",
         "Commercial%20or%20client-facing%20use",
+        'id="production-request"',
+        'data-ph-location="production_request_packet"',
+        "What%20breaks%20without%20production%20access",
+        "Good production fit",
+        "Probably not a fit",
     ],
     "json/index.html": [
         "goosekit_api_tool_page_clicked",
