@@ -82,7 +82,10 @@ REQUIRED = {
         "detailHints",
         "endpointExamples",
         "endpointExamplesMap",
+        "goosekit_api_endpoint_examples_viewed",
+        "exampleEndpointCaptured",
         "production_request_endpoint_examples",
+        "data-ph-endpoint",
         "Useful details for this endpoint",
         "Payload size range",
         "safe-data boundary",
@@ -352,6 +355,7 @@ def main() -> None:
     for needle in (
         "goosekit_api_production_request_completed",
         "goosekit_api_production_request_started",
+        "goosekit_api_endpoint_examples_viewed",
         "seo_use_case_page_viewed",
         "api_workflow_page_views",
         "endpoint_production_clicks",
@@ -376,6 +380,7 @@ def main() -> None:
         "uuid_endpoint_production",
         "password_endpoint_production",
         "builder_starts",
+        "endpoint_example_views",
         "complete_mail_clicks",
         "check_mailbox_before_lead",
         "inspect_builder_start_friction",
@@ -406,6 +411,35 @@ def main() -> None:
             }
         ],
         "inspect_builder_start_friction",
+    )
+    run_summary_fixture(
+        "endpoint examples are observation only",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-18T22:47:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                },
+            },
+            {
+                "event": "goosekit_api_endpoint_examples_viewed",
+                "timestamp": "2026-06-18T22:48:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_endpoint_examples",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                },
+            },
+        ],
+        "inspect_builder_start_friction",
+        expected_counts={"endpoint_example_views": 1},
     )
     run_summary_fixture(
         "builder start without completion",

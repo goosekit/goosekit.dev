@@ -114,6 +114,7 @@
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var completionCaptured = false;
   var startCaptured = false;
+  var exampleEndpointCaptured = {};
   var params = new URLSearchParams(window.location.search);
   var sourceRef = params.get('ref') || '';
   var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
@@ -298,6 +299,17 @@
     fields[3].placeholder = hint;
     var examples = endpointExamplesMap[endpoint.value] || endpointExamplesMap['Adjacent utility endpoint'];
     endpointExamples.innerHTML = '<strong>Useful details for this endpoint</strong><ul>' + examples.map(function(example) { return '<li>' + example + '</li>'; }).join('') + '</ul>';
+    endpointExamples.setAttribute('data-ph-endpoint', endpoint.value);
+    if (!exampleEndpointCaptured[endpoint.value]) {
+      exampleEndpointCaptured[endpoint.value] = true;
+      capture('goosekit_api_endpoint_examples_viewed', {
+        product: 'goosekit_api',
+        endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
+        location: 'production_request_endpoint_examples'
+      });
+    }
   }
   [endpoint].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
   endpoint.addEventListener('change', applyEndpointHint);
