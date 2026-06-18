@@ -54,9 +54,20 @@ REQUIRED = {
         'data-ph-location="json_formatter_api_production_packet"',
         "/api/#production-request",
     ],
+    "use-cases/hash-generator-api/index.html": [
+        "Hash Generator API for Checksums",
+        "goosekit_api_tool_page_clicked",
+        "goosekit_api_production_access_clicked",
+        'data-ph-product="goosekit_api"',
+        'data-ph-location="hash_generator_api_production_packet"',
+        "Do not send passwords",
+        "/api/#production-request",
+    ],
     "use-cases/index.html": [
         "/use-cases/json-formatter-api/",
         "JSON formatter API for internal tools",
+        "/use-cases/hash-generator-api/",
+        "Hash generator API for checksums",
     ],
 }
 
