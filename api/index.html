@@ -145,6 +145,10 @@
     .method.get { background: rgba(52,211,153,0.15); color: #34d399; }
     .method.post { background: rgba(59,130,246,0.15); color: #3b82f6; }
     .endpoint p { color: var(--text-dim); font-size: 0.95rem; margin-bottom: 10px; }
+    .endpoint-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+    .endpoint-action { display: inline-flex; align-items: center; justify-content: center; min-height: 38px; padding: 9px 12px; border-radius: 9px; border: 1px solid rgba(255,255,255,0.12); color: #fff; font-weight: 700; font-size: 0.9rem; text-decoration: none; }
+    .endpoint-action:hover { text-decoration: none; border-color: rgba(52,211,153,0.35); }
+    .endpoint-action.primary { background: rgba(52,211,153,0.14); color: #d1fae5; border-color: rgba(52,211,153,0.28); }
 
     /* Auth section */
     .auth { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin: 40px 0; }
@@ -536,6 +540,10 @@ Content-Type: application/json
   "json": "{\"name\":\"goosekit\",\"version\":1}",
   "indent": 2
 }</pre>
+      <div class="endpoint-actions">
+        <a class="endpoint-action primary" href="/api/production-request/?endpoint=json&ref=json_endpoint_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="json_endpoint_production">Use JSON in production →</a>
+        <a class="endpoint-action" href="/use-cases/json-formatter-api/?ref=api_endpoint_docs" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="json_endpoint_workflow">Workflow guide</a>
+      </div>
     </div>
 
     <div class="endpoint">
@@ -545,18 +553,30 @@ Content-Type: application/json
 Content-Type: application/json
 
 {"text": "hello", "algorithm": "SHA-256"}</pre>
+      <div class="endpoint-actions">
+        <a class="endpoint-action primary" href="/api/production-request/?endpoint=hash&ref=hash_endpoint_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="hash_endpoint_production">Use hashes in production →</a>
+        <a class="endpoint-action" href="/use-cases/hash-generator-api/?ref=api_endpoint_docs" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="hash_endpoint_workflow">Workflow guide</a>
+      </div>
     </div>
 
     <div class="endpoint">
       <h3><span class="method get">GET</span> UUID Generator</h3>
       <p>Generate v4 UUIDs. Supports batch generation.</p>
       <pre>GET https://goosekit-uuid.goosekit.workers.dev/generate?count=5</pre>
+      <div class="endpoint-actions">
+        <a class="endpoint-action primary" href="/api/production-request/?endpoint=uuid&ref=uuid_endpoint_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="uuid_endpoint_production">Use UUIDs in production →</a>
+        <a class="endpoint-action" href="/use-cases/uuid-generator-api/?ref=api_endpoint_docs" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="uuid_endpoint_workflow">Workflow guide</a>
+      </div>
     </div>
 
     <div class="endpoint">
       <h3><span class="method get">GET</span> Password Generator</h3>
       <p>Generate cryptographically secure random passwords.</p>
       <pre>GET https://goosekit-password.goosekit.workers.dev/generate?length=32&symbols=true</pre>
+      <div class="endpoint-actions">
+        <a class="endpoint-action primary" href="/api/production-request/?endpoint=password&ref=password_endpoint_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="password_endpoint_production">Use passwords in production →</a>
+        <a class="endpoint-action" href="/use-cases/password-generator-api/?ref=api_endpoint_docs" data-ph-event="goosekit_api_workflow_guide_clicked" data-ph-product="goosekit_api" data-ph-location="password_endpoint_workflow">Workflow guide</a>
+      </div>
     </div>
 
     <div class="endpoint">

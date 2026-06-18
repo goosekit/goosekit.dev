@@ -108,19 +108,27 @@
   var sourceRef = params.get('ref') || '';
   var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
   var endpointRefMap = {
+    json_endpoint_production: 'JSON formatter',
     json_formatter_api_production_hero: 'JSON formatter',
     json_formatter_api_production_packet: 'JSON formatter',
+    hash_endpoint_production: 'Hash generator',
     hash_generator_api_production_hero: 'Hash generator',
     hash_generator_api_production_packet: 'Hash generator',
+    uuid_endpoint_production: 'UUID generator',
     uuid_generator_api_production_hero: 'UUID generator',
     uuid_generator_api_production_packet: 'UUID generator',
+    password_endpoint_production: 'Password generator',
     password_generator_api_production_hero: 'Password generator',
     password_generator_api_production_packet: 'Password generator'
   };
   var sourceLabels = {
+    json_endpoint_production: 'JSON Formatter endpoint docs',
     json_formatter_api_production_hero: 'JSON Formatter API workflow hero',
+    hash_endpoint_production: 'Hash Generator endpoint docs',
     hash_generator_api_production_hero: 'Hash Generator API workflow hero',
+    uuid_endpoint_production: 'UUID Generator endpoint docs',
     uuid_generator_api_production_hero: 'UUID Generator API workflow hero',
+    password_endpoint_production: 'Password Generator endpoint docs',
     password_generator_api_production_hero: 'Password Generator API workflow hero',
     json_formatter_api_production_packet: 'JSON Formatter API workflow packet section',
     hash_generator_api_production_packet: 'Hash Generator API workflow packet section',
