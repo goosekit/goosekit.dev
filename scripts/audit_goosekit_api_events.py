@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """Static coverage check for Goosekit API revenue-intent events."""
 
+import json
+import subprocess
+import sys
+import tempfile
 from html.parser import HTMLParser
 from pathlib import Path
 
@@ -248,6 +252,33 @@ def read(path: str) -> str:
     return html
 
 
+def run_summary_fixture(name: str, events: list[dict], expected_action: str, mailbox_packets: int = 0) -> None:
+    with tempfile.NamedTemporaryFile("w", suffix=".json", encoding="utf-8") as tmp:
+        json.dump(events, tmp)
+        tmp.flush()
+        command = [
+            sys.executable,
+            str(SUMMARY_SCRIPT),
+            tmp.name,
+            "--format",
+            "json",
+            "--json",
+            "--mailbox-packets",
+            str(mailbox_packets),
+        ]
+        result = subprocess.run(command, check=True, text=True, capture_output=True)
+    summary = json.loads(result.stdout)
+    action = summary.get("recommended_action")
+    missing_product = summary.get("api_events_missing_product")
+    missing_location = summary.get("api_events_missing_location")
+    if action != expected_action:
+        raise AssertionError(f"{name}: expected {expected_action}, got {action}")
+    if missing_product or missing_location:
+        raise AssertionError(
+            f"{name}: unexpected missing attribution product={missing_product} location={missing_location}"
+        )
+
+
 def main() -> None:
     failures: list[str] = []
 
@@ -294,6 +325,108 @@ def main() -> None:
     ):
         if needle not in summary_script:
             raise AssertionError(f"summarize_goosekit_api_events.py: missing {needle!r}")
+
+    run_summary_fixture(
+        "builder view preserves attribution",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-18T18:17:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_formatter_api_production_hero",
+                    "source_ref": "json_formatter_api_production_hero",
+                },
+            }
+        ],
+        "inspect_builder_start_friction",
+    )
+    run_summary_fixture(
+        "builder start without completion",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-18T18:18:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "Hash generator",
+                    "ref": "hash_generator_api_production_hero",
+                    "source_ref": "hash_generator_api_production_hero",
+                },
+            },
+            {
+                "event": "goosekit_api_production_request_started",
+                "timestamp": "2026-06-18T18:19:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "Hash generator",
+                    "ref": "hash_generator_api_production_hero",
+                    "source_ref": "hash_generator_api_production_hero",
+                    "required_fields_filled": "1",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "inspect_builder_completion_friction",
+    )
+    run_summary_fixture(
+        "completed packet requires mailbox check",
+        [
+            {
+                "event": "goosekit_api_production_request_completed",
+                "timestamp": "2026-06-18T18:20:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "UUID generator",
+                    "ref": "uuid_generator_api_production_hero",
+                    "source_ref": "uuid_generator_api_production_hero",
+                    "required_fields_filled": "6",
+                    "required_fields_total": "6",
+                },
+            },
+            {
+                "event": "goosekit_api_production_access_clicked",
+                "timestamp": "2026-06-18T18:21:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder_mail",
+                    "endpoint": "UUID generator",
+                    "ref": "uuid_generator_api_production_hero",
+                    "source_ref": "uuid_generator_api_production_hero",
+                    "complete": "true",
+                    "required_fields_filled": "6",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "check_mailbox_before_lead",
+    )
+    run_summary_fixture(
+        "real mailbox packet wins",
+        [
+            {
+                "event": "goosekit_api_production_access_clicked",
+                "timestamp": "2026-06-18T18:22:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder_mail",
+                    "endpoint": "Password generator",
+                    "ref": "password_generator_api_production_hero",
+                    "source_ref": "password_generator_api_production_hero",
+                    "complete": "true",
+                    "required_fields_filled": "6",
+                    "required_fields_total": "6",
+                },
+            }
+        ],
+        "score_inbound_packet",
+        mailbox_packets=1,
+    )
 
     print("GOOSEKIT_API_EVENT_AUDIT_OK")
 
