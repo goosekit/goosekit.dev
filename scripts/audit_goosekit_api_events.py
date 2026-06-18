@@ -31,6 +31,11 @@ REQUIRED = {
         "/use-cases/hash-generator-api/?ref=api_workflow_guides",
         "/use-cases/uuid-generator-api/?ref=api_workflow_guides",
         "/use-cases/password-generator-api/?ref=api_workflow_guides",
+        "Good request examples",
+        "500k/month for an internal support dashboard",
+        "100k/month for checksum validation",
+        "250k/month for QA fixture batches",
+        "20k/month for temporary onboarding credentials",
     ],
     "json/index.html": [
         "goosekit_api_tool_page_clicked",

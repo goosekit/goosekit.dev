@@ -164,6 +164,12 @@
     .workflow-card:hover { text-decoration: none; border-color: rgba(52,211,153,0.45); }
     .workflow-card strong { display: block; color: #fff; margin-bottom: 4px; }
     .workflow-card span { display: block; color: var(--text-dim); font-size: 0.9rem; }
+    .request-examples { margin: 28px 0 4px; }
+    .request-examples h3 { color: #fff; font-size: 1rem; margin-bottom: 12px; }
+    .request-example-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .request-example { border: 1px solid rgba(255,255,255,0.08); background: rgba(255,255,255,0.035); border-radius: 12px; padding: 14px; }
+    .request-example strong { display: block; color: #fff; margin-bottom: 6px; font-size: 0.95rem; }
+    .request-example span { display: block; color: var(--text-dim); font-size: 0.88rem; }
 
     footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
 
@@ -171,6 +177,7 @@
       .pricing { grid-template-columns: 1fr; }
       .fit-grid { grid-template-columns: 1fr; }
       .workflow-grid { grid-template-columns: 1fr; }
+      .request-example-grid { grid-template-columns: 1fr; }
       .hero { padding: 50px 0 30px; }
     }
   </style>
@@ -482,6 +489,15 @@
       <li><strong>Commercial context:</strong> personal, internal business, client-facing, or paid product integration.</li>
       <li><strong>Timing:</strong> when you need production access and what breaks if the endpoint is unavailable.</li>
     </ul>
+    <div class="request-examples" aria-label="Production request examples">
+      <h3>Good request examples</h3>
+      <div class="request-example-grid">
+        <div class="request-example"><strong>JSON formatting</strong><span>500k/month for an internal support dashboard that displays webhook payloads; bursty during incident reviews.</span></div>
+        <div class="request-example"><strong>Hash generation</strong><span>100k/month for checksum validation in import jobs; non-sensitive payloads only, SHA-256 required.</span></div>
+        <div class="request-example"><strong>UUID generation</strong><span>250k/month for QA fixture batches and import previews; v4, lowercase, hyphenated format.</span></div>
+        <div class="request-example"><strong>Password generation</strong><span>20k/month for temporary onboarding credentials; forced reset on first login, never for long-lived secrets.</span></div>
+      </div>
+    </div>
     <p style="margin-top:18px;"><a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20request&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0ATraffic%20pattern%20(steady%20or%20bursty)%3A%0AWhere%20this%20will%20run%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A%0AWhat%20breaks%20without%20production%20access%3A" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_request_packet" style="color:#ff4800;font-weight:700;">Send the production request packet →</a></p>
   </div>
 
