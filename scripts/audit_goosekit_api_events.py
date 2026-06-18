@@ -205,6 +205,13 @@ REQUIRED = {
         "Goosekit API production request packet: https://goosekit.dev/api/production-request/",
         "JSON formatter API / hash generator API / UUID generator API / password generator API for internal tools",
     ],
+    "for-ai/index.html": [
+        "API production workflows",
+        "the API production pilot request",
+        "Goosekit API production pilot request",
+        "Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints",
+        "Do not present it as instant self-serve API access",
+    ],
 }
 
 FORBIDDEN_API_COPY = [
