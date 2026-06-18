@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Goosekit API — Free Developer REST API for JSON, Hash, UUID, Password & More</title>
-  <meta name="description" content="Free REST API for developers. JSON formatting, hash generation, UUID creation, and password generation. 100 free requests/day, no signup, CORS enabled.">
+  <title>Goosekit API — Developer Utility API for JSON, Hash, UUID, Password & More</title>
+  <meta name="description" content="Developer utility REST API for JSON formatting, hash generation, UUID creation, and password generation. Free tier for testing, production access for higher-volume internal tools and product integrations.">
   <link rel="canonical" href="https://goosekit.dev/api/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
 
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Goosekit API — Free Developer REST API">
-  <meta property="og:description" content="JSON formatting, hash generation, UUID, and password generation as REST endpoints. 100 free requests/day.">
+  <meta property="og:title" content="Goosekit API — Developer Utility REST API">
+  <meta property="og:description" content="JSON formatting, hash generation, UUID, and password generation as REST endpoints. Free tier for testing, production access for higher-volume workflows.">
   <meta property="og:url" content="https://goosekit.dev/api/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
   <meta property="og:image:alt" content="Preview image for Goosekit API — Free Developer REST API for JSON, Hash, UUID, Password & More">
 
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Goosekit API — Free Developer REST API">
-  <meta name="twitter:description" content="JSON formatting, hash generation, UUID, and password generation as REST endpoints. 100 free requests/day.">
+  <meta name="twitter:title" content="Goosekit API — Developer Utility REST API">
+  <meta name="twitter:description" content="JSON formatting, hash generation, UUID, and password generation as REST endpoints. Free tier for testing, production access for higher-volume workflows.">
   <meta name="twitter:image" content="https://goosekit.dev/brand/logo-dark.png">
   <meta name="twitter:image:alt" content="Preview image for Goosekit API — Free Developer REST API for JSON, Hash, UUID, Password & More">
 
@@ -27,11 +27,20 @@
     "@context": "https://schema.org",
     "@type": "WebAPI",
     "name": "Goosekit API",
-    "description": "Free REST API for JSON formatting, hash generation, UUID creation, and password generation.",
+    "description": "Developer utility REST API for JSON formatting, hash generation, UUID creation, and password generation.",
     "url": "https://goosekit.dev/api/",
     "provider": { "@type": "Organization", "name": "Goosekit", "url": "https://goosekit.dev" },
     "offers": [
-      { "@type": "Offer", "name": "Free", "price": "0", "priceCurrency": "USD", "description": "100 requests/day per IP, all endpoints" }
+      { "@type": "Offer", "name": "Free testing tier", "price": "0", "priceCurrency": "USD", "description": "100 requests/day per IP, all endpoints" },
+      {
+        "@type": "Offer",
+        "name": "Production access",
+        "description": "Manual paid production access for higher-volume internal tools and product integrations. Pricing confirmed after endpoint and volume review.",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "description": "Custom paid access after endpoint and volume review"
+        }
+      }
     ]
   }
   </script>
@@ -137,6 +146,8 @@
     .auth { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); padding: 32px; margin: 40px 0; }
     .auth h2 { font-size: 1.3rem; color: #fff; margin-bottom: 12px; }
     .auth p { color: var(--text-dim); font-size: 0.95rem; }
+    .lead-note { max-width: 760px; margin: -16px auto 32px; color: var(--text-dim); font-size: 0.95rem; text-align: center; }
+    .lead-note strong { color: #fff; }
 
     footer { background: var(--bg-card); border-top: 1px solid var(--border); padding: 24px 0; text-align: center; color: var(--text-dim); font-size: 0.85rem; }
 
@@ -360,7 +371,7 @@
   <div class="container">
     <div class="hero-badge">⚡ REST API</div>
     <h1>Goosekit API</h1>
-    <p>Developer-friendly REST endpoints for JSON formatting, hashing, UUIDs, passwords, and lorem ipsum. CORS enabled. No signup for free tier.</p>
+    <p>Developer-friendly REST endpoints for JSON formatting, hashing, UUIDs, and passwords. Use the free tier for testing, then request production access when the endpoint becomes part of an internal tool, automation, or product flow.</p>
   </div>
 </section>
 
@@ -369,34 +380,36 @@
   <!-- Pricing -->
   <div class="pricing" style="max-width: 760px; margin: 0 auto 40px;">
     <div class="plan">
-      <h3>Free Forever</h3>
+      <h3>Free Testing</h3>
       <div class="price">$0 <span>/forever</span></div>
       <ul>
-        <li>100 requests/day per IP</li>
+        <li>100 requests/day per IP for evaluation</li>
         <li>All 4 live endpoints</li>
         <li>CORS enabled</li>
         <li>No signup, no API key</li>
         <li>Community support</li>
       </ul>
-      <a href="#endpoints" class="plan-btn free">Start Using →</a>
+      <a href="#endpoints" class="plan-btn free" data-ph-event="goosekit_api_free_docs_clicked" data-ph-product="goosekit_api" data-ph-location="pricing_free">Start Testing →</a>
     </div>
 
     <div class="plan pro">
-      <div class="plan-badge">Early access</div>
+      <div class="plan-badge">Paid pilot</div>
       <h3>Production</h3>
-      <div class="price">Custom <span>usage-based</span></div>
+      <div class="price">Manual <span>paid access</span></div>
       <ul>
-        <li>Higher request limits</li>
-        <li>Priority support</li>
-        <li>Best fit for internal tools or product integrations</li>
-        <li>Manual onboarding while the paid plan is still taking shape</li>
+        <li>Higher request limits for real workloads</li>
+        <li>Endpoint + volume review before pricing</li>
+        <li>Best fit for internal tools, agents, scripts, and product integrations</li>
+        <li>Manual onboarding while the self-serve plan is still taking shape</li>
       </ul>
-      <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20API%20production%20access.%0A%0AEndpoint(s)%20I%20need%3A%20%0AEstimated%20monthly%20volume%3A%20%0AUse%20case%3A%20%0A%0AThanks!" class="plan-btn pro-btn">Request production access →</a>
+      <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access&body=Hi%20Arthur%2C%0A%0AI'm%20interested%20in%20Goosekit%20API%20production%20access.%0A%0AEndpoint(s)%20I%20need%3A%20%0AEstimated%20monthly%20volume%3A%20%0AWhere%20this%20will%20run%20(internal%20tool%2C%20agent%2C%20product%2C%20script)%3A%20%0ACommercial%20or%20client-facing%20use%3F%20%0ADeadline%20or%20launch%20date%3A%20%0A%0AThanks!" class="plan-btn pro-btn" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="pricing_production">Request production access →</a>
     </div>
   </div>
 
+  <p class="lead-note"><strong>Production access is intentionally manual right now.</strong> The goal is to qualify real API demand before turning this into another generic pricing table: endpoint needed, expected volume, commercial use, and launch timing.</p>
+
   <div style="background: rgba(255,72,0,0.08); border: 1px solid rgba(255,72,0,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 24px; max-width: 760px; text-align: center;">
-    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits" style="color:#ff4800; text-decoration: underline;">email Arthur directly</a> with your endpoint needs and expected volume.</p>
+    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20-%20higher%20limits&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0AUse%20case%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A" style="color:#ff4800; text-decoration: underline;" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_note">email Arthur directly</a> with endpoint needs, monthly volume, and launch timing.</p>
   </div>
 
   
@@ -404,7 +417,7 @@
   <!-- Auth -->
   <div class="auth">
     <h2>🔑 Authentication</h2>
-    <p>None required. Just call the endpoints directly from your app. Rate limited to <strong>100 requests/day per IP address</strong>. CORS is enabled, so you can call these endpoints straight from a browser.</p>
+    <p>None required for the testing tier. Just call the endpoints directly from your app. Rate limited to <strong>100 requests/day per IP address</strong>. CORS is enabled, so you can call these endpoints straight from a browser. For production workloads, request access before depending on the free tier.</p>
     <pre>curl -X POST https://goosekit-json.goosekit.workers.dev/format \
   -H "Content-Type: application/json" \
   -d '{"json":"{\"hello\":\"world\"}"}'</pre>
@@ -413,7 +426,7 @@
   <!-- Endpoints -->
   <div class="endpoints" id="endpoints">
     <h2>Endpoints</h2>
-    <p style="color: var(--text-dim); text-align: center; margin: -8px auto 24px; max-width: 680px;">Use <strong>POST</strong> for JSON formatting and hashing. Use <strong>GET</strong> for UUID, password, and lorem generation.</p>
+    <p style="color: var(--text-dim); text-align: center; margin: -8px auto 24px; max-width: 680px;">Use <strong>POST</strong> for JSON formatting and hashing. Use <strong>GET</strong> for UUID and password generation.</p>
 
     <div class="endpoint">
       <h3><span class="method post">POST</span> JSON Formatter</h3>
@@ -459,9 +472,9 @@ Subject: Goosekit API production access</pre>
   <!-- Rate Limits -->
   <div class="auth">
     <h2>📊 Rate Limits</h2>
-    <p>Free tier: <strong>100 requests/day</strong> per IP address across all endpoints. Rate limit resets daily at midnight UTC.</p>
+    <p>Testing tier: <strong>100 requests/day</strong> per IP address across all endpoints. Rate limit resets daily at midnight UTC.</p>
     <p style="margin-top:8px;">When you hit the limit, you'll receive a <code>429 Too Many Requests</code> response with a <code>Retry-After</code> header.</p>
-    <p style="margin-top:8px;">For production use, higher-volume internal tools, or partner-style access, <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access" style="color:#ff4800;">request production access</a> and include your expected volume plus endpoint needs.</p>
+    <p style="margin-top:8px;">For production use, higher-volume internal tools, or partner-style access, <a href="mailto:arthur.pierrey@gmail.com?subject=Goosekit%20API%20production%20access&body=Endpoint(s)%20needed%3A%0AEstimated%20monthly%20volume%3A%0AUse%20case%3A%0ACommercial%20or%20client-facing%20use%3F%0ADeadline%3A" style="color:#ff4800;" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="rate_limits">request production access</a> and include your expected volume plus endpoint needs.</p>
   </div>
 
 </div>
