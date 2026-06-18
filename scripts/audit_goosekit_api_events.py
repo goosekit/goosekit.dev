@@ -94,6 +94,9 @@ REQUIRED = {
         "launch blocked",
         "progressText",
         "renderProgress",
+        "missingNote",
+        "missing_required_fields",
+        "data-ph-missing-required-fields",
         "production_request_progress",
         "required_fields_filled",
         "required_fields_total",
@@ -309,7 +312,11 @@ def run_summary_fixture(
             f"{name}: unexpected missing attribution product={missing_product} location={missing_location}"
         )
     for key, expected in (expected_counts or {}).items():
-        actual = summary.get(key)
+        if key.startswith("missing_required_fields."):
+            field = key.split(".", 1)[1]
+            actual = summary.get("missing_required_fields", {}).get(field)
+        else:
+            actual = summary.get(key)
         if actual != expected:
             raise AssertionError(f"{name}: expected {key}={expected}, got {actual}")
 
@@ -341,6 +348,9 @@ def main() -> None:
         "api_workflow_page_views",
         "endpoint_production_clicks",
         "ENDPOINT_PRODUCTION_REFS",
+        "missing_required_fields",
+        "split_missing_fields",
+        "Missing Required Fields",
         "free_docs_clicks",
         "workflow_page_views",
         "API_WORKFLOW_SLUGS",
@@ -469,6 +479,47 @@ def main() -> None:
         ],
         "inspect_builder_navigation",
         expected_counts={"builder_clicks": 2, "endpoint_production_clicks": 2},
+    )
+    run_summary_fixture(
+        "incomplete packet reports missing required fields",
+        [
+            {
+                "event": "goosekit_api_production_access_clicked",
+                "timestamp": "2026-06-18T21:17:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder_mail",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                    "complete": "false",
+                    "missing_required_fields": "budget,failure",
+                    "required_fields_filled": "4",
+                    "required_fields_total": "6",
+                },
+            },
+            {
+                "event": "goosekit_api_packet_copied",
+                "timestamp": "2026-06-18T21:18:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                    "complete": "false",
+                    "missing_required_fields": "failure",
+                    "required_fields_filled": "5",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "check_mailbox_before_lead",
+        expected_counts={
+            "incomplete_mail_clicks": 1,
+            "missing_required_fields.budget": 1,
+            "missing_required_fields.failure": 2,
+        },
     )
     run_summary_fixture(
         "completed packet requires mailbox check",

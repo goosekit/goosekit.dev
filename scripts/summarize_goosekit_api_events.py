@@ -77,6 +77,7 @@ class Event:
     endpoint: str
     ref: str
     complete: str
+    missing_required_fields: str
     required_fields_filled: str
     target_href: str
     slug: str
@@ -117,6 +118,7 @@ def event_from_row(row: dict[str, Any]) -> Event:
         endpoint=prop("endpoint"),
         ref=prop("ref", "source_ref"),
         complete=prop("complete"),
+        missing_required_fields=prop("missing_required_fields"),
         required_fields_filled=prop("required_fields_filled"),
         target_href=prop("target_href", "href", "$current_url"),
         slug=prop("slug"),
@@ -151,6 +153,10 @@ def is_complete(value: str) -> bool:
     return value.lower() == "true"
 
 
+def split_missing_fields(value: str) -> list[str]:
+    return [field.strip() for field in value.split(",") if field.strip()]
+
+
 def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     api_events = [event for event in events if event.product == PRODUCT or event.name in API_EVENTS]
     counts = Counter(event.name for event in api_events)
@@ -176,6 +182,17 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         1 for event in api_events if event.name == "goosekit_api_production_access_clicked" and is_complete(event.complete)
     )
     incomplete_mail_clicks = mail_clicks - complete_mail_clicks
+    missing_required_fields = Counter(
+        field
+        for event in api_events
+        if event.name in {
+            "goosekit_api_production_request_started",
+            "goosekit_api_packet_copied",
+            "goosekit_api_production_access_clicked",
+        }
+        and not is_complete(event.complete)
+        for field in split_missing_fields(event.missing_required_fields)
+    )
     located_api_events = [event for event in api_events if event.name in API_EVENTS and event.name != "seo_use_case_page_viewed"]
     missing_product = sum(1 for event in api_events if event.name in API_EVENTS and not event.product)
     missing_location = sum(1 for event in located_api_events if not event.location)
@@ -228,6 +245,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "mail_clicks": mail_clicks,
         "complete_mail_clicks": complete_mail_clicks,
         "incomplete_mail_clicks": incomplete_mail_clicks,
+        "missing_required_fields": dict(missing_required_fields.most_common()),
         "mailbox_packets": mailbox_packets,
         "api_events_missing_product": missing_product,
         "api_events_missing_location": missing_location,
@@ -279,6 +297,10 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     for slug in sorted(API_WORKFLOW_SLUGS | set(workflow_page_views)):
         if workflow_page_views.get(slug):
             lines.append(f"- {slug}: {workflow_page_views[slug]}")
+    lines.append("")
+    lines.append("## Missing Required Fields")
+    for field, count in summary["missing_required_fields"].items():
+        lines.append(f"- {field}: {count}")
     lines.append("")
     lines.append("## Locations")
     for location, count in summary["locations"].items():
