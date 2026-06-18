@@ -40,6 +40,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - API overview: https://goosekit.dev/api/
 - JSON Formatter API workflow: https://goosekit.dev/use-cases/json-formatter-api/
 - Hash Generator API workflow: https://goosekit.dev/use-cases/hash-generator-api/
+- UUID Generator API workflow: https://goosekit.dev/use-cases/uuid-generator-api/
 - AI reference page: https://goosekit.dev/for-ai/
 
 ## All tools (50+)

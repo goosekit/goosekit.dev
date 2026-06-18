@@ -63,11 +63,22 @@ REQUIRED = {
         "Do not send passwords",
         "/api/#production-request",
     ],
+    "use-cases/uuid-generator-api/index.html": [
+        "UUID Generator API for Test Data",
+        "goosekit_api_tool_page_clicked",
+        "goosekit_api_production_access_clicked",
+        'data-ph-product="goosekit_api"',
+        'data-ph-location="uuid_generator_api_production_packet"',
+        "Do not use UUIDs as passwords",
+        "/api/#production-request",
+    ],
     "use-cases/index.html": [
         "/use-cases/json-formatter-api/",
         "JSON formatter API for internal tools",
         "/use-cases/hash-generator-api/",
         "Hash generator API for checksums",
+        "/use-cases/uuid-generator-api/",
+        "UUID generator API for test data",
     ],
 }
 
