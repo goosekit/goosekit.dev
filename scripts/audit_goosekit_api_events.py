@@ -67,7 +67,8 @@ REQUIRED = {
         "goosekit_api_production_access_clicked",
         'data-ph-product="goosekit_api"',
         'data-ph-location="json_formatter_api_production_packet"',
-        "/api/#production-request",
+        "Goosekit%20JSON%20Formatter%20API%20production%20request",
+        "JSON%20operation%20(format%2C%20minify%2C%20validate)",
     ],
     "use-cases/hash-generator-api/index.html": [
         "Hash Generator API for Checksums",
@@ -76,7 +77,8 @@ REQUIRED = {
         'data-ph-product="goosekit_api"',
         'data-ph-location="hash_generator_api_production_packet"',
         "Do not send passwords",
-        "/api/#production-request",
+        "Goosekit%20Hash%20Generator%20API%20production%20request",
+        "Algorithm(s)%20needed",
     ],
     "use-cases/uuid-generator-api/index.html": [
         "UUID Generator API for Test Data",
@@ -85,7 +87,8 @@ REQUIRED = {
         'data-ph-product="goosekit_api"',
         'data-ph-location="uuid_generator_api_production_packet"',
         "Do not use UUIDs as passwords",
-        "/api/#production-request",
+        "Goosekit%20UUID%20Generator%20API%20production%20request",
+        "UUID%20version%20and%20format",
     ],
     "use-cases/password-generator-api/index.html": [
         "Password Generator API for Internal Tools",
@@ -94,7 +97,8 @@ REQUIRED = {
         'data-ph-product="goosekit_api"',
         'data-ph-location="password_generator_api_production_packet"',
         "Do not use a third-party password API",
-        "/api/#production-request",
+        "Goosekit%20Password%20Generator%20API%20production%20request",
+        "Confirm%20this%20is%20not%20for%20long-lived%20secrets",
     ],
     "use-cases/index.html": [
         "/use-cases/json-formatter-api/",
