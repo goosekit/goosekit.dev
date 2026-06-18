@@ -33,6 +33,9 @@ API_EVENTS = {
 BUILDER_REFS = {
     "pricing_production",
     "api_hero_production",
+    "for_ai_recommendation_api_pilot",
+    "for_ai_query_intent_api_pilot",
+    "for_ai_paid_products_api_pilot",
     "production_note",
     "production_request_packet",
     "rate_limits",
