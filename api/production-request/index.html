@@ -107,6 +107,16 @@
   var params = new URLSearchParams(window.location.search);
   var sourceRef = params.get('ref') || '';
   var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
+  var endpointRefMap = {
+    json_formatter_api_production_hero: 'JSON formatter',
+    json_formatter_api_production_packet: 'JSON formatter',
+    hash_generator_api_production_hero: 'Hash generator',
+    hash_generator_api_production_packet: 'Hash generator',
+    uuid_generator_api_production_hero: 'UUID generator',
+    uuid_generator_api_production_packet: 'UUID generator',
+    password_generator_api_production_hero: 'Password generator',
+    password_generator_api_production_packet: 'Password generator'
+  };
   var sourceLabels = {
     json_formatter_api_production_hero: 'JSON Formatter API workflow hero',
     hash_generator_api_production_hero: 'Hash Generator API workflow hero',
@@ -177,7 +187,9 @@
   function renderSourceContext() {
     var label = sourceLabels[sourceRef];
     if (!label) return;
-    sourceNote.innerHTML = '<strong>Context:</strong> you came from the ' + label + '. The endpoint is preselected; fill the six required fields to make the request useful.';
+    var preselected = endpointRefMap[sourceRef] || params.get('endpoint');
+    var endpointText = preselected ? 'The endpoint is preselected; ' : 'Choose the closest endpoint, then ';
+    sourceNote.innerHTML = '<strong>Context:</strong> you came from the ' + label + '. ' + endpointText + 'fill the six required fields to make the request useful.';
     sourceNote.style.display = 'block';
   }
   function render() {
@@ -198,6 +210,7 @@
         endpoint: endpoint.value,
         ref: sourceRef,
         source_ref: sourceRef,
+        location: 'production_request_builder',
         first_field: firstFilledField(),
         required_fields_filled: status.count,
         required_fields_total: status.total
@@ -210,6 +223,7 @@
         endpoint: endpoint.value,
         ref: sourceRef,
         source_ref: sourceRef,
+        location: 'production_request_builder',
         required_fields_filled: status.count,
         required_fields_total: status.total
       });
@@ -231,11 +245,11 @@
     var status = completeness();
     capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', complete: status.complete, required_fields_filled: status.count, required_fields_total: status.total });
   });
-  var requestedEndpoint = endpointMap[(params.get('endpoint') || '').toLowerCase()];
+  var requestedEndpoint = endpointMap[(params.get('endpoint') || '').toLowerCase()] || endpointRefMap[sourceRef];
   if (requestedEndpoint) endpoint.value = requestedEndpoint;
   applyEndpointHint();
   renderSourceContext();
-  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef });
+  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder' });
   render();
 })();
 </script>
