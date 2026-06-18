@@ -152,6 +152,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
+    free_docs_clicks = counts["goosekit_api_free_docs_clicked"]
     workflow_views = sum(workflow_page_views.values())
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
     builder_starts = counts["goosekit_api_production_request_started"]
@@ -193,6 +194,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     elif workflow_views and not builder_clicks:
         action = "inspect_workflow_cta_path"
         reason = "api_workflow_views_without_builder_clicks"
+    elif free_docs_clicks and not builder_clicks:
+        action = "inspect_docs_to_production_bridge"
+        reason = "free_docs_clicks_without_builder_clicks"
     else:
         action = "no_lead_update"
         reason = "no_api_paid_intent_signal"
@@ -201,6 +205,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "events_total": len(events),
         "api_events": len(api_events),
         "builder_clicks": builder_clicks,
+        "free_docs_clicks": free_docs_clicks,
         "api_workflow_page_views": workflow_views,
         "builder_views": builder_views,
         "builder_starts": builder_starts,
@@ -232,6 +237,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"events_total={summary['events_total']}",
         f"api_events={summary['api_events']}",
         f"builder_clicks={summary['builder_clicks']}",
+        f"free_docs_clicks={summary['free_docs_clicks']}",
         f"api_workflow_page_views={summary['api_workflow_page_views']}",
         f"builder_views={summary['builder_views']}",
         f"builder_starts={summary['builder_starts']}",

@@ -304,10 +304,13 @@ def main() -> None:
         "goosekit_api_production_request_started",
         "seo_use_case_page_viewed",
         "api_workflow_page_views",
+        "free_docs_clicks",
         "workflow_page_views",
         "API_WORKFLOW_SLUGS",
         "inspect_workflow_cta_path",
         "api_workflow_views_without_builder_clicks",
+        "inspect_docs_to_production_bridge",
+        "free_docs_clicks_without_builder_clicks",
         "for_ai_recommendation_api_pilot",
         "for_ai_query_intent_api_pilot",
         "for_ai_paid_products_api_pilot",
@@ -372,6 +375,30 @@ def main() -> None:
             },
         ],
         "inspect_builder_completion_friction",
+    )
+    run_summary_fixture(
+        "free docs without production bridge",
+        [
+            {
+                "event": "goosekit_api_free_docs_clicked",
+                "timestamp": "2026-06-18T19:18:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "api_hero_free_docs",
+                    "target_href": "#endpoints",
+                },
+            },
+            {
+                "event": "goosekit_api_free_docs_clicked",
+                "timestamp": "2026-06-18T19:19:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "pricing_free",
+                    "target_href": "#endpoints",
+                },
+            },
+        ],
+        "inspect_docs_to_production_bridge",
     )
     run_summary_fixture(
         "completed packet requires mailbox check",
