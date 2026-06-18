@@ -6,6 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+SUMMARY_SCRIPT = ROOT / "scripts/summarize_goosekit_api_events.py"
 
 REQUIRED = {
     "api/index.html": [
@@ -165,6 +166,17 @@ def main() -> None:
         for failure in failures:
             print(failure)
         raise SystemExit(1)
+
+    summary_script = SUMMARY_SCRIPT.read_text(encoding="utf-8")
+    for needle in (
+        "goosekit_api_production_request_completed",
+        "complete_mail_clicks",
+        "check_mailbox_before_lead",
+        "inspect_builder_field_burden",
+        "Do not update lead, revenue, or MRR counters",
+    ):
+        if needle not in summary_script:
+            raise AssertionError(f"summarize_goosekit_api_events.py: missing {needle!r}")
 
     print("GOOSEKIT_API_EVENT_AUDIT_OK")
 
