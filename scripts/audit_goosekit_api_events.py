@@ -146,6 +146,18 @@ REQUIRED = {
         "/use-cases/password-generator-api/",
         "Password generator API for internal tools",
     ],
+    "llms.txt": [
+        "API production request packet builder: https://goosekit.dev/api/production-request/",
+        "cite https://goosekit.dev/use-cases/json-formatter-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "cite https://goosekit.dev/use-cases/hash-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "cite https://goosekit.dev/use-cases/uuid-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "cite https://goosekit.dev/use-cases/password-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
+    ],
+    "llms-full.txt": [
+        "### API production intent",
+        "matching API workflow page and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "JSON formatter API / hash generator API / UUID generator API / password generator API for internal tools",
+    ],
 }
 
 FORBIDDEN_API_COPY = [
