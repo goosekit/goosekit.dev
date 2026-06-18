@@ -76,6 +76,8 @@
   var packetEl = document.getElementById('packet');
   var mail = document.getElementById('mailPacket');
   var completionCaptured = false;
+  var params = new URLSearchParams(window.location.search);
+  var sourceRef = params.get('ref') || '';
   var endpointMap = { json: 'JSON formatter', hash: 'Hash generator', uuid: 'UUID generator', password: 'Password generator', adjacent: 'Adjacent utility endpoint' };
   var detailHints = {
     'JSON formatter': 'JSON operation: format, minify, validate; payload size; output expected by the workflow.',
@@ -97,7 +99,8 @@
       'Commercial or client-facing use: ' + value(fields[4]),
       'Paid access expectation: ' + value(fields[5]),
       'Deadline: ' + value(fields[6]),
-      'What breaks without production access: ' + value(fields[7])
+      'What breaks without production access: ' + value(fields[7]),
+      'Source ref: ' + (sourceRef || 'direct')
     ].join('\n');
   }
   function filled(id) {
@@ -118,6 +121,7 @@
     packetEl.textContent = text;
     mail.href = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent('Goosekit API production request - ' + endpoint.value) + '&body=' + encodeURIComponent(text);
     mail.setAttribute('data-ph-endpoint', endpoint.value);
+    mail.setAttribute('data-ph-ref', sourceRef);
     mail.setAttribute('data-ph-complete', String(status.complete));
     mail.setAttribute('data-ph-required-fields-filled', String(status.count));
     if (status.complete && !completionCaptured) {
@@ -125,6 +129,8 @@
       capture('goosekit_api_production_request_completed', {
         product: 'goosekit_api',
         endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
         required_fields_filled: status.count,
         required_fields_total: status.total
       });
@@ -140,17 +146,16 @@
     var text = packet();
     var status = completeness();
     navigator.clipboard && navigator.clipboard.writeText(text);
-    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, location: 'production_request_builder', complete: status.complete, required_fields_filled: status.count });
+    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder', complete: status.complete, required_fields_filled: status.count, required_fields_total: status.total });
   });
   mail.addEventListener('click', function() {
     var status = completeness();
-    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, location: 'production_request_builder_mail', complete: status.complete, required_fields_filled: status.count });
+    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', complete: status.complete, required_fields_filled: status.count, required_fields_total: status.total });
   });
-  var params = new URLSearchParams(window.location.search);
   var requestedEndpoint = endpointMap[(params.get('endpoint') || '').toLowerCase()];
   if (requestedEndpoint) endpoint.value = requestedEndpoint;
   applyEndpointHint();
-  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: params.get('ref') || '' });
+  capture('goosekit_api_production_request_builder_viewed', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef });
   render();
 })();
 </script>

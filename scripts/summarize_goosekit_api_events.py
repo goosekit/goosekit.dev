@@ -85,7 +85,7 @@ def event_from_row(row: dict[str, Any]) -> Event:
         product=prop("product"),
         location=prop("location"),
         endpoint=prop("endpoint"),
-        ref=prop("ref"),
+        ref=prop("ref", "source_ref"),
         complete=prop("complete"),
         required_fields_filled=prop("required_fields_filled"),
         target_href=prop("target_href", "href", "$current_url"),
