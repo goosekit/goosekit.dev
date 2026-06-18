@@ -32,6 +32,7 @@ API_EVENTS = {
 }
 BUILDER_REFS = {
     "pricing_production",
+    "api_hero_production",
     "production_note",
     "production_request_packet",
     "rate_limits",
