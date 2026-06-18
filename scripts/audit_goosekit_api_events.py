@@ -46,6 +46,18 @@ REQUIRED = {
         'data-ph-location="password_related_tools"',
         "/api/?ref=password_related_api",
     ],
+    "use-cases/json-formatter-api/index.html": [
+        "JSON Formatter API for Internal Tools",
+        "goosekit_api_tool_page_clicked",
+        "goosekit_api_production_access_clicked",
+        'data-ph-product="goosekit_api"',
+        'data-ph-location="json_formatter_api_production_packet"',
+        "/api/#production-request",
+    ],
+    "use-cases/index.html": [
+        "/use-cases/json-formatter-api/",
+        "JSON formatter API for internal tools",
+    ],
 }
 
 FORBIDDEN_API_COPY = [
