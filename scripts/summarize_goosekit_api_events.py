@@ -36,9 +36,13 @@ BUILDER_REFS = {
     "production_request_packet",
     "rate_limits",
     "json_formatter_api_production_packet",
+    "json_formatter_api_production_hero",
     "hash_generator_api_production_packet",
+    "hash_generator_api_production_hero",
     "uuid_generator_api_production_packet",
+    "uuid_generator_api_production_hero",
     "password_generator_api_production_packet",
+    "password_generator_api_production_hero",
 }
 API_WORKFLOW_SLUGS = {
     "json-formatter-api",
