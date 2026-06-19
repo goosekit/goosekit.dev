@@ -57,7 +57,7 @@
           <label class="check"><input type="checkbox" data-risk="A client-supplied plan, paid flag, or isPro value can unlock paid features without Stripe proof."><span>Server APIs never accept client-supplied plan, paid, or isPro flags as the source of paid access.</span></label>
           <label class="check"><input type="checkbox" data-risk="Customer portal cancels, downgrades, and plan changes can drift from app access."><span>Customer portal cancel, downgrade, and plan-change events update Supabase access correctly.</span></label>
           <label class="check"><input type="checkbox" data-risk="Monthly credit, usage, or quota refill can double-grant or miss a paid cycle when Stripe, RevenueCat, and cron overlap."><span>Monthly credit, usage, or quota refills use one cycle key and cannot double-grant from provider retries or fallback cron.</span></label>
-          <label class="check"><input type="checkbox" data-risk="One-time add-credit Checkout can be double-granted, missed, refunded incorrectly, or overwritten by the next subscription monthly reset."><span>One-time add-credit purchases and monthly subscription credits write through one replay-safe credit ledger without overwriting each other.</span></label>
+          <label class="check"><input type="checkbox" data-risk-key="subscription_add_credit" data-risk="One-time add-credit Checkout can be double-granted, missed, refunded incorrectly, or overwritten by the next subscription monthly reset."><span>One-time add-credit purchases and monthly subscription credits write through one replay-safe credit ledger without overwriting each other.</span></label>
           <label class="check"><input type="checkbox" data-risk="Dunning and failed renewals can either block too early or leak access forever."><span>Past-due, unpaid, retry, and recovery states have an explicit access policy.</span></label>
           <label class="check"><input type="checkbox" data-risk="Trial endings can fail silently if invoice/subscription events are not mapped to access."><span>Trial ending and trial conversion are tested against the real access gate.</span></label>
           <label class="check"><input type="checkbox" data-risk="Paused billing can leave ambiguous paid state unless pause_collection is mapped."><span>Paused billing and resumed billing are mapped to the intended Supabase state.</span></label>
@@ -131,6 +131,7 @@
     function update() {
       const checked = inputs.filter(input => input.checked).length;
       const missing = inputs.filter(input => !input.checked).map(input => input.dataset.risk);
+      const missingKeys = inputs.filter(input => !input.checked).map(input => input.dataset.riskKey).filter(Boolean);
       score.textContent = checked;
       total.textContent = inputs.length;
       if (checked <= 4) {
@@ -156,6 +157,7 @@
         'Stack:',
         `Check score: ${checked}/${inputs.length}`,
         `Likely paid scope: ${scope.textContent}`,
+        `Unchecked risk keys: ${missingKeys.join(', ') || 'none'}`,
         'Unchecked billing risks:',
         ...missing.map(item => `- ${item}`),
         'Recent Stripe or Supabase issue:',
@@ -181,12 +183,15 @@
       emailCta.setAttribute('data-ph-score', String(checked));
       emailCta.setAttribute('data-ph-risk-count', String(missing.length));
       emailCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      emailCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
       auditCta.setAttribute('data-ph-score', String(checked));
       auditCta.setAttribute('data-ph-risk-count', String(missing.length));
       auditCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      auditCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
       monthlyCta.setAttribute('data-ph-score', String(checked));
       monthlyCta.setAttribute('data-ph-risk-count', String(missing.length));
       monthlyCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      monthlyCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
     }
     inputs.forEach(input => input.addEventListener('change', update));
     update();
