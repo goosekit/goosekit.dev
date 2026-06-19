@@ -26,6 +26,7 @@ API_EVENTS = {
     "goosekit_api_production_request_builder_clicked",
     "goosekit_api_production_request_builder_viewed",
     "goosekit_api_endpoint_examples_viewed",
+    "goosekit_api_volume_example_clicked",
     "goosekit_api_commercial_example_clicked",
     "goosekit_api_budget_example_clicked",
     "goosekit_api_failure_example_clicked",
@@ -185,6 +186,11 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         for event in api_events
         if event.name == "goosekit_api_endpoint_examples_viewed" and event.endpoint
     )
+    volume_example_choices = Counter(
+        event.example_label or event.example_value
+        for event in api_events
+        if event.name == "goosekit_api_volume_example_clicked" and (event.example_label or event.example_value)
+    )
     commercial_example_choices = Counter(
         event.example_label or event.example_value
         for event in api_events
@@ -236,6 +242,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     workflow_views = sum(workflow_page_views.values())
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
     endpoint_example_views = counts["goosekit_api_endpoint_examples_viewed"]
+    volume_example_clicks = counts["goosekit_api_volume_example_clicked"]
     commercial_example_clicks = counts["goosekit_api_commercial_example_clicked"]
     budget_example_clicks = counts["goosekit_api_budget_example_clicked"]
     failure_example_clicks = counts["goosekit_api_failure_example_clicked"]
@@ -252,6 +259,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         for event in api_events
         if event.name in {
             "goosekit_api_commercial_example_clicked",
+            "goosekit_api_volume_example_clicked",
             "goosekit_api_budget_example_clicked",
             "goosekit_api_failure_example_clicked",
             "goosekit_api_production_request_started",
@@ -308,6 +316,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "api_workflow_page_views": workflow_views,
         "builder_views": builder_views,
         "endpoint_example_views": endpoint_example_views,
+        "volume_example_clicks": volume_example_clicks,
         "commercial_example_clicks": commercial_example_clicks,
         "budget_example_clicks": budget_example_clicks,
         "failure_example_clicks": failure_example_clicks,
@@ -319,6 +328,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "incomplete_mail_clicks": incomplete_mail_clicks,
         "missing_required_fields": dict(missing_required_fields.most_common()),
         "endpoint_example_views_by_endpoint": dict(endpoint_example_views_by_endpoint.most_common()),
+        "volume_example_choices": dict(volume_example_choices.most_common()),
         "commercial_example_choices": dict(commercial_example_choices.most_common()),
         "budget_example_choices": dict(budget_example_choices.most_common()),
         "failure_example_choices": dict(failure_example_choices.most_common()),
@@ -355,6 +365,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"api_workflow_page_views={summary['api_workflow_page_views']}",
         f"builder_views={summary['builder_views']}",
         f"endpoint_example_views={summary['endpoint_example_views']}",
+        f"volume_example_clicks={summary['volume_example_clicks']}",
         f"commercial_example_clicks={summary['commercial_example_clicks']}",
         f"budget_example_clicks={summary['budget_example_clicks']}",
         f"failure_example_clicks={summary['failure_example_clicks']}",
@@ -390,6 +401,10 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("## Endpoint Example Views")
     for endpoint, count in summary["endpoint_example_views_by_endpoint"].items():
         lines.append(f"- {endpoint}: {count}")
+    lines.append("")
+    lines.append("## Volume Example Choices")
+    for choice, count in summary["volume_example_choices"].items():
+        lines.append(f"- {choice}: {count}")
     lines.append("")
     lines.append("## Commercial Example Choices")
     for choice, count in summary["commercial_example_choices"].items():

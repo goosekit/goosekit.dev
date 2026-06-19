@@ -87,6 +87,11 @@
     <div class="field"><label for="endpoint">Endpoint <span class="field-tag required">required</span></label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
     <div class="endpoint-examples" id="endpointExamples" data-ph-location="production_request_endpoint_examples"><strong>Useful details for this endpoint</strong><ul><li>JSON operation: format, minify, validate, or normalize.</li><li>Payload size range and where the output is consumed.</li><li>What manual or brittle step this replaces.</li></ul></div>
     <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"><span class="field-help">A rough range is fine: 10k/month, 500k/month, or bursty batch jobs.</span></div>
+    <div class="quick-options" data-ph-location="production_request_volume_examples" aria-label="Monthly volume examples">
+      <button type="button" data-volume-example="Around 10k requests/month while validating production fit.">10k/month</button>
+      <button type="button" data-volume-example="Around 500k requests/month for a real internal workflow.">500k/month</button>
+      <button type="button" data-volume-example="Bursty batch jobs; monthly total depends on customer or QA runs.">Batch bursts</button>
+    </div>
     <div class="field"><label for="pattern">Traffic pattern <span class="field-tag">optional</span></label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
     <div class="field"><label for="runtime">Where it runs <span class="field-tag required">required</span></label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"><span class="field-help">Examples: support dashboard, CI job, worker script, agent workflow, or customer-facing product.</span></div>
     <div class="field"><label for="specifics">Endpoint-specific details <span class="field-tag required">required</span></label><textarea id="specifics" placeholder="JSON operation, hash algorithm and safe-data boundary, UUID format, password policy and handling path"></textarea></div>
@@ -130,6 +135,7 @@
   var sourceNote = document.getElementById('sourceNote');
   var endpointExamples = document.getElementById('endpointExamples');
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
+  var volumeExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-volume-example]'));
   var commercialExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-commercial-example]'));
   var budgetExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-budget-example]'));
   var failureExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-failure-example]'));
@@ -349,6 +355,27 @@
   mail.addEventListener('click', function() {
     var status = completeness();
     capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', start_source: activeStartSource || 'manual', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
+  });
+  volumeExampleButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var volume = document.getElementById('volume');
+      volume.value = button.getAttribute('data-volume-example') || '';
+      pendingStartSource = 'volume_example';
+      render();
+      var status = completeness();
+      capture('goosekit_api_volume_example_clicked', {
+        product: 'goosekit_api',
+        endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
+        location: 'production_request_volume_examples',
+        example_label: button.textContent.trim(),
+        example_value: volume.value,
+        required_fields_filled: status.count,
+        required_fields_total: status.total,
+        missing_required_fields: status.missing.join(',')
+      });
+    });
   });
   commercialExampleButtons.forEach(function(button) {
     button.addEventListener('click', function() {
