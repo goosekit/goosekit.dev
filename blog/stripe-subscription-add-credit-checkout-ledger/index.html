@@ -38,7 +38,7 @@
       <p class="note">Fixed-scope review fit: EUR99 for one contained grant path, EUR149 when monthly subscription credits and purchased credits share one balance or reset boundary.</p>
     </section>
 
-    <section id="subscription-add-credit-packet" class="card" data-ph-section="subscription_add_credit_packet">
+    <section id="subscription-add-credit-packet" class="card" data-ph-section="subscription_add_credit_packet" data-ph-product="billing_reliability">
       <h2 style="margin-top:0">Evidence packet</h2>
       <p>For a narrow review, the useful packet is not the pricing-page copy. It is the smallest proof that both Stripe paths write through the same replay-safe local money state.</p>
       <ul class="checklist">
@@ -118,5 +118,27 @@ create table credit_ledger (
       </div>
     </section>
   </main>
+  <script>
+    (function () {
+      var packet = document.querySelector('[data-ph-section="subscription_add_credit_packet"]');
+      if (!packet || !('IntersectionObserver' in window)) return;
+      var sent = false;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (sent || !entry.isIntersecting) return;
+          sent = true;
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_reliability_section_reached', {
+              product: 'billing_reliability',
+              location: 'subscription_add_credit_evidence_packet',
+              path: window.location.pathname
+            });
+          }
+          observer.disconnect();
+        });
+      }, { threshold: 0.35 });
+      observer.observe(packet);
+    })();
+  </script>
 </body>
 </html>
