@@ -94,6 +94,11 @@
     </div>
     <div class="field"><label for="pattern">Traffic pattern <span class="field-tag">optional</span></label><input id="pattern" placeholder="Steady, bursty, batch, CI/QA, incident-driven"></div>
     <div class="field"><label for="runtime">Where it runs <span class="field-tag required">required</span></label><input id="runtime" placeholder="Internal dashboard, backend job, agent, script, product flow"><span class="field-help">Examples: support dashboard, CI job, worker script, agent workflow, or customer-facing product.</span></div>
+    <div class="quick-options" data-ph-location="production_request_runtime_examples" aria-label="Runtime context examples">
+      <button type="button" data-runtime-example="Internal dashboard or admin tool used by the team.">Internal dashboard</button>
+      <button type="button" data-runtime-example="Backend job, worker script, CI job, or QA automation.">Backend/CI job</button>
+      <button type="button" data-runtime-example="Agent workflow or customer-facing product feature.">Agent/product flow</button>
+    </div>
     <div class="field"><label for="specifics">Endpoint-specific details <span class="field-tag required">required</span></label><textarea id="specifics" placeholder="JSON operation, hash algorithm and safe-data boundary, UUID format, password policy and handling path"></textarea></div>
     <div class="field"><label for="commercial">Commercial or client-facing use <span class="field-tag required">required</span></label><input id="commercial" placeholder="Internal business, client-facing, paid product integration, personal"><span class="field-help">Say whether this is personal, internal business use, client-facing, or part of a paid product.</span></div>
     <div class="quick-options" data-ph-location="production_request_commercial_examples" aria-label="Commercial use examples">
@@ -136,6 +141,7 @@
   var endpointExamples = document.getElementById('endpointExamples');
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var volumeExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-volume-example]'));
+  var runtimeExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-runtime-example]'));
   var commercialExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-commercial-example]'));
   var budgetExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-budget-example]'));
   var failureExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-failure-example]'));
@@ -371,6 +377,27 @@
         location: 'production_request_volume_examples',
         example_label: button.textContent.trim(),
         example_value: volume.value,
+        required_fields_filled: status.count,
+        required_fields_total: status.total,
+        missing_required_fields: status.missing.join(',')
+      });
+    });
+  });
+  runtimeExampleButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var runtime = document.getElementById('runtime');
+      runtime.value = button.getAttribute('data-runtime-example') || '';
+      pendingStartSource = 'runtime_example';
+      render();
+      var status = completeness();
+      capture('goosekit_api_runtime_example_clicked', {
+        product: 'goosekit_api',
+        endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
+        location: 'production_request_runtime_examples',
+        example_label: button.textContent.trim(),
+        example_value: runtime.value,
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')
