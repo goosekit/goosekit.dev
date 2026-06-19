@@ -415,6 +415,8 @@ def main() -> None:
         "Commercial Example Choices",
         "Budget Example Choices",
         "Failure Example Choices",
+        "first_fields",
+        "First Fields",
         "endpoint_example_views_by_endpoint",
         "Endpoint Example Views",
         "complete_mail_clicks",
@@ -506,12 +508,14 @@ def main() -> None:
                     "endpoint": "Hash generator",
                     "ref": "hash_generator_api_production_hero",
                     "source_ref": "hash_generator_api_production_hero",
+                    "first_field": "budget",
                     "required_fields_filled": "1",
                     "required_fields_total": "6",
                 },
             },
         ],
         "inspect_builder_completion_friction",
+        expected_counts={"first_fields.budget": 1},
     )
     run_summary_fixture(
         "budget example click is observation only",
