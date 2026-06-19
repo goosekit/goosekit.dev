@@ -94,6 +94,12 @@ REQUIRED = {
         "Expected monthly volume",
         "Endpoint-specific details",
         "Paid access expectation",
+        "goosekit_api_budget_example_clicked",
+        "production_request_budget_examples",
+        "Pilot if it fits",
+        "Need quote",
+        "Monthly budget range",
+        "data-budget-example",
         "Required packet fields",
         "data-required-id",
         "field-tag required",
@@ -359,6 +365,7 @@ def main() -> None:
         "goosekit_api_production_request_completed",
         "goosekit_api_production_request_started",
         "goosekit_api_endpoint_examples_viewed",
+        "goosekit_api_budget_example_clicked",
         "seo_use_case_page_viewed",
         "api_workflow_page_views",
         "endpoint_production_clicks",
@@ -384,6 +391,7 @@ def main() -> None:
         "password_endpoint_production",
         "builder_starts",
         "endpoint_example_views",
+        "budget_example_clicks",
         "endpoint_example_views_by_endpoint",
         "Endpoint Example Views",
         "complete_mail_clicks",
@@ -478,6 +486,38 @@ def main() -> None:
             },
         ],
         "inspect_builder_completion_friction",
+    )
+    run_summary_fixture(
+        "budget example click is observation only",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-19T04:18:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                },
+            },
+            {
+                "event": "goosekit_api_budget_example_clicked",
+                "timestamp": "2026-06-19T04:19:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_budget_examples",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                    "missing_required_fields": "volume,runtime,specifics,commercial,failure",
+                    "required_fields_filled": "1",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "inspect_builder_start_friction",
+        expected_counts={"budget_example_clicks": 1},
     )
     run_summary_fixture(
         "free docs without production bridge",
