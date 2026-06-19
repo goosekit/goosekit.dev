@@ -226,6 +226,14 @@ else
     fail "setup-help — measured links without source_ref preservation ($measured_links_with_source_ref/$measured_links)"
   fi
 
+  if grep -q "posthog.capture(link.getAttribute('data-ph-event')" "$SETUP_HELP_FILE" && \
+     grep -q "source_ref: link.getAttribute('data-ph-source-ref') || sourceRef" "$SETUP_HELP_FILE" && \
+     grep -q "target_href: link.getAttribute('href') || null" "$SETUP_HELP_FILE"; then
+    pass "setup-help — click capture includes source_ref and target_href"
+  else
+    fail "setup-help — click capture missing source_ref or target_href"
+  fi
+
   if grep -q "Debug%20artifacts%20I%20can%20send" "$SETUP_HELP_FILE" && \
      grep -q "data-ph-location=\"bottom_email_fallback\"" "$SETUP_HELP_FILE"; then
     pass "setup-help — direct email fallback keeps artifact prompt"
