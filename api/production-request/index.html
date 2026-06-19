@@ -100,6 +100,11 @@
       <button type="button" data-runtime-example="Agent workflow or customer-facing product feature.">Agent/product flow</button>
     </div>
     <div class="field"><label for="specifics">Endpoint-specific details <span class="field-tag required">required</span></label><textarea id="specifics" placeholder="JSON operation, hash algorithm and safe-data boundary, UUID format, password policy and handling path"></textarea></div>
+    <div class="quick-options" data-ph-location="production_request_specifics_examples" aria-label="Endpoint detail examples">
+      <button type="button" data-specifics-example="primary">Primary workflow</button>
+      <button type="button" data-specifics-example="safety">Safety boundary</button>
+      <button type="button" data-specifics-example="output">Output/format</button>
+    </div>
     <div class="field"><label for="commercial">Commercial or client-facing use <span class="field-tag required">required</span></label><input id="commercial" placeholder="Internal business, client-facing, paid product integration, personal"><span class="field-help">Say whether this is personal, internal business use, client-facing, or part of a paid product.</span></div>
     <div class="quick-options" data-ph-location="production_request_commercial_examples" aria-label="Commercial use examples">
       <button type="button" data-commercial-example="Internal business workflow used by the team.">Internal business</button>
@@ -142,6 +147,7 @@
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var volumeExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-volume-example]'));
   var runtimeExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-runtime-example]'));
+  var specificsExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-specifics-example]'));
   var commercialExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-commercial-example]'));
   var budgetExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-budget-example]'));
   var failureExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-failure-example]'));
@@ -222,6 +228,33 @@
       'Why JSON/hash/UUID/password endpoints do not fit the workflow.',
       'Whether this is internal automation, customer-facing, or a paid product dependency.'
     ]
+  };
+  var specificsExamplesMap = {
+    'JSON formatter': {
+      primary: 'Format, minify, validate, or normalize JSON for a production workflow.',
+      safety: 'Payloads are internal or user-submitted JSON without secrets; expected size range is known.',
+      output: 'Output feeds a dashboard, worker, QA job, or product flow that needs stable JSON.'
+    },
+    'Hash generator': {
+      primary: 'Generate MD5, SHA-1, SHA-256, SHA-512, or multiple checksums for internal data.',
+      safety: 'Inputs are safe non-secret values; do not send passwords, tokens, or private keys.',
+      output: 'Output is used for checksum validation, deduplication, imports, or audit tooling.'
+    },
+    'UUID generator': {
+      primary: 'Generate v4 UUIDs or batch IDs for test data, imports, or product records.',
+      safety: 'IDs are not used as passwords or secrets; collision and retry behavior is acceptable.',
+      output: 'Output format should be lowercase, hyphenated, compact, or batch JSON.'
+    },
+    'Password generator': {
+      primary: 'Generate temporary onboarding credentials with a defined length and character policy.',
+      safety: 'Use only for temporary reset/onboarding flow; do not store long-lived secrets in Goosekit.',
+      output: 'Output is consumed by an admin workflow, support flow, or forced-reset process.'
+    },
+    'Adjacent utility endpoint': {
+      primary: 'Need a specific adjacent utility endpoint with known payload and output shape.',
+      safety: 'Request does not require secrets handling, scraping, or vague marketplace automation.',
+      output: 'Existing JSON/hash/UUID/password endpoints do not fit the workflow or output format.'
+    }
   };
   var requiredLabels = {
     volume: 'volume',
@@ -339,6 +372,11 @@
     var examples = endpointExamplesMap[endpoint.value] || endpointExamplesMap['Adjacent utility endpoint'];
     endpointExamples.innerHTML = '<strong>Useful details for this endpoint</strong><ul>' + examples.map(function(example) { return '<li>' + example + '</li>'; }).join('') + '</ul>';
     endpointExamples.setAttribute('data-ph-endpoint', endpoint.value);
+    specificsExampleButtons.forEach(function(button) {
+      var key = button.getAttribute('data-specifics-example') || '';
+      var examples = specificsExamplesMap[endpoint.value] || specificsExamplesMap['Adjacent utility endpoint'];
+      button.setAttribute('data-specifics-value', examples[key] || '');
+    });
     if (!exampleEndpointCaptured[endpoint.value]) {
       exampleEndpointCaptured[endpoint.value] = true;
       capture('goosekit_api_endpoint_examples_viewed', {
@@ -398,6 +436,28 @@
         location: 'production_request_runtime_examples',
         example_label: button.textContent.trim(),
         example_value: runtime.value,
+        required_fields_filled: status.count,
+        required_fields_total: status.total,
+        missing_required_fields: status.missing.join(',')
+      });
+    });
+  });
+  specificsExampleButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var specifics = document.getElementById('specifics');
+      var exampleValue = button.getAttribute('data-specifics-value') || '';
+      specifics.value = exampleValue;
+      pendingStartSource = 'specifics_example';
+      render();
+      var status = completeness();
+      capture('goosekit_api_specifics_example_clicked', {
+        product: 'goosekit_api',
+        endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
+        location: 'production_request_specifics_examples',
+        example_label: button.textContent.trim(),
+        example_value: exampleValue,
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')
