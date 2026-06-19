@@ -68,7 +68,7 @@
         <p class="lead">Ship It Kit is built for instant repo access. Some founders still need a second pair of eyes when the starter meets an existing codebase, Supabase project, or Stripe setup.</p>
         <p class="lead">This is a scoped help request page: send the repo state, the stack, and the exact wiring you need. If it is a fit, you get a small fixed-scope quote. If the app is live or close to launch, the next step can be lightweight founding-5 billing-health support instead of another one-off debug thread.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_hero_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_hero_packet">Request setup help →</a>
+          <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_hero_packet" data-preserve-source-ref="true" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_hero_packet">Request setup help →</a>
           <a class="btn btn-secondary" href="/ship-it-kit/?ref=setup_help_fit_check" data-ph-event="ship_it_kit_setup_help_secondary" data-ph-location="hero_fit_check">Check product fit first</a>
           <a class="btn btn-secondary" href="/nextjs-supabase-stripe-setup-help/?ref=shipit_setup_help_hero" data-ph-event="ship_it_kit_setup_help_secondary" data-ph-location="hero_general_setup_help">General setup help</a>
           <a class="btn btn-secondary" href="/billing-health-support/?ref=shipit_setup_help_hero_retainer" data-ph-event="billing_health_interest" data-ph-location="shipit_setup_help_hero_retainer">Monthly billing support</a>
@@ -167,7 +167,7 @@
         <li>Commercial context: deadline, launch status, budget range, and whether recurring billing checks would matter after the first fix.</li>
       </ul>
       <div class="actions">
-        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_packet">Open structured request →</a>
+        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_packet" data-preserve-source-ref="true" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_packet">Open structured request →</a>
         <a class="btn btn-secondary" href="/nextjs-supabase-stripe-setup-help/?ref=shipit_setup_help_packet_details" data-ph-event="ship_it_kit_setup_help_secondary" data-ph-location="packet_general_setup_help">See the broader setup scope</a>
       </div>
     </section>
@@ -181,11 +181,24 @@
         <li>Any deadline, urgency, and budget range.</li>
       </ul>
       <div class="actions">
-        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_bottom_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_bottom_packet">Send setup request →</a>
+        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_bottom_packet" data-preserve-source-ref="true" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_bottom_packet">Send setup request →</a>
         <a class="btn btn-secondary" href="mailto:arthur.pierrey@gmail.com?subject=Ship%20It%20Kit%20setup%20help%20request&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20Ship%20It%20Kit%20setup%20help.%0A%0AMy%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20I%20need%20wired%3A%0ADebug%20artifacts%20I%20can%20send%3A%0ADeadline%20or%20urgency%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="ship_it_kit_setup_help_clicked" data-ph-product="billing_reliability" data-ph-location="bottom_email_fallback">Email directly</a>
         <a class="btn btn-secondary" href="/ship-it-kit/?ref=setup_help_back_to_product" data-ph-event="ship_it_kit_setup_help_secondary" data-ph-location="bottom_product">Back to Ship It Kit</a>
       </div>
     </section>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var sourceRef = params.get('ref') || params.get('source') || '';
+      if (!sourceRef) return;
+      document.querySelectorAll('[data-preserve-source-ref="true"]').forEach(function (link) {
+        var url = new URL(link.getAttribute('href'), window.location.origin);
+        url.searchParams.set('source_ref', sourceRef);
+        link.setAttribute('href', url.pathname + url.search);
+        link.setAttribute('data-ph-source-ref', sourceRef);
+      });
+    });
+  </script>
 </body>
 </html>

@@ -22,6 +22,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'setup_request_route';
+      var sourceRef = params.get('source_ref') || '';
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
       var context = isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help';
       var priceRange = isShipItKit ? '199-plus' : '99-149';
@@ -45,6 +46,7 @@
         isShipItKit ? 'Budget range if any:' : '',
         '',
         'Source: ' + source,
+        sourceRef ? 'Source ref: ' + sourceRef : '',
         'Request context: ' + context
       ].filter(function (line, index, lines) {
         return line !== '' || lines[index - 1] !== '';
@@ -53,14 +55,15 @@
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
-      capture('setup_help_request_route_viewed', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
+      var eventProps = { source: source, source_ref: sourceRef, request_context: context, product: 'billing_reliability', price_range_eur: priceRange };
+      capture('setup_help_request_route_viewed', eventProps);
       var manual = document.querySelector('[data-manual-link]');
       manual.href = mailto;
       manual.addEventListener('click', function () {
-        capture('setup_help_request_manual_click', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange, target_href: mailto });
+        capture('setup_help_request_manual_click', Object.assign({}, eventProps, { target_href: mailto }));
       });
       setTimeout(function () {
-        capture('setup_help_request_mailto_opened', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange, target_href: mailto });
+        capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, { target_href: mailto }));
         window.location.href = mailto;
       }, 420);
     });

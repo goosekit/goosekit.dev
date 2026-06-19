@@ -210,6 +210,14 @@ else
     fail "setup-help — missing measured packet CTA"
   fi
 
+  if grep -q "data-preserve-source-ref=\"true\"" "$SETUP_HELP_FILE" && \
+     grep -q "source_ref" "$SETUP_HELP_FILE" && \
+     grep -q "data-ph-source-ref" "$SETUP_HELP_FILE"; then
+    pass "setup-help — preserves product-page source ref into setup request"
+  else
+    fail "setup-help — missing source_ref preservation from product page"
+  fi
+
   if grep -q "Debug%20artifacts%20I%20can%20send" "$SETUP_HELP_FILE" && \
      grep -q "data-ph-location=\"bottom_email_fallback\"" "$SETUP_HELP_FILE"; then
     pass "setup-help — direct email fallback keeps artifact prompt"
@@ -223,11 +231,13 @@ else
   elif grep -q "ship_it_kit_setup_help" "$SETUP_REQUEST_FILE" && \
        grep -q "Ship It Kit setup help request" "$SETUP_REQUEST_FILE" && \
        grep -q "priceRange = isShipItKit ? '199-plus' : '99-149'" "$SETUP_REQUEST_FILE" && \
+       grep -q "sourceRef = params.get('source_ref')" "$SETUP_REQUEST_FILE" && \
+       grep -q "Source ref: " "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_manual_click.*target_href: mailto" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_mailto_opened.*target_href: mailto" "$SETUP_REQUEST_FILE"; then
-    pass "setup-request route — preserves Ship It Kit request context"
+    pass "setup-request route — preserves Ship It Kit request context and source ref"
   else
-    fail "setup-request route — missing Ship It Kit context, price range, or mailto target_href capture"
+    fail "setup-request route — missing Ship It Kit context, source ref, price range, or mailto target_href capture"
   fi
 fi
 
