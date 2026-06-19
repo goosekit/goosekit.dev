@@ -14,6 +14,8 @@
 #      flash checkout helpers)
 #   5. Ship It Kit Lite explicitly out of current attribution
 #      scope (direct LS link there is intentional)
+#   6. Ship It Kit setup-help page preserves structured request
+#      routing, source attribution, and direct email fallback.
 #
 # Usage: ./audit_shipitkit_money_routes.sh [goosekit-root]
 #   defaults to ~/goosekit.dev
@@ -178,11 +180,45 @@ fi
 echo ""
 
 # ----------------------------------------------------------
-# CHECK 4 — Flash sale state
+# CHECK 4 — Ship It Kit setup-help request path
+# ----------------------------------------------------------
+echo "--- Check 4: Ship It Kit setup-help — structured request route ---"
+
+SETUP_HELP_FILE="$ROOT/ship-it-kit-setup-help/index.html"
+if [[ ! -f "$SETUP_HELP_FILE" ]]; then
+  fail "ship-it-kit-setup-help/index.html missing"
+else
+  if grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_hero_packet" "$SETUP_HELP_FILE" && \
+     grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_packet" "$SETUP_HELP_FILE" && \
+     grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_bottom_packet" "$SETUP_HELP_FILE"; then
+    pass "setup-help — structured request CTAs preserve Ship It Kit source"
+  else
+    fail "setup-help — missing structured setup-request source CTAs"
+  fi
+
+  if grep -q "data-ph-event=\"setup_help_request_clicked\"" "$SETUP_HELP_FILE" && \
+     grep -q "data-ph-location=\"shipit_setup_help_packet\"" "$SETUP_HELP_FILE"; then
+    pass "setup-help — measured packet CTA present"
+  else
+    fail "setup-help — missing measured packet CTA"
+  fi
+
+  if grep -q "Debug%20artifacts%20I%20can%20send" "$SETUP_HELP_FILE" && \
+     grep -q "data-ph-location=\"bottom_email_fallback\"" "$SETUP_HELP_FILE"; then
+    pass "setup-help — direct email fallback keeps artifact prompt"
+  else
+    fail "setup-help — direct email fallback missing artifact prompt"
+  fi
+fi
+
+echo ""
+
+# ----------------------------------------------------------
+# CHECK 5 — Flash sale state
 # ----------------------------------------------------------
 FLASH_PAGE="$ROOT/ship-it-kit-flash/index.html"
 if [[ "$FLASH_ACTIVE" == "1" ]]; then
-  echo "--- Check 4: Flash sale is active checkout path ---"
+  echo "--- Check 5: Flash sale is active checkout path ---"
   if [[ -f "$FLASH_PAGE" ]]; then
     if grep -q "Limited Time" "$FLASH_PAGE" && \
        grep -q "data-countdown-target=\"2026-04-30T23:59:59+02:00\"" "$FLASH_PAGE" && \
@@ -196,7 +232,7 @@ if [[ "$FLASH_ACTIVE" == "1" ]]; then
     fail "ship-it-kit-flash missing during active sale"
   fi
 else
-  echo "--- Check 4: Flash sale preview is not an active checkout path ---"
+  echo "--- Check 5: Flash sale preview is not an active checkout path ---"
   FLASH_CHECKOUT_LINKS=$(grep -rlE "/go/ship-it-kit/checkout-flash|/flash/" "$ROOT" --include="*.html" 2>/dev/null || true)
   if [[ -n "$FLASH_CHECKOUT_LINKS" ]]; then
     fail "active flash checkout route referenced in site:"
