@@ -89,6 +89,7 @@ class Event:
     example_label: str
     example_value: str
     first_field: str
+    start_source: str
 
 
 def parse_properties(value: Any) -> dict[str, Any]:
@@ -133,6 +134,7 @@ def event_from_row(row: dict[str, Any]) -> Event:
         example_label=prop("example_label"),
         example_value=prop("example_value"),
         first_field=prop("first_field"),
+        start_source=prop("start_source"),
     )
 
 
@@ -202,6 +204,11 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         event.first_field
         for event in api_events
         if event.name == "goosekit_api_production_request_started" and event.first_field
+    )
+    start_sources = Counter(
+        event.start_source
+        for event in api_events
+        if event.name == "goosekit_api_production_request_started" and event.start_source
     )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
@@ -301,6 +308,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "budget_example_choices": dict(budget_example_choices.most_common()),
         "failure_example_choices": dict(failure_example_choices.most_common()),
         "first_fields": dict(first_fields.most_common()),
+        "start_sources": dict(start_sources.most_common()),
         "mailbox_packets": mailbox_packets,
         "api_events_missing_product": missing_product,
         "api_events_missing_location": missing_location,
@@ -380,6 +388,10 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("## First Fields")
     for field, count in summary["first_fields"].items():
         lines.append(f"- {field}: {count}")
+    lines.append("")
+    lines.append("## Start Sources")
+    for source, count in summary["start_sources"].items():
+        lines.append(f"- {source}: {count}")
     lines.append("")
     lines.append("## Locations")
     for location, count in summary["locations"].items():

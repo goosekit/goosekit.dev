@@ -135,6 +135,7 @@
   var failureExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-failure-example]'));
   var completionCaptured = false;
   var startCaptured = false;
+  var pendingStartSource = '';
   var exampleEndpointCaptured = {};
   var params = new URLSearchParams(window.location.search);
   var sourceRef = params.get('ref') || '';
@@ -296,10 +297,12 @@
         source_ref: sourceRef,
         location: 'production_request_builder',
         first_field: firstFilledField(),
+        start_source: pendingStartSource || 'manual',
         missing_required_fields: status.missing.join(','),
         required_fields_filled: status.count,
         required_fields_total: status.total
       });
+      pendingStartSource = '';
     }
     if (status.complete && !completionCaptured) {
       completionCaptured = true;
@@ -348,6 +351,7 @@
     button.addEventListener('click', function() {
       var commercial = document.getElementById('commercial');
       commercial.value = button.getAttribute('data-commercial-example') || '';
+      pendingStartSource = 'commercial_example';
       render();
       var status = completeness();
       capture('goosekit_api_commercial_example_clicked', {
@@ -368,6 +372,7 @@
     button.addEventListener('click', function() {
       var budget = document.getElementById('budget');
       budget.value = button.getAttribute('data-budget-example') || '';
+      pendingStartSource = 'budget_example';
       render();
       var status = completeness();
       capture('goosekit_api_budget_example_clicked', {
@@ -388,6 +393,7 @@
     button.addEventListener('click', function() {
       var failure = document.getElementById('failure');
       failure.value = button.getAttribute('data-failure-example') || '';
+      pendingStartSource = 'failure_example';
       render();
       var status = completeness();
       capture('goosekit_api_failure_example_clicked', {
