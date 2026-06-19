@@ -146,6 +146,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Stripe Connect affiliate revenue-share ledger check: https://goosekit.dev/blog/stripe-connect-affiliate-revenue-share-ledger/
 - Stripe course membership Supabase access check: https://goosekit.dev/blog/stripe-course-membership-supabase-access/
 - Stripe prepaid invoice account credit ledger check: https://goosekit.dev/blog/stripe-prepaid-invoice-account-credit-ledger/
+- Stripe subscription add-credit checkout ledger check: https://goosekit.dev/blog/stripe-subscription-add-credit-checkout-ledger/
 - Supabase Auth callback fails on Vercel: https://goosekit.dev/blog/supabase-auth-callback-vercel-production/
 
 ## Paid products
