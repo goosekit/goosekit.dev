@@ -22,18 +22,45 @@
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'setup_request_route';
-      var mailto = 'mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20Stripe%20setup%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20Next.js%20%2B%20Supabase%20%2B%20Stripe%20setup%20help.%0A%0AMy%20current%20stack%3A%0AMy%20repo%20state%3A%0AWhat%20is%20broken%20or%20missing%3A%0AProduction%20URL%20%2F%20repo%20access%20situation%3A%0ADebug%20artifacts%20I%20can%20send%20%28logs%2C%20screenshots%2C%20settings%2C%20file%20paths%29%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A%0ASource%3A%20' + encodeURIComponent(source);
+      var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
+      var context = isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help';
+      var priceRange = isShipItKit ? '199-plus' : '99-149';
+      var subject = isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help';
+      var intro = isShipItKit
+        ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
+        : 'I need Next.js + Supabase + Stripe setup help.';
+      var body = [
+        'Hi Arthur,',
+        '',
+        intro,
+        '',
+        'My current stack:',
+        'My repo state:',
+        isShipItKit ? 'Have I bought Ship It Kit yet:' : 'What is broken or missing:',
+        isShipItKit ? 'What I need adapted from Ship It Kit:' : 'Production URL / repo access situation:',
+        isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):',
+        isShipItKit ? 'Debug artifacts I can send (logs, screenshots, settings, file paths):' : 'Deadline:',
+        isShipItKit ? 'Production URL / repo access situation:' : 'Budget range if any:',
+        isShipItKit ? 'Deadline:' : '',
+        isShipItKit ? 'Budget range if any:' : '',
+        '',
+        'Source: ' + source,
+        'Request context: ' + context
+      ].filter(function (line, index, lines) {
+        return line !== '' || lines[index - 1] !== '';
+      }).join('\n');
+      var mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
-      capture('setup_help_request_route_viewed', { source: source, product: 'billing_reliability', price_range_eur: '99-149' });
+      capture('setup_help_request_route_viewed', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
       var manual = document.querySelector('[data-manual-link]');
       manual.href = mailto;
       manual.addEventListener('click', function () {
-        capture('setup_help_request_manual_click', { source: source, product: 'billing_reliability', price_range_eur: '99-149' });
+        capture('setup_help_request_manual_click', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
       });
       setTimeout(function () {
-        capture('setup_help_request_mailto_opened', { source: source, product: 'billing_reliability', price_range_eur: '99-149' });
+        capture('setup_help_request_mailto_opened', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
         window.location.href = mailto;
       }, 420);
     });

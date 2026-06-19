@@ -209,6 +209,17 @@ else
   else
     fail "setup-help — direct email fallback missing artifact prompt"
   fi
+
+  SETUP_REQUEST_FILE="$ROOT/go/billing-reliability/setup-request/index.html"
+  if [[ ! -f "$SETUP_REQUEST_FILE" ]]; then
+    fail "billing setup request route missing"
+  elif grep -q "ship_it_kit_setup_help" "$SETUP_REQUEST_FILE" && \
+       grep -q "Ship It Kit setup help request" "$SETUP_REQUEST_FILE" && \
+       grep -q "priceRange = isShipItKit ? '199-plus' : '99-149'" "$SETUP_REQUEST_FILE"; then
+    pass "setup-request route — preserves Ship It Kit request context"
+  else
+    fail "setup-request route — missing Ship It Kit context or price range"
+  fi
 fi
 
 echo ""
