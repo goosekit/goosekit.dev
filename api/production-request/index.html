@@ -99,6 +99,11 @@
     </div>
     <div class="field"><label for="deadline">Deadline or launch date <span class="field-tag">optional</span></label><input id="deadline" placeholder="Example: before July launch"></div>
     <div class="field"><label for="failure">What breaks without production access <span class="field-tag required">required</span></label><textarea id="failure" placeholder="What fails if the endpoint stays limited or unavailable?"></textarea><span class="field-help">Examples: launch blocked, manual copy-paste stays in the workflow, QA job fails, or customer feature cannot ship.</span></div>
+    <div class="quick-options" data-ph-location="production_request_failure_examples" aria-label="Failure mode examples">
+      <button type="button" data-failure-example="Launch is blocked unless this endpoint can run reliably in production.">Launch blocked</button>
+      <button type="button" data-failure-example="Manual copy-paste stays in the workflow without production access.">Manual work stays</button>
+      <button type="button" data-failure-example="A customer-facing feature or internal automation cannot ship without this endpoint.">Feature cannot ship</button>
+    </div>
     <div class="btn-row"><button class="btn btn-primary" id="copyPacket" data-ph-event="goosekit_api_packet_copied" data-ph-product="goosekit_api" data-ph-location="production_request_builder">Copy packet</button><a class="btn" id="mailPacket" href="#" data-ph-event="goosekit_api_production_access_clicked" data-ph-product="goosekit_api" data-ph-location="production_request_builder_mail">Open email</a></div>
   </section>
   <aside>
@@ -121,6 +126,7 @@
   var endpointExamples = document.getElementById('endpointExamples');
   var requiredItems = Array.prototype.slice.call(document.querySelectorAll('[data-required-id]'));
   var budgetExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-budget-example]'));
+  var failureExampleButtons = Array.prototype.slice.call(document.querySelectorAll('[data-failure-example]'));
   var completionCaptured = false;
   var startCaptured = false;
   var exampleEndpointCaptured = {};
@@ -344,6 +350,24 @@
         ref: sourceRef,
         source_ref: sourceRef,
         location: 'production_request_budget_examples',
+        required_fields_filled: status.count,
+        required_fields_total: status.total,
+        missing_required_fields: status.missing.join(',')
+      });
+    });
+  });
+  failureExampleButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      var failure = document.getElementById('failure');
+      failure.value = button.getAttribute('data-failure-example') || '';
+      render();
+      var status = completeness();
+      capture('goosekit_api_failure_example_clicked', {
+        product: 'goosekit_api',
+        endpoint: endpoint.value,
+        ref: sourceRef,
+        source_ref: sourceRef,
+        location: 'production_request_failure_examples',
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')

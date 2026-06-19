@@ -95,11 +95,16 @@ REQUIRED = {
         "Endpoint-specific details",
         "Paid access expectation",
         "goosekit_api_budget_example_clicked",
+        "goosekit_api_failure_example_clicked",
         "production_request_budget_examples",
+        "production_request_failure_examples",
         "Pilot if it fits",
         "Need quote",
         "Monthly budget range",
         "data-budget-example",
+        "Manual work stays",
+        "Feature cannot ship",
+        "data-failure-example",
         "Required packet fields",
         "data-required-id",
         "field-tag required",
@@ -366,6 +371,7 @@ def main() -> None:
         "goosekit_api_production_request_started",
         "goosekit_api_endpoint_examples_viewed",
         "goosekit_api_budget_example_clicked",
+        "goosekit_api_failure_example_clicked",
         "seo_use_case_page_viewed",
         "api_workflow_page_views",
         "endpoint_production_clicks",
@@ -392,6 +398,7 @@ def main() -> None:
         "builder_starts",
         "endpoint_example_views",
         "budget_example_clicks",
+        "failure_example_clicks",
         "endpoint_example_views_by_endpoint",
         "Endpoint Example Views",
         "complete_mail_clicks",
@@ -520,6 +527,38 @@ def main() -> None:
         expected_counts={"budget_example_clicks": 1},
     )
     run_summary_fixture(
+        "failure example click is observation only",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-19T04:48:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                },
+            },
+            {
+                "event": "goosekit_api_failure_example_clicked",
+                "timestamp": "2026-06-19T04:49:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_failure_examples",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                    "missing_required_fields": "volume,runtime,specifics,commercial,budget",
+                    "required_fields_filled": "1",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "inspect_builder_start_friction",
+        expected_counts={"failure_example_clicks": 1},
+    )
+    run_summary_fixture(
         "free docs without production bridge",
         [
             {
@@ -569,6 +608,38 @@ def main() -> None:
         ],
         "inspect_builder_navigation",
         expected_counts={"builder_clicks": 2, "endpoint_production_clicks": 2},
+    )
+    run_summary_fixture(
+        "endpoint production refs on form events are not clicks",
+        [
+            {
+                "event": "goosekit_api_production_request_builder_viewed",
+                "timestamp": "2026-06-19T04:50:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_builder",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                },
+            },
+            {
+                "event": "goosekit_api_failure_example_clicked",
+                "timestamp": "2026-06-19T04:51:00Z",
+                "properties": {
+                    "product": "goosekit_api",
+                    "location": "production_request_failure_examples",
+                    "endpoint": "JSON formatter",
+                    "ref": "json_endpoint_production",
+                    "source_ref": "json_endpoint_production",
+                    "missing_required_fields": "volume,runtime,specifics,commercial,budget",
+                    "required_fields_filled": "1",
+                    "required_fields_total": "6",
+                },
+            },
+        ],
+        "inspect_builder_start_friction",
+        expected_counts={"endpoint_production_clicks": 0, "failure_example_clicks": 1},
     )
     run_summary_fixture(
         "incomplete packet reports missing required fields",

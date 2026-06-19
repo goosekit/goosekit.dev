@@ -27,6 +27,7 @@ API_EVENTS = {
     "goosekit_api_production_request_builder_viewed",
     "goosekit_api_endpoint_examples_viewed",
     "goosekit_api_budget_example_clicked",
+    "goosekit_api_failure_example_clicked",
     "goosekit_api_production_request_started",
     "goosekit_api_production_request_completed",
     "goosekit_api_packet_copied",
@@ -177,12 +178,17 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
-    endpoint_production_clicks = sum(refs[ref] for ref in ENDPOINT_PRODUCTION_REFS)
+    endpoint_production_clicks = sum(
+        1
+        for event in api_events
+        if event.name == "goosekit_api_production_request_builder_clicked" and event.ref in ENDPOINT_PRODUCTION_REFS
+    )
     free_docs_clicks = counts["goosekit_api_free_docs_clicked"]
     workflow_views = sum(workflow_page_views.values())
     builder_views = counts["goosekit_api_production_request_builder_viewed"]
     endpoint_example_views = counts["goosekit_api_endpoint_examples_viewed"]
     budget_example_clicks = counts["goosekit_api_budget_example_clicked"]
+    failure_example_clicks = counts["goosekit_api_failure_example_clicked"]
     builder_starts = counts["goosekit_api_production_request_started"]
     completed = counts["goosekit_api_production_request_completed"]
     packet_copies = counts["goosekit_api_packet_copied"]
@@ -250,6 +256,7 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "builder_views": builder_views,
         "endpoint_example_views": endpoint_example_views,
         "budget_example_clicks": budget_example_clicks,
+        "failure_example_clicks": failure_example_clicks,
         "builder_starts": builder_starts,
         "completed_packets": completed,
         "packet_copies": packet_copies,
@@ -287,6 +294,7 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"builder_views={summary['builder_views']}",
         f"endpoint_example_views={summary['endpoint_example_views']}",
         f"budget_example_clicks={summary['budget_example_clicks']}",
+        f"failure_example_clicks={summary['failure_example_clicks']}",
         f"builder_starts={summary['builder_starts']}",
         f"completed_packets={summary['completed_packets']}",
         f"packet_copies={summary['packet_copies']}",
