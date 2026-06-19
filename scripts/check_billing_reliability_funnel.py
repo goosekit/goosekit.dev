@@ -335,6 +335,23 @@ PAGES = [
         ],
     },
     {
+        "path": "/blog/stripe-payment-element-redirect-webhook-order-tracking/",
+        "required": [
+            "billing_drift_check_clicked",
+            "payment_element_order_tracking_top",
+            "payment_element_order_tracking_bottom_mailto",
+            "setup_help_retainer_interest",
+            "data-ph-product=\"billing_reliability\"",
+            "PaymentIntent or Checkout Session id",
+            "return_url and redirect_status received",
+            "Webhook event id, type, delivery status",
+            "Order row before/after webhook",
+            "Realtime payload or subscription log",
+            "Expected order/tracking state",
+            "Actual order/tracking bug",
+        ],
+    },
+    {
         "path": "/blog/stripe-charged-customer-not-provisioned-supabase/",
         "required": [
             "billing_drift_check_clicked",
