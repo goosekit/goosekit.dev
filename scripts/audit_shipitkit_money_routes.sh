@@ -215,10 +215,12 @@ else
     fail "billing setup request route missing"
   elif grep -q "ship_it_kit_setup_help" "$SETUP_REQUEST_FILE" && \
        grep -q "Ship It Kit setup help request" "$SETUP_REQUEST_FILE" && \
-       grep -q "priceRange = isShipItKit ? '199-plus' : '99-149'" "$SETUP_REQUEST_FILE"; then
+       grep -q "priceRange = isShipItKit ? '199-plus' : '99-149'" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_manual_click.*target_href: mailto" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_mailto_opened.*target_href: mailto" "$SETUP_REQUEST_FILE"; then
     pass "setup-request route — preserves Ship It Kit request context"
   else
-    fail "setup-request route — missing Ship It Kit context or price range"
+    fail "setup-request route — missing Ship It Kit context, price range, or mailto target_href capture"
   fi
 fi
 

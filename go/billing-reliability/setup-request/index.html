@@ -57,10 +57,10 @@
       var manual = document.querySelector('[data-manual-link]');
       manual.href = mailto;
       manual.addEventListener('click', function () {
-        capture('setup_help_request_manual_click', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
+        capture('setup_help_request_manual_click', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange, target_href: mailto });
       });
       setTimeout(function () {
-        capture('setup_help_request_mailto_opened', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange });
+        capture('setup_help_request_mailto_opened', { source: source, request_context: context, product: 'billing_reliability', price_range_eur: priceRange, target_href: mailto });
         window.location.href = mailto;
       }, 420);
     });
