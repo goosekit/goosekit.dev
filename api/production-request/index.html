@@ -136,6 +136,7 @@
   var completionCaptured = false;
   var startCaptured = false;
   var pendingStartSource = '';
+  var activeStartSource = '';
   var exampleEndpointCaptured = {};
   var params = new URLSearchParams(window.location.search);
   var sourceRef = params.get('ref') || '';
@@ -290,6 +291,7 @@
     mail.setAttribute('data-ph-missing-required-fields', status.missing.join(','));
     if (status.count > 0 && !startCaptured) {
       startCaptured = true;
+      activeStartSource = pendingStartSource || 'manual';
       capture('goosekit_api_production_request_started', {
         product: 'goosekit_api',
         endpoint: endpoint.value,
@@ -297,7 +299,7 @@
         source_ref: sourceRef,
         location: 'production_request_builder',
         first_field: firstFilledField(),
-        start_source: pendingStartSource || 'manual',
+        start_source: activeStartSource,
         missing_required_fields: status.missing.join(','),
         required_fields_filled: status.count,
         required_fields_total: status.total
@@ -312,6 +314,7 @@
         ref: sourceRef,
         source_ref: sourceRef,
         location: 'production_request_builder',
+        start_source: activeStartSource || 'manual',
         missing_required_fields: status.missing.join(','),
         required_fields_filled: status.count,
         required_fields_total: status.total
@@ -341,11 +344,11 @@
     var text = packet();
     var status = completeness();
     navigator.clipboard && navigator.clipboard.writeText(text);
-    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
+    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder', start_source: activeStartSource || 'manual', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
   });
   mail.addEventListener('click', function() {
     var status = completeness();
-    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
+    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', start_source: activeStartSource || 'manual', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
   });
   commercialExampleButtons.forEach(function(button) {
     button.addEventListener('click', function() {

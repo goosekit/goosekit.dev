@@ -210,6 +210,21 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         for event in api_events
         if event.name == "goosekit_api_production_request_started" and event.start_source
     )
+    completion_sources = Counter(
+        event.start_source
+        for event in api_events
+        if event.name == "goosekit_api_production_request_completed" and event.start_source
+    )
+    packet_copy_sources = Counter(
+        event.start_source
+        for event in api_events
+        if event.name == "goosekit_api_packet_copied" and event.start_source
+    )
+    mail_click_sources = Counter(
+        event.start_source
+        for event in api_events
+        if event.name == "goosekit_api_production_access_clicked" and event.start_source
+    )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
     endpoint_production_clicks = sum(
@@ -309,6 +324,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "failure_example_choices": dict(failure_example_choices.most_common()),
         "first_fields": dict(first_fields.most_common()),
         "start_sources": dict(start_sources.most_common()),
+        "completion_sources": dict(completion_sources.most_common()),
+        "packet_copy_sources": dict(packet_copy_sources.most_common()),
+        "mail_click_sources": dict(mail_click_sources.most_common()),
         "mailbox_packets": mailbox_packets,
         "api_events_missing_product": missing_product,
         "api_events_missing_location": missing_location,
@@ -391,6 +409,18 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("")
     lines.append("## Start Sources")
     for source, count in summary["start_sources"].items():
+        lines.append(f"- {source}: {count}")
+    lines.append("")
+    lines.append("## Completion Sources")
+    for source, count in summary["completion_sources"].items():
+        lines.append(f"- {source}: {count}")
+    lines.append("")
+    lines.append("## Packet Copy Sources")
+    for source, count in summary["packet_copy_sources"].items():
+        lines.append(f"- {source}: {count}")
+    lines.append("")
+    lines.append("## Mail Click Sources")
+    for source, count in summary["mail_click_sources"].items():
         lines.append(f"- {source}: {count}")
     lines.append("")
     lines.append("## Locations")
