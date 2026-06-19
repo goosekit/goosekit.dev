@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe, ZaloPay, or RevenueCat Subscription Bridge Drift?</title>
+  <meta name="description" content="Debug multi-provider subscription bridges where Stripe, ZaloPay, RevenueCat, and Supabase subscription rows can disagree.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-zalopay-revenuecat-supabase-subscriptions/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe, ZaloPay, or RevenueCat Subscription Bridge Drift?">
+  <meta property="og:description" content="A replay checklist for SaaS teams feeding one Supabase subscriptions table from multiple payment providers.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-zalopay-revenuecat-supabase-subscriptions/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=multi_provider_nav">Run drift check</a><a href="/billing-health-support/?ref=multi_provider_nav">Billing-health support</a></div>
+    <div class="eyebrow">Multi-provider subscriptions + Supabase</div>
+    <h1>Stripe, ZaloPay, or RevenueCat subscription bridge drift?</h1>
+    <p class="lead">A SaaS can start with Stripe, add a regional provider like ZaloPay, then scaffold RevenueCat for mobile. The hard part is not the checkout button. It is making every provider event converge on one Supabase subscription truth.</p>
+    <p class="lead">The failure mode is a paid user whose provider state is valid while <code>subscriptions</code>, entitlements, or feature gates disagree because each provider path wrote a slightly different shape.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>One user should have one explainable active entitlement per product scope, regardless of whether the latest money event came from Stripe Checkout, ZaloPay, RevenueCat, a portal change, or a replayed webhook.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=multi_provider_subscription_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="multi_provider_subscription_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=multi_provider_subscription_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="multi_provider_subscription_related">Compare hosted-plan provisioning drift</a>
+      </div>
+      <p class="note">Fixed-scope review fit: EUR149 when multiple providers feed one subscription table, mobile IAP is scaffolded, or production access can be granted by the wrong provider row.</p>
+    </section>
+
+    <section>
+      <h2>1. Normalize provider events before writing app access</h2>
+      <p>Do not let each provider mutate app access directly. Translate every payment event into a small internal subscription event first, then write <code>subscriptions</code> and entitlements from that normalized event.</p>
+      <div class="grid2">
+        <div class="card"><h3>Provider truth</h3><ul class="checklist"><li>Stripe customer, subscription, invoice, or Checkout Session</li><li>ZaloPay app trans id, amount, status, and callback signature</li><li>RevenueCat customer id, entitlement id, renewal, or cancellation event</li><li>Provider event id and replay/idempotency key</li></ul></div>
+        <div class="card"><h3>App truth</h3><ul class="checklist"><li>Supabase <code>subscriptions</code> row with provider and provider object id</li><li>Entitlement gate output for the affected user</li><li>Plan, product, or workspace scope</li><li>Processed-event row proving duplicate delivery is safe</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Test the cross-provider conflict cases</h2>
+      <ul class="checklist warn">
+        <li>Stripe subscription is active while ZaloPay callback for the same user is pending or failed.</li>
+        <li>RevenueCat renewal extends mobile access but leaves the web <code>subscriptions</code> row expired.</li>
+        <li>A portal cancellation in Stripe removes access even though the user has a separate mobile entitlement.</li>
+        <li>Duplicate callback delivery creates two active local rows for one plan scope.</li>
+        <li>A provider migration changes the provider object id but not the app entitlement source of truth.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Use one replay matrix per provider pair</h2>
+      <p>Start with the two providers most likely to overlap for one buyer. The matrix should prove which local row wins, what gets ignored, and which duplicate events return 2xx without rerunning side effects.</p>
+      <pre><code>Stripe active + ZaloPay pending -> access from Stripe, no duplicate row
+ZaloPay paid + Stripe canceled -> access from ZaloPay if same plan scope
+RevenueCat renewal + web row expired -> access extends through normalized event
+Stripe duplicate event -> processed-event hit, no second entitlement write
+Provider migration -> old provider row closed, new provider row active</code></pre>
+    </section>
+
+    <section class="card" id="multi-provider-subscription-evidence-packet">
+      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
+      <p>Use one affected user or staging test user. Redact secrets, but keep the provider ids and Supabase row shapes that show where the bridge can drift.</p>
+      <pre><code>Providers involved:
+Provider event ids and statuses:
+Provider customer/user ids:
+Supabase subscriptions row before/after:
+Entitlement resolver output:
+Plan/product/workspace scope:
+Processed-event or idempotency row:
+Duplicate/replay result:
+Expected app access:
+Actual app access bug:
+One replay command, test, or local repro:</code></pre>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Multi-provider%20subscription%20bridge%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20multi-provider%20subscription%20bridge%20review.%0A%0AProviders%20involved%3A%0AProvider%20event%20ids%20and%20statuses%3A%0AProvider%20customer%2Fuser%20ids%3A%0ASupabase%20subscriptions%20row%20before%2Fafter%3A%0AEntitlement%20resolver%20output%3A%0APlan%2Fproduct%2Fworkspace%20scope%3A%0AProcessed-event%20or%20idempotency%20row%3A%0ADuplicate%2Freplay%20result%3A%0AExpected%20app%20access%3A%0AActual%20bug%3A%0AOne%20replay%20command%2C%20test%2C%20or%20local%20repro%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="multi_provider_subscription_bottom_mailto">Send multi-provider packet →</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to review before launch</h2>
+      <p>Check provider-to-internal-event normalization, duplicate callback handling, provider migration rules, entitlement resolver output, and one protected paid route. That keeps the scope small while covering the money-state bugs that become support tickets.</p>
+      <div class="actions">
+        <a class="btn primary" href="/billing-health-support/?ref=multi_provider_subscription_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="multi_provider_subscription_bottom">See billing-health support</a>
+        <a class="btn secondary" href="/blog/stripe-connect-affiliate-revenue-share-ledger/?ref=multi_provider_subscription_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="multi_provider_subscription_related">Compare revenue-share ledger drift</a>
+      </div>
+      <p class="note">This is a focused billing/access-state review, not a provider integration rebuild or mobile subscription strategy engagement.</p>
+    </section>
+  </main>
+</body>
+</html>
