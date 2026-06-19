@@ -32,14 +32,14 @@
       </div>
       <aside class="card strip" aria-live="polite">
         <h2>Your drift risk</h2>
-        <div class="score"><span id="score">0</span>/<span id="total">16</span></div>
+        <div class="score"><span id="score">0</span>/<span id="total">17</span></div>
         <p class="status" id="status">Start checking the boxes.</p>
         <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
         <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
         <div class="actions">
-          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0ALikely%20paid%20scope%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20ids%20you%20can%20share%20%28customer%2Fsubscription%2Fsession%2Finvoice%2Fevent%29%3A%0ASupabase%20rows%20or%20table%20names%20involved%3A%0AEntitlement%20or%20access%20row%20before%2Fafter%20replay%3A%0ATenant%2Fworkspace%20provisioning%20job%20or%20result%3A%0AMonthly%20credit%2Frefill%20row%20or%20tier%20cap%20config%3A%0AOne-time%20add-credit%20Checkout%20event%20or%20payment%20object%3A%0ACredit%20ledger%20or%20balance%20row%20after%20subscription%20and%20add-credit%3A%0AGrant%20function%20or%20webhook%20log%20for%20both%20credit%20paths%3A%0AAction%20queue%20or%20retention%20card%20row%3A%0ABilling%20ledger%20or%20processed-event%20row%3A%0A23505%20duplicate-key%20log%20or%20processed-event%20conflict%3A%0AHTTP%20response%20Stripe%20saw%20after%20duplicate%20delivery%3A%0AWhat%20the%20paid%20user%20currently%20sees%3A%0AWebhook%20delivery%20status%20or%20error%3A%0AOne%20state%20that%20must%20be%20true%20after%20review%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="16" data-ph-recommended-scope="unscored">Request a narrow review →</a>
-          <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="16" data-ph-recommended-scope="unscored">See revenue leak audit</a>
-          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="16" data-ph-recommended-scope="unscored">See monthly support</a>
+          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0ALikely%20paid%20scope%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20ids%20you%20can%20share%20%28customer%2Fsubscription%2Fsession%2Finvoice%2Fevent%2Ftransfer%29%3A%0ASupabase%20rows%20or%20table%20names%20involved%3A%0AEntitlement%20or%20access%20row%20before%2Fafter%20replay%3A%0ATenant%2Fworkspace%20provisioning%20job%20or%20result%3A%0AMonthly%20credit%2Frefill%20row%20or%20tier%20cap%20config%3A%0AOne-time%20add-credit%20Checkout%20event%20or%20payment%20object%3A%0ACredit%20ledger%20or%20balance%20row%20after%20subscription%20and%20add-credit%3A%0AGrant%20function%20or%20webhook%20log%20for%20both%20credit%20paths%3A%0AAction%20queue%20or%20retention%20card%20row%3A%0ABilling%20ledger%20or%20processed-event%20row%3A%0A23505%20duplicate-key%20log%20or%20processed-event%20conflict%3A%0AHTTP%20response%20Stripe%20saw%20after%20duplicate%20delivery%3A%0AWhat%20the%20paid%20user%20currently%20sees%3A%0AWebhook%20delivery%20status%20or%20error%3A%0AOne%20state%20that%20must%20be%20true%20after%20review%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="17" data-ph-recommended-scope="unscored">Request a narrow review →</a>
+          <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="17" data-ph-recommended-scope="unscored">See revenue leak audit</a>
+          <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="17" data-ph-recommended-scope="unscored">See monthly support</a>
         </div>
         <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
       </aside>
@@ -64,6 +64,7 @@
           <label class="check"><input type="checkbox" data-risk="Email-only customer mapping can update the wrong user or workspace."><span>Stripe customer/subscription IDs map to the local user, team, or workspace without relying on email alone.</span></label>
           <label class="check"><input type="checkbox" data-risk="Hosted-plan purchases can pay successfully while tenant/workspace provisioning fails, duplicates, or drifts from entitlement state."><span>Hosted-plan, tenant, or workspace provisioning can be replayed from Stripe truth without duplicate access.</span></label>
           <label class="check"><input type="checkbox" data-risk="Billing trouble can stay hidden if Stripe money events do not raise and resolve durable human-owned action queue cards."><span>Billing trouble events raise and resolve durable action queue or retention cards from a billing ledger row.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Stripe Connect transfer.reversed events can double-deduct, double-credit, or strand clawback rows if payout, commission, and queue updates are not replay-safe."><span>Stripe Connect transfer reversals update payout balance, commission state, and clawback queue exactly once under duplicate delivery.</span></label>
           <label class="check"><input type="checkbox" data-risk="No recurring scan means paid-in-Stripe/inactive-locally drift can sit unnoticed."><span>A recurring reconciliation query can find Stripe-active/Supabase-inactive and Stripe-inactive/Supabase-active mismatches.</span></label>
         </div>
       </div>
@@ -86,6 +87,7 @@
         <li>Entitlement/access row before and after replay, plus any tenant/workspace provisioning job or result row.</li>
         <li>One-time add-credit Checkout or payment event, credit ledger/balance row, and grant function/webhook log.</li>
         <li>23505 duplicate-key log or processed-event conflict, plus the HTTP response Stripe saw after duplicate delivery.</li>
+        <li>For Stripe Connect: transfer id, payout balance row, commission row, clawback queue row, and the replay/idempotency result.</li>
         <li>What the paid user currently sees: blocked, free plan, missing credits, duplicate access, wrong team, or stale portal state.</li>
         <li>Webhook delivery status: delivered, failed, retried, duplicated, missing handler, or unknown.</li>
         <li>The one state that must be true after review: paid users unlocked, unpaid users blocked, no duplicate grant, or recurring reconciliation in place.</li>
@@ -161,7 +163,7 @@
         'Unchecked billing risks:',
         ...missing.map(item => `- ${item}`),
         'Recent Stripe or Supabase issue:',
-        'Stripe object ids you can share (customer/subscription/session/invoice/event):',
+        'Stripe object ids you can share (customer/subscription/session/invoice/event/transfer):',
         'Supabase rows or table names involved:',
         'Entitlement or access row before/after replay:',
         'Tenant/workspace provisioning job or result:',
@@ -171,6 +173,7 @@
         'Grant function or webhook log for both credit paths:',
         'Action queue or retention card row:',
         'Billing ledger or processed-event row:',
+        'Stripe Connect transfer id, payout balance row, commission row, clawback queue row, and replay/idempotency result:',
         '23505 duplicate-key log or processed-event conflict:',
         'HTTP response Stripe saw after duplicate delivery:',
         'What the paid user currently sees:',
