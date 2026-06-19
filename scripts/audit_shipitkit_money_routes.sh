@@ -83,6 +83,13 @@ else
     else
       pass "ship-it-kit — no stale €29 flash-sale copy"
     fi
+    if grep -q "product_hero_existing_repo" "$SIK_FILE" && \
+       grep -q "decision_strip_existing_repo" "$SIK_FILE" && \
+       grep -q "data-ph-event=\"ship_it_kit_setup_help_interest\"" "$SIK_FILE"; then
+      pass "ship-it-kit — high-intent setup-help CTAs are measured"
+    else
+      fail "ship-it-kit — missing measured setup-help CTAs for existing-repo buyers"
+    fi
   fi
 fi
 
