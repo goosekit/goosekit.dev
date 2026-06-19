@@ -218,6 +218,14 @@ else
     fail "setup-help — missing source_ref preservation from product page"
   fi
 
+  measured_links=$(grep -c "data-ph-event=" "$SETUP_HELP_FILE" || true)
+  measured_links_with_source_ref=$(grep "data-ph-event=" "$SETUP_HELP_FILE" | grep -c "data-preserve-source-ref=\"true\"" || true)
+  if [[ "$measured_links" -gt 0 && "$measured_links" -eq "$measured_links_with_source_ref" ]]; then
+    pass "setup-help — all measured links preserve product-page source ref"
+  else
+    fail "setup-help — measured links without source_ref preservation ($measured_links_with_source_ref/$measured_links)"
+  fi
+
   if grep -q "Debug%20artifacts%20I%20can%20send" "$SETUP_HELP_FILE" && \
      grep -q "data-ph-location=\"bottom_email_fallback\"" "$SETUP_HELP_FILE"; then
     pass "setup-help — direct email fallback keeps artifact prompt"
