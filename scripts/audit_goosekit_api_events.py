@@ -368,8 +368,10 @@ def run_summary_fixture(
             field = key.split(".", 1)[1]
             actual = summary.get("missing_required_fields", {}).get(field)
         elif "." in key:
-            group, field = key.split(".", 1)
-            actual = summary.get(group, {}).get(field)
+            parts = key.split(".")
+            actual = summary
+            for part in parts:
+                actual = actual.get(part) if isinstance(actual, dict) else None
         else:
             actual = summary.get(key)
         if actual != expected:
@@ -410,6 +412,10 @@ def main() -> None:
         "missing_required_fields",
         "split_missing_fields",
         "Missing Required Fields",
+        "MISSING_FIELD_EVENTS",
+        "EXAMPLE_EVENT_SOURCES",
+        "missing_fields_by_start_source",
+        "Missing Fields By Start Source",
         "free_docs_clicks",
         "workflow_page_views",
         "API_WORKFLOW_SLUGS",
@@ -809,6 +815,7 @@ def main() -> None:
             "first_fields.specifics": 1,
             "start_sources.specifics_example": 1,
             "missing_required_fields.volume": 2,
+            "missing_fields_by_start_source.specifics_example.volume": 2,
         },
     )
     run_summary_fixture(

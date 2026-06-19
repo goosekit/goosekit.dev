@@ -10,7 +10,7 @@ import argparse
 import csv
 import json
 import sys
-from collections import Counter
+from collections import Counter, defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -72,6 +72,25 @@ API_WORKFLOW_SLUGS = {
     "hash-generator-api",
     "uuid-generator-api",
     "password-generator-api",
+}
+MISSING_FIELD_EVENTS = {
+    "goosekit_api_commercial_example_clicked",
+    "goosekit_api_volume_example_clicked",
+    "goosekit_api_runtime_example_clicked",
+    "goosekit_api_specifics_example_clicked",
+    "goosekit_api_budget_example_clicked",
+    "goosekit_api_failure_example_clicked",
+    "goosekit_api_production_request_started",
+    "goosekit_api_packet_copied",
+    "goosekit_api_production_access_clicked",
+}
+EXAMPLE_EVENT_SOURCES = {
+    "goosekit_api_volume_example_clicked": "volume_example",
+    "goosekit_api_runtime_example_clicked": "runtime_example",
+    "goosekit_api_specifics_example_clicked": "specifics_example",
+    "goosekit_api_commercial_example_clicked": "commercial_example",
+    "goosekit_api_budget_example_clicked": "budget_example",
+    "goosekit_api_failure_example_clicked": "failure_example",
 }
 
 
@@ -271,20 +290,17 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     missing_required_fields = Counter(
         field
         for event in api_events
-        if event.name in {
-            "goosekit_api_commercial_example_clicked",
-            "goosekit_api_volume_example_clicked",
-            "goosekit_api_runtime_example_clicked",
-            "goosekit_api_specifics_example_clicked",
-            "goosekit_api_budget_example_clicked",
-            "goosekit_api_failure_example_clicked",
-            "goosekit_api_production_request_started",
-            "goosekit_api_packet_copied",
-            "goosekit_api_production_access_clicked",
-        }
+        if event.name in MISSING_FIELD_EVENTS
         and not is_complete(event.complete)
         for field in split_missing_fields(event.missing_required_fields)
     )
+    missing_fields_by_start_source: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    for event in api_events:
+        if event.name not in MISSING_FIELD_EVENTS or is_complete(event.complete):
+            continue
+        source = event.start_source or EXAMPLE_EVENT_SOURCES.get(event.name) or "unknown"
+        for field in split_missing_fields(event.missing_required_fields):
+            missing_fields_by_start_source[source][field] += 1
     located_api_events = [event for event in api_events if event.name in API_EVENTS and event.name != "seo_use_case_page_viewed"]
     missing_product = sum(1 for event in api_events if event.name in API_EVENTS and not event.product)
     missing_location = sum(1 for event in located_api_events if not event.location)
@@ -345,6 +361,10 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "complete_mail_clicks": complete_mail_clicks,
         "incomplete_mail_clicks": incomplete_mail_clicks,
         "missing_required_fields": dict(missing_required_fields.most_common()),
+        "missing_fields_by_start_source": {
+            source: dict(counter.most_common())
+            for source, counter in sorted(missing_fields_by_start_source.items())
+        },
         "endpoint_example_views_by_endpoint": dict(endpoint_example_views_by_endpoint.most_common()),
         "volume_example_choices": dict(volume_example_choices.most_common()),
         "runtime_example_choices": dict(runtime_example_choices.most_common()),
@@ -419,6 +439,12 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("## Missing Required Fields")
     for field, count in summary["missing_required_fields"].items():
         lines.append(f"- {field}: {count}")
+    lines.append("")
+    lines.append("## Missing Fields By Start Source")
+    for source, fields in summary["missing_fields_by_start_source"].items():
+        if not fields:
+            continue
+        lines.append(f"- {source}: " + ", ".join(f"{field}={count}" for field, count in fields.items()))
     lines.append("")
     lines.append("## Endpoint Example Views")
     for endpoint, count in summary["endpoint_example_views_by_endpoint"].items():
