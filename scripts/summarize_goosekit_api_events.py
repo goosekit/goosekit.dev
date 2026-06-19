@@ -222,6 +222,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         field
         for event in api_events
         if event.name in {
+            "goosekit_api_commercial_example_clicked",
+            "goosekit_api_budget_example_clicked",
+            "goosekit_api_failure_example_clicked",
             "goosekit_api_production_request_started",
             "goosekit_api_packet_copied",
             "goosekit_api_production_access_clicked",

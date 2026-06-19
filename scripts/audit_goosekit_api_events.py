@@ -422,6 +422,9 @@ def main() -> None:
         "inspect_builder_start_friction",
         "inspect_builder_completion_friction",
         "inspect_builder_field_burden",
+        "goosekit_api_commercial_example_clicked",
+        "goosekit_api_budget_example_clicked",
+        "goosekit_api_failure_example_clicked",
         "do_not_update_counters_from_analytics_alone",
         'ref=prop("ref", "source_ref")',
         "--output-dir requires --window and --mailbox-check",
@@ -542,7 +545,12 @@ def main() -> None:
             },
         ],
         "inspect_builder_start_friction",
-        expected_counts={"budget_example_clicks": 1, "budget_example_choices.Need quote": 1},
+        expected_counts={
+            "budget_example_clicks": 1,
+            "budget_example_choices.Need quote": 1,
+            "missing_required_fields.commercial": 1,
+            "missing_required_fields.failure": 1,
+        },
     )
     run_summary_fixture(
         "commercial example click is observation only",
@@ -576,7 +584,12 @@ def main() -> None:
             },
         ],
         "inspect_builder_start_friction",
-        expected_counts={"commercial_example_clicks": 1, "commercial_example_choices.Paid product": 1},
+        expected_counts={
+            "commercial_example_clicks": 1,
+            "commercial_example_choices.Paid product": 1,
+            "missing_required_fields.budget": 1,
+            "missing_required_fields.failure": 1,
+        },
     )
     run_summary_fixture(
         "failure example click is observation only",
@@ -610,7 +623,12 @@ def main() -> None:
             },
         ],
         "inspect_builder_start_friction",
-        expected_counts={"failure_example_clicks": 1, "failure_example_choices.Feature cannot ship": 1},
+        expected_counts={
+            "failure_example_clicks": 1,
+            "failure_example_choices.Feature cannot ship": 1,
+            "missing_required_fields.commercial": 1,
+            "missing_required_fields.budget": 1,
+        },
     )
     run_summary_fixture(
         "free docs without production bridge",
@@ -695,7 +713,11 @@ def main() -> None:
             },
         ],
         "inspect_builder_start_friction",
-        expected_counts={"endpoint_production_clicks": 0, "failure_example_clicks": 1},
+        expected_counts={
+            "endpoint_production_clicks": 0,
+            "failure_example_clicks": 1,
+            "missing_required_fields.budget": 1,
+        },
     )
     run_summary_fixture(
         "incomplete packet reports missing required fields",
