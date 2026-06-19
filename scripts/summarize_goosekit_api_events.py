@@ -86,6 +86,8 @@ class Event:
     target_href: str
     slug: str
     page_type: str
+    example_label: str
+    example_value: str
 
 
 def parse_properties(value: Any) -> dict[str, Any]:
@@ -127,6 +129,8 @@ def event_from_row(row: dict[str, Any]) -> Event:
         target_href=prop("target_href", "href", "$current_url"),
         slug=prop("slug"),
         page_type=prop("page_type"),
+        example_label=prop("example_label"),
+        example_value=prop("example_value"),
     )
 
 
@@ -176,6 +180,21 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         event.endpoint
         for event in api_events
         if event.name == "goosekit_api_endpoint_examples_viewed" and event.endpoint
+    )
+    commercial_example_choices = Counter(
+        event.example_label or event.example_value
+        for event in api_events
+        if event.name == "goosekit_api_commercial_example_clicked" and (event.example_label or event.example_value)
+    )
+    budget_example_choices = Counter(
+        event.example_label or event.example_value
+        for event in api_events
+        if event.name == "goosekit_api_budget_example_clicked" and (event.example_label or event.example_value)
+    )
+    failure_example_choices = Counter(
+        event.example_label or event.example_value
+        for event in api_events
+        if event.name == "goosekit_api_failure_example_clicked" and (event.example_label or event.example_value)
     )
 
     builder_clicks = counts["goosekit_api_production_request_builder_clicked"]
@@ -268,6 +287,9 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "incomplete_mail_clicks": incomplete_mail_clicks,
         "missing_required_fields": dict(missing_required_fields.most_common()),
         "endpoint_example_views_by_endpoint": dict(endpoint_example_views_by_endpoint.most_common()),
+        "commercial_example_choices": dict(commercial_example_choices.most_common()),
+        "budget_example_choices": dict(budget_example_choices.most_common()),
+        "failure_example_choices": dict(failure_example_choices.most_common()),
         "mailbox_packets": mailbox_packets,
         "api_events_missing_product": missing_product,
         "api_events_missing_location": missing_location,
@@ -331,6 +353,18 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
     lines.append("## Endpoint Example Views")
     for endpoint, count in summary["endpoint_example_views_by_endpoint"].items():
         lines.append(f"- {endpoint}: {count}")
+    lines.append("")
+    lines.append("## Commercial Example Choices")
+    for choice, count in summary["commercial_example_choices"].items():
+        lines.append(f"- {choice}: {count}")
+    lines.append("")
+    lines.append("## Budget Example Choices")
+    for choice, count in summary["budget_example_choices"].items():
+        lines.append(f"- {choice}: {count}")
+    lines.append("")
+    lines.append("## Failure Example Choices")
+    for choice, count in summary["failure_example_choices"].items():
+        lines.append(f"- {choice}: {count}")
     lines.append("")
     lines.append("## Locations")
     for location, count in summary["locations"].items():

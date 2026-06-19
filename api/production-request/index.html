@@ -356,6 +356,8 @@
         ref: sourceRef,
         source_ref: sourceRef,
         location: 'production_request_commercial_examples',
+        example_label: button.textContent.trim(),
+        example_value: commercial.value,
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')
@@ -374,6 +376,8 @@
         ref: sourceRef,
         source_ref: sourceRef,
         location: 'production_request_budget_examples',
+        example_label: button.textContent.trim(),
+        example_value: budget.value,
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')
@@ -392,6 +396,8 @@
         ref: sourceRef,
         source_ref: sourceRef,
         location: 'production_request_failure_examples',
+        example_label: button.textContent.trim(),
+        example_value: failure.value,
         required_fields_filled: status.count,
         required_fields_total: status.total,
         missing_required_fields: status.missing.join(',')
