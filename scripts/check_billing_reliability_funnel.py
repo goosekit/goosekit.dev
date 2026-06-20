@@ -155,7 +155,7 @@ PAGES = [
             "source_ref: source",
             "request_context: 'revenue_leak_audit'",
             "price_range_eur: '149'",
-            "target_href: mailto",
+            "target_href: links.mailto",
             "price_eur: 149",
             "Source%3A%20",
         ],
