@@ -71,7 +71,22 @@
     </section>
 
     <section>
-      <h2>4. Add the duplicate-provisioning query</h2>
+      <h2>4. When Checkout replaces mock grants</h2>
+      <p>Another version of this bug appears when an app starts with mock grants, then turns on hosted Stripe Checkout for several purchase flows at once. A subscription plan, a one-time credit pack, and a paid gift may all return through the same success route even though they should write different durable effects.</p>
+      <ul class="checklist warn">
+        <li>Stripe env variables are missing, so production quietly stays in mock-grant mode.</li>
+        <li>Plan subscriptions use <span class="code">mode='subscription'</span>, while credit packs and gifts use <span class="code">mode='payment'</span>, but the return path treats them like the same entitlement.</li>
+        <li>The success route verifies <span class="code">payment_status</span> but does not store a pending-to-fulfilled Checkout Session row before applying the effect.</li>
+        <li>A gift row is created before payment, or created twice after refresh/webhook replay.</li>
+        <li>Initial subscription credits are granted at Checkout while recurring top-ups are assumed without a verified <span class="code">invoice.paid</span> path.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn secondary" href="/blog/stripe-subscription-add-credit-checkout-ledger/?ref=checkout_success_mock_grant_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="checkout_success_mock_grant_related">Subscription + credit-pack ledger?</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>5. Add the duplicate-provisioning query</h2>
       <p>The schema differs by app, but the query shape is consistent: find one provider object that created more than one local active access record.</p>
       <pre><code>-- Example shape only: adapt table names to your app.
 select
@@ -89,7 +104,7 @@ having count(*) > 1;</code></pre>
     </section>
 
     <section>
-      <h2>5. Safer success-route behavior</h2>
+      <h2>6. Safer success-route behavior</h2>
       <ul class="checklist">
         <li>Show “payment received, provisioning” until the local entitlement row is confirmed.</li>
         <li>Fetch current local subscription state without mutating it when possible.</li>
