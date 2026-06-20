@@ -268,7 +268,10 @@ else
        grep -q "setup_help_request_form_started" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_field_completed" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_ready_to_send" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_formspree_submit" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_auto_mailto_suppressed" "$SETUP_REQUEST_FILE" && \
+       grep -q "https://formspree.io/f/xblgwdqz" "$SETUP_REQUEST_FILE" && \
+       grep -q 'name="request_packet"' "$SETUP_REQUEST_FILE" && \
        grep -q 'data-button-position="after_form"' "$SETUP_REQUEST_FILE" && \
        grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
        grep -q "data-gmail-link" "$SETUP_REQUEST_FILE" && \

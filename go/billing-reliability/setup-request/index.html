@@ -20,6 +20,13 @@
       <a class="btn" href="#" data-manual-link="true" data-button-position="top">Skip the form and email</a>
       <button class="btn" type="button" data-copy-request="true">Copy request text</button>
     </div>
+    <form data-formspree-form action="https://formspree.io/f/xblgwdqz" method="POST">
+      <input type="hidden" name="_subject" data-hidden-subject>
+      <input type="hidden" name="request_context" data-hidden-context>
+      <input type="hidden" name="price_range_eur" data-hidden-price-range>
+      <input type="hidden" name="source" data-hidden-source>
+      <input type="hidden" name="source_ref" data-hidden-source-ref>
+      <input type="hidden" name="request_packet" data-hidden-packet>
     <p class="fallback-line">
       <span>Send it to</span>
       <span class="email-chip" data-email-address>arthur.pierrey@gmail.com</span>
@@ -32,27 +39,29 @@
     </div>
     <div class="request-form" data-request-form>
       <label>Stack
-        <input data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
+        <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
       </label>
       <label>Repo state
-        <input data-request-field="repo" autocomplete="off" placeholder="Starter, existing repo, live app">
+        <input name="repo_state" data-request-field="repo" autocomplete="off" placeholder="Starter, existing repo, live app">
       </label>
       <label class="wide">Blocker or launch risk
-        <textarea data-request-field="blocker" placeholder="What needs to be wired, fixed, or checked?"></textarea>
+        <textarea name="blocker_or_launch_risk" data-request-field="blocker" placeholder="What needs to be wired, fixed, or checked?"></textarea>
       </label>
       <label>Evidence ready
-        <input data-request-field="evidence" autocomplete="off" placeholder="Logs, screenshots, file paths">
+        <input name="evidence_ready" data-request-field="evidence" autocomplete="off" placeholder="Logs, screenshots, file paths">
       </label>
       <label>Deadline / budget
-        <input data-request-field="deadline" autocomplete="off" placeholder="Launch date, urgency, budget range">
+        <input name="deadline_or_budget" data-request-field="deadline" autocomplete="off" placeholder="Launch date, urgency, budget range">
       </label>
     </div>
     <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
     <textarea class="request-copy" data-request-copy readonly></textarea>
     <div class="actions">
+      <button class="btn primary" type="submit" data-formspree-submit>Send request</button>
       <a class="btn primary" href="#" data-manual-link="true" data-button-position="after_form">Continue in email</a>
       <button class="btn" type="button" data-copy-request="true" data-button-position="after_form">Copy request text</button>
     </div>
+    </form>
     <p class="fine" data-copy-status aria-live="polite"></p>
   </main>
   <script>
@@ -116,6 +125,13 @@
       var gmailLink = document.querySelector('[data-gmail-link]');
       var outlookLink = document.querySelector('[data-outlook-link]');
       var copyStatus = document.querySelector('[data-copy-status]');
+      var formspreeForm = document.querySelector('[data-formspree-form]');
+      var hiddenSubject = document.querySelector('[data-hidden-subject]');
+      var hiddenContext = document.querySelector('[data-hidden-context]');
+      var hiddenPriceRange = document.querySelector('[data-hidden-price-range]');
+      var hiddenSource = document.querySelector('[data-hidden-source]');
+      var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
+      var hiddenPacket = document.querySelector('[data-hidden-packet]');
       var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
@@ -158,6 +174,12 @@
         gmailLink.href = gmailCompose;
         outlookLink.href = outlookCompose;
         copyText.value = body;
+        hiddenSubject.value = subject;
+        hiddenContext.value = context;
+        hiddenPriceRange.value = priceRange;
+        hiddenSource.value = source;
+        hiddenSourceRef.value = sourceRef;
+        hiddenPacket.value = body;
       }
       refreshLinks();
       fields.forEach(function (field) {
@@ -192,6 +214,10 @@
       outlookLink.addEventListener('click', function () {
         refreshLinks();
         capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'outlook_compose' }));
+      });
+      formspreeForm.addEventListener('submit', function () {
+        refreshLinks();
+        capture('setup_help_request_formspree_submit', Object.assign({}, eventProps, formStats(), { target_href: 'formspree_xblgwdqz' }));
       });
       copyButtons.forEach(function (button) {
         button.addEventListener('click', function () {

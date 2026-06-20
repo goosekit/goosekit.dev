@@ -259,6 +259,16 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_formspree_submit",
+        "setup route Formspree submit event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "https://formspree.io/f/xblgwdqz",
+        "setup route Formspree capture endpoint",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "setup_help_request_auto_mailto_suppressed",
         "setup route suppresses auto-mailto while packet form is available",
     ),
