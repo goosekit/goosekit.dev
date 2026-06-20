@@ -254,6 +254,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_auto_mailto_suppressed",
+        "setup route suppresses auto-mailto while packet form is available",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "data-copy-email",
         "setup route email-copy fallback button",
     ),

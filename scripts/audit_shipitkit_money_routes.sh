@@ -267,6 +267,7 @@ else
        grep -q "setup_help_request_outlook_clicked" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_form_started" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_field_completed" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_auto_mailto_suppressed" "$SETUP_REQUEST_FILE" && \
        grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
        grep -q "data-gmail-link" "$SETUP_REQUEST_FILE" && \
        grep -q 'data-request-field="blocker"' "$SETUP_REQUEST_FILE"; then

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Opening setup help request…</title>
+  <title>Prepare setup help request</title>
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
@@ -14,10 +14,10 @@
 <body>
   <main class="card">
     <div class="pill">Next.js + Supabase + Stripe</div>
-    <h1>Opening your setup request…</h1>
-    <p>If your email app does not open automatically, use the buttons below.</p>
+    <h1>Prepare your setup request</h1>
+    <p>Fill the fields you can, then choose the email app or copy fallback that works best.</p>
     <div class="actions">
-      <a class="btn primary" href="#" data-manual-link="true">Write the setup request</a>
+      <a class="btn primary" href="#" data-manual-link="true">Continue in email</a>
       <button class="btn" type="button" data-copy-request="true">Copy request text</button>
     </div>
     <p class="fallback-line">
@@ -169,6 +169,7 @@
       manual.addEventListener('click', function () {
         refreshLinks();
         capture('setup_help_request_manual_click', Object.assign({}, eventProps, formStats(), { target_href: mailto }));
+        capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, formStats(), { target_href: mailto, trigger: 'manual_click' }));
       });
       gmailLink.addEventListener('click', function () {
         refreshLinks();
@@ -214,10 +215,7 @@
       copySubjectButton.addEventListener('click', function () {
         copyValue(subject, 'Subject', 'setup_help_request_subject_copy_clicked', 'copy_email_subject');
       });
-      setTimeout(function () {
-        capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, { target_href: mailto }));
-        window.location.href = mailto;
-      }, 420);
+      capture('setup_help_request_auto_mailto_suppressed', Object.assign({}, eventProps, { target_href: mailto }));
     });
   </script>
 </body>

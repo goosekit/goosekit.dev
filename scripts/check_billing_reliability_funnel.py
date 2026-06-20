@@ -175,6 +175,7 @@ PAGES = [
             "setup_help_request_outlook_clicked",
             "setup_help_request_form_started",
             "setup_help_request_field_completed",
+            "setup_help_request_auto_mailto_suppressed",
             "data-request-field=\"blocker\"",
             "location: 'setup_help_request_route'",
             "path: '/go/billing-reliability/setup-request/'",
