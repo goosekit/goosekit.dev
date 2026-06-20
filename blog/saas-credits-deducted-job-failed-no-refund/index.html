@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SaaS Credits Deducted but the Job Failed?</title>
-  <meta name="description" content="Debug metered SaaS credits deducted when async jobs fail, outputs are missing, refunds are skipped, or terminal states do not match the billing ledger.">
+  <meta name="description" content="Debug metered SaaS credits deducted when async jobs fail, no-op edits return unchanged output, refunds are skipped, or terminal states do not match the billing ledger.">
   <link rel="canonical" href="https://goosekit.dev/blog/saas-credits-deducted-job-failed-no-refund/">
   <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
   <meta property="og:type" content="article">
   <meta property="og:title" content="SaaS Credits Deducted but the Job Failed?">
-  <meta property="og:description" content="A practical checklist for metered credits, async jobs, refunds, and billing ledger repair.">
+  <meta property="og:description" content="A practical checklist for metered credits, no-op edits, async jobs, refunds, and billing ledger repair.">
   <meta property="og:url" content="https://goosekit.dev/blog/saas-credits-deducted-job-failed-no-refund/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
@@ -25,12 +25,12 @@
     <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=metered_credit_job_failed_nav">Run drift check</a><a href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_nav">Revenue leak audit</a></div>
     <div class="eyebrow">Metered credits + async job billing</div>
     <h1>SaaS credits deducted, but the async job failed?</h1>
-    <p class="lead">This is a money-state bug: the user loses credits, but the product did not deliver the output, did not refund, and did not leave a repairable terminal state.</p>
+    <p class="lead">This is a money-state bug: the user loses credits, but the product did not deliver the output, returned an unchanged no-op result, did not refund, and did not leave a repairable terminal state.</p>
     <p class="lead">Do not start by changing prices. Start by proving whether the debit ledger, job/output row, cron/request success state, and user-visible terminal state all describe the same outcome.</p>
 
     <section class="card cta">
       <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>Every metered operation should end as delivered, refunded/reversed, or repair-needed. A debit row without output, refund, or repair state is a revenue leak and a trust leak.</p>
+      <p>Every metered operation should end as delivered, refunded/reversed, or repair-needed. A debit row without output, meaningful change, refund, or repair state is a revenue leak and a trust leak.</p>
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=metered_credit_job_failed_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_top">Run the billing drift check</a>
         <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_top">Map a revenue leak</a>
@@ -63,14 +63,26 @@
       <ul class="checklist warn">
         <li>Insufficient balance: the job must not run and no ledger row should debit credits.</li>
         <li>Debit success + output delivered: one debit row, one output row, user sees the result.</li>
+        <li>Debit success + no-op output: if the generated output is identical or the operation was configured to return the input unchanged, refund/reverse credits or mark repair-needed.</li>
         <li>Debit success + downstream failure: refund/reversal or repair-needed row is created.</li>
         <li>Duplicate retry: the same request does not debit twice or double-refund.</li>
         <li>Stale cron recovery: a background job can find stranded debits and move them to a terminal state.</li>
       </ul>
     </section>
 
+    <section class="card" id="no-op-output-review">
+      <h2>4. Catch no-op edits before they become paid work</h2>
+      <p>Image, audio, document, and AI-edit products can “succeed” technically while delivering the same asset back to the customer. If the prompt, transform config, or safety fallback asks the worker to return the input unchanged, that should not consume a paid credit unless the product explicitly sells validation rather than transformation.</p>
+      <ul class="checklist">
+        <li>Store input asset hash, output asset hash, transform type, and prompt/config version next to the debit row.</li>
+        <li>Record whether the operation produced a meaningful output delta, a deliberate no-op, or a safety fallback.</li>
+        <li>Refund/reverse credits automatically when the paid operation returns unchanged output outside an explicitly allowed validation mode.</li>
+        <li>Keep a replay case where the worker is forced to return the input unchanged and prove the ledger ends as reversed or repair-needed.</li>
+      </ul>
+    </section>
+
     <section>
-      <h2>4. Add the stranded-debit query before another user hits it</h2>
+      <h2>5. Add the stranded-debit query before another user hits it</h2>
       <p>The exact schema will differ. The shape is: find debits where no delivered output, refund, reversal, or repair record exists.</p>
       <pre><code>-- Example shape only: adapt table names to your app.
 select
@@ -95,10 +107,10 @@ where l.type = 'debit'
     </section>
 
     <section>
-      <h2>5. What to send for a narrow review</h2>
-      <p>Send the smallest evidence packet: the debit helper, ledger row, job/output row, cron or request success status, user-visible state, expected terminal state, and the refund or repair record if it exists.</p>
+      <h2>6. What to send for a narrow review</h2>
+      <p>Send the smallest evidence packet: the debit helper, ledger row, job/output row, input/output hashes or asset IDs, no-op detection rule, cron or request success status, user-visible state, expected terminal state, and the refund or repair record if it exists.</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Metered%20credit%20job%20failure%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20metered-credit%20billing%20review.%0A%0AStack%3A%0ADebit%2Fcredit%20helper%20file%3A%0ALedger%20row%20or%20schema%3A%0AJob%2Foutput%20row%20or%20schema%3A%0ACron%2Frequest%20success%20status%3A%0AExpected%20terminal%20state%3A%0AActual%20user-visible%20state%3A%0ARefund%20or%20repair%20record%20if%20any%3A%0AReplay%20case%20that%20currently%20fails%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_bottom_mailto">Request a metered-credit review →</a>
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Metered%20credit%20job%20failure%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20metered-credit%20billing%20review.%0A%0AStack%3A%0ADebit%2Fcredit%20helper%20file%3A%0ALedger%20row%20or%20schema%3A%0AJob%2Foutput%20row%20or%20schema%3A%0AInput%20asset%20hash%20or%20id%3A%0AOutput%20asset%20hash%20or%20id%3A%0ANo-op%20or%20unchanged-output%20detection%20rule%3A%0ACron%2Frequest%20success%20status%3A%0AExpected%20terminal%20state%3A%0AActual%20user-visible%20state%3A%0ARefund%20or%20repair%20record%20if%20any%3A%0AReplay%20case%20that%20currently%20fails%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_bottom_mailto">Request a metered-credit review →</a>
         <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=metered_credit_job_failed_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="metered_credit_job_failed_bottom">Map the evidence packet first</a>
       </div>
       <p class="note">No secrets in the first email. Redact customer IDs until scope is agreed.</p>

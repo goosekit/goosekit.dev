@@ -290,6 +290,9 @@ PAGES = [
             "debit helper",
             "job/output row",
             "refund or repair record",
+            "no-op edits",
+            "input asset hash",
+            "no-op detection rule",
         ],
     },
     {
