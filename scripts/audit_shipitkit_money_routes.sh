@@ -263,10 +263,13 @@ else
        grep -q "setup_help_request_mailto_opened.*target_href: mailto" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_email_copy_clicked" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_subject_copy_clicked" "$SETUP_REQUEST_FILE" && \
-       grep -q "data-copy-email" "$SETUP_REQUEST_FILE"; then
+       grep -q "setup_help_request_gmail_clicked" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_outlook_clicked" "$SETUP_REQUEST_FILE" && \
+       grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
+       grep -q "data-gmail-link" "$SETUP_REQUEST_FILE"; then
     pass "setup-request route — preserves Ship It Kit request context and source ref"
   else
-    fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, or manual email fallback"
+    fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, or webmail/manual email fallback"
   fi
 fi
 

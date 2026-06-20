@@ -234,8 +234,23 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_gmail_clicked",
+        "setup route Gmail compose event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_outlook_clicked",
+        "setup route Outlook compose event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "data-copy-email",
         "setup route email-copy fallback button",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "data-gmail-link",
+        "setup route Gmail compose link",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

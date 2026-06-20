@@ -171,6 +171,8 @@ PAGES = [
             "setup_help_request_copy_clicked",
             "setup_help_request_email_copy_clicked",
             "setup_help_request_subject_copy_clicked",
+            "setup_help_request_gmail_clicked",
+            "setup_help_request_outlook_clicked",
             "location: 'setup_help_request_route'",
             "path: '/go/billing-reliability/setup-request/'",
             "target_href: window.location.href",

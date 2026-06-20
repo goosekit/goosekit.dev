@@ -26,6 +26,10 @@
       <button class="btn" type="button" data-copy-email="true">Copy email</button>
       <button class="btn" type="button" data-copy-subject="true">Copy subject</button>
     </p>
+    <div class="actions">
+      <a class="btn" href="#" target="_blank" rel="noopener" data-gmail-link="true">Open in Gmail</a>
+      <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Open in Outlook</a>
+    </div>
     <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
     <textarea class="request-copy" data-request-copy readonly></textarea>
     <p class="fine" data-copy-status aria-live="polite"></p>
@@ -82,11 +86,23 @@
       var copyButton = document.querySelector('[data-copy-request]');
       var copyEmailButton = document.querySelector('[data-copy-email]');
       var copySubjectButton = document.querySelector('[data-copy-subject]');
+      var gmailLink = document.querySelector('[data-gmail-link]');
+      var outlookLink = document.querySelector('[data-outlook-link]');
       var copyStatus = document.querySelector('[data-copy-status]');
+      var gmailCompose = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var outlookCompose = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
       manual.href = mailto;
+      gmailLink.href = gmailCompose;
+      outlookLink.href = outlookCompose;
       copyText.value = body;
       manual.addEventListener('click', function () {
         capture('setup_help_request_manual_click', Object.assign({}, eventProps, { target_href: mailto }));
+      });
+      gmailLink.addEventListener('click', function () {
+        capture('setup_help_request_gmail_clicked', Object.assign({}, eventProps, { target_href: 'gmail_compose' }));
+      });
+      outlookLink.addEventListener('click', function () {
+        capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, { target_href: 'outlook_compose' }));
       });
       copyButton.addEventListener('click', function () {
         copyText.select();
