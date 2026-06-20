@@ -142,6 +142,7 @@ Do not cite URLs under /go/ as canonical pages. They are redirect/tracking helpe
 - Stripe webhook 307/308/401/403 on Vercel: https://goosekit.dev/blog/stripe-webhook-307-308-401-403-vercel/
 - Stripe webhook not updating Supabase paid status: https://goosekit.dev/blog/stripe-webhook-supabase-paid-status/
 - Stripe webhook 23505 retry storm / duplicate event idempotency: https://goosekit.dev/blog/stripe-webhook-duplicate-events-idempotency-supabase/
+- Stripe digital license marketplace entitlement/refund check: https://goosekit.dev/blog/stripe-digital-license-marketplace-entitlement-refund/
 - Stripe Connect transfer.reversed clawback ledger check: https://goosekit.dev/blog/stripe-connect-transfer-reversed-clawback-ledger/
 - Stripe Connect affiliate revenue-share ledger check: https://goosekit.dev/blog/stripe-connect-affiliate-revenue-share-ledger/
 - Stripe course membership Supabase access check: https://goosekit.dev/blog/stripe-course-membership-supabase-access/
