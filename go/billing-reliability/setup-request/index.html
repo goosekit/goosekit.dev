@@ -15,9 +15,9 @@
   <main class="card">
     <div class="pill">Next.js + Supabase + Stripe</div>
     <h1>Prepare your setup request</h1>
-    <p>Fill the fields you can, then choose the email app or copy fallback that works best.</p>
+    <p>Add 2-3 details, then choose the email app or copy fallback that works best.</p>
     <div class="actions">
-      <a class="btn primary" href="#" data-manual-link="true">Continue in email</a>
+      <a class="btn" href="#" data-manual-link="true" data-button-position="top">Skip the form and email</a>
       <button class="btn" type="button" data-copy-request="true">Copy request text</button>
     </div>
     <p class="fallback-line">
@@ -49,6 +49,10 @@
     </div>
     <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
     <textarea class="request-copy" data-request-copy readonly></textarea>
+    <div class="actions">
+      <a class="btn primary" href="#" data-manual-link="true" data-button-position="after_form">Continue in email</a>
+      <button class="btn" type="button" data-copy-request="true" data-button-position="after_form">Copy request text</button>
+    </div>
     <p class="fine" data-copy-status aria-live="polite"></p>
   </main>
   <script>
@@ -89,6 +93,7 @@
       var gmailCompose = '';
       var outlookCompose = '';
       var formStarted = false;
+      var readyToSendCaptured = false;
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
@@ -103,8 +108,9 @@
       };
       capture('setup_help_request_route_viewed', Object.assign({}, eventProps, { target_href: window.location.href }));
       var manual = document.querySelector('[data-manual-link]');
+      var manualLinks = Array.prototype.slice.call(document.querySelectorAll('[data-manual-link]'));
       var copyText = document.querySelector('[data-request-copy]');
-      var copyButton = document.querySelector('[data-copy-request]');
+      var copyButtons = Array.prototype.slice.call(document.querySelectorAll('[data-copy-request]'));
       var copyEmailButton = document.querySelector('[data-copy-email]');
       var copySubjectButton = document.querySelector('[data-copy-subject]');
       var gmailLink = document.querySelector('[data-gmail-link]');
@@ -148,7 +154,7 @@
         mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         gmailCompose = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         outlookCompose = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-        manual.href = mailto;
+        manualLinks.forEach(function (link) { link.href = mailto; });
         gmailLink.href = gmailCompose;
         outlookLink.href = outlookCompose;
         copyText.value = body;
@@ -161,15 +167,23 @@
             formStarted = true;
             capture('setup_help_request_form_started', Object.assign({}, eventProps, formStats(), { first_field: field.getAttribute('data-request-field') }));
           }
+          var stats = formStats();
+          if (!readyToSendCaptured && stats.completed_fields >= 3) {
+            readyToSendCaptured = true;
+            capture('setup_help_request_ready_to_send', Object.assign({}, eventProps, stats));
+          }
         });
         field.addEventListener('blur', function () {
           if (field.value.trim()) capture('setup_help_request_field_completed', Object.assign({}, eventProps, formStats(), { field: field.getAttribute('data-request-field') }));
         });
       });
-      manual.addEventListener('click', function () {
-        refreshLinks();
-        capture('setup_help_request_manual_click', Object.assign({}, eventProps, formStats(), { target_href: mailto }));
-        capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, formStats(), { target_href: mailto, trigger: 'manual_click' }));
+      manualLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          refreshLinks();
+          var position = link.getAttribute('data-button-position') || 'unknown';
+          capture('setup_help_request_manual_click', Object.assign({}, eventProps, formStats(), { target_href: mailto, button_position: position }));
+          capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, formStats(), { target_href: mailto, trigger: 'manual_click', button_position: position }));
+        });
       });
       gmailLink.addEventListener('click', function () {
         refreshLinks();
@@ -179,23 +193,25 @@
         refreshLinks();
         capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'outlook_compose' }));
       });
-      copyButton.addEventListener('click', function () {
-        refreshLinks();
-        copyText.select();
-        var copied = false;
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(body).then(function () {
-            copyStatus.textContent = 'Copied. Paste it into your email to Arthur.';
-          }).catch(function () {
-            document.execCommand('copy');
-            copyStatus.textContent = 'Selected. Copy it manually if your browser blocked clipboard access.';
-          });
-          copied = true;
-        } else {
-          copied = document.execCommand('copy');
-          copyStatus.textContent = copied ? 'Copied. Paste it into your email to Arthur.' : 'Selected. Copy it manually.';
-        }
-        capture('setup_help_request_copy_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'copy_request_text', clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+      copyButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          refreshLinks();
+          copyText.select();
+          var copied = false;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(body).then(function () {
+              copyStatus.textContent = 'Copied. Paste it into your email to Arthur.';
+            }).catch(function () {
+              document.execCommand('copy');
+              copyStatus.textContent = 'Selected. Copy it manually if your browser blocked clipboard access.';
+            });
+            copied = true;
+          } else {
+            copied = document.execCommand('copy');
+            copyStatus.textContent = copied ? 'Copied. Paste it into your email to Arthur.' : 'Selected. Copy it manually.';
+          }
+          capture('setup_help_request_copy_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'copy_request_text', button_position: button.getAttribute('data-button-position') || 'top', clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+        });
       });
       function copyValue(value, label, eventName, targetHref) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
