@@ -161,13 +161,17 @@ PAGES = [
         ],
     },
     {
-        "path": "/go/billing-reliability/setup-request/",
+        "path": "/go/billing-reliability/setup-request/?v=setup_route_context",
         "required": [
             "noindex, nofollow",
             "Next.js + Supabase + Stripe",
             "setup_help_request_route_viewed",
             "setup_help_request_manual_click",
             "setup_help_request_mailto_opened",
+            "location: 'setup_help_request_route'",
+            "path: '/go/billing-reliability/setup-request/'",
+            "target_href: window.location.href",
+            "target_href: mailto",
             "request_context: context",
             "price_range_eur: priceRange",
             "ship_it_kit_setup_help",

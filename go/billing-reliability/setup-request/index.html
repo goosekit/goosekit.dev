@@ -55,8 +55,16 @@
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
-      var eventProps = { source: source, source_ref: sourceRef, request_context: context, product: 'billing_reliability', price_range_eur: priceRange };
-      capture('setup_help_request_route_viewed', eventProps);
+      var eventProps = {
+        source: source,
+        source_ref: sourceRef,
+        request_context: context,
+        product: 'billing_reliability',
+        location: 'setup_help_request_route',
+        path: '/go/billing-reliability/setup-request/',
+        price_range_eur: priceRange
+      };
+      capture('setup_help_request_route_viewed', Object.assign({}, eventProps, { target_href: window.location.href }));
       var manual = document.querySelector('[data-manual-link]');
       manual.href = mailto;
       manual.addEventListener('click', function () {
