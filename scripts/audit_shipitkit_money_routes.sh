@@ -197,6 +197,7 @@ if [[ ! -f "$SETUP_HELP_FILE" ]]; then
 else
   if grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_hero_packet" "$SETUP_HELP_FILE" && \
      grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_packet" "$SETUP_HELP_FILE" && \
+     grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_production_saas" "$SETUP_HELP_FILE" && \
      grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_bottom_packet" "$SETUP_HELP_FILE"; then
     pass "setup-help — structured request CTAs preserve Ship It Kit source"
   else
@@ -204,10 +205,19 @@ else
   fi
 
   if grep -q "data-ph-event=\"setup_help_request_clicked\"" "$SETUP_HELP_FILE" && \
-     grep -q "data-ph-location=\"shipit_setup_help_packet\"" "$SETUP_HELP_FILE"; then
+     grep -q "data-ph-location=\"shipit_setup_help_packet\"" "$SETUP_HELP_FILE" && \
+     grep -q "data-ph-location=\"shipit_setup_help_production_saas\"" "$SETUP_HELP_FILE"; then
     pass "setup-help — measured packet CTA present"
   else
     fail "setup-help — missing measured packet CTA"
+  fi
+
+  if grep -q "Turning a demo repo into a production SaaS" "$SETUP_HELP_FILE" && \
+     grep -q "tenant or organization ids" "$SETUP_HELP_FILE" && \
+     grep -q "Stripe checkout, signed webhook, customer portal" "$SETUP_HELP_FILE"; then
+    pass "setup-help — production SaaS conversion scope is explicit"
+  else
+    fail "setup-help — missing production SaaS conversion scope"
   fi
 
   if grep -q "data-preserve-source-ref=\"true\"" "$SETUP_HELP_FILE" && \

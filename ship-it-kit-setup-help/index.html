@@ -147,6 +147,36 @@
     </section>
 
     <section class="section card">
+      <h2>Turning a demo repo into a production SaaS</h2>
+      <p>A common setup-help case is not starting from a blank starter. It is taking a repo that already has demo data, hard-coded env values, partial auth, or placeholder billing and making it safe enough to test with real users.</p>
+      <div class="two">
+        <div>
+          <h3>Good fixed-scope setup pass</h3>
+          <ul>
+            <li>Remove visible demo data and seed-only flows from the user path.</li>
+            <li>Confirm Vercel env names for Supabase, Stripe, app URL, and email sending.</li>
+            <li>Check protected routes, auth callback, and dashboard access after login.</li>
+            <li>Review Stripe checkout, signed webhook, customer portal, and local subscription row mapping.</li>
+            <li>Confirm whether tenant or organization ids are enforced before paid users arrive.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Not enough for a safe quote</h3>
+          <ul class="not">
+            <li>No deployed preview or repo state to inspect.</li>
+            <li>No Stripe test mode event, Price ID, webhook endpoint, or portal route yet.</li>
+            <li>No description of which pages should be tenant-scoped.</li>
+            <li>No launch deadline, budget range, or success definition.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_production_saas" data-preserve-source-ref="true" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_production_saas">Request production SaaS setup review →</a>
+        <a class="btn btn-secondary" href="/nextjs-supabase-stripe-setup-help/?ref=shipit_setup_help_production_saas" data-preserve-source-ref="true" data-ph-event="ship_it_kit_setup_help_secondary" data-ph-location="production_saas_general_setup_help">General setup scope</a>
+      </div>
+    </section>
+
+    <section class="section card">
       <h2>Where monthly support fits</h2>
       <p>The starter helps you avoid rebuilding auth and billing from zero. Setup help handles the first adaptation pass. Founding-5 billing-health support is only for live or near-live apps where Stripe/Supabase state can drift after the first pass.</p>
       <ul>
