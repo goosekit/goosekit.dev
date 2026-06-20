@@ -335,6 +335,21 @@ PAGES = [
         ],
     },
     {
+        "path": "/blog/stripe-one-time-booking-subscription-credit-atomic/",
+        "required": [
+            "billing_drift_check_clicked",
+            "one_time_booking_top",
+            "one_time_booking_bottom_mailto",
+            "setup_help_retainer_interest",
+            "data-ph-product=\"billing_reliability\"",
+            "fail-before-charge",
+            "Booking/session row before/after",
+            "Subscription credit row before/after",
+            "Processed-event or idempotency row",
+            "Refund, release, or repair path",
+        ],
+    },
+    {
         "path": "/blog/stripe-payment-element-redirect-webhook-order-tracking/",
         "required": [
             "billing_drift_check_clicked",
