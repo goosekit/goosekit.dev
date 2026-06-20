@@ -53,7 +53,11 @@
           ref: new URLSearchParams(window.location.search).get('ref') || null,
           score: el.getAttribute('data-ph-score') || null,
           risk_count: el.getAttribute('data-ph-risk-count') || null,
-          recommended_scope: el.getAttribute('data-ph-recommended-scope') || null
+          recommended_scope: el.getAttribute('data-ph-recommended-scope') || null,
+          unchecked_risk_keys: el.getAttribute('data-ph-unchecked-risk-keys') || null,
+          price_eur: el.getAttribute('data-ph-price-eur') || null,
+          price_eur_monthly: el.getAttribute('data-ph-price-eur-monthly') || null,
+          request_context: el.getAttribute('data-ph-request-context') || null
         });
 
         if (href.indexOf('/go/offline-pack') !== -1 || href.indexOf('f897713c-9cd2-4aaa-bd95-abd5ecd6b757') !== -1) {
