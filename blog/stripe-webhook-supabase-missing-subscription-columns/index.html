@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Webhook Writes Missing Supabase Subscription Columns?</title>
+  <meta name="description" content="Debug Stripe webhook and subscription-check flows that write plan limits or credits into Supabase columns that do not exist on the subscriptions table.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-webhook-supabase-missing-subscription-columns/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Webhook Writes Missing Supabase Subscription Columns?">
+  <meta property="og:description" content="A replay checklist for Stripe webhooks, subscription checks, Supabase schema drift, pricing_config limits, and failed local billing writes.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-webhook-supabase-missing-subscription-columns/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.05rem,6vw,4.05rem);line-height:1;letter-spacing:-.055em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.03em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=missing_subscription_columns_nav">Run drift check</a><a href="/billing-health-support/?ref=missing_subscription_columns_nav">Billing-health support</a></div>
+    <div class="eyebrow">Stripe webhook + Supabase schema drift</div>
+    <h1>Your Stripe webhook can fail because the subscription columns are not there.</h1>
+    <p class="lead">A common billing regression is not a bad Stripe event. It is local code writing plan limits, included credits, or tier fields into a Supabase table that never had those columns.</p>
+    <p class="lead">If `stripe-webhook` and `check-subscription` disagree with the actual schema, a paid user can hit a failed local write, stale limits, or a silent fallback path that makes Stripe look healthy while the app state is wrong.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>Every Stripe subscription event should write only to columns that exist on the chosen source-of-truth table, and every derived plan limit should be read from the right config table before access is granted.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=missing_subscription_columns_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="missing_subscription_columns_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=missing_subscription_columns_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="missing_subscription_columns_related">Compare paid-status drift</a>
+      </div>
+      <p class="note">Fixed-scope review fit: EUR99 when one Stripe event path and one Supabase subscription source-of-truth row need replay; EUR149 if plan limits, credits, and feature gates are spread across multiple tables.</p>
+    </section>
+
+    <section>
+      <h2>1. Separate subscription state from plan config</h2>
+      <div class="grid2">
+        <div class="card"><h3>Subscription truth</h3><ul class="checklist"><li>Stripe customer/subscription id</li><li>Status, period, cancel, and price references</li><li>Webhook event id and delivery status</li><li>Processed-event row for duplicate delivery</li></ul></div>
+        <div class="card"><h3>Plan-limit truth</h3><ul class="checklist"><li>`pricing_config` or plan table row</li><li>Team member limits and included credits</li><li>Feature gate resolver output</li><li>Fallback behavior when config is missing</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Test the schema-drift failure cases</h2>
+      <ul class="checklist warn">
+        <li>Webhook writes `team_member_limit` or `included_credits` to `subscriptions`, but those columns only exist in `pricing_config`.</li>
+        <li>Manual subscription check updates a different shape than the webhook path.</li>
+        <li>A failed local write is swallowed, leaving Stripe active but Supabase stale.</li>
+        <li>Duplicate webhook delivery retries the same bad write and hides the original event cause.</li>
+        <li>Feature gates read from a denormalized subscription row while plan config changed elsewhere.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Replay one event through the exact schema</h2>
+      <pre><code>stripe event received -> processed-event insert succeeds
+subscription source row -> only existing columns are updated
+plan config lookup -> limits/credits are derived, not invented
+feature gate resolver -> reads the same source on webhook and manual check
+duplicate event -> returns 2xx without rewriting stale or missing columns</code></pre>
+    </section>
+
+    <section class="card" id="missing-subscription-columns-evidence-packet">
+      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
+      <pre><code>Stripe event id/type/delivery status:
+Stripe subscription/customer/price ids:
+Supabase subscriptions table schema:
+Pricing_config or plan-limit table schema:
+Webhook write attempted columns:
+check-subscription write attempted columns:
+Subscription row before/after replay:
+Plan config row used for limits/credits:
+Exact local error or stale user-visible state:
+Processed-event/idempotency row:
+One replay command, test, or local repro:</code></pre>
+      <div class="actions">
+        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20subscription%20schema%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%2FSupabase%20subscription%20schema%20drift%20review.%0A%0AStripe%20event%20id%2Ftype%2Fdelivery%20status%3A%0AStripe%20subscription%2Fcustomer%2Fprice%20ids%3A%0ASupabase%20subscriptions%20table%20schema%3A%0APricing_config%20or%20plan-limit%20table%20schema%3A%0AWebhook%20write%20attempted%20columns%3A%0Acheck-subscription%20write%20attempted%20columns%3A%0ASubscription%20row%20before%2Fafter%20replay%3A%0APlan%20config%20row%20used%20for%20limits%2Fcredits%3A%0AExact%20local%20error%20or%20stale%20user-visible%20state%3A%0AProcessed-event%2Fidempotency%20row%3A%0AOne%20replay%20command%2C%20test%2C%20or%20local%20repro%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="missing_subscription_columns_bottom_mailto">Send schema-drift packet →</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to review before launch</h2>
+      <p>Trace one paid subscription event through the webhook, manual check path, Supabase schema, plan config lookup, feature gate, duplicate replay, and visible account limits. That keeps the fix small while protecting paid access and credits.</p>
+      <div class="actions">
+        <a class="btn primary" href="/billing-health-support/?ref=missing_subscription_columns_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="missing_subscription_columns_bottom">See billing-health support</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=missing_subscription_columns_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="missing_subscription_columns_related">Compare webhook replay safety</a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

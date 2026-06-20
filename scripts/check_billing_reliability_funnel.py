@@ -350,6 +350,21 @@ PAGES = [
         ],
     },
     {
+        "path": "/blog/stripe-webhook-supabase-missing-subscription-columns/",
+        "required": [
+            "billing_drift_check_clicked",
+            "missing_subscription_columns_top",
+            "missing_subscription_columns_bottom_mailto",
+            "setup_help_retainer_interest",
+            "data-ph-product=\"billing_reliability\"",
+            "subscriptions table schema",
+            "Pricing_config or plan-limit table schema",
+            "Webhook write attempted columns",
+            "check-subscription write attempted columns",
+            "Processed-event/idempotency row",
+        ],
+    },
+    {
         "path": "/blog/stripe-payment-element-redirect-webhook-order-tracking/",
         "required": [
             "billing_drift_check_clicked",
