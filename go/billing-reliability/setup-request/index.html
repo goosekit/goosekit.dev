@@ -8,7 +8,7 @@
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:680px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.request-copy{width:100%;min-height:220px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fallback-line{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;color:#d8d8e8;font-size:.96rem}.email-chip{padding:7px 10px;border-radius:10px;background:#10101d;border:1px solid rgba(255,255,255,.12);font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#f7f7fb}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}@media(max-width:640px){.request-form{grid-template-columns:1fr}}.request-copy{width:100%;min-height:220px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fallback-line{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;color:#d8d8e8;font-size:.96rem}.email-chip{padding:7px 10px;border-radius:10px;background:#10101d;border:1px solid rgba(255,255,255,.12);font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#f7f7fb}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
   </style>
 </head>
 <body>
@@ -30,6 +30,23 @@
       <a class="btn" href="#" target="_blank" rel="noopener" data-gmail-link="true">Open in Gmail</a>
       <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Open in Outlook</a>
     </div>
+    <div class="request-form" data-request-form>
+      <label>Stack
+        <input data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
+      </label>
+      <label>Repo state
+        <input data-request-field="repo" autocomplete="off" placeholder="Starter, existing repo, live app">
+      </label>
+      <label class="wide">Blocker or launch risk
+        <textarea data-request-field="blocker" placeholder="What needs to be wired, fixed, or checked?"></textarea>
+      </label>
+      <label>Evidence ready
+        <input data-request-field="evidence" autocomplete="off" placeholder="Logs, screenshots, file paths">
+      </label>
+      <label>Deadline / budget
+        <input data-request-field="deadline" autocomplete="off" placeholder="Launch date, urgency, budget range">
+      </label>
+    </div>
     <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
     <textarea class="request-copy" data-request-copy readonly></textarea>
     <p class="fine" data-copy-status aria-live="polite"></p>
@@ -46,7 +63,7 @@
       var intro = isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
-      var body = [
+      var bodyTemplate = [
         'Hi Arthur,',
         '',
         intro,
@@ -67,7 +84,11 @@
       ].filter(function (line, index, lines) {
         return line !== '' || lines[index - 1] !== '';
       }).join('\n');
-      var mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+      var body = bodyTemplate;
+      var mailto = '';
+      var gmailCompose = '';
+      var outlookCompose = '';
+      var formStarted = false;
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
@@ -89,22 +110,76 @@
       var gmailLink = document.querySelector('[data-gmail-link]');
       var outlookLink = document.querySelector('[data-outlook-link]');
       var copyStatus = document.querySelector('[data-copy-status]');
-      var gmailCompose = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      var outlookCompose = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-      manual.href = mailto;
-      gmailLink.href = gmailCompose;
-      outlookLink.href = outlookCompose;
-      copyText.value = body;
+      var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
+      function formStats() {
+        var filled = fields.filter(function (field) { return field.value.trim(); }).length;
+        return { completed_fields: filled, total_fields: fields.length, is_complete: filled >= 3 };
+      }
+      function lineValue(label, key) {
+        var field = document.querySelector('[data-request-field="' + key + '"]');
+        return label + (field && field.value.trim() ? ' ' + field.value.trim() : '');
+      }
+      function buildBody() {
+        return [
+          'Hi Arthur,',
+          '',
+          intro,
+          '',
+          lineValue('My current stack:', 'stack'),
+          lineValue('My repo state:', 'repo'),
+          isShipItKit ? 'Have I bought Ship It Kit yet:' : 'What is broken or missing:',
+          isShipItKit ? 'What I need adapted from Ship It Kit:' : 'Production URL / repo access situation:',
+          lineValue(isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):', 'blocker'),
+          lineValue(isShipItKit ? 'Debug artifacts I can send (logs, screenshots, settings, file paths):' : 'Deadline:', isShipItKit ? 'evidence' : 'deadline'),
+          lineValue(isShipItKit ? 'Production URL / repo access situation:' : 'Budget range if any:', isShipItKit ? 'repo' : 'deadline'),
+          isShipItKit ? lineValue('Deadline:', 'deadline') : '',
+          isShipItKit ? 'Budget range if any:' : '',
+          !isShipItKit ? lineValue('Evidence ready:', 'evidence') : '',
+          '',
+          'Source: ' + source,
+          sourceRef ? 'Source ref: ' + sourceRef : '',
+          'Request context: ' + context
+        ].filter(function (line, index, lines) {
+          return line !== '' || lines[index - 1] !== '';
+        }).join('\n');
+      }
+      function refreshLinks() {
+        body = buildBody();
+        mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        gmailCompose = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        outlookCompose = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        manual.href = mailto;
+        gmailLink.href = gmailCompose;
+        outlookLink.href = outlookCompose;
+        copyText.value = body;
+      }
+      refreshLinks();
+      fields.forEach(function (field) {
+        field.addEventListener('input', function () {
+          refreshLinks();
+          if (!formStarted && field.value.trim()) {
+            formStarted = true;
+            capture('setup_help_request_form_started', Object.assign({}, eventProps, formStats(), { first_field: field.getAttribute('data-request-field') }));
+          }
+        });
+        field.addEventListener('blur', function () {
+          if (field.value.trim()) capture('setup_help_request_field_completed', Object.assign({}, eventProps, formStats(), { field: field.getAttribute('data-request-field') }));
+        });
+      });
       manual.addEventListener('click', function () {
-        capture('setup_help_request_manual_click', Object.assign({}, eventProps, { target_href: mailto }));
+        refreshLinks();
+        capture('setup_help_request_manual_click', Object.assign({}, eventProps, formStats(), { target_href: mailto }));
       });
       gmailLink.addEventListener('click', function () {
-        capture('setup_help_request_gmail_clicked', Object.assign({}, eventProps, { target_href: 'gmail_compose' }));
+        refreshLinks();
+        capture('setup_help_request_gmail_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'gmail_compose' }));
       });
       outlookLink.addEventListener('click', function () {
-        capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, { target_href: 'outlook_compose' }));
+        refreshLinks();
+        capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'outlook_compose' }));
       });
       copyButton.addEventListener('click', function () {
+        refreshLinks();
         copyText.select();
         var copied = false;
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -119,7 +194,7 @@
           copied = document.execCommand('copy');
           copyStatus.textContent = copied ? 'Copied. Paste it into your email to Arthur.' : 'Selected. Copy it manually.';
         }
-        capture('setup_help_request_copy_clicked', Object.assign({}, eventProps, { target_href: 'copy_request_text', clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+        capture('setup_help_request_copy_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'copy_request_text', clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
       });
       function copyValue(value, label, eventName, targetHref) {
         if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -131,7 +206,7 @@
         } else {
           copyStatus.textContent = label + ': ' + value;
         }
-        capture(eventName, Object.assign({}, eventProps, { target_href: targetHref, clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+        capture(eventName, Object.assign({}, eventProps, formStats(), { target_href: targetHref, clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
       }
       copyEmailButton.addEventListener('click', function () {
         copyValue('arthur.pierrey@gmail.com', 'Email address', 'setup_help_request_email_copy_clicked', 'copy_email_address');

@@ -244,6 +244,16 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_form_started",
+        "setup route form-start event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_field_completed",
+        "setup route field-completed event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "data-copy-email",
         "setup route email-copy fallback button",
     ),
@@ -251,6 +261,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/setup-request/",
         "data-gmail-link",
         "setup route Gmail compose link",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "data-request-field=\"blocker\"",
+        "setup route structured blocker field",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

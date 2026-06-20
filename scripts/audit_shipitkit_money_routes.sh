@@ -265,8 +265,11 @@ else
        grep -q "setup_help_request_subject_copy_clicked" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_gmail_clicked" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_outlook_clicked" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_form_started" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_field_completed" "$SETUP_REQUEST_FILE" && \
        grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
-       grep -q "data-gmail-link" "$SETUP_REQUEST_FILE"; then
+       grep -q "data-gmail-link" "$SETUP_REQUEST_FILE" && \
+       grep -q 'data-request-field="blocker"' "$SETUP_REQUEST_FILE"; then
     pass "setup-request route — preserves Ship It Kit request context and source ref"
   else
     fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, or webmail/manual email fallback"
