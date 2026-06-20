@@ -4,25 +4,70 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>Opening billing-health support request…</title>
+  <title>Prepare billing-health support request</title>
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:620px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}a{color:#ff9040;font-weight:800;text-decoration:none}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}@media(max-width:640px){.request-form{grid-template-columns:1fr}}.request-copy{width:100%;min-height:210px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
   </style>
 </head>
 <body>
   <main class="card">
-    <div class="pill">Billing-health support</div>
-    <h1>Opening your support request…</h1>
-    <p>If your email app does not open automatically, use the link below.</p>
-    <p><a href="#" data-manual-link="true">Write the support request</a></p>
+    <div class="pill">Founding-5 · €29/mo</div>
+    <h1>Prepare a billing-health support request</h1>
+    <p>Add the live billing loop you want checked each month. This is for apps with recurring Stripe/Supabase state, not general consulting.</p>
+    <form data-billing-health-form action="https://formspree.io/f/xblgwdqz" method="POST">
+      <input type="hidden" name="_subject" value="Billing-health support interest">
+      <input type="hidden" name="request_context" value="billing_health_support">
+      <input type="hidden" name="price_range_eur" value="29/mo">
+      <input type="hidden" name="price_eur_monthly" value="29">
+      <input type="hidden" name="source" data-hidden-source>
+      <input type="hidden" name="source_ref" data-hidden-source-ref>
+      <input type="hidden" name="request_packet" data-hidden-packet>
+      <input type="hidden" name="_next" data-hidden-next>
+      <div class="request-form">
+        <label>App status
+          <input name="app_status" data-request-field="status" autocomplete="off" placeholder="Live, pre-launch, staging">
+        </label>
+        <label>Stack
+          <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
+        </label>
+        <label class="wide">Monthly billing risk
+          <textarea name="monthly_billing_risk" data-request-field="risk" placeholder="Trials, dunning, portal changes, paid access drift..."></textarea>
+        </label>
+        <label>Recent issue
+          <input name="recent_issue" data-request-field="issue" autocomplete="off" placeholder="Stripe/Supabase mismatch, webhook retry, support ticket">
+        </label>
+        <label>Evidence ready
+          <input name="evidence_ready" data-request-field="evidence" autocomplete="off" placeholder="Event ids, subscription row, processed-event row">
+        </label>
+      </div>
+      <p class="fine">The packet below is sent through Formspree. Use the email fallback if the form does not work.</p>
+      <textarea class="request-copy" data-request-copy readonly></textarea>
+      <div class="actions">
+        <button class="btn primary" type="submit" data-formspree-submit>Send support request</button>
+        <a class="btn" href="#" data-manual-link="true">Continue in email</a>
+        <button class="btn" type="button" data-copy-request="true">Copy request text</button>
+      </div>
+    </form>
+    <p class="fine" data-copy-status aria-live="polite"></p>
   </main>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'billing_health_route';
-      var mailto = 'mailto:arthur.pierrey@gmail.com?subject=Billing-health%20support%20interest&body=Hi%20Arthur%2C%0A%0AI%27m%20interested%20in%20billing-health%20support.%0A%0AMy%20app%20status%20%28live%20%2F%20pre-launch%29%3A%0AMy%20stack%3A%0AMonthly%20billing%20risk%20I%20want%20covered%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20I%20can%20share%20%28event%2C%20subscription%2C%20invoice%2C%20session%29%3A%0ASupabase%20table%2Frow%20that%20stores%20paid%20access%3A%0AAction%20queue%20or%20retention%20card%20row%20%28if%20relevant%29%3A%0ABilling%20ledger%20row%20or%20processed-event%20record%20%28if%20relevant%29%3A%0ARaise%2Fresolve%20rule%20that%20should%20be%20checked%3A%0AWhat%20should%20be%20checked%20monthly%3A%0A%0ASource%3A%20' + encodeURIComponent(source);
+      var subject = 'Billing-health support interest';
+      var formStarted = false;
+      var readyCaptured = false;
+      var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
+      var copyText = document.querySelector('[data-request-copy]');
+      var copyStatus = document.querySelector('[data-copy-status]');
+      var manual = document.querySelector('[data-manual-link]');
+      var form = document.querySelector('[data-billing-health-form]');
+      var hiddenSource = document.querySelector('[data-hidden-source]');
+      var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
+      var hiddenPacket = document.querySelector('[data-hidden-packet]');
+      var hiddenNext = document.querySelector('[data-hidden-next]');
       var baseProps = {
         product: 'billing_reliability',
         location: 'billing_health_request_route',
@@ -35,16 +80,81 @@
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
+      function formStats() {
+        var filled = fields.filter(function (field) { return field.value.trim(); }).length;
+        return { completed_fields: filled, total_fields: fields.length, is_complete: filled >= 3 };
+      }
+      function value(key) {
+        var field = document.querySelector('[data-request-field="' + key + '"]');
+        return field && field.value.trim() ? field.value.trim() : '';
+      }
+      function buildBody() {
+        return [
+          'Hi Arthur,',
+          '',
+          'I am interested in founding-5 billing-health support.',
+          '',
+          'My app status: ' + value('status'),
+          'My stack: ' + value('stack'),
+          'Monthly billing risk I want covered: ' + value('risk'),
+          'Recent Stripe or Supabase issue: ' + value('issue'),
+          'Evidence I can share: ' + value('evidence'),
+          '',
+          'Source: ' + source,
+          'Request context: billing_health_support',
+          'Price range: 29/mo'
+        ].join('\n');
+      }
+      function refresh() {
+        var body = buildBody();
+        var mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        copyText.value = body;
+        manual.href = mailto;
+        hiddenSource.value = source;
+        hiddenSourceRef.value = source;
+        hiddenPacket.value = body;
+        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source);
+        return { body: body, mailto: mailto };
+      }
+      refresh();
       capture('billing_health_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
-      var manual = document.querySelector('[data-manual-link]');
-      manual.href = mailto;
-      manual.addEventListener('click', function () {
-        capture('billing_health_request_manual_click', Object.assign({}, baseProps, { target_href: mailto }));
+      fields.forEach(function (field) {
+        field.addEventListener('input', function () {
+          refresh();
+          if (!formStarted && field.value.trim()) {
+            formStarted = true;
+            capture('billing_health_request_form_started', Object.assign({}, baseProps, formStats(), { first_field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
+          }
+          var stats = formStats();
+          if (!readyCaptured && stats.completed_fields >= 3) {
+            readyCaptured = true;
+            capture('billing_health_request_ready_to_send', Object.assign({}, baseProps, stats, { target_href: 'billing_health_form' }));
+          }
+        });
+        field.addEventListener('blur', function () {
+          if (field.value.trim()) capture('billing_health_request_field_completed', Object.assign({}, baseProps, formStats(), { field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
+        });
       });
-      setTimeout(function () {
-        capture('billing_health_request_mailto_opened', Object.assign({}, baseProps, { target_href: mailto }));
-        window.location.href = mailto;
-      }, 420);
+      manual.addEventListener('click', function () {
+        var links = refresh();
+        capture('billing_health_request_manual_click', Object.assign({}, baseProps, formStats(), { target_href: links.mailto }));
+        capture('billing_health_request_mailto_opened', Object.assign({}, baseProps, formStats(), { target_href: links.mailto, trigger: 'manual_click' }));
+      });
+      form.addEventListener('submit', function () {
+        refresh();
+        capture('billing_health_request_formspree_submit', Object.assign({}, baseProps, formStats(), { target_href: 'formspree_xblgwdqz' }));
+      });
+      document.querySelector('[data-copy-request]').addEventListener('click', function () {
+        var links = refresh();
+        copyText.select();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(links.body).then(function () { copyStatus.textContent = 'Copied.'; }).catch(function () { copyStatus.textContent = 'Selected. Copy it manually.'; });
+        } else {
+          document.execCommand('copy');
+          copyStatus.textContent = 'Copied.';
+        }
+        capture('billing_health_request_copy_clicked', Object.assign({}, baseProps, formStats(), { target_href: 'copy_request_text', copy_attempted: true }));
+      });
     });
   </script>
 </body>

@@ -308,6 +308,31 @@ REQUIRED_LINKS = [
         "billing-health route mailto-open event",
     ),
     RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "billing_health_request_form_started",
+        "billing-health route form-start event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "billing_health_request_ready_to_send",
+        "billing-health route ready-to-send event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "billing_health_request_formspree_submit",
+        "billing-health route Formspree submit event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "/go/billing-reliability/health-support-sent/",
+        "billing-health route Formspree return destination",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support-sent/",
+        "billing_health_request_formspree_returned",
+        "billing-health sent route Formspree-return event",
+    ),
+    RequiredLink(
         "/blog/stripe-invoice-paid-double-extends-supabase-membership/",
         "/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=invoice_paid_monthly_credit_context",
         "invoice paid monthly credit contextual link",
