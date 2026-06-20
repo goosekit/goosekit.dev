@@ -24,6 +24,7 @@ class RequiredEvent:
     location: str | None = None
     product: str | None = "billing_reliability"
     needs_score_attrs: bool = False
+    needs_commercial_context_attrs: bool = False
     require_product: bool = False
 
 
@@ -35,8 +36,9 @@ class RequiredLink:
 
 
 REQUIRED_EVENTS = [
-    RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_drift_review_request", "drift_check_result", needs_score_attrs=True, require_product=True),
-    RequiredEvent("/stripe-supabase-billing-drift-check/", "setup_help_retainer_interest", "drift_check_result", needs_score_attrs=True, require_product=True),
+    RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_drift_review_request", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
+    RequiredEvent("/stripe-supabase-billing-drift-check/", "revenue_leak_audit_interest", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
+    RequiredEvent("/stripe-supabase-billing-drift-check/", "setup_help_retainer_interest", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
     RequiredEvent("/stripe-supabase-billing-drift-check/", "setup_help_secondary_clicked", "drift_check_bottom", require_product=True),
     RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_drift_check_secondary", "drift_check_bottom", require_product=True),
     RequiredEvent("/stripe-billing-reliability-checklist/", "billing_drift_check_clicked", "billing_reliability_checklist_top", require_product=True),
@@ -349,6 +351,27 @@ def has_dynamic_score_attrs(ctas: list[dict[str, str]], script_text: str, requir
     return True
 
 
+def has_commercial_context_attrs(ctas: list[dict[str, str]], script_text: str, requirement: RequiredEvent) -> bool:
+    matching = [cta for cta in ctas if location_matches(cta, requirement)]
+    if not matching:
+        return False
+    static_or_dynamic_attrs = ("data-ph-unchecked-risk-keys",)
+    for attr in static_or_dynamic_attrs:
+        if any(cta.get(attr) for cta in matching):
+            continue
+        if re.search(rf"setAttribute\(['\"]{re.escape(attr)}['\"]", script_text):
+            continue
+        return False
+
+    if not any(cta.get("data-ph-request-context") for cta in matching):
+        return False
+    has_price = any(
+        cta.get("data-ph-price-eur") or cta.get("data-ph-price-eur-monthly")
+        for cta in matching
+    )
+    return has_price
+
+
 def has_required_product(cta: dict[str, str], requirement: RequiredEvent) -> bool:
     if not requirement.product:
         return True
@@ -386,6 +409,10 @@ def audit() -> tuple[list[str], list[str]]:
             if requirement.needs_score_attrs and not has_dynamic_score_attrs(ctas, script_text, requirement):
                 failures.append(f"{route}: missing score/risk/scope attrs for {requirement.event} at {requirement.location}")
                 lines.append(f"- FAIL `{requirement.event}` / `{requirement.location}` score attrs")
+                continue
+            if requirement.needs_commercial_context_attrs and not has_commercial_context_attrs(ctas, script_text, requirement):
+                failures.append(f"{route}: missing commercial context attrs for {requirement.event} at {requirement.location}")
+                lines.append(f"- FAIL `{requirement.event}` / `{requirement.location}` commercial context attrs")
                 continue
             hrefs = ", ".join(sorted({cta.get("href", "") for cta in matches if cta.get("href")}))
             lines.append(f"- OK `{requirement.event}` / `{requirement.location}`" + (f" -> {hrefs}" if hrefs else ""))
