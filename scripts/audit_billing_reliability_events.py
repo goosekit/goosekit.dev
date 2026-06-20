@@ -269,6 +269,21 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "name=\"_next\"",
+        "setup route Formspree return destination field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "/go/billing-reliability/setup-request-sent/",
+        "setup route Formspree return destination",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request-sent/",
+        "setup_help_request_formspree_returned",
+        "setup request sent route Formspree-return event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "setup_help_request_auto_mailto_suppressed",
         "setup route suppresses auto-mailto while packet form is available",
     ),

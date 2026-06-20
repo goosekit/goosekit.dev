@@ -272,13 +272,27 @@ else
        grep -q "setup_help_request_auto_mailto_suppressed" "$SETUP_REQUEST_FILE" && \
        grep -q "https://formspree.io/f/xblgwdqz" "$SETUP_REQUEST_FILE" && \
        grep -q 'name="request_packet"' "$SETUP_REQUEST_FILE" && \
+       grep -q 'name="_next"' "$SETUP_REQUEST_FILE" && \
+       grep -q "/go/billing-reliability/setup-request-sent/" "$SETUP_REQUEST_FILE" && \
        grep -q 'data-button-position="after_form"' "$SETUP_REQUEST_FILE" && \
        grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
        grep -q "data-gmail-link" "$SETUP_REQUEST_FILE" && \
        grep -q 'data-request-field="blocker"' "$SETUP_REQUEST_FILE"; then
     pass "setup-request route — preserves Ship It Kit request context and source ref"
   else
-    fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, or webmail/manual email fallback"
+    fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, Formspree return, or webmail/manual email fallback"
+  fi
+
+  SETUP_REQUEST_SENT_FILE="$ROOT/go/billing-reliability/setup-request-sent/index.html"
+  if [[ ! -f "$SETUP_REQUEST_SENT_FILE" ]]; then
+    fail "billing setup request sent route missing"
+  elif grep -q "setup_help_request_formspree_returned" "$SETUP_REQUEST_SENT_FILE" && \
+       grep -q "setup_help_request_sent_route" "$SETUP_REQUEST_SENT_FILE" && \
+       grep -q "price_range_eur" "$SETUP_REQUEST_SENT_FILE" && \
+       grep -q "/ship-it-kit-setup-help/" "$SETUP_REQUEST_SENT_FILE"; then
+    pass "setup-request sent route — tracks Formspree return and routes back to setup help"
+  else
+    fail "setup-request sent route — missing Formspree return tracking or setup-help return link"
   fi
 fi
 

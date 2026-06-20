@@ -177,8 +177,10 @@ PAGES = [
             "setup_help_request_field_completed",
             "setup_help_request_ready_to_send",
             "setup_help_request_formspree_submit",
+            "/go/billing-reliability/setup-request-sent/",
             "setup_help_request_auto_mailto_suppressed",
             "https://formspree.io/f/xblgwdqz",
+            "name=\"_next\"",
             "name=\"request_packet\"",
             "data-button-position=\"after_form\"",
             "data-request-field=\"blocker\"",
@@ -191,6 +193,17 @@ PAGES = [
             "ship_it_kit_setup_help",
             "199-plus",
             "Source: ",
+        ],
+    },
+    {
+        "path": "/go/billing-reliability/setup-request-sent/?v=setup_route_sent",
+        "required": [
+            "noindex, nofollow",
+            "Request sent",
+            "setup_help_request_formspree_returned",
+            "setup_help_request_sent_route",
+            "price_range_eur",
+            "/ship-it-kit-setup-help/",
         ],
     },
     {

@@ -27,6 +27,7 @@
       <input type="hidden" name="source" data-hidden-source>
       <input type="hidden" name="source_ref" data-hidden-source-ref>
       <input type="hidden" name="request_packet" data-hidden-packet>
+      <input type="hidden" name="_next" data-hidden-next>
     <p class="fallback-line">
       <span>Send it to</span>
       <span class="email-chip" data-email-address>arthur.pierrey@gmail.com</span>
@@ -132,6 +133,7 @@
       var hiddenSource = document.querySelector('[data-hidden-source]');
       var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
       var hiddenPacket = document.querySelector('[data-hidden-packet]');
+      var hiddenNext = document.querySelector('[data-hidden-next]');
       var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
@@ -180,6 +182,7 @@
         hiddenSource.value = source;
         hiddenSourceRef.value = sourceRef;
         hiddenPacket.value = body;
+        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange);
       }
       refreshLinks();
       fields.forEach(function (field) {
