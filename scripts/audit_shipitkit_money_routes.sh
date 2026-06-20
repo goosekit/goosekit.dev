@@ -260,10 +260,13 @@ else
        grep -q "sourceRef = params.get('source_ref')" "$SETUP_REQUEST_FILE" && \
        grep -q "Source ref: " "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_manual_click.*target_href: mailto" "$SETUP_REQUEST_FILE" && \
-       grep -q "setup_help_request_mailto_opened.*target_href: mailto" "$SETUP_REQUEST_FILE"; then
+       grep -q "setup_help_request_mailto_opened.*target_href: mailto" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_email_copy_clicked" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_subject_copy_clicked" "$SETUP_REQUEST_FILE" && \
+       grep -q "data-copy-email" "$SETUP_REQUEST_FILE"; then
     pass "setup-request route — preserves Ship It Kit request context and source ref"
   else
-    fail "setup-request route — missing Ship It Kit context, source ref, price range, or mailto target_href capture"
+    fail "setup-request route — missing Ship It Kit context, source ref, price range, mailto target_href capture, or manual email fallback"
   fi
 fi
 

@@ -218,6 +218,26 @@ REQUIRED_LINKS = [
         "setup route mailto-open event",
     ),
     RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_copy_clicked",
+        "setup route copy fallback event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_email_copy_clicked",
+        "setup route email-copy fallback event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_subject_copy_clicked",
+        "setup route subject-copy fallback event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "data-copy-email",
+        "setup route email-copy fallback button",
+    ),
+    RequiredLink(
         "/go/billing-reliability/health-support/",
         "billing_health_request_mailto_opened",
         "billing-health route mailto-open event",
