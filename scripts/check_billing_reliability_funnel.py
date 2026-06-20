@@ -145,13 +145,17 @@ PAGES = [
         ],
     },
     {
-        "path": "/go/billing-reliability/audit-request/",
+        "path": "/go/billing-reliability/audit-request/?v=audit_route_context",
         "required": [
             "noindex, nofollow",
             "Stripe + Supabase audit",
             "revenue_leak_audit_request_route_viewed",
             "revenue_leak_audit_request_manual_click",
             "revenue_leak_audit_request_mailto_opened",
+            "source_ref: source",
+            "request_context: 'revenue_leak_audit'",
+            "price_range_eur: '149'",
+            "target_href: mailto",
             "price_eur: 149",
             "Source%3A%20",
         ],

@@ -23,17 +23,26 @@
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'audit_request_route';
       var mailto = 'mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20revenue%20leak%20audit&body=Hi%20Arthur%2C%0A%0AI%20want%20a%20Stripe%20%2B%20Supabase%20revenue%20leak%20audit.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%20%28Next.js%20router%2C%20Supabase%20package%2C%20Stripe%20Billing%20or%20Checkout%29%3A%0ARevenue%20surface%20to%20audit%20%28subscription%2C%20credits%2C%20seats%2C%20deposit%2C%20booking%2C%20one-time%20checkout%29%3A%0AWhat%20Stripe%20says%3A%0AWhat%20Supabase%20or%20the%20app%20currently%20shows%3A%0ARecent%20customer%20or%20test%20case%20that%20worries%20me%3A%0AStripe%20object%20ids%20I%20can%20share%20%28no%20secrets%29%3A%0ASupabase%20tables%20or%20rows%20involved%3A%0AWebhook%20route%20and%20delivery%20status%3A%0AWhat%20done%20means%20after%20the%20audit%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A%0ASource%3A%20' + encodeURIComponent(source);
+      var baseProps = {
+        product: 'billing_reliability',
+        location: 'revenue_leak_audit_request_route',
+        path: '/go/billing-reliability/audit-request/',
+        source_ref: source,
+        request_context: 'revenue_leak_audit',
+        price_range_eur: '149',
+        price_eur: 149
+      };
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }
-      capture('revenue_leak_audit_request_route_viewed', { source: source, product: 'billing_reliability', price_eur: 149 });
+      capture('revenue_leak_audit_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
       var manual = document.querySelector('[data-manual-link]');
       manual.href = mailto;
       manual.addEventListener('click', function () {
-        capture('revenue_leak_audit_request_manual_click', { source: source, product: 'billing_reliability', price_eur: 149 });
+        capture('revenue_leak_audit_request_manual_click', Object.assign({}, baseProps, { target_href: mailto }));
       });
       setTimeout(function () {
-        capture('revenue_leak_audit_request_mailto_opened', { source: source, product: 'billing_reliability', price_eur: 149 });
+        capture('revenue_leak_audit_request_mailto_opened', Object.assign({}, baseProps, { target_href: mailto }));
         window.location.href = mailto;
       }, 420);
     });
