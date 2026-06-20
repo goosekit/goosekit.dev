@@ -172,7 +172,7 @@ PAGES = [
         ],
     },
     {
-        "path": "/go/billing-reliability/health-support/",
+        "path": "/go/billing-reliability/health-support/?v=health_route_context",
         "required": [
             "noindex, nofollow",
             "Billing-health support",
