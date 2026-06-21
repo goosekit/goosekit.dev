@@ -15,7 +15,7 @@
   <main class="card">
     <div class="pill">Next.js + Supabase + Stripe</div>
     <h1>Prepare your setup request</h1>
-    <p>Add 2-3 details, then choose the email app or copy fallback that works best.</p>
+    <p>Add the few details needed to price and triage the fixed-scope setup pass.</p>
     <div class="actions">
       <a class="btn" href="#" data-manual-link="true" data-button-position="top">Skip the form and email</a>
       <button class="btn" type="button" data-copy-request="true">Copy request text</button>
@@ -51,8 +51,11 @@
       <label>Evidence ready
         <input name="evidence_ready" data-request-field="evidence" autocomplete="off" placeholder="Logs, screenshots, file paths">
       </label>
-      <label>Deadline / budget
-        <input name="deadline_or_budget" data-request-field="deadline" autocomplete="off" placeholder="Launch date, urgency, budget range">
+      <label>Deadline
+        <input name="deadline" data-request-field="deadline" autocomplete="off" placeholder="Launch date or urgency">
+      </label>
+      <label>Budget range
+        <input name="budget_range" data-request-field="budget" autocomplete="off" placeholder="€99-149, €199+, not sure">
       </label>
     </div>
     <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
@@ -137,7 +140,8 @@
       var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
-        return { completed_fields: filled, total_fields: fields.length, is_complete: filled >= 3 };
+        var completed = fields.filter(function (field) { return field.value.trim(); }).map(function (field) { return field.getAttribute('data-request-field'); });
+        return { completed_fields: filled, completed_field_names: completed.join(','), total_fields: fields.length, is_complete: filled >= 3 };
       }
       function lineValue(label, key) {
         var field = document.querySelector('[data-request-field="' + key + '"]');
@@ -151,14 +155,12 @@
           '',
           lineValue('My current stack:', 'stack'),
           lineValue('My repo state:', 'repo'),
-          isShipItKit ? 'Have I bought Ship It Kit yet:' : 'What is broken or missing:',
-          isShipItKit ? 'What I need adapted from Ship It Kit:' : 'Production URL / repo access situation:',
           lineValue(isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):', 'blocker'),
-          lineValue(isShipItKit ? 'Debug artifacts I can send (logs, screenshots, settings, file paths):' : 'Deadline:', isShipItKit ? 'evidence' : 'deadline'),
-          lineValue(isShipItKit ? 'Production URL / repo access situation:' : 'Budget range if any:', isShipItKit ? 'repo' : 'deadline'),
-          isShipItKit ? lineValue('Deadline:', 'deadline') : '',
-          isShipItKit ? 'Budget range if any:' : '',
-          !isShipItKit ? lineValue('Evidence ready:', 'evidence') : '',
+          lineValue('Evidence ready:', 'evidence'),
+          lineValue('Deadline:', 'deadline'),
+          lineValue('Budget range:', 'budget'),
+          isShipItKit ? 'Have I bought Ship It Kit yet:' : 'Production URL / repo access situation:',
+          isShipItKit ? 'What I need adapted from Ship It Kit:' : '',
           '',
           'Source: ' + source,
           sourceRef ? 'Source ref: ' + sourceRef : '',
