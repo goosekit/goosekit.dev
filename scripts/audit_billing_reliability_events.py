@@ -259,6 +259,16 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_quote_path_selected",
+        "setup route quote-path choice event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "name=\"quote_path\"",
+        "setup route quote-path hidden field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "setup_help_request_formspree_submit",
         "setup route Formspree submit event",
     ),
