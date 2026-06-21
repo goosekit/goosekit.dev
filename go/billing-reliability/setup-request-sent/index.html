@@ -28,10 +28,12 @@
       var source = params.get('source') || 'formspree_return';
       var context = params.get('context') || 'unknown';
       var priceRange = params.get('price_range_eur') || 'unknown';
+      var quotePath = params.get('quote_path') || 'unknown';
       if (window.posthog && typeof window.posthog.capture === 'function') {
         window.posthog.capture('setup_help_request_formspree_returned', {
           source: source,
           request_context: context,
+          quote_path: quotePath,
           product: 'billing_reliability',
           location: 'setup_help_request_sent_route',
           path: '/go/billing-reliability/setup-request-sent/',

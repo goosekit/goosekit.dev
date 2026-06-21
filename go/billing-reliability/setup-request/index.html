@@ -214,7 +214,7 @@
         hiddenSource.value = source;
         hiddenSourceRef.value = sourceRef;
         hiddenPacket.value = body;
-        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange);
+        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange) + '&quote_path=' + encodeURIComponent(quotePathSelected || 'unknown');
       }
       refreshLinks();
       quotePathButtons.forEach(function (button) {
