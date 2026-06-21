@@ -324,6 +324,21 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "data-request-field=\"track\"",
+        "billing-health route support-track field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-request-field=\"revenue\"",
+        "billing-health route revenue-at-risk field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "completed_field_names",
+        "billing-health route completed-field analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "/go/billing-reliability/health-support-sent/",
         "billing-health route Formspree return destination",
     ),

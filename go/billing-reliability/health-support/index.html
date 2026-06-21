@@ -41,6 +41,15 @@
         <label>Evidence ready
           <input name="evidence_ready" data-request-field="evidence" autocomplete="off" placeholder="Event ids, subscription row, processed-event row">
         </label>
+        <label>Support track
+          <input name="support_track" data-request-field="track" autocomplete="off" placeholder="Monthly check, launch watch, incident follow-up">
+        </label>
+        <label>Revenue at risk
+          <input name="revenue_at_risk" data-request-field="revenue" autocomplete="off" placeholder="MRR, active subscribers, launch revenue">
+        </label>
+        <label class="wide">Check cadence
+          <input name="check_cadence" data-request-field="cadence" autocomplete="off" placeholder="Monthly, after Stripe changes, before launches">
+        </label>
       </div>
       <p class="fine">The packet below is sent through Formspree. Use the email fallback if the form does not work.</p>
       <textarea class="request-copy" data-request-copy readonly></textarea>
@@ -82,7 +91,16 @@
       }
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
-        return { completed_fields: filled, total_fields: fields.length, is_complete: filled >= 3 };
+        var completed = fields.filter(function (field) { return field.value.trim(); }).map(function (field) { return field.getAttribute('data-request-field'); });
+        return {
+          completed_fields: filled,
+          completed_field_names: completed.join(','),
+          total_fields: fields.length,
+          is_complete: filled >= 4,
+          support_track: value('track') || 'missing_support_track',
+          revenue_at_risk: value('revenue') || 'missing_revenue_at_risk',
+          cadence: value('cadence') || 'missing_cadence'
+        };
       }
       function value(key) {
         var field = document.querySelector('[data-request-field="' + key + '"]');
@@ -99,6 +117,9 @@
           'Monthly billing risk I want covered: ' + value('risk'),
           'Recent Stripe or Supabase issue: ' + value('issue'),
           'Evidence I can share: ' + value('evidence'),
+          'Support track I want: ' + value('track'),
+          'Revenue or MRR at risk: ' + value('revenue'),
+          'Preferred check cadence: ' + value('cadence'),
           '',
           'Source: ' + source,
           'Request context: billing_health_support',
@@ -126,7 +147,7 @@
             capture('billing_health_request_form_started', Object.assign({}, baseProps, formStats(), { first_field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
           }
           var stats = formStats();
-          if (!readyCaptured && stats.completed_fields >= 3) {
+          if (!readyCaptured && stats.completed_fields >= 4) {
             readyCaptured = true;
             capture('billing_health_request_ready_to_send', Object.assign({}, baseProps, stats, { target_href: 'billing_health_form' }));
           }
