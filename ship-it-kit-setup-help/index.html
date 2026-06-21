@@ -51,7 +51,11 @@
     .not li::before { content:'–'; color:#f0b429; }
     .two { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
     .emailbox { background:var(--card2); border:1px solid var(--line); border-radius:16px; padding:20px; margin-top:18px; }
-    @media (max-width: 820px) { .hero, .grid, .two { grid-template-columns:1fr; } nav { margin-bottom:38px; } }
+    .scope-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-top:18px; }
+    .scope-strip div { background:rgba(255,255,255,.025); border:1px solid var(--line); border-radius:14px; padding:16px; }
+    .scope-strip strong { display:block; color:var(--text); line-height:1.2; margin-bottom:6px; }
+    .scope-strip span { display:block; color:var(--muted); font-size:.92rem; line-height:1.45; }
+    @media (max-width: 820px) { .hero, .grid, .two, .scope-strip { grid-template-columns:1fr; } nav { margin-bottom:38px; } }
   </style>
 </head>
 <body>
@@ -103,6 +107,32 @@
       <div class="card">
         <h3>Setup review</h3>
         <p>A concise pass on what is missing, what is risky, and what to fix before you build product logic on top.</p>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>What the paid pass produces</h2>
+      <p>A good request should not turn into open-ended consulting. The first pass is meant to leave you with a narrow, usable result and a clean decision about whether monthly billing-health support is worth discussing later.</p>
+      <div class="scope-strip">
+        <div>
+          <strong>Integration map</strong>
+          <span>The auth, checkout, portal, webhook, and paid-access path that should exist in your repo.</span>
+        </div>
+        <div>
+          <strong>Risk list</strong>
+          <span>The launch blockers, env mismatches, missing tables, webhook gaps, or tenant-scope risks found.</span>
+        </div>
+        <div>
+          <strong>Fix plan</strong>
+          <span>The smallest implementation or review pass that would make the billing path safer.</span>
+        </div>
+        <div>
+          <strong>Support fit</strong>
+          <span>Whether recurring billing checks make sense after the first pass, or whether this should stay one-off.</span>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn btn-primary" href="/go/billing-reliability/setup-request/?source=shipit_setup_help_deliverables" data-preserve-source-ref="true" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="shipit_setup_help_deliverables">Request a scoped pass →</a>
       </div>
     </section>
 
