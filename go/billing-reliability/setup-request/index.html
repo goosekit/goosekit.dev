@@ -33,6 +33,7 @@
     </div>
     <form data-formspree-form action="https://formspree.io/f/xblgwdqz" method="POST">
       <input type="hidden" name="_subject" data-hidden-subject>
+      <input type="hidden" name="_replyto" data-hidden-replyto>
       <input type="hidden" name="request_context" data-hidden-context>
       <input type="hidden" name="price_range_eur" data-hidden-price-range>
       <input type="hidden" name="quote_path" data-hidden-quote-path>
@@ -51,6 +52,9 @@
       <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Open in Outlook</a>
     </div>
     <div class="request-form" data-request-form>
+      <label class="wide">Your email
+        <input name="email" type="email" data-request-field="email" autocomplete="email" placeholder="you@example.com">
+      </label>
       <label>Stack
         <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
       </label>
@@ -97,6 +101,7 @@
         '',
         intro,
         '',
+        'Reply email:',
         'My current stack:',
         'My repo state:',
         isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):',
@@ -145,6 +150,7 @@
       var copyStatus = document.querySelector('[data-copy-status]');
       var formspreeForm = document.querySelector('[data-formspree-form]');
       var hiddenSubject = document.querySelector('[data-hidden-subject]');
+      var hiddenReplyTo = document.querySelector('[data-hidden-replyto]');
       var hiddenContext = document.querySelector('[data-hidden-context]');
       var hiddenPriceRange = document.querySelector('[data-hidden-price-range]');
       var hiddenQuotePath = document.querySelector('[data-hidden-quote-path]');
@@ -168,7 +174,7 @@
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
         var completed = fields.filter(function (field) { return field.value.trim(); }).map(function (field) { return field.getAttribute('data-request-field'); });
-        return { completed_fields: filled, completed_field_names: completed.join(','), total_fields: fields.length, is_complete: filled >= 3, fast_path_ready: Boolean(value('stack') && value('blocker')), quote_path: quotePathSelected };
+        return { completed_fields: filled, completed_field_names: completed.join(','), total_fields: fields.length, is_complete: Boolean(value('email') && value('stack') && value('blocker')), fast_path_ready: Boolean(value('email') && value('stack') && value('blocker')), quote_path: quotePathSelected };
       }
       function lineValue(label, key) {
         var field = document.querySelector('[data-request-field="' + key + '"]');
@@ -181,6 +187,7 @@
           intro,
           quotePathSelected ? 'Request path: ' + quotePathSelected.replace(/_/g, ' ') : '',
           '',
+          lineValue('Reply email:', 'email'),
           lineValue('My current stack:', 'stack'),
           lineValue('My repo state:', 'repo'),
           lineValue(isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):', 'blocker'),
@@ -208,6 +215,7 @@
         outlookLink.href = outlookCompose;
         copyText.value = body;
         hiddenSubject.value = subject;
+        hiddenReplyTo.value = value('email');
         hiddenContext.value = context;
         hiddenPriceRange.value = priceRange;
         hiddenQuotePath.value = quotePathSelected;
@@ -250,7 +258,7 @@
             fastPathCaptured = true;
             capture('setup_help_request_fast_path_ready', Object.assign({}, eventProps, stats));
           }
-          if (!readyToSendCaptured && stats.completed_fields >= 3) {
+          if (!readyToSendCaptured && stats.is_complete) {
             readyToSendCaptured = true;
             capture('setup_help_request_ready_to_send', Object.assign({}, eventProps, stats));
           }

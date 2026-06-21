@@ -269,6 +269,16 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "name=\"email\"",
+        "setup route prospect reply email field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "name=\"_replyto\"",
+        "setup route Formspree reply-to field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "setup_help_request_formspree_submit",
         "setup route Formspree submit event",
     ),
