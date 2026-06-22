@@ -184,6 +184,15 @@ else
   info "checkout dir not found, skipping"
 fi
 
+PRODUCT_DECISION_CHECKOUT="$CHECKOUT_DIR/checkout-product-decision-strip/index.html"
+if [[ -f "$PRODUCT_DECISION_CHECKOUT" ]]; then
+  if grep -qiE '<meta[^>]+http-equiv=["'\'']refresh["'\''][^>]+shipitstudio\.lemonsqueezy\.com/checkout/buy' "$PRODUCT_DECISION_CHECKOUT"; then
+    fail "checkout-product-decision-strip — raw Lemon Squeezy meta-refresh can bypass source preservation"
+  else
+    pass "checkout-product-decision-strip — no raw Lemon Squeezy meta-refresh"
+  fi
+fi
+
 echo ""
 
 # ----------------------------------------------------------
