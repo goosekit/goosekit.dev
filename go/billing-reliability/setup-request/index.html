@@ -99,13 +99,16 @@
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
       var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
       var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
+      var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help'));
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help')));
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
         : isBillingChecklist
         ? 'I have a small evidence packet for a Stripe + Supabase billing reliability review.'
+        : isRevenueLeakAudit
+        ? 'I want a fixed-scope Stripe + Supabase revenue leak audit.'
         : isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
@@ -251,6 +254,13 @@
         setFieldIfEmpty('repo', 'Live or pre-launch Next.js + Supabase + Stripe app');
         setFieldIfEmpty('blocker', 'Billing reliability review: one Stripe object, one Supabase row, one expected state, one actual state');
         setFieldIfEmpty('evidence', 'Stripe object id, Supabase table/row, webhook delivery status, user-visible symptom');
+        refreshLinks();
+      }
+      if (isRevenueLeakAudit) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app');
+        setFieldIfEmpty('blocker', 'Revenue leak audit: paid but blocked, unpaid but unlocked, duplicate access, wrong workspace, or stale credits/seats');
+        setFieldIfEmpty('evidence', 'Stripe object id, Supabase access row, webhook delivery status, expected app state, actual app state');
+        setFieldIfEmpty('budget', priceRange === '149' ? 'EUR149 fixed-scope audit' : priceRange);
         refreshLinks();
       }
       quotePathButtons.forEach(function (button) {
