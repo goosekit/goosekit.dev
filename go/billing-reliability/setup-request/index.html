@@ -101,12 +101,13 @@
       var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
       var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
       var isTrialAccess = requestedContext === 'trial_access' || source.indexOf('trial_access_') === 0;
+      var isOneTimeBooking = requestedContext === 'one_time_booking' || source.indexOf('one_time_booking_') === 0;
       var isChargedStranded = requestedContext === 'charged_stranded' || source.indexOf('charged_stranded_') === 0;
       var isPortalCancel = requestedContext === 'portal_cancel' || source.indexOf('portal_cancel_') === 0;
       var isPortalPlanChange = requestedContext === 'portal_plan_change' || source.indexOf('portal_plan_change_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isTrialAccess ? 'Stripe trial access state mismatch' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isPortalCancel ? 'Stripe portal cancellation state mismatch' : (isPortalPlanChange ? 'Stripe portal plan-change entitlement mismatch' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help')))))));
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isTrialAccess ? 'Stripe trial access state mismatch' : (isOneTimeBooking ? 'Stripe booking and subscription-credit mismatch' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isPortalCancel ? 'Stripe portal cancellation state mismatch' : (isPortalPlanChange ? 'Stripe portal plan-change entitlement mismatch' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help'))))))));
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
         : isBillingChecklist
@@ -115,6 +116,8 @@
         ? 'I want a fixed-scope Stripe + Supabase revenue leak audit.'
         : isTrialAccess
         ? 'Stripe trial or first-invoice state changed, but Supabase access does not match.'
+        : isOneTimeBooking
+        ? 'Stripe booking, one-time payment, or subscription-credit state does not match Supabase.'
         : isChargedStranded
         ? 'Stripe charged the customer, but Supabase did not provision access.'
         : isPortalCancel
@@ -279,6 +282,13 @@
         setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with trials or first-invoice activation');
         setFieldIfEmpty('blocker', 'Trial/access mismatch: Stripe trialing/active/incomplete/past_due/canceled state does not match Supabase access state');
         setFieldIfEmpty('evidence', 'Subscription id, latest invoice status, trial_end/current_period_end, Supabase access row, webhook delivery status, intended trial/grace policy');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isOneTimeBooking) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with paid bookings, sessions, credits, or appointments');
+        setFieldIfEmpty('blocker', 'Booking/payment/credit mismatch: one-time Checkout, booking row, subscription credit balance, or webhook replay does not converge');
+        setFieldIfEmpty('evidence', 'Checkout Session or PaymentIntent id, booking/session row before/after, subscription credit row before/after, processed-event/idempotency row, refund/release/repair path');
         setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }

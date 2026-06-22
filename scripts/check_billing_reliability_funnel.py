@@ -438,6 +438,7 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "one_time_booking_top",
+            "one_time_booking_top_packet",
             "one_time_booking_bottom_packet",
             "setup_help_retainer_interest",
             "data-ph-product=\"billing_reliability\"",

@@ -102,6 +102,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_retainer_interest", "missing_subscription_columns_bottom", require_product=True),
     RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_secondary_clicked", "missing_subscription_columns_related", require_product=True),
     RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "billing_drift_check_clicked", "one_time_booking_top", require_product=True),
+    RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "setup_help_request_clicked", "one_time_booking_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "setup_help_request_clicked", "one_time_booking_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "setup_help_retainer_interest", "one_time_booking_bottom", require_product=True),
     RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "setup_help_secondary_clicked", "one_time_booking_related", require_product=True),

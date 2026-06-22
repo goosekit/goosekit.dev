@@ -33,6 +33,7 @@
       <p>Do not charge unless the session can be reserved atomically, and do not consume subscription credits unless the same booking row and replay guard prove exactly one paid session exists.</p>
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=one_time_booking_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=one_time_booking_top_packet&context=one_time_booking&price_range_eur=99-149&quote_path=launch_blocker&source_ref=one_time_booking_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_top_packet">Need booking/credit help?</a>
         <a class="btn secondary" href="/blog/stripe-subscription-add-credit-checkout-ledger/?ref=one_time_booking_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_related">Compare subscription credit drift</a>
       </div>
       <p class="note">Fixed-scope review fit: EUR149 when one-time paid sessions, subscription credits, booking rows, and webhook replay can disagree.</p>
