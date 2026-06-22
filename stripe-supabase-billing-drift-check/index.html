@@ -37,7 +37,7 @@
         <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
         <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
         <div class="actions">
-          <a class="btn primary" id="emailCta" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20%2B%20Supabase%20billing%20drift%20review&body=Hi%20Arthur%2C%0A%0AI%20ran%20the%20billing%20drift%20check%20and%20want%20a%20narrow%20review.%0A%0AApp%20status%20%28live%20%2F%20pre-launch%29%3A%0AStack%3A%0ACheck%20score%3A%0ALikely%20paid%20scope%3A%0AUnchecked%20billing%20risks%3A%0ARecent%20Stripe%20or%20Supabase%20issue%3A%0AStripe%20object%20ids%20you%20can%20share%20%28customer%2Fsubscription%2Fsession%2Finvoice%2Fevent%2Ftransfer%29%3A%0ASupabase%20rows%20or%20table%20names%20involved%3A%0ACheckout%20Session%20ledger%20row%20before%2Fafter%20fulfillment%3A%0AMock%20fallback%20or%20Stripe%20env%20mode%20evidence%3A%0APlan%2C%20credit-pack%2C%20or%20gift%20grant%20row%20after%20replay%3A%0AEntitlement%20or%20access%20row%20before%2Fafter%20replay%3A%0ASubscriptions%20table%20schema%3A%0APricing_config%20or%20plan-limit%20schema%3A%0AAttempted%20webhook%2Fcheck-subscription%20columns%3A%0ATenant%2Fworkspace%20provisioning%20job%20or%20result%3A%0AMonthly%20credit%2Frefill%20row%20or%20tier%20cap%20config%3A%0AOne-time%20add-credit%20Checkout%20event%20or%20payment%20object%3A%0ACredit%20ledger%20or%20balance%20row%20after%20subscription%20and%20add-credit%3A%0AGrant%20function%20or%20webhook%20log%20for%20both%20credit%20paths%3A%0AAction%20queue%20or%20retention%20card%20row%3A%0ABilling%20ledger%20or%20processed-event%20row%3A%0A23505%20duplicate-key%20log%20or%20processed-event%20conflict%3A%0AHTTP%20response%20Stripe%20saw%20after%20duplicate%20delivery%3A%0AWhat%20the%20paid%20user%20currently%20sees%3A%0AWebhook%20delivery%20status%20or%20error%3A%0AOne%20state%20that%20must%20be%20true%20after%20review%3A%0ARepo%20access%20situation%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="99-149" data-ph-request-context="billing_drift_review">Request a narrow review →</a>
+          <a class="btn primary" id="emailCta" href="/go/billing-reliability/setup-request/?source=billing_drift_check_result&context=billing_drift_review&price_range_eur=99-149&quote_path=launch_blocker&source_ref=drift_check_result&drift_score=0&total_risks=19&risk_count=19" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="99-149" data-ph-request-context="billing_drift_review">Request a narrow review →</a>
           <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="149" data-ph-request-context="revenue_leak_audit">See revenue leak audit</a>
           <a class="btn secondary" id="monthlyCta" href="/billing-health-support/?ref=drift_check_result" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">See monthly support</a>
         </div>
@@ -192,7 +192,18 @@
         'Repo access situation:',
         'Budget range if any:'
       ].join('\n');
-      emailCta.href = `mailto:arthur.pierrey@gmail.com?subject=${encodeURIComponent(`Stripe + Supabase billing drift review (${checked}/${inputs.length})`)}&body=${encodeURIComponent(body)}`;
+      const reviewParams = new URLSearchParams({
+        source: 'billing_drift_check_result',
+        context: 'billing_drift_review',
+        price_range_eur: '99-149',
+        quote_path: checked <= 4 ? 'launch_blocker' : 'fixed_scope_quote',
+        source_ref: 'drift_check_result',
+        drift_score: String(checked),
+        total_risks: String(inputs.length),
+        risk_count: String(missing.length),
+        unchecked_risk_keys: missingKeys.join(',')
+      });
+      emailCta.href = `/go/billing-reliability/setup-request/?${reviewParams.toString()}`;
       emailCta.setAttribute('data-ph-score', String(checked));
       emailCta.setAttribute('data-ph-risk-count', String(missing.length));
       emailCta.setAttribute('data-ph-recommended-scope', scope.textContent);

@@ -92,11 +92,18 @@
       var requestedContext = params.get('context') || '';
       var requestedPriceRange = params.get('price_range_eur') || '';
       var requestedQuotePath = params.get('quote_path') || '';
+      var driftScore = params.get('drift_score') || '';
+      var totalRisks = params.get('total_risks') || '';
+      var riskCount = params.get('risk_count') || '';
+      var uncheckedRiskKeys = params.get('unchecked_risk_keys') || '';
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
+      var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help';
-      var intro = isShipItKit
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help');
+      var intro = isBillingDrift
+        ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
+        : isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
       var bodyTemplate = [
@@ -189,6 +196,9 @@
           '',
           intro,
           quotePathSelected ? 'Request path: ' + quotePathSelected.replace(/_/g, ' ') : '',
+          driftScore ? 'Billing drift score: ' + driftScore + (totalRisks ? '/' + totalRisks : '') : '',
+          riskCount ? 'Unchecked risk count: ' + riskCount : '',
+          uncheckedRiskKeys ? 'Unchecked risk keys: ' + uncheckedRiskKeys : '',
           '',
           lineValue('Reply email:', 'email'),
           lineValue('My current stack:', 'stack'),
@@ -228,6 +238,12 @@
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange) + '&quote_path=' + encodeURIComponent(quotePathSelected || 'unknown');
       }
       refreshLinks();
+      if (isBillingDrift) {
+        setFieldIfEmpty('repo', 'Live or near-launch app with Stripe + Supabase billing drift risk');
+        setFieldIfEmpty('blocker', 'Billing drift check score: ' + (driftScore || 'unknown') + (totalRisks ? '/' + totalRisks : '') + (uncheckedRiskKeys ? '; unchecked risk keys: ' + uncheckedRiskKeys : ''));
+        setFieldIfEmpty('evidence', 'Stripe object ids, Supabase rows, webhook delivery status, and one user-visible mismatch');
+        refreshLinks();
+      }
       quotePathButtons.forEach(function (button) {
         button.addEventListener('click', function () {
           quotePathSelected = button.getAttribute('data-quote-path') || '';
