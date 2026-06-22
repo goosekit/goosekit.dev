@@ -106,13 +106,31 @@ where s.status in ('active', 'trialing')
     <section class="card cta" data-ph-section="charged_stranded_packet" data-ph-product="billing_reliability">
       <h2 style="margin-top:0">What to send for a narrow charged-and-stranded review</h2>
       <p>Send facts, not secrets: one Stripe object, the local tables that should have been created, the route/webhook/reconcile code paths, and what the paid user currently sees.</p>
+      <div class="grid2">
+        <div>
+          <h3>Good fit for a fixed review</h3>
+          <ul class="checklist">
+            <li>One checkout, webhook, portal, or reconcile path is failing.</li>
+            <li>You can name the missing Supabase row or entitlement.</li>
+            <li>You have a Stripe object ID and redacted logs/screenshots.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>What happens next</h3>
+          <ul class="checklist">
+            <li>Send a short packet through the setup form.</li>
+            <li>If the scope is narrow, the review starts at €99-149.</li>
+            <li>If it is not narrow, you get the smallest next diagnostic step.</li>
+          </ul>
+        </div>
+      </div>
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=charged_stranded_bottom_packet&context=charged_stranded&price_range_eur=99-149&quote_path=launch_blocker&source_ref=charged_stranded_bottom_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_packet">Prepare charged-and-stranded packet →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_bottom" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_bottom_hosted_plan" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_hosted_plan">Hosted-plan replay checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=charged_stranded_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_paid_status_related">Paid-status checklist</a>
       </div>
-      <p class="note">No secrets in the first email. Redact IDs until scope is agreed.</p>
+      <p class="note" data-revenue-marker="charged-stranded-fixed-review-fit">No secrets in the first email. Redact IDs until scope is agreed. The first reply is a fit check, not a demand for repo access.</p>
     </section>
   </main>
   <script>
