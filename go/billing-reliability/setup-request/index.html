@@ -98,11 +98,14 @@
       var uncheckedRiskKeys = params.get('unchecked_risk_keys') || '';
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
       var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
+      var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help');
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help'));
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
+        : isBillingChecklist
+        ? 'I have a small evidence packet for a Stripe + Supabase billing reliability review.'
         : isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
@@ -242,6 +245,12 @@
         setFieldIfEmpty('repo', 'Live or near-launch app with Stripe + Supabase billing drift risk');
         setFieldIfEmpty('blocker', 'Billing drift check score: ' + (driftScore || 'unknown') + (totalRisks ? '/' + totalRisks : '') + (uncheckedRiskKeys ? '; unchecked risk keys: ' + uncheckedRiskKeys : ''));
         setFieldIfEmpty('evidence', 'Stripe object ids, Supabase rows, webhook delivery status, and one user-visible mismatch');
+        refreshLinks();
+      }
+      if (isBillingChecklist) {
+        setFieldIfEmpty('repo', 'Live or pre-launch Next.js + Supabase + Stripe app');
+        setFieldIfEmpty('blocker', 'Billing reliability review: one Stripe object, one Supabase row, one expected state, one actual state');
+        setFieldIfEmpty('evidence', 'Stripe object id, Supabase table/row, webhook delivery status, user-visible symptom');
         refreshLinks();
       }
       quotePathButtons.forEach(function (button) {
