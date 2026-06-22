@@ -146,6 +146,14 @@
         if (riskField && !riskField.value.trim()) riskField.value = 'Failed invoice, past-due subscription, unpaid state, or portal change should raise one action card and resolve once after recovery.';
         if (evidenceField && !evidenceField.value.trim()) evidenceField.value = 'Stripe event ids, billing ledger or processed-event row, action queue row, resolve event or manual completion evidence.';
       }
+      if (requestedTrack === 'access_drift') {
+        var accessTrackField = document.querySelector('[data-request-field="track"]');
+        var accessRiskField = document.querySelector('[data-request-field="risk"]');
+        var accessEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        if (accessTrackField && !accessTrackField.value.trim()) accessTrackField.value = 'Monthly Stripe-to-Supabase access drift check';
+        if (accessRiskField && !accessRiskField.value.trim()) accessRiskField.value = 'Stripe paid, trialing, past-due, paused, or canceled state can disagree with Supabase access, credits, seats, bookings, or workspace status.';
+        if (accessEvidenceField && !accessEvidenceField.value.trim()) accessEvidenceField.value = 'Stripe subscription, invoice, customer, Checkout Session, or PaymentIntent id plus the Supabase row/table that controls access.';
+      }
       refresh();
       capture('billing_health_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
       fields.forEach(function (field) {
