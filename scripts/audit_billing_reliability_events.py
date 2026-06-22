@@ -54,7 +54,9 @@ REQUIRED_EVENTS = [
     RequiredEvent("/stripe-supabase-revenue-leak-audit/", "setup_help_secondary_clicked", "revenue_leak_audit_bottom", require_product=True),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_hero"),
     RequiredEvent("/billing-health-support/", "billing_health_secondary_clicked", "billing_health_live_money_gate"),
-    RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "live_money_gate_block"),
+    RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_hero", require_product=True),
+    RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "live_money_gate_block", require_product=True),
+    RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_bottom", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "retainer_block", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "setup_help_artifacts_monthly_support", require_product=True),
     RequiredEvent("/ship-it-kit-setup-help/", "setup_help_request_clicked", "shipit_setup_help_hero_packet"),
@@ -197,8 +199,13 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/nextjs-supabase-stripe-setup-help/",
-        "/go/billing-reliability/setup-request/?source=setup_help_cta",
-        "setup help tracked request route",
+        "/go/billing-reliability/setup-request/?source=nextjs_setup_help_hero",
+        "setup help hero tracked request route",
+    ),
+    RequiredLink(
+        "/nextjs-supabase-stripe-setup-help/",
+        "/go/billing-reliability/setup-request/?source=nextjs_setup_help_bottom",
+        "setup help bottom tracked request route",
     ),
     RequiredLink(
         "/nextjs-supabase-stripe-setup-help/",
