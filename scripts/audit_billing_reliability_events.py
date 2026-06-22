@@ -68,6 +68,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-webhook-duplicate-events-idempotency-supabase/", "setup_help_request_clicked", "duplicate_webhook_23505_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-webhook-event-ordering-supabase/", "billing_drift_check_clicked", "event_ordering_top"),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_drift_check_clicked", "trial_top"),
+    RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "setup_help_request_clicked", "trial_bottom", require_product=True),
     RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "billing_drift_check_clicked", "dunning_top"),
     RequiredEvent("/blog/stripe-customer-portal-cancel-supabase-status/", "billing_drift_check_clicked", "portal_cancel_top"),
     RequiredEvent("/blog/stripe-customer-portal-plan-change-supabase-entitlements/", "billing_drift_check_clicked", "portal_plan_change_top"),
