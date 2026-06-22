@@ -302,7 +302,7 @@ PAGES = [
     },
     {
         "path": "/blog/stripe-trial-ending-supabase-access/",
-        "required": ["billing_drift_check_clicked", "trial_top", "trial_access_bottom_packet", "&amp;context=trial_access", "&amp;quote_path=launch_blocker"],
+        "required": ["billing_drift_check_clicked", "trial_top", "trial_access_nav_packet", "trial_access_top_packet", "trial_access_bottom_packet", "&amp;context=trial_access", "&amp;quote_path=launch_blocker"],
     },
     {
         "path": "/blog/stripe-dunning-past-due-unpaid-supabase-access/",

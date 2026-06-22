@@ -100,18 +100,21 @@
       var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
       var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
       var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
+      var isTrialAccess = requestedContext === 'trial_access' || source.indexOf('trial_access_') === 0;
       var isChargedStranded = requestedContext === 'charged_stranded' || source.indexOf('charged_stranded_') === 0;
       var isPortalCancel = requestedContext === 'portal_cancel' || source.indexOf('portal_cancel_') === 0;
       var isPortalPlanChange = requestedContext === 'portal_plan_change' || source.indexOf('portal_plan_change_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isPortalCancel ? 'Stripe portal cancellation state mismatch' : (isPortalPlanChange ? 'Stripe portal plan-change entitlement mismatch' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help'))))));
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isTrialAccess ? 'Stripe trial access state mismatch' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isPortalCancel ? 'Stripe portal cancellation state mismatch' : (isPortalPlanChange ? 'Stripe portal plan-change entitlement mismatch' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help')))))));
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
         : isBillingChecklist
         ? 'I have a small evidence packet for a Stripe + Supabase billing reliability review.'
         : isRevenueLeakAudit
         ? 'I want a fixed-scope Stripe + Supabase revenue leak audit.'
+        : isTrialAccess
+        ? 'Stripe trial or first-invoice state changed, but Supabase access does not match.'
         : isChargedStranded
         ? 'Stripe charged the customer, but Supabase did not provision access.'
         : isPortalCancel
@@ -270,6 +273,13 @@
         setFieldIfEmpty('blocker', 'Revenue leak audit: paid but blocked, unpaid but unlocked, duplicate access, wrong workspace, or stale credits/seats');
         setFieldIfEmpty('evidence', 'Stripe object id, Supabase access row, webhook delivery status, expected app state, actual app state');
         setFieldIfEmpty('budget', priceRange === '149' ? 'EUR149 fixed-scope audit' : priceRange);
+        refreshLinks();
+      }
+      if (isTrialAccess) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with trials or first-invoice activation');
+        setFieldIfEmpty('blocker', 'Trial/access mismatch: Stripe trialing/active/incomplete/past_due/canceled state does not match Supabase access state');
+        setFieldIfEmpty('evidence', 'Subscription id, latest invoice status, trial_end/current_period_end, Supabase access row, webhook delivery status, intended trial/grace policy');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }
       if (isChargedStranded) {

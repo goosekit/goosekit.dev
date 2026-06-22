@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=trial_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=trial_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=trial_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=trial_access_nav_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_nav">Setup help</a></div>
     <div class="eyebrow">Stripe trials + Supabase access</div>
     <h1>Stripe trial ended but Supabase access did not update?</h1>
     <p class="lead">Trial transitions are a common place for SaaS billing state to drift. Your app may keep trial users active after payment fails, or lock out a customer whose first invoice was paid but whose Supabase row never changed.</p>
@@ -31,7 +31,7 @@
       <h2 style="margin-top:0">The production failure: “trialing” is not your product policy</h2>
       <p>A Next.js + Supabase app often starts with one flag like <span class="code">is_paid</span>. That breaks down when Stripe moves a subscription from <span class="code">trialing</span> to <span class="code">active</span>, <span class="code">incomplete</span>, <span class="code">past_due</span>, or <span class="code">canceled</span>. Treat trial end as a billing lifecycle, not a checkout-success event.</p>
       <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=trial_top" data-ph-event="setup_help_interest" data-ph-location="trial_top">Need trial/access help?</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=trial_access_top_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="trial_top_packet">Need trial/access help?</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=trial_top" data-ph-event="billing_drift_check_clicked" data-ph-location="trial_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=trial_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="trial_dunning_related">Dunning/access checklist</a>
       </div>
