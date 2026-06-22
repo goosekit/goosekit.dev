@@ -253,11 +253,11 @@ else
     fail "setup-help — click capture missing source_ref or target_href"
   fi
 
-  if grep -q "Debug%20artifacts%20I%20can%20send" "$SETUP_HELP_FILE" && \
-     grep -q "data-ph-location=\"bottom_email_fallback\"" "$SETUP_HELP_FILE"; then
-    pass "setup-help — direct email fallback keeps artifact prompt"
+  if grep -q "/go/billing-reliability/setup-request/?source=shipit_setup_help_bottom_fallback_packet" "$SETUP_HELP_FILE" && \
+     grep -q "data-ph-location=\"shipit_setup_help_bottom_fallback_packet\"" "$SETUP_HELP_FILE"; then
+    pass "setup-help — bottom fallback routes through structured setup request"
   else
-    fail "setup-help — direct email fallback missing artifact prompt"
+    fail "setup-help — bottom fallback missing structured setup-request route"
   fi
 
   SETUP_REQUEST_FILE="$ROOT/go/billing-reliability/setup-request/index.html"
@@ -283,6 +283,7 @@ else
        grep -q "https://formspree.io/f/xblgwdqz" "$SETUP_REQUEST_FILE" && \
        grep -q 'name="request_packet"' "$SETUP_REQUEST_FILE" && \
        grep -q 'name="_next"' "$SETUP_REQUEST_FILE" && \
+       grep -q "&source_ref=' + encodeURIComponent(sourceRef || source)" "$SETUP_REQUEST_FILE" && \
        grep -q "/go/billing-reliability/setup-request-sent/" "$SETUP_REQUEST_FILE" && \
        grep -q 'data-button-position="after_form"' "$SETUP_REQUEST_FILE" && \
        grep -q "data-copy-email" "$SETUP_REQUEST_FILE" && \
@@ -299,6 +300,7 @@ else
   elif grep -q "setup_help_request_formspree_returned" "$SETUP_REQUEST_SENT_FILE" && \
        grep -q "setup_help_request_sent_route" "$SETUP_REQUEST_SENT_FILE" && \
        grep -q "price_range_eur" "$SETUP_REQUEST_SENT_FILE" && \
+       grep -q "params.get('source_ref') || source" "$SETUP_REQUEST_SENT_FILE" && \
        grep -q "/ship-it-kit-setup-help/" "$SETUP_REQUEST_SENT_FILE"; then
     pass "setup-request sent route — tracks Formspree return and routes back to setup help"
   else

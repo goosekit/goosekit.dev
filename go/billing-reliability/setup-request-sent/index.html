@@ -29,7 +29,7 @@
       var context = params.get('context') || 'unknown';
       var priceRange = params.get('price_range_eur') || 'unknown';
       var quotePath = params.get('quote_path') || 'unknown';
-      var sourceRef = source;
+      var sourceRef = params.get('source_ref') || source;
       var sentProps = {
         source: source,
         source_ref: sourceRef,
