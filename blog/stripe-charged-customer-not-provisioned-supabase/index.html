@@ -103,7 +103,7 @@ where s.status in ('active', 'trialing')
       </ul>
     </section>
 
-    <section class="card cta">
+    <section class="card cta" data-ph-section="charged_stranded_packet" data-ph-product="billing_reliability">
       <h2 style="margin-top:0">What to send for a narrow charged-and-stranded review</h2>
       <p>Send facts, not secrets: one Stripe object, the local tables that should have been created, the route/webhook/reconcile code paths, and what the paid user currently sees.</p>
       <div class="actions">
@@ -115,5 +115,27 @@ where s.status in ('active', 'trialing')
       <p class="note">No secrets in the first email. Redact IDs until scope is agreed.</p>
     </section>
   </main>
+  <script>
+    (function () {
+      var packet = document.querySelector('[data-ph-section="charged_stranded_packet"]');
+      if (!packet || !('IntersectionObserver' in window)) return;
+      var sent = false;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (sent || !entry.isIntersecting) return;
+          sent = true;
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_reliability_section_reached', {
+              product: 'billing_reliability',
+              location: 'charged_stranded_evidence_packet',
+              path: window.location.pathname
+            });
+          }
+          observer.disconnect();
+        });
+      }, { threshold: 0.35 });
+      observer.observe(packet);
+    })();
+  </script>
 </body>
 </html>
