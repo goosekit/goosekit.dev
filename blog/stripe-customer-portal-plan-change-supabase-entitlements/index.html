@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=portal_plan_change_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=portal_plan_change_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=portal_plan_change_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=portal_plan_change_nav_packet&context=portal_plan_change&price_range_eur=99-149&quote_path=launch_blocker&source_ref=portal_plan_change_nav">Setup help</a></div>
     <div class="eyebrow">Stripe Customer Portal + Supabase entitlements</div>
     <h1>Customer Portal plan changes leaving Supabase on the wrong plan?</h1>
     <p class="lead">When a customer upgrades, downgrades, schedules a change, or cancels at period end in Stripe Customer Portal, your local Supabase row needs more than a simple <span class="code">status = active</span> check. The hard part is deciding what access is active now, what is pending, and what should happen at the next period boundary.</p>
@@ -31,9 +31,9 @@
       <h2 style="margin-top:0">The production failure: “Stripe is correct, my app entitlement is not”</h2>
       <p>Portal changes are not just checkout again. A downgrade can be immediate or scheduled. A cancellation can set <span class="code">cancel_at_period_end</span> while the customer should still keep access until <span class="code">current_period_end</span>. A schedule can represent the next plan before it is active. If Supabase stores only one <span class="code">plan</span> and one <span class="code">is_paid</span> boolean, the UI eventually lies.</p>
       <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=portal_plan_change_top" data-ph-event="setup_help_interest" data-ph-location="portal_plan_change_top">Need portal entitlement help?</a>
-        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=portal_plan_change_top" data-ph-event="billing_drift_check_clicked" data-ph-location="portal_plan_change_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=portal_plan_change_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="portal_plan_change_cancel_related">Cancellation checklist</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=portal_plan_change_top_packet&context=portal_plan_change&price_range_eur=99-149&quote_path=launch_blocker&source_ref=portal_plan_change_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_top_packet">Need portal entitlement help?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=portal_plan_change_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=portal_plan_change_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_cancel_related">Cancellation checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149 when the Stripe event sequence, subscription object, and Supabase schema are narrow enough to review safely.</p>
     </section>
