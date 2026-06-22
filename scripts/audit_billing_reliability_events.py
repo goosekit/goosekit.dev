@@ -55,6 +55,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/stripe-supabase-revenue-leak-audit/", "setup_help_secondary_clicked", "revenue_leak_audit_bottom", require_product=True),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_hero"),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_review_tracks"),
+    RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_launch_watch"),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_action_queue_packet"),
     RequiredEvent("/billing-health-support/", "billing_drift_check_clicked", "billing_health_review_tracks"),
     RequiredEvent("/billing-health-support/", "billing_health_secondary_clicked", "billing_health_live_money_gate"),
@@ -379,6 +380,16 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "completed_field_names",
         "billing-health route completed-field analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "requested_track",
+        "billing-health route requested-track analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "Launch watch for one live Stripe checkout path",
+        "billing-health route launch-watch prefill",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

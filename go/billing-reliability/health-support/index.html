@@ -23,6 +23,7 @@
       <input type="hidden" name="price_eur_monthly" value="29">
       <input type="hidden" name="source" data-hidden-source>
       <input type="hidden" name="source_ref" data-hidden-source-ref>
+      <input type="hidden" name="requested_track" data-hidden-requested-track>
       <input type="hidden" name="request_packet" data-hidden-packet>
       <input type="hidden" name="_next" data-hidden-next>
       <div class="request-form">
@@ -76,6 +77,7 @@
       var form = document.querySelector('[data-billing-health-form]');
       var hiddenSource = document.querySelector('[data-hidden-source]');
       var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
+      var hiddenRequestedTrack = document.querySelector('[data-hidden-requested-track]');
       var hiddenPacket = document.querySelector('[data-hidden-packet]');
       var hiddenNext = document.querySelector('[data-hidden-next]');
       var baseProps = {
@@ -85,7 +87,8 @@
         source_ref: source,
         request_context: 'billing_health_support',
         price_range_eur: '29/mo',
-        price_eur_monthly: 29
+        price_eur_monthly: 29,
+        requested_track: requestedTrack || 'unspecified'
       };
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
@@ -123,6 +126,7 @@
           'Preferred check cadence: ' + value('cadence'),
           '',
           'Source: ' + source,
+          'Requested track: ' + (requestedTrack || 'unspecified'),
           'Request context: billing_health_support',
           'Price range: 29/mo'
         ].join('\n');
@@ -134,6 +138,7 @@
         manual.href = mailto;
         hiddenSource.value = source;
         hiddenSourceRef.value = source;
+        hiddenRequestedTrack.value = requestedTrack || 'unspecified';
         hiddenPacket.value = body;
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source);
         return { body: body, mailto: mailto };
@@ -153,6 +158,16 @@
         if (accessTrackField && !accessTrackField.value.trim()) accessTrackField.value = 'Monthly Stripe-to-Supabase access drift check';
         if (accessRiskField && !accessRiskField.value.trim()) accessRiskField.value = 'Stripe paid, trialing, past-due, paused, or canceled state can disagree with Supabase access, credits, seats, bookings, or workspace status.';
         if (accessEvidenceField && !accessEvidenceField.value.trim()) accessEvidenceField.value = 'Stripe subscription, invoice, customer, Checkout Session, or PaymentIntent id plus the Supabase row/table that controls access.';
+      }
+      if (requestedTrack === 'launch_watch') {
+        var launchTrackField = document.querySelector('[data-request-field="track"]');
+        var launchRiskField = document.querySelector('[data-request-field="risk"]');
+        var launchEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var launchCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (launchTrackField && !launchTrackField.value.trim()) launchTrackField.value = 'Launch watch for one live Stripe checkout path';
+        if (launchRiskField && !launchRiskField.value.trim()) launchRiskField.value = 'A live checkout, deposit, add-on, booking, or subscription path should reconcile browser return, webhook truth, and Supabase access after launch.';
+        if (launchEvidenceField && !launchEvidenceField.value.trim()) launchEvidenceField.value = 'Checkout Session or PaymentIntent id, webhook delivery result, Supabase access/order row, and what the first paid user saw.';
+        if (launchCadenceField && !launchCadenceField.value.trim()) launchCadenceField.value = 'After first live charge, then monthly if the billing loop keeps changing.';
       }
       refresh();
       capture('billing_health_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
