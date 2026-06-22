@@ -13,6 +13,38 @@
   <meta property="og:url" content="https://goosekit.dev/billing-health-support/">
   <meta property="og:site_name" content="Goosekit">
   <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "Billing Health Support",
+    "description": "Founding-5 monthly billing-health support for live or near-live Next.js, Supabase, and Stripe apps. Review Stripe webhook failures, Supabase paid-state drift, billing action queues, dunning, trials, and portal changes.",
+    "url": "https://goosekit.dev/billing-health-support/",
+    "provider": {
+      "@type": "Organization",
+      "name": "Goosekit",
+      "url": "https://goosekit.dev/"
+    },
+    "areaServed": "Worldwide",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Small SaaS founders using Stripe and Supabase"
+    },
+    "offers": {
+      "@type": "Offer",
+      "price": "29",
+      "priceCurrency": "EUR",
+      "priceSpecification": {
+        "@type": "UnitPriceSpecification",
+        "price": "29",
+        "priceCurrency": "EUR",
+        "unitText": "month"
+      },
+      "availability": "https://schema.org/LimitedAvailability",
+      "url": "https://goosekit.dev/go/billing-reliability/health-support/?source=billing_health_schema"
+    }
+  }
+  </script>
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
@@ -28,6 +60,7 @@
         <h1>Keep Stripe + Supabase billing from quietly breaking after launch.</h1>
         <p class="lead">For small SaaS teams using Next.js, Supabase, and Stripe who have already launched or are close to launch. The goal is narrow: catch billing drift, webhook failures, billing action-queue mistakes, trial conversion bugs, paused-billing drift, dunning mistakes, customer-portal changes, and paid-user access mismatches before they become support tickets or lost revenue.</p>
         <p class="lead">This is not general development support. It starts after an initial setup/debug pass, when there is enough context to review the billing surface safely and compare Stripe's truth with your Supabase entitlement state.</p>
+        <p class="lead">The useful buyer signal is simple: you can name one Stripe object, one Supabase row or table, and one recurring state that would cost money if it drifted.</p>
         <div class="actions">
           <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_cta" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_hero">Request a billing drift review →</a>
           <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_hero" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_hero">Need the audit first?</a>
@@ -39,6 +72,7 @@
         <h2>Starting point</h2>
         <div class="price">€29/mo</div>
         <p>Lightweight monthly review for a narrow revenue-critical surface.</p>
+        <p class="fine">Founding-5 slots are deliberately manual until the evidence says this deserves a productized dashboard.</p>
         <div><span class="tag">Stripe webhooks</span><span class="tag">Supabase access</span><span class="tag">Action queues</span><span class="tag">Dunning</span><span class="tag">Trials</span><span class="tag">Portal changes</span></div>
       </aside>
     </section>
@@ -53,6 +87,19 @@
       <div class="card"><h3>Webhook failure review</h3><p>Check recent Stripe webhook failures, duplicate events, missing handlers, and event-ordering risks.</p></div>
       <div class="card"><h3>Paid-state sanity check</h3><p>Compare Stripe subscription/invoice states with Supabase entitlement or subscription rows.</p></div>
       <div class="card"><h3>One small fix/note</h3><p>One prioritized small billing/auth fix, implementation note, or escalation path per month.</p></div>
+    </section>
+    <section class="section card strip" id="review-tracks" data-ph-section="billing_health_review_tracks">
+      <h2>Pick the monthly invariant first</h2>
+      <p>The offer is strongest when the review can be reduced to one money-state invariant. That keeps the monthly scope narrow enough to buy, repeat, and judge.</p>
+      <div class="grid3">
+        <div><h3>Access drift</h3><ul><li>Stripe says paid, trialing, past due, paused, or canceled.</li><li>Supabase grants the matching product, seat, workspace, credit, or booking state.</li><li>The review names one query or row that proves the match.</li></ul></div>
+        <div><h3>Action queue drift</h3><ul><li>A failed renewal, unpaid invoice, or risky portal change raises one human-owned card.</li><li>Recovery or manual completion resolves the card once.</li><li>Duplicate webhook delivery does not create duplicate work.</li></ul></div>
+        <div><h3>Launch watch</h3><ul><li>One live checkout, deposit, add-on, or subscription path is monitored after launch.</li><li>Browser return and webhook truth are compared.</li><li>The first support tickets become a billing-state checklist.</li></ul></div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_review_tracks" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_review_tracks">Send the monthly invariant →</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=billing_health_review_tracks" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="billing_health_review_tracks">Check drift risk first</a>
+      </div>
     </section>
     <section class="section card strip" id="billing-action-queue-review" data-ph-section="billing_action_queue_review">
       <h2>Billing action queue review</h2>
@@ -78,7 +125,7 @@
         </div>
       </div>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Billing%20action%20queue%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20billing%20action%20queue%20review.%0A%0AStack%3A%0ALive%20or%20pre-launch%3A%0AStripe%20event%20that%20raises%20the%20card%20%28event%20id%20%2B%20type%29%3A%0AStripe%20event%20that%20resolves%20the%20card%20%28if%20any%29%3A%0ABilling%20ledger%20or%20processed-event%20row%3A%0AAction%20queue%20or%20retention%20card%20row%3A%0AExpected%20raise%2Fresolve%20rule%3A%0AActual%20bug%20%28duplicate%20card%2C%20stale%20card%2C%20hidden%20billing%20problem%2C%20failed%20queue%20write%29%3A%0AReplay%20test%20or%20webhook%20delivery%20evidence%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_action_queue_packet_mailto">Send action-queue evidence →</a>
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_action_queue_packet&track=action_queue" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_action_queue_packet">Send action-queue evidence →</a>
         <a class="btn secondary" href="/stripe-billing-reliability-checklist/?ref=billing_action_queue_review" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="billing_action_queue_review">Use the checklist first</a>
       </div>
     </section>

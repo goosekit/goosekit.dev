@@ -65,6 +65,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'billing_health_route';
+      var requestedTrack = params.get('track') || '';
       var subject = 'Billing-health support interest';
       var formStarted = false;
       var readyCaptured = false;
@@ -136,6 +137,14 @@
         hiddenPacket.value = body;
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source);
         return { body: body, mailto: mailto };
+      }
+      if (requestedTrack === 'action_queue') {
+        var trackField = document.querySelector('[data-request-field="track"]');
+        var riskField = document.querySelector('[data-request-field="risk"]');
+        var evidenceField = document.querySelector('[data-request-field="evidence"]');
+        if (trackField && !trackField.value.trim()) trackField.value = 'Billing action queue monthly check';
+        if (riskField && !riskField.value.trim()) riskField.value = 'Failed invoice, past-due subscription, unpaid state, or portal change should raise one action card and resolve once after recovery.';
+        if (evidenceField && !evidenceField.value.trim()) evidenceField.value = 'Stripe event ids, billing ledger or processed-event row, action queue row, resolve event or manual completion evidence.';
       }
       refresh();
       capture('billing_health_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
