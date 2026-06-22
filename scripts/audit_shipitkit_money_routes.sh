@@ -256,7 +256,8 @@ else
     fail "billing setup request route missing"
   elif grep -q "ship_it_kit_setup_help" "$SETUP_REQUEST_FILE" && \
        grep -q "Ship It Kit setup help request" "$SETUP_REQUEST_FILE" && \
-       grep -q "priceRange = isShipItKit ? '199-plus' : '99-149'" "$SETUP_REQUEST_FILE" && \
+       grep -q "requestedPriceRange = params.get('price_range_eur')" "$SETUP_REQUEST_FILE" && \
+       grep -q "priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149')" "$SETUP_REQUEST_FILE" && \
        grep -q "sourceRef = params.get('source_ref')" "$SETUP_REQUEST_FILE" && \
        grep -q "Source ref: " "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_manual_click.*target_href: mailto" "$SETUP_REQUEST_FILE" && \

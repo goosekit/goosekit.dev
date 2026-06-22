@@ -32,17 +32,19 @@
           window.posthog.capture(eventName, props || {});
         }
       };
+      params.set('source', source);
+      var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
+      var checkoutWithParams = checkoutUrl + glue + params.toString();
       capture('ship_it_kit_checkout_redirect_viewed', { source: source, path: window.location.pathname, product: 'ship_it_kit', price_eur: 49 });
       var manual = document.querySelector('[data-manual-checkout-link]');
       if (manual) {
+        manual.setAttribute('href', checkoutWithParams);
         manual.addEventListener('click', function () {
           capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit', price_eur: 49 });
         });
       }
-      params.set('source', source);
       capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit', price_eur: 49 });
-      var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
-      window.location.replace(checkoutUrl + glue + params.toString());
+      window.location.replace(checkoutWithParams);
     });
   </script>
 </body>
