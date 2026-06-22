@@ -116,6 +116,8 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-connect-affiliate-revenue-share-ledger/", "revenue_leak_audit_interest", "affiliate_revenue_share_top", require_product=True),
     RequiredEvent("/blog/stripe-connect-affiliate-revenue-share-ledger/", "setup_help_request_clicked", "affiliate_revenue_share_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-connect-affiliate-revenue-share-ledger/", "setup_help_secondary_clicked", "affiliate_revenue_share_related", require_product=True),
+    RequiredEvent("/blog/stripe-ticketing-double-entry-ledger-replay/", "billing_drift_check_clicked", "ticketing_ledger_top", require_product=True),
+    RequiredEvent("/blog/stripe-ticketing-double-entry-ledger-replay/", "setup_help_request_clicked", "ticketing_ledger_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "billing_drift_check_clicked", "course_membership_top", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_request_clicked", "course_membership_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_retainer_interest", "course_membership_bottom", require_product=True),
@@ -426,6 +428,16 @@ REQUIRED_LINKS = [
         "/blog/stripe-subscription-add-credit-checkout-ledger/",
         "subscription_add_credit_evidence_packet",
         "subscription add-credit evidence packet section location",
+    ),
+    RequiredLink(
+        "/blog/stripe-ticketing-double-entry-ledger-replay/",
+        "billing_reliability_section_reached",
+        "ticketing-ledger evidence packet section view event",
+    ),
+    RequiredLink(
+        "/blog/stripe-ticketing-double-entry-ledger-replay/",
+        "ticketing_ledger_evidence_packet",
+        "ticketing-ledger evidence packet section location",
     ),
 ]
 

@@ -404,6 +404,8 @@ PAGES = [
             "subscription_add_credit_packet_mailto",
             "subscription_add_credit_bottom_mailto",
             "data-ph-product=\"billing_reliability\"",
+            "billing_reliability_section_reached",
+            "subscription_add_credit_evidence_packet",
             "checkout.session.completed",
             "invoice.paid",
             "credit ledger",

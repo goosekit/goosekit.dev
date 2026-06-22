@@ -100,7 +100,7 @@
       </ul>
     </section>
 
-    <section class="card cta">
+    <section class="card cta" data-ph-section="ticketing_ledger_packet" data-ph-product="billing_reliability">
       <h2 style="margin-top:0">What to send for a narrow ticketing-ledger review</h2>
       <p>Send schema and event facts, not secrets: the payment event guard, old attendee/listing/modifier money rows, transfer row shape, refund path, payout reconciliation target, and one replay result.</p>
       <div class="actions">
@@ -111,5 +111,27 @@
       <p class="note">No secrets in the first email. Redact live customer and payment ids until scope is agreed.</p>
     </section>
   </main>
+  <script>
+    (function () {
+      var packet = document.querySelector('[data-ph-section="ticketing_ledger_packet"]');
+      if (!packet || !('IntersectionObserver' in window)) return;
+      var sent = false;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (sent || !entry.isIntersecting) return;
+          sent = true;
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_reliability_section_reached', {
+              product: 'billing_reliability',
+              location: 'ticketing_ledger_evidence_packet',
+              path: window.location.pathname
+            });
+          }
+          observer.disconnect();
+        });
+      }, { threshold: 0.35 });
+      observer.observe(packet);
+    })();
+  </script>
 </body>
 </html>
