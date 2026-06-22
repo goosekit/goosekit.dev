@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=portal_cancel_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=portal_cancel_guide_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=portal_cancel_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=portal_cancel_nav_packet&context=portal_cancel&price_range_eur=99-149&quote_path=launch_blocker&source_ref=portal_cancel_nav">Setup help</a></div>
     <div class="eyebrow">Stripe portal debug</div>
     <h1>Stripe Customer Portal cancelled, but Supabase still says active?</h1>
     <p class="lead">Customer Portal bugs are often state-model bugs. The portal can cancel immediately, schedule cancellation at period end, change quantity, switch prices, or fail payment later. Your app needs to sync Stripe subscription events into a small, explicit Supabase access model.</p>
@@ -31,9 +31,9 @@
       <h2 style="margin-top:0">First, name the exact state mismatch</h2>
       <p>Before changing code, compare what Stripe says now with what your app grants now. A user who set <span class="code">cancel_at_period_end=true</span> may still deserve access until <span class="code">current_period_end</span>. A user with <span class="code">status=canceled</span> probably should not.</p>
       <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=portal_cancel_guide_top" data-ph-event="setup_help_interest" data-ph-location="portal_cancel_top">Need a billing debug pass?</a>
-        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=portal_cancel_top" data-ph-event="billing_drift_check_clicked" data-ph-location="portal_cancel_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=portal_cancel_guide_top_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="portal_cancel_webhook_guide">Webhook paid-state checklist</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=portal_cancel_top_packet&context=portal_cancel&price_range_eur=99-149&quote_path=launch_blocker&source_ref=portal_cancel_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="portal_cancel_top_packet">Need a billing debug pass?</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=portal_cancel_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="portal_cancel_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=portal_cancel_guide_top_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="portal_cancel_webhook_guide">Webhook paid-state checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149 when the repo, Stripe events, and expected access rule are narrow enough to review safely.</p>
     </section>

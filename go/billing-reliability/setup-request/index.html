@@ -101,9 +101,10 @@
       var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
       var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
       var isChargedStranded = requestedContext === 'charged_stranded' || source.indexOf('charged_stranded_') === 0;
+      var isPortalCancel = requestedContext === 'portal_cancel' || source.indexOf('portal_cancel_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
-      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help'))));
+      var subject = isBillingDrift ? 'Stripe + Supabase billing drift review' : (isBillingChecklist ? 'Stripe billing reliability evidence packet' : (isRevenueLeakAudit ? 'Stripe + Supabase revenue leak audit' : (isChargedStranded ? 'Stripe charged but Supabase did not provision access' : (isPortalCancel ? 'Stripe portal cancellation state mismatch' : (isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help')))));
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
         : isBillingChecklist
@@ -112,6 +113,8 @@
         ? 'I want a fixed-scope Stripe + Supabase revenue leak audit.'
         : isChargedStranded
         ? 'Stripe charged the customer, but Supabase did not provision access.'
+        : isPortalCancel
+        ? 'Stripe Customer Portal changed cancellation state, but Supabase access state does not match.'
         : isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
@@ -270,6 +273,13 @@
         setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app');
         setFieldIfEmpty('blocker', 'Charged-and-stranded: Stripe says paid or active, but tenant/workspace/subscription/entitlement/credits/seats are missing or blocked');
         setFieldIfEmpty('evidence', 'Checkout Session, PaymentIntent, invoice, subscription, or event id; expected Supabase rows; webhook delivery status; user-visible symptom');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPortalCancel) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Customer Portal enabled');
+        setFieldIfEmpty('blocker', 'Portal cancellation mismatch: Stripe status/cancel_at_period_end/current_period_end does not match Supabase access state');
+        setFieldIfEmpty('evidence', 'Subscription id, Supabase subscription/access row, portal action timestamp, webhook delivery status, intended access rule');
         setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }
