@@ -305,6 +305,11 @@ REQUIRED_LINKS = [
         "setup request sent route Formspree-return event",
     ),
     RequiredLink(
+        "/go/billing-reliability/setup-request-sent/",
+        "setup_help_request_sent_followup_clicked",
+        "setup request sent route follow-up click event",
+    ),
+    RequiredLink(
         "/go/billing-reliability/setup-request/",
         "setup_help_request_auto_mailto_suppressed",
         "setup route suppresses auto-mailto while packet form is available",
@@ -368,6 +373,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support-sent/",
         "billing_health_request_formspree_returned",
         "billing-health sent route Formspree-return event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support-sent/",
+        "billing_health_request_sent_followup_clicked",
+        "billing-health sent route follow-up click event",
     ),
     RequiredLink(
         "/blog/stripe-invoice-paid-double-extends-supabase-membership/",

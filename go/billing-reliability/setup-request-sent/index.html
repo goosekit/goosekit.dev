@@ -17,8 +17,8 @@
     <h1>Your setup request was sent</h1>
     <p>Arthur should receive the packet by email. If this was urgent, you can also send the same request from your email app.</p>
     <div class="actions">
-      <a class="btn" href="/ship-it-kit-setup-help/">Back to setup help</a>
-      <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=formspree_sent_fallback">Send another request</a>
+      <a class="btn" href="/ship-it-kit-setup-help/" data-sent-followup="setup_help_back">Back to setup help</a>
+      <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=formspree_sent_fallback" data-sent-followup="send_another">Send another request</a>
     </div>
     <p class="fine">No payment is due here. Arthur will reply with the next step if the request fits the fixed-scope setup help.</p>
   </main>
@@ -29,17 +29,34 @@
       var context = params.get('context') || 'unknown';
       var priceRange = params.get('price_range_eur') || 'unknown';
       var quotePath = params.get('quote_path') || 'unknown';
-      if (window.posthog && typeof window.posthog.capture === 'function') {
-        window.posthog.capture('setup_help_request_formspree_returned', {
-          source: source,
-          request_context: context,
-          quote_path: quotePath,
-          product: 'billing_reliability',
-          location: 'setup_help_request_sent_route',
-          path: '/go/billing-reliability/setup-request-sent/',
-          price_range_eur: priceRange,
-          target_href: window.location.href
+      var sourceRef = source;
+      var sentProps = {
+        source: source,
+        source_ref: sourceRef,
+        request_context: context,
+        quote_path: quotePath,
+        product: 'billing_reliability',
+        location: 'setup_help_request_sent_route',
+        path: '/go/billing-reliability/setup-request-sent/',
+        price_range_eur: priceRange
+      };
+      document.querySelectorAll('[data-sent-followup]').forEach(function (link) {
+        var glue = link.href.indexOf('?') === -1 ? '?' : '&';
+        link.href = link.href + glue + 'source_ref=' + encodeURIComponent(sourceRef);
+        link.addEventListener('click', function () {
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('setup_help_request_sent_followup_clicked', Object.assign({}, sentProps, {
+              location: 'setup_help_request_sent_' + link.getAttribute('data-sent-followup'),
+              sent_followup: link.getAttribute('data-sent-followup'),
+              target_href: link.href
+            }));
+          }
         });
+      });
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('setup_help_request_formspree_returned', Object.assign({}, sentProps, {
+          target_href: window.location.href
+        }));
       }
     });
   </script>

@@ -8,7 +8,7 @@
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:680px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:#ff4800;color:white;font-weight:800;text-decoration:none;margin-top:16px}.fine{color:#b8b8cc;font-size:.94rem}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:680px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:#ff4800;color:white;font-weight:800;text-decoration:none}.btn.secondary{background:rgba(255,255,255,.04);color:#ff9040}.fine{color:#b8b8cc;font-size:.94rem}
   </style>
 </head>
 <body>
@@ -16,23 +16,42 @@
     <div class="pill">Request sent</div>
     <h1>Your billing-health support request was sent</h1>
     <p>Arthur should receive the packet by email. Monthly support still needs a concrete first-pass fit check before anything is counted as MRR.</p>
-    <a class="btn" href="/billing-health-support/">Back to billing-health support</a>
+    <div class="actions">
+      <a class="btn" href="/billing-health-support/" data-health-sent-followup="support_back">Back to billing-health support</a>
+      <a class="btn secondary" href="/go/billing-reliability/health-support/?source=formspree_sent_fallback" data-health-sent-followup="send_another">Send another request</a>
+    </div>
     <p class="fine">No payment is due here.</p>
   </main>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
-      if (window.posthog && typeof window.posthog.capture === 'function') {
-        window.posthog.capture('billing_health_request_formspree_returned', {
-          product: 'billing_reliability',
-          location: 'billing_health_request_sent_route',
-          path: '/go/billing-reliability/health-support-sent/',
-          source_ref: params.get('source') || 'formspree_return',
-          request_context: 'billing_health_support',
-          price_range_eur: '29/mo',
-          price_eur_monthly: 29,
-          target_href: window.location.href
+      var sourceRef = params.get('source') || 'formspree_return';
+      var sentProps = {
+        product: 'billing_reliability',
+        location: 'billing_health_request_sent_route',
+        path: '/go/billing-reliability/health-support-sent/',
+        source_ref: sourceRef,
+        request_context: 'billing_health_support',
+        price_range_eur: '29/mo',
+        price_eur_monthly: 29
+      };
+      document.querySelectorAll('[data-health-sent-followup]').forEach(function (link) {
+        var glue = link.href.indexOf('?') === -1 ? '?' : '&';
+        link.href = link.href + glue + 'source_ref=' + encodeURIComponent(sourceRef);
+        link.addEventListener('click', function () {
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_health_request_sent_followup_clicked', Object.assign({}, sentProps, {
+              location: 'billing_health_request_sent_' + link.getAttribute('data-health-sent-followup'),
+              sent_followup: link.getAttribute('data-health-sent-followup'),
+              target_href: link.href
+            }));
+          }
         });
+      });
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('billing_health_request_formspree_returned', Object.assign({}, sentProps, {
+          target_href: window.location.href
+        }));
       }
     });
   </script>
