@@ -8,7 +8,7 @@
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.quote-lanes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;text-align:left}.quote-lane{border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#10101d;color:#f7f7fb;padding:12px;text-align:left;cursor:pointer}.quote-lane strong{display:block;color:#fff;margin-bottom:4px}.quote-lane span{display:block;color:#b8b8cc;font-size:.9rem;line-height:1.45}.quote-lane:hover{border-color:#ff9040}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}.fast-note,.context-note{margin:14px 0 0;padding:10px 12px;border:1px solid rgba(255,72,0,.22);border-radius:12px;background:rgba(255,72,0,.07);color:#ffd0bd;font-size:.94rem;text-align:left}.context-note{border-color:rgba(61,214,140,.28);background:rgba(61,214,140,.08);color:#d9ffe9}.context-note[hidden]{display:none}@media(max-width:640px){.request-form,.quote-lanes{grid-template-columns:1fr}}.request-copy{width:100%;min-height:220px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fallback-line{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;color:#d8d8e8;font-size:.96rem}.email-chip{padding:7px 10px;border-radius:10px;background:#10101d;border:1px solid rgba(255,255,255,.12);font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#f7f7fb}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.quote-lanes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;text-align:left}.quote-lane{border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#10101d;color:#f7f7fb;padding:12px;text-align:left;cursor:pointer}.quote-lane strong{display:block;color:#fff;margin-bottom:4px}.quote-lane span{display:block;color:#b8b8cc;font-size:.9rem;line-height:1.45}.quote-lane:hover{border-color:#ff9040}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}.fast-note,.context-note{margin:14px 0 0;padding:10px 12px;border:1px solid rgba(255,72,0,.22);border-radius:12px;background:rgba(255,72,0,.07);color:#ffd0bd;font-size:.94rem;text-align:left}.context-note{border-color:rgba(61,214,140,.28);background:rgba(61,214,140,.08);color:#d9ffe9}.context-note[hidden],.context-actions[hidden]{display:none}.context-actions{display:flex;justify-content:flex-start;margin:10px 0 0}@media(max-width:640px){.request-form,.quote-lanes{grid-template-columns:1fr}}.request-copy{width:100%;min-height:220px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fallback-line{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;color:#d8d8e8;font-size:.96rem}.email-chip{padding:7px 10px;border-radius:10px;background:#10101d;border:1px solid rgba(255,255,255,.12);font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#f7f7fb}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
   </style>
 </head>
 <body>
@@ -18,6 +18,9 @@
     <p>Add the few details needed to price and triage the fixed-scope setup pass.</p>
     <p class="fast-note">Short on time? Stack + blocker is enough to start. Evidence, deadline, and budget can be rough.</p>
     <p class="context-note" data-context-note hidden></p>
+    <div class="context-actions" data-context-actions hidden>
+      <button class="btn" type="button" data-context-example>Use suggested packet</button>
+    </div>
     <div class="quote-lanes" aria-label="Choose request path">
       <button class="quote-lane" type="button" data-quote-path="fixed_scope_quote">
         <strong>I need a fixed-scope quote</strong>
@@ -172,6 +175,8 @@
       };
       capture('setup_help_request_route_viewed', Object.assign({}, eventProps, { target_href: window.location.href }));
       var contextNote = document.querySelector('[data-context-note]');
+      var contextActions = document.querySelector('[data-context-actions]');
+      var contextExampleButton = document.querySelector('[data-context-example]');
       var contextNotes = {
         charged_stranded: 'For charged-and-stranded requests, the minimum useful packet is: Stripe object, missing Supabase row, and what the paid user currently sees.',
         trial_access: 'For trial/access requests, send the subscription status, trial or invoice timing, and the Supabase access row that disagrees.',
@@ -183,6 +188,7 @@
       if (contextNote && contextNotes[context]) {
         contextNote.textContent = contextNotes[context];
         contextNote.hidden = false;
+        if (contextActions) contextActions.hidden = false;
         capture('setup_help_request_context_note_shown', Object.assign({}, eventProps, { target_href: 'context_note', note_context: context }));
       }
       var manual = document.querySelector('[data-manual-link]');
@@ -213,6 +219,28 @@
         var field = fieldByKey(key);
         if (field && !field.value.trim()) field.value = value;
       }
+      var contextExamples = {
+        charged_stranded: {
+          blocker: 'Charged-and-stranded: Stripe says paid or active, but the tenant/workspace/subscription/entitlement row is missing or blocked.',
+          evidence: 'Stripe object id, missing Supabase row/table, webhook delivery status, and what the paid user currently sees.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        trial_access: {
+          blocker: 'Trial/access mismatch: Stripe trialing/active/incomplete/past_due/canceled does not match Supabase access.',
+          evidence: 'Subscription id, latest invoice status, trial_end/current_period_end, Supabase access row, and intended trial/grace policy.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        portal_cancel: {
+          blocker: 'Portal cancellation mismatch: Stripe cancellation state does not match Supabase access.',
+          evidence: 'Subscription id, cancel_at_period_end/current_period_end, Supabase access row, portal action timestamp, and webhook delivery status.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        portal_plan_change: {
+          blocker: 'Portal plan-change mismatch: Stripe price or schedule changed but Supabase entitlements did not.',
+          evidence: 'Subscription id, before/after price ids, Supabase entitlement row, portal action timestamp, and intended access rule.',
+          budget: 'EUR99-149 if scope is clear'
+        }
+      };
       function value(key) {
         var field = fieldByKey(key);
         return field ? field.value.trim() : '';
@@ -274,6 +302,19 @@
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange) + '&quote_path=' + encodeURIComponent(quotePathSelected || 'unknown') + '&source_ref=' + encodeURIComponent(sourceRef || source);
       }
       refreshLinks();
+      if (contextExampleButton) {
+        contextExampleButton.addEventListener('click', function () {
+          var example = contextExamples[context];
+          if (!example) return;
+          setFieldIfEmpty('blocker', example.blocker);
+          setFieldIfEmpty('evidence', example.evidence);
+          setFieldIfEmpty('budget', example.budget);
+          refreshLinks();
+          capture('setup_help_request_context_example_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'context_example', note_context: context }));
+          var emailField = fieldByKey('email');
+          if (emailField) emailField.focus();
+        });
+      }
       if (isBillingDrift) {
         setFieldIfEmpty('repo', 'Live or near-launch app with Stripe + Supabase billing drift risk');
         setFieldIfEmpty('blocker', 'Billing drift check score: ' + (driftScore || 'unknown') + (totalRisks ? '/' + totalRisks : '') + (uncheckedRiskKeys ? '; unchecked risk keys: ' + uncheckedRiskKeys : ''));
