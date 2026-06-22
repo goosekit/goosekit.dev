@@ -171,6 +171,9 @@
       }
       refresh();
       capture('billing_health_request_route_viewed', Object.assign({}, baseProps, { target_href: window.location.href }));
+      if (requestedTrack) {
+        capture('billing_health_request_prefill_applied', Object.assign({}, baseProps, formStats(), { target_href: 'billing_health_prefill' }));
+      }
       fields.forEach(function (field) {
         field.addEventListener('input', function () {
           refresh();

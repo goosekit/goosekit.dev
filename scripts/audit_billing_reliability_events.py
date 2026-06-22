@@ -363,6 +363,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "billing_health_request_prefill_applied",
+        "billing-health route prefill event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "billing_health_request_formspree_submit",
         "billing-health route Formspree submit event",
     ),

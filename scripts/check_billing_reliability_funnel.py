@@ -247,6 +247,7 @@ PAGES = [
             "billing_health_request_form_started",
             "billing_health_request_field_completed",
             "billing_health_request_ready_to_send",
+            "billing_health_request_prefill_applied",
             "billing_health_request_formspree_submit",
             "billing_health_request_copy_clicked",
             "https://formspree.io/f/xblgwdqz",
