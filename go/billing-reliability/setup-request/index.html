@@ -89,9 +89,12 @@
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'setup_request_route';
       var sourceRef = params.get('source_ref') || '';
+      var requestedContext = params.get('context') || '';
+      var requestedPriceRange = params.get('price_range_eur') || '';
+      var requestedQuotePath = params.get('quote_path') || '';
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
-      var context = isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help';
-      var priceRange = isShipItKit ? '199-plus' : '99-149';
+      var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
+      var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
       var subject = isShipItKit ? 'Ship It Kit setup help request' : 'Next.js Supabase Stripe setup help';
       var intro = isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
@@ -124,7 +127,7 @@
       var formStarted = false;
       var fastPathCaptured = false;
       var readyToSendCaptured = false;
-      var quotePathSelected = '';
+      var quotePathSelected = requestedQuotePath;
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
       }

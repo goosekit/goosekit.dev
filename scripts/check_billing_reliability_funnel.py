@@ -313,7 +313,16 @@ PAGES = [
     },
     {
         "path": "/blog/stripe-charged-customer-not-provisioned-supabase/",
-        "required": ["billing_drift_check_clicked", "charged_stranded_top"],
+        "required": [
+            "billing_drift_check_clicked",
+            "charged_stranded_top",
+            "setup_help_request_clicked",
+            "charged_stranded_bottom_packet",
+            "/go/billing-reliability/setup-request/?source=charged_stranded_bottom_packet",
+            "context=charged_stranded",
+            "quote_path=launch_blocker",
+            "data-ph-product=\"billing_reliability\"",
+        ],
     },
     {
         "path": "/blog/stripe-duplicate-subscription-supabase-access/",
@@ -471,6 +480,7 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "charged_stranded_top",
+            "charged_stranded_bottom_packet",
             "charged_stranded_hosted_plan_context",
             "charged_stranded_bottom_hosted_plan",
         ],
