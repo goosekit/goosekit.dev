@@ -92,8 +92,6 @@ PAGES = [
             "Audit output",
             "Send a small evidence packet first",
             "revenue_leak_evidence_packet",
-            "/go/billing-reliability/audit-request/?source=revenue_leak_audit_cta",
-            "/go/billing-reliability/audit-request/?source=revenue_leak_evidence_packet",
             "Expected app state and actual app state",
             "data-ph-event=\"setup_help_secondary_clicked\" data-ph-product=\"billing_reliability\" data-ph-location=\"revenue_leak_audit_bottom\"",
             "data-ph-event=\"setup_help_retainer_interest\" data-ph-product=\"billing_reliability\" data-ph-location=\"revenue_leak_audit_bottom\"",
@@ -440,7 +438,7 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "one_time_booking_top",
-            "one_time_booking_bottom_mailto",
+            "one_time_booking_bottom_packet",
             "setup_help_retainer_interest",
             "data-ph-product=\"billing_reliability\"",
             "fail-before-charge",
@@ -497,8 +495,8 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "hosted_plan_entitlement_top",
-            "hosted_plan_entitlement_packet_mailto",
-            "hosted_plan_entitlement_bottom_mailto",
+            "hosted_plan_entitlement_packet",
+            "hosted_plan_entitlement_bottom",
             "data-ph-product=\"billing_reliability\"",
             "entitlement resolver",
             "tenant provisioning",
