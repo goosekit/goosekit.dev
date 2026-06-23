@@ -112,6 +112,7 @@ class Event:
     example_value: str
     first_field: str
     start_source: str
+    has_reply_email: str
 
 
 def parse_properties(value: Any) -> dict[str, Any]:
@@ -157,6 +158,7 @@ def event_from_row(row: dict[str, Any]) -> Event:
         example_value=prop("example_value"),
         first_field=prop("first_field"),
         start_source=prop("start_source"),
+        has_reply_email=prop("has_reply_email"),
     )
 
 
@@ -184,6 +186,10 @@ def load_events(input_path: Path | None, fmt: str) -> list[Event]:
 
 
 def is_complete(value: str) -> bool:
+    return value.lower() == "true"
+
+
+def is_truthy(value: str) -> bool:
     return value.lower() == "true"
 
 
@@ -283,9 +289,32 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     completed = counts["goosekit_api_production_request_completed"]
     packet_copies = counts["goosekit_api_packet_copied"]
     mail_clicks = counts["goosekit_api_production_access_clicked"]
+    completed_with_reply_email = sum(
+        1
+        for event in api_events
+        if event.name == "goosekit_api_production_request_completed"
+        and is_complete(event.complete)
+        and is_truthy(event.has_reply_email)
+    )
+    completed_missing_reply_email = max(0, completed - completed_with_reply_email)
+    packet_copies_complete_with_reply_email = sum(
+        1
+        for event in api_events
+        if event.name == "goosekit_api_packet_copied"
+        and is_complete(event.complete)
+        and is_truthy(event.has_reply_email)
+    )
     complete_mail_clicks = sum(
         1 for event in api_events if event.name == "goosekit_api_production_access_clicked" and is_complete(event.complete)
     )
+    complete_mail_clicks_with_reply_email = sum(
+        1
+        for event in api_events
+        if event.name == "goosekit_api_production_access_clicked"
+        and is_complete(event.complete)
+        and is_truthy(event.has_reply_email)
+    )
+    complete_mail_clicks_missing_reply_email = complete_mail_clicks - complete_mail_clicks_with_reply_email
     incomplete_mail_clicks = mail_clicks - complete_mail_clicks
     missing_required_fields = Counter(
         field
@@ -311,9 +340,15 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
     elif mailbox_packets > 0:
         action = "score_inbound_packet"
         reason = "real_mailbox_packet_present"
-    elif complete_mail_clicks or packet_copies:
+    elif completed_missing_reply_email or complete_mail_clicks_missing_reply_email:
+        action = "inspect_reply_email_friction"
+        reason = "api_packet_complete_but_reply_email_missing"
+    elif complete_mail_clicks_with_reply_email or packet_copies_complete_with_reply_email:
         action = "check_mailbox_before_lead"
-        reason = "complete_or_copied_packet_without_mailbox_packet"
+        reason = "complete_packet_with_reply_email_without_mailbox_packet"
+    elif complete_mail_clicks or packet_copies:
+        action = "inspect_reply_email_friction"
+        reason = "api_packet_copy_or_mail_click_without_reply_email"
     elif mail_clicks:
         action = "investigate_mailto_completion"
         reason = "mail_click_without_complete_packet_or_mailbox_packet"
@@ -356,9 +391,14 @@ def build_summary(events: list[Event], mailbox_packets: int) -> dict[str, Any]:
         "failure_example_clicks": failure_example_clicks,
         "builder_starts": builder_starts,
         "completed_packets": completed,
+        "completed_with_reply_email": completed_with_reply_email,
+        "completed_missing_reply_email": completed_missing_reply_email,
         "packet_copies": packet_copies,
+        "packet_copies_complete_with_reply_email": packet_copies_complete_with_reply_email,
         "mail_clicks": mail_clicks,
         "complete_mail_clicks": complete_mail_clicks,
+        "complete_mail_clicks_with_reply_email": complete_mail_clicks_with_reply_email,
+        "complete_mail_clicks_missing_reply_email": complete_mail_clicks_missing_reply_email,
         "incomplete_mail_clicks": incomplete_mail_clicks,
         "missing_required_fields": dict(missing_required_fields.most_common()),
         "missing_fields_by_start_source": {
@@ -413,9 +453,14 @@ def format_markdown(summary: dict[str, Any], *, export_source: str, window: str,
         f"failure_example_clicks={summary['failure_example_clicks']}",
         f"builder_starts={summary['builder_starts']}",
         f"completed_packets={summary['completed_packets']}",
+        f"completed_with_reply_email={summary['completed_with_reply_email']}",
+        f"completed_missing_reply_email={summary['completed_missing_reply_email']}",
         f"packet_copies={summary['packet_copies']}",
+        f"packet_copies_complete_with_reply_email={summary['packet_copies_complete_with_reply_email']}",
         f"mail_clicks={summary['mail_clicks']}",
         f"complete_mail_clicks={summary['complete_mail_clicks']}",
+        f"complete_mail_clicks_with_reply_email={summary['complete_mail_clicks_with_reply_email']}",
+        f"complete_mail_clicks_missing_reply_email={summary['complete_mail_clicks_missing_reply_email']}",
         f"incomplete_mail_clicks={summary['incomplete_mail_clicks']}",
         f"mailbox_packets={summary['mailbox_packets']}",
         f"api_events_missing_product={summary['api_events_missing_product']}",
