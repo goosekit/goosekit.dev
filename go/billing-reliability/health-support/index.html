@@ -24,9 +24,13 @@
       <input type="hidden" name="source" data-hidden-source>
       <input type="hidden" name="source_ref" data-hidden-source-ref>
       <input type="hidden" name="requested_track" data-hidden-requested-track>
+      <input type="hidden" name="_replyto" data-hidden-replyto>
       <input type="hidden" name="request_packet" data-hidden-packet>
       <input type="hidden" name="_next" data-hidden-next>
       <div class="request-form">
+        <label>Reply email
+          <input name="email" data-request-field="email" type="email" autocomplete="email" placeholder="you@example.com">
+        </label>
         <label>App status
           <input name="app_status" data-request-field="status" autocomplete="off" placeholder="Live, pre-launch, staging">
         </label>
@@ -78,6 +82,7 @@
       var hiddenSource = document.querySelector('[data-hidden-source]');
       var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
       var hiddenRequestedTrack = document.querySelector('[data-hidden-requested-track]');
+      var hiddenReplyto = document.querySelector('[data-hidden-replyto]');
       var hiddenPacket = document.querySelector('[data-hidden-packet]');
       var hiddenNext = document.querySelector('[data-hidden-next]');
       var baseProps = {
@@ -100,7 +105,8 @@
           completed_fields: filled,
           completed_field_names: completed.join(','),
           total_fields: fields.length,
-          is_complete: filled >= 4,
+          has_reply_email: Boolean(value('email')),
+          is_complete: filled >= 5 && Boolean(value('email')),
           support_track: value('track') || 'missing_support_track',
           revenue_at_risk: value('revenue') || 'missing_revenue_at_risk',
           cadence: value('cadence') || 'missing_cadence'
@@ -116,6 +122,7 @@
           '',
           'I am interested in founding-5 billing-health support.',
           '',
+          'Reply email: ' + value('email'),
           'My app status: ' + value('status'),
           'My stack: ' + value('stack'),
           'Monthly billing risk I want covered: ' + value('risk'),
@@ -139,6 +146,7 @@
         hiddenSource.value = source;
         hiddenSourceRef.value = source;
         hiddenRequestedTrack.value = requestedTrack || 'unspecified';
+        hiddenReplyto.value = value('email');
         hiddenPacket.value = body;
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source);
         return { body: body, mailto: mailto };
@@ -182,7 +190,7 @@
             capture('billing_health_request_form_started', Object.assign({}, baseProps, formStats(), { first_field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
           }
           var stats = formStats();
-          if (!readyCaptured && stats.completed_fields >= 4) {
+          if (!readyCaptured && stats.completed_fields >= 5 && stats.has_reply_email) {
             readyCaptured = true;
             capture('billing_health_request_ready_to_send', Object.assign({}, baseProps, stats, { target_href: 'billing_health_form' }));
           }

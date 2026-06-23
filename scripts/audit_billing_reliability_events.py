@@ -383,6 +383,26 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "name=\"email\"",
+        "billing-health route reply-email field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "name=\"_replyto\"",
+        "billing-health route Formspree reply-to field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "Reply email:",
+        "billing-health route reply-email packet line",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "has_reply_email",
+        "billing-health route reply-email analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "completed_field_names",
         "billing-health route completed-field analytics",
     ),
