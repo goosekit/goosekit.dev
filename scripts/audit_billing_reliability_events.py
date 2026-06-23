@@ -89,7 +89,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-invoice-paid-double-extends-supabase-membership/", "billing_drift_check_clicked", "invoice_paid_double_extend_top"),
-    RequiredEvent("/blog/stripe-invoice-paid-double-extends-supabase-membership/", "setup_help_request_clicked", "invoice_paid_double_extend_bottom_mailto"),
+    RequiredEvent("/blog/stripe-invoice-paid-double-extends-supabase-membership/", "setup_help_request_clicked", "invoice_paid_double_extend_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-client-paid-flag-supabase-bypass/", "billing_drift_check_clicked", "paid_flag_bypass_top"),
     RequiredEvent("/blog/stripe-client-paid-flag-supabase-bypass/", "setup_help_request_clicked", "paid_flag_bypass_bottom_mailto"),
     RequiredEvent("/blog/saas-credits-deducted-job-failed-no-refund/", "billing_drift_check_clicked", "metered_credit_job_failed_top", require_product=True),
@@ -152,6 +152,11 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-invoice-paid-double-extends-supabase-membership/",
+        "/go/billing-reliability/setup-request/?source=invoice_paid_double_extend_bottom_packet",
+        "invoice paid double extend bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-webhook-supabase-missing-subscription-columns/",
         "/go/billing-reliability/setup-request/?source=missing_subscription_columns_bottom_packet",
