@@ -110,7 +110,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-subscription-add-credit-checkout-ledger/", "setup_help_request_clicked", "subscription_add_credit_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-subscription-add-credit-checkout-ledger/", "setup_help_secondary_clicked", "subscription_add_credit_related", require_product=True),
     RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "billing_drift_check_clicked", "missing_subscription_columns_top", require_product=True),
-    RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_request_clicked", "missing_subscription_columns_bottom_mailto", require_product=True),
+    RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_request_clicked", "missing_subscription_columns_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_retainer_interest", "missing_subscription_columns_bottom", require_product=True),
     RequiredEvent("/blog/stripe-webhook-supabase-missing-subscription-columns/", "setup_help_secondary_clicked", "missing_subscription_columns_related", require_product=True),
     RequiredEvent("/blog/stripe-one-time-booking-subscription-credit-atomic/", "billing_drift_check_clicked", "one_time_booking_top", require_product=True),
@@ -152,6 +152,11 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-webhook-supabase-missing-subscription-columns/",
+        "/go/billing-reliability/setup-request/?source=missing_subscription_columns_bottom_packet",
+        "missing subscription columns bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-course-membership-supabase-access/",
         "/go/billing-reliability/setup-request/?source=course_membership_nav_packet",
