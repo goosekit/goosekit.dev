@@ -99,7 +99,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-checkout-success-url-webhook-access/", "setup_help_request_clicked", "checkout_success_webhook_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-checkout-success-url-webhook-access/", "setup_help_secondary_clicked", "checkout_success_webhook_related", require_product=True),
     RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "billing_drift_check_clicked", "setup_mode_card_gate_top", require_product=True),
-    RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "setup_help_request_clicked", "setup_mode_card_gate_bottom_mailto", require_product=True),
+    RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "setup_help_request_clicked", "setup_mode_card_gate_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "setup_help_secondary_clicked", "setup_mode_card_gate_related", require_product=True),
     RequiredEvent("/blog/stripe-subscription-monthly-credits-double-grant-supabase/", "billing_drift_check_clicked", "monthly_credit_grant_top", require_product=True),
     RequiredEvent("/blog/stripe-subscription-monthly-credits-double-grant-supabase/", "setup_help_request_clicked", "monthly_credit_refill_bottom_mailto", require_product=True),
@@ -152,6 +152,11 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-setup-mode-card-on-file-subscription-gate/",
+        "/go/billing-reliability/setup-request/?source=setup_mode_card_gate_bottom_packet",
+        "setup mode card gate bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-invoice-paid-double-extends-supabase-membership/",
         "/go/billing-reliability/setup-request/?source=invoice_paid_double_extend_bottom_packet",
