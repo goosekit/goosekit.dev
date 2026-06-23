@@ -75,6 +75,7 @@
       var formStarted = false;
       var readyCaptured = false;
       var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
+      var emailField = document.querySelector('[data-request-field="email"]');
       var copyText = document.querySelector('[data-request-copy]');
       var copyStatus = document.querySelector('[data-copy-status]');
       var manual = document.querySelector('[data-manual-link]');
@@ -199,6 +200,11 @@
           if (field.value.trim()) capture('billing_health_request_field_completed', Object.assign({}, baseProps, formStats(), { field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
         });
       });
+      if (emailField) {
+        emailField.addEventListener('invalid', function () {
+          capture('billing_health_request_email_invalid', Object.assign({}, baseProps, formStats(), { target_href: 'reply_email_field', blocked_reason: value('email') ? 'invalid_reply_email' : 'missing_reply_email' }));
+        });
+      }
       manual.addEventListener('click', function () {
         var links = refresh();
         capture('billing_health_request_manual_click', Object.assign({}, baseProps, formStats(), { target_href: links.mailto }));

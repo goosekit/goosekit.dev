@@ -378,6 +378,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "billing_health_request_email_invalid",
+        "billing-health route invalid-email event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "data-request-field=\"track\"",
         "billing-health route support-track field",
     ),
@@ -415,6 +420,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "missing_reply_email",
         "billing-health route blocked-submit reason",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "invalid_reply_email",
+        "billing-health route invalid-email reason",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
