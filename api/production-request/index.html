@@ -72,9 +72,10 @@
 <main><div class="wrap grid">
   <section class="card">
     <h2>Request details</h2>
-    <div class="progress-note" id="progressNote" data-ph-location="production_request_progress"><strong>Required packet fields</strong><span id="progressText">0/6 complete</span></div>
-    <p class="missing-note" id="missingNote">Missing: volume, where it runs, endpoint details, commercial use, paid expectation, failure mode.</p>
+    <div class="progress-note" id="progressNote" data-ph-location="production_request_progress"><strong>Required packet fields</strong><span id="progressText">0/7 complete</span></div>
+    <p class="missing-note" id="missingNote">Missing: reply email, volume, where it runs, endpoint details, commercial use, paid expectation, failure mode.</p>
     <ul class="required-list" id="requiredList" aria-label="Required request fields">
+      <li data-required-id="reply_email">Reply email</li>
       <li data-required-id="volume">Volume</li>
       <li data-required-id="runtime">Where it runs</li>
       <li data-required-id="specifics">Endpoint details</li>
@@ -82,8 +83,9 @@
       <li data-required-id="budget">Paid expectation</li>
       <li data-required-id="failure">Failure mode</li>
     </ul>
-    <p class="field-note">Traffic pattern and deadline help with scoping, but the six marked fields are enough to send a useful request.</p>
+    <p class="field-note">Traffic pattern and deadline help with scoping, but the seven marked fields are enough to send a useful request.</p>
     <p class="source-note" id="sourceNote" data-ph-location="production_request_source_context"></p>
+    <div class="field"><label for="replyEmail">Reply email <span class="field-tag required">required</span></label><input id="replyEmail" type="email" autocomplete="email" placeholder="you@example.com"><span class="field-help">Used only so a copied packet can be answered. Do not include API keys or secrets.</span></div>
     <div class="field"><label for="endpoint">Endpoint <span class="field-tag required">required</span></label><select id="endpoint"><option value="JSON formatter">JSON formatter</option><option value="Hash generator">Hash generator</option><option value="UUID generator">UUID generator</option><option value="Password generator">Password generator</option><option value="Adjacent utility endpoint">Adjacent utility endpoint</option></select></div>
     <div class="endpoint-examples" id="endpointExamples" data-ph-location="production_request_endpoint_examples"><strong>Useful details for this endpoint</strong><ul><li>JSON operation: format, minify, validate, or normalize.</li><li>Payload size range and where the output is consumed.</li><li>What manual or brittle step this replaces.</li></ul></div>
     <div class="field"><label for="volume">Expected monthly volume <span class="field-tag required">required</span></label><input id="volume" placeholder="Example: 500k requests/month"><span class="field-help">A rough range is fine: 10k/month, 500k/month, or bursty batch jobs.</span></div>
@@ -136,6 +138,7 @@
 <script>
 (function() {
   var endpoint = document.getElementById('endpoint');
+  var replyEmail = document.getElementById('replyEmail');
   var fieldIds = ['volume','pattern','runtime','specifics','commercial','budget','deadline','failure'];
   var fields = fieldIds.map(function(id){ return document.getElementById(id); });
   var packetEl = document.getElementById('packet');
@@ -257,6 +260,7 @@
     }
   };
   var requiredLabels = {
+    reply_email: 'reply email',
     volume: 'volume',
     runtime: 'where it runs',
     specifics: 'endpoint details',
@@ -269,6 +273,7 @@
     return [
       'Goosekit API production request',
       '',
+      'Reply email: ' + value(replyEmail),
       'Endpoint: ' + endpoint.value,
       'Expected monthly volume: ' + value(fields[0]),
       'Traffic pattern: ' + value(fields[1]),
@@ -283,16 +288,17 @@
   }
   function filled(id) {
     var el = document.getElementById(id);
+    if (id === 'reply_email') el = replyEmail;
     return Boolean(el && el.value.trim());
   }
   function completeness() {
-    var required = ['volume','runtime','specifics','commercial','budget','failure'];
+    var required = ['reply_email','volume','runtime','specifics','commercial','budget','failure'];
     var count = required.filter(filled).length;
     var missing = required.filter(function(id) { return !filled(id); });
     return { count: count, total: required.length, complete: count === required.length, missing: missing };
   }
   function firstFilledField() {
-    var required = ['volume','runtime','specifics','commercial','budget','failure'];
+    var required = ['reply_email','volume','runtime','specifics','commercial','budget','failure'];
     for (var i = 0; i < required.length; i += 1) {
       if (filled(required[i])) return required[i];
     }
@@ -319,7 +325,7 @@
     if (!label) return;
     var preselected = endpointRefMap[sourceRef] || params.get('endpoint');
     var endpointText = preselected ? 'The endpoint is preselected; ' : 'Choose the closest endpoint, then ';
-    sourceNote.innerHTML = '<strong>Context:</strong> you came from the ' + label + '. ' + endpointText + 'fill the six required fields to make the request useful.';
+    sourceNote.innerHTML = '<strong>Context:</strong> you came from the ' + label + '. ' + endpointText + 'fill the seven required fields to make the request useful.';
     sourceNote.style.display = 'block';
   }
   function render() {
@@ -345,6 +351,7 @@
         location: 'production_request_builder',
         first_field: firstFilledField(),
         start_source: activeStartSource,
+        has_reply_email: filled('reply_email'),
         missing_required_fields: status.missing.join(','),
         required_fields_filled: status.count,
         required_fields_total: status.total
@@ -360,6 +367,7 @@
         source_ref: sourceRef,
         location: 'production_request_builder',
         start_source: activeStartSource || 'manual',
+        has_reply_email: filled('reply_email'),
         missing_required_fields: status.missing.join(','),
         required_fields_filled: status.count,
         required_fields_total: status.total
@@ -388,17 +396,17 @@
       });
     }
   }
-  [endpoint].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
+  [endpoint, replyEmail].concat(fields).forEach(function(el) { el.addEventListener('input', render); el.addEventListener('change', render); });
   endpoint.addEventListener('change', applyEndpointHint);
   document.getElementById('copyPacket').addEventListener('click', function() {
     var text = packet();
     var status = completeness();
     navigator.clipboard && navigator.clipboard.writeText(text);
-    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder', start_source: activeStartSource || 'manual', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
+    capture('goosekit_api_packet_copied', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder', start_source: activeStartSource || 'manual', complete: status.complete, has_reply_email: filled('reply_email'), missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
   });
   mail.addEventListener('click', function() {
     var status = completeness();
-    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', start_source: activeStartSource || 'manual', complete: status.complete, missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
+    capture('goosekit_api_production_access_clicked', { product: 'goosekit_api', endpoint: endpoint.value, ref: sourceRef, source_ref: sourceRef, location: 'production_request_builder_mail', start_source: activeStartSource || 'manual', complete: status.complete, has_reply_email: filled('reply_email'), missing_required_fields: status.missing.join(','), required_fields_filled: status.count, required_fields_total: status.total });
   });
   volumeExampleButtons.forEach(function(button) {
     button.addEventListener('click', function() {
