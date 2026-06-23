@@ -608,7 +608,8 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "course_membership_top",
-            "course_membership_bottom_mailto",
+            "course_membership_bottom_packet",
+            "context=course_membership",
             "setup_help_retainer_interest",
             "data-ph-product=\"billing_reliability\"",
             "course membership",

@@ -137,7 +137,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-ticketing-double-entry-ledger-replay/", "billing_drift_check_clicked", "ticketing_ledger_top", require_product=True),
     RequiredEvent("/blog/stripe-ticketing-double-entry-ledger-replay/", "setup_help_request_clicked", "ticketing_ledger_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "billing_drift_check_clicked", "course_membership_top", require_product=True),
-    RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_request_clicked", "course_membership_bottom_mailto", require_product=True),
+    RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_request_clicked", "course_membership_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_retainer_interest", "course_membership_bottom", require_product=True),
     RequiredEvent("/blog/stripe-course-membership-supabase-access/", "setup_help_secondary_clicked", "course_membership_related", require_product=True),
     RequiredEvent("/blog/stripe-zalopay-revenuecat-supabase-subscriptions/", "billing_drift_check_clicked", "multi_provider_subscription_top", require_product=True),
@@ -152,6 +152,16 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-course-membership-supabase-access/",
+        "/go/billing-reliability/setup-request/?source=course_membership_nav_packet",
+        "course membership nav setup-request packet CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-course-membership-supabase-access/",
+        "/go/billing-reliability/setup-request/?source=course_membership_bottom_packet",
+        "course membership bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-dunning-past-due-unpaid-supabase-access/",
         "/go/billing-reliability/setup-request/?source=dunning_nav_packet",
