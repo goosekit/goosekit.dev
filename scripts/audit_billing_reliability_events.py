@@ -68,7 +68,9 @@ REQUIRED_EVENTS = [
     RequiredEvent("/ship-it-kit-setup-help/", "setup_help_request_clicked", "shipit_setup_help_packet"),
     RequiredEvent("/ship-it-kit-setup-help/", "setup_help_request_clicked", "shipit_setup_help_bottom_fallback_packet", require_product=True),
     RequiredEvent("/ship-it-kit-setup-help/", "billing_health_interest", "shipit_setup_help_hero_retainer"),
+    RequiredEvent("/blog/stripe-webhook-supabase-paid-status/", "setup_help_request_clicked", "webhook_paid_status_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-webhook-supabase-paid-status/", "billing_drift_check_clicked", "webhook_paid_status_top"),
+    RequiredEvent("/blog/stripe-webhook-supabase-paid-status/", "setup_help_request_clicked", "webhook_paid_status_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-webhook-duplicate-events-idempotency-supabase/", "billing_drift_check_clicked", "duplicate_webhook_top", require_product=True),
     RequiredEvent("/blog/stripe-webhook-duplicate-events-idempotency-supabase/", "setup_help_request_clicked", "duplicate_webhook_23505_bottom_mailto", require_product=True),
     RequiredEvent("/blog/stripe-webhook-event-ordering-supabase/", "billing_drift_check_clicked", "event_ordering_top"),
@@ -148,6 +150,16 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-webhook-supabase-paid-status/",
+        "/go/billing-reliability/setup-request/?source=webhook_paid_status_top_packet",
+        "paid-status top setup-request packet CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-webhook-supabase-paid-status/",
+        "/go/billing-reliability/setup-request/?source=webhook_paid_status_bottom_packet",
+        "paid-status bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-webhook-supabase-paid-status/",
         "/blog/stripe-checkout-success-url-webhook-access/?ref=webhook_paid_status_success_url",

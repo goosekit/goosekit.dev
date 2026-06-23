@@ -112,11 +112,13 @@
       var isDuplicateSubscription = requestedContext === 'duplicate_subscription' || source.indexOf('duplicate_subscription_') === 0;
       var isCheckoutSuccessWebhook = requestedContext === 'checkout_success_webhook' || source.indexOf('checkout_success_webhook_') === 0;
       var isPaymentElementOrderTracking = requestedContext === 'payment_element_order_tracking' || source.indexOf('payment_element_order_tracking_') === 0;
+      var isWebhookPaidStatus = requestedContext === 'webhook_paid_status' || source.indexOf('webhook_paid_status_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
       var subject = 'Next.js Supabase Stripe setup help';
       if (isShipItKit) subject = 'Ship It Kit setup help request';
       if (isPaymentElementOrderTracking) subject = 'Stripe Payment Element order tracking review';
+      if (isWebhookPaidStatus) subject = 'Stripe webhook + Supabase paid-status review';
       if (isCheckoutSuccessWebhook) subject = 'Stripe Checkout success route + webhook access review';
       if (isDuplicateSubscription) subject = 'Stripe duplicate subscription + Supabase access mismatch';
       if (isPortalPlanChange) subject = 'Stripe portal plan-change entitlement mismatch';
@@ -149,6 +151,8 @@
         ? 'Stripe Checkout success URL and webhook provisioning can disagree about durable access.'
         : isPaymentElementOrderTracking
         ? 'Stripe Payment Element redirect, webhook fulfillment, and order tracking can disagree for paid orders.'
+        : isWebhookPaidStatus
+        ? 'Stripe checkout succeeded, but Supabase paid-user state or app access did not update.'
         : isShipItKit
         ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
         : 'I need Next.js + Supabase + Stripe setup help.';
@@ -206,6 +210,7 @@
         duplicate_subscription: 'For duplicate-subscription requests, send the product rule, active Stripe subscription ids, and the local owner/subscription/entitlement rows.',
         checkout_success_webhook: 'For Checkout success/webhook requests, send the success route, webhook handler, local entitlement row, and one replay case.',
         payment_element_order_tracking: 'For Payment Element order-tracking requests, send the PaymentIntent or Checkout Session id, webhook event, order row, and tracking route.',
+        webhook_paid_status: 'For webhook paid-status requests, send the Checkout Session or subscription id, webhook delivery status, Supabase paid/access row, and what the paid user still sees.',
         billing_drift_review: 'For drift-check requests, keep the score plus the unchecked risks in the packet so the review starts from the exact failure mode.',
         revenue_leak_audit: 'For revenue-leak audits, send one paid-but-blocked or unpaid-but-unlocked example and the Stripe/Supabase rows behind it.'
       };
@@ -412,6 +417,13 @@
         setFieldIfEmpty('blocker', 'Payment Element redirect/webhook/tracking mismatch: redirect_status, webhook fulfillment, order row, or tracking page does not converge');
         setFieldIfEmpty('evidence', 'PaymentIntent or Checkout Session id, return_url and redirect_status, webhook event/delivery status, order row before/after, processed-event row, tracking route/component');
         setFieldIfEmpty('budget', 'EUR149 if scope is clear');
+        refreshLinks();
+      }
+      if (isWebhookPaidStatus) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Checkout and webhooks');
+        setFieldIfEmpty('blocker', 'Webhook paid-status mismatch: Stripe checkout/subscription says paid or active, but Supabase paid/access state or protected route still says free');
+        setFieldIfEmpty('evidence', 'Checkout Session or subscription id, webhook delivery/signature status, Supabase user/customer/subscription/access row, processed-event row, and what the paid user sees');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }
       quotePathButtons.forEach(function (button) {

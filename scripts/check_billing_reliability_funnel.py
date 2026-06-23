@@ -300,6 +300,9 @@ PAGES = [
         "path": "/blog/stripe-webhook-supabase-paid-status/",
         "required": [
             "billing_drift_check_clicked",
+            "webhook_paid_status_top_packet",
+            "webhook_paid_status_bottom_packet",
+            "context=webhook_paid_status",
             "webhook_paid_status_top",
             "paid access starts jobs",
             "terminal Stripe status",
