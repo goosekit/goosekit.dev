@@ -56,7 +56,7 @@
       <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Open in Outlook</a>
     </div>
     <div class="request-form" data-request-form>
-      <label class="wide">Your email
+      <label class="wide">Reply email
         <input name="email" type="email" data-request-field="email" autocomplete="email" placeholder="you@example.com">
       </label>
       <label>Stack
@@ -212,6 +212,7 @@
       var formStarted = false;
       var fastPathCaptured = false;
       var readyToSendCaptured = false;
+      var qualifiedPacketCaptured = false;
       var quotePathSelected = requestedQuotePath;
       function capture(name, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
@@ -332,7 +333,23 @@
       function formStats() {
         var filled = fields.filter(function (field) { return field.value.trim(); }).length;
         var completed = fields.filter(function (field) { return field.value.trim(); }).map(function (field) { return field.getAttribute('data-request-field'); });
-        return { completed_fields: filled, completed_field_names: completed.join(','), total_fields: fields.length, is_complete: Boolean(value('email') && value('stack') && value('blocker')), fast_path_ready: Boolean(value('email') && value('stack') && value('blocker')), quote_path: quotePathSelected };
+        var required = ['email', 'stack', 'repo', 'blocker', 'evidence', 'budget'];
+        var missing = required.filter(function (key) { return !value(key); });
+        var fastPathReady = Boolean(value('email') && value('stack') && value('blocker'));
+        var qualifiedPacketReady = missing.length === 0;
+        return {
+          completed_fields: filled,
+          completed_field_names: completed.join(','),
+          total_fields: fields.length,
+          is_complete: fastPathReady,
+          fast_path_ready: fastPathReady,
+          qualified_packet_ready: qualifiedPacketReady,
+          has_reply_email: Boolean(value('email')),
+          missing_required_fields: missing.join(','),
+          required_fields_filled: required.length - missing.length,
+          required_fields_total: required.length,
+          quote_path: quotePathSelected
+        };
       }
       function lineValue(label, key) {
         var field = document.querySelector('[data-request-field="' + key + '"]');
@@ -566,6 +583,10 @@
           if (!readyToSendCaptured && stats.is_complete) {
             readyToSendCaptured = true;
             capture('setup_help_request_ready_to_send', Object.assign({}, eventProps, stats));
+          }
+          if (!qualifiedPacketCaptured && stats.qualified_packet_ready) {
+            qualifiedPacketCaptured = true;
+            capture('setup_help_request_qualified_packet_ready', Object.assign({}, eventProps, stats));
           }
         });
         field.addEventListener('blur', function () {

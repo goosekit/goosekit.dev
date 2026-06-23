@@ -278,11 +278,15 @@ else
        grep -q "setup_help_request_form_started" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_field_completed" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_ready_to_send" "$SETUP_REQUEST_FILE" && \
+       grep -q "setup_help_request_qualified_packet_ready" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_formspree_submit" "$SETUP_REQUEST_FILE" && \
        grep -q "setup_help_request_auto_mailto_suppressed" "$SETUP_REQUEST_FILE" && \
        grep -q "https://formspree.io/f/xblgwdqz" "$SETUP_REQUEST_FILE" && \
        grep -q 'name="request_packet"' "$SETUP_REQUEST_FILE" && \
        grep -q 'name="_next"' "$SETUP_REQUEST_FILE" && \
+       grep -q "has_reply_email" "$SETUP_REQUEST_FILE" && \
+       grep -q "missing_required_fields" "$SETUP_REQUEST_FILE" && \
+       grep -q "qualified_packet_ready" "$SETUP_REQUEST_FILE" && \
        grep -q "&source_ref=' + encodeURIComponent(sourceRef || source)" "$SETUP_REQUEST_FILE" && \
        grep -q "/go/billing-reliability/setup-request-sent/" "$SETUP_REQUEST_FILE" && \
        grep -q 'data-button-position="after_form"' "$SETUP_REQUEST_FILE" && \

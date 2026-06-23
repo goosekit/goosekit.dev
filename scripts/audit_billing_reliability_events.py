@@ -340,6 +340,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_qualified_packet_ready",
+        "setup route qualified packet-ready event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "setup_help_request_quote_path_selected",
         "setup route quote-path choice event",
     ),
@@ -357,6 +362,21 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/setup-request/",
         "name=\"_replyto\"",
         "setup route Formspree reply-to field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "has_reply_email",
+        "setup route reply email analytics prop",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "missing_required_fields",
+        "setup route missing required fields analytics prop",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "qualified_packet_ready",
+        "setup route qualified packet analytics prop",
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
