@@ -146,12 +146,17 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-zalopay-revenuecat-supabase-subscriptions/", "setup_help_secondary_clicked", "multi_provider_subscription_related", require_product=True),
     RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "billing_drift_check_clicked", "prepaid_credit_top", require_product=True),
     RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "revenue_leak_audit_interest", "prepaid_credit_top", require_product=True),
-    RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "setup_help_request_clicked", "prepaid_credit_bottom_mailto", require_product=True),
+    RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "setup_help_request_clicked", "prepaid_credit_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "setup_help_retainer_interest", "prepaid_credit_bottom", require_product=True),
     RequiredEvent("/blog/stripe-prepaid-invoice-account-credit-ledger/", "setup_help_secondary_clicked", "prepaid_credit_related", require_product=True),
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-prepaid-invoice-account-credit-ledger/",
+        "/go/billing-reliability/setup-request/?source=prepaid_credit_bottom_packet",
+        "prepaid account credit bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-setup-mode-card-on-file-subscription-gate/",
         "/go/billing-reliability/setup-request/?source=setup_mode_card_gate_bottom_packet",

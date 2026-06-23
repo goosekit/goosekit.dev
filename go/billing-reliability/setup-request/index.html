@@ -118,6 +118,7 @@
       var isMissingSubscriptionColumns = requestedContext === 'missing_subscription_columns' || source.indexOf('missing_subscription_columns_') === 0;
       var isInvoicePaidDoubleExtend = requestedContext === 'invoice_paid_double_extend' || source.indexOf('invoice_paid_double_extend_') === 0;
       var isSetupModeCardGate = requestedContext === 'setup_mode_card_gate' || source.indexOf('setup_mode_card_gate_') === 0;
+      var isPrepaidAccountCredit = requestedContext === 'prepaid_account_credit' || source.indexOf('prepaid_credit_') === 0;
       var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
       var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
       var subject = 'Next.js Supabase Stripe setup help';
@@ -127,6 +128,7 @@
       if (isMissingSubscriptionColumns) subject = 'Stripe subscription schema drift review';
       if (isInvoicePaidDoubleExtend) subject = 'Stripe invoice.paid membership renewal review';
       if (isSetupModeCardGate) subject = 'Stripe setup-mode card gate review';
+      if (isPrepaidAccountCredit) subject = 'Stripe prepaid invoice account-credit review';
       if (isWebhookPaidStatus) subject = 'Stripe webhook + Supabase paid-status review';
       if (isCheckoutSuccessWebhook) subject = 'Stripe Checkout success route + webhook access review';
       if (isDuplicateSubscription) subject = 'Stripe duplicate subscription + Supabase access mismatch';
@@ -171,6 +173,8 @@
         ? 'Stripe invoice.paid renewal, duplicate delivery, or retried invoice state does not match Supabase membership expiry.'
         : isSetupModeCardGate
         ? 'Stripe setup-mode card collection, local card-gate state, and gated job or access state need to converge before work starts.'
+        : isPrepaidAccountCredit
+        ? 'Stripe invoice, customer account credit, credit ledger, and revenue-recognition state need to converge before a second collection path opens.'
         : isWebhookPaidStatus
         ? 'Stripe checkout succeeded, but Supabase paid-user state or app access did not update.'
         : isShipItKit
@@ -235,6 +239,7 @@
         missing_subscription_columns: 'For subscription schema-drift requests, send the Stripe event, subscription/customer/price ids, subscriptions schema, pricing_config schema, attempted columns, replay result, and user-visible stale state.',
         invoice_paid_double_extend: 'For invoice.paid renewal-drift requests, send the invoice id, subscription id, billing_reason, period window, local membership row, idempotency row, and replay result.',
         setup_mode_card_gate: 'For setup-mode card-gate requests, send the Checkout setup session, SetupIntent metadata, local account/customer row, payment-method state, and the gated job or access path.',
+        prepaid_account_credit: 'For prepaid account-credit requests, send the invoice before/after state, customer credit balance, signed ledger row, apply-credit path, Stripe autopay state, and revenue/payment row.',
         webhook_paid_status: 'For webhook paid-status requests, send the Checkout Session or subscription id, webhook delivery status, Supabase paid/access row, and what the paid user still sees.',
         billing_drift_review: 'For drift-check requests, keep the score plus the unchecked risks in the packet so the review starts from the exact failure mode.',
         revenue_leak_audit: 'For revenue-leak audits, send one paid-but-blocked or unpaid-but-unlocked example and the Stripe/Supabase rows behind it.'
@@ -302,6 +307,11 @@
         course_membership: {
           blocker: 'Course-membership access mismatch: Stripe membership says paid or active, but a course gate is locked, leaked, stale, or mapped to the wrong price/course.',
           evidence: 'Checkout Session or subscription id, Stripe price id, webhook event, membership/subscription row, course id, entitlement result, grant/access-code row, and protected route.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        prepaid_account_credit: {
+          blocker: 'Prepaid account-credit mismatch: invoice status, customer credit balance, signed ledger row, Stripe autopay state, or revenue/payment row does not converge.',
+          evidence: 'Invoice id/status before and after, customer id and account_credits before/after, credit ledger row with signed delta and balance_after, apply-credit endpoint, Stripe autopay state, revenue/payment row, replay result.',
           budget: 'EUR99-149 if scope is clear'
         }
       };
@@ -493,6 +503,13 @@
         setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with setup-mode Checkout, card-on-file, trial, import, or usage job gating');
         setFieldIfEmpty('blocker', 'Setup-mode card gate mismatch: saved card, SetupIntent metadata, local account/customer row, subscription/trial state, or gated job/access state does not converge');
         setFieldIfEmpty('evidence', 'Checkout setup session shape, SetupIntent id/metadata, Stripe customer/payment method id, local account/customer row, payment-method state, free/trial/subscription row, gated job/backfill path, expected state, actual state');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPrepaidAccountCredit) {
+        setFieldIfEmpty('repo', 'Live or near-live app with prepaid invoices, customer account credits, Stripe autopay, or revenue-recognition-sensitive ledger rows');
+        setFieldIfEmpty('blocker', 'Prepaid account-credit mismatch: invoice status, customer credit balance, signed credit ledger, Stripe autopay state, or payment/revenue row does not converge');
+        setFieldIfEmpty('evidence', 'Invoice id/status before and after, customer id and account_credits before/after, credit ledger row with signed delta and balance_after, apply-credit endpoint or function, Stripe payment/autopay state, payment or revenue row, follow-up/send guard state, replay result');
         setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }
