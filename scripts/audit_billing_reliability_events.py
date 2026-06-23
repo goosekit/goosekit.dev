@@ -61,6 +61,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/billing-health-support/", "billing_health_secondary_clicked", "billing_health_live_money_gate"),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_hero", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "live_money_gate_block", require_product=True),
+    RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "paid_blocked_unpaid_unlocked_block", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_bottom", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "retainer_block", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "setup_help_artifacts_monthly_support", require_product=True),

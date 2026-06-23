@@ -92,9 +92,18 @@
             <li>A second click can create a second active Stripe session or subscription accidentally.</li>
           </ul>
         </div>
+        <div class="card">
+          <h3>Paid but blocked?</h3>
+          <p>If Stripe says the customer paid but Supabase still blocks access, send the Checkout Session or invoice id, the user/workspace row, and the webhook event status.</p>
+        </div>
+        <div class="card">
+          <h3>Unpaid but unlocked?</h3>
+          <p>If the app grants access after a failed, expired, canceled, or refunded payment, send the local entitlement row, Stripe object id, and the route that unlocked the account.</p>
+        </div>
       </div>
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=live_money_gate&context=nextjs_supabase_stripe_setup&price_range_eur=99-149&quote_path=launch_blocker&source_ref=live_money_gate_block" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="live_money_gate_block">Request go-live review →</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=paid_blocked_or_unpaid_unlocked&context=paid_blocked_or_unpaid_unlocked&price_range_eur=99-149&quote_path=launch_blocker&source_ref=paid_blocked_unpaid_unlocked_block" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="paid_blocked_unpaid_unlocked_block">Request paid-state fix →</a>
         <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=live_money_gate_block" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="live_money_gate_block">See revenue leak audit</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=live_money_gate_block" data-ph-event="billing_drift_check_clicked" data-ph-location="live_money_gate_block">Run drift check first</a>
       </div>
