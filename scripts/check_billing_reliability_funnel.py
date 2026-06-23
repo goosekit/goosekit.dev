@@ -420,7 +420,10 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "checkout_success_webhook_top",
-            "checkout_success_webhook_bottom_mailto",
+            "checkout_success_webhook_bottom_packet",
+            "/go/billing-reliability/setup-request/?source=checkout_success_webhook_bottom_packet",
+            "context=checkout_success_webhook",
+            "quote_path=launch_blocker",
             "data-ph-product=\"billing_reliability\"",
             "success URL",
             "webhook-owned subscription truth",
@@ -512,7 +515,10 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "payment_element_order_tracking_top",
-            "payment_element_order_tracking_bottom_mailto",
+            "payment_element_order_tracking_bottom_packet",
+            "/go/billing-reliability/setup-request/?source=payment_element_order_tracking_bottom_packet",
+            "context=payment_element_order_tracking",
+            "quote_path=launch_blocker",
             "setup_help_retainer_interest",
             "data-ph-product=\"billing_reliability\"",
             "PaymentIntent or Checkout Session id",
