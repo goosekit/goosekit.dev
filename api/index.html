@@ -443,7 +443,7 @@
     </div>
   </div>
 
-  <p class="lead-note"><strong>Production access is intentionally manual right now.</strong> The goal is to qualify real API demand before turning this into another generic pricing table: endpoint needed, expected volume, commercial use, and launch timing.</p>
+  <p class="lead-note"><strong>Production access is intentionally manual right now.</strong> The goal is to qualify real API demand before turning this into another generic pricing table: reply email, endpoint needed, expected volume, commercial use, paid expectation, and launch timing.</p>
 
   <section class="workflow-guides" aria-label="Production API workflow guides">
     <h2>Choose the closest production workflow</h2>
@@ -469,7 +469,7 @@
   </section>
 
   <div style="background: rgba(255,72,0,0.08); border: 1px solid rgba(255,72,0,0.2); border-radius: 12px; padding: 20px 28px; margin: 0 auto 24px; max-width: 760px; text-align: center;">
-    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;">💡 <strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="/api/production-request/?ref=production_note" style="color:#ff4800; text-decoration: underline;" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="production_note">prepare a qualified request</a> with endpoint needs, monthly volume, and launch timing.</p>
+    <p style="color: #fed7aa; font-size: 0.95rem; margin: 0;"><strong>Need higher limits or a production-friendly setup?</strong> Use the production access CTA above or <a href="/api/production-request/?ref=production_note" style="color:#ff4800; text-decoration: underline;" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="production_note">prepare a qualified request</a> with reply email, endpoint needs, monthly volume, paid expectation, and launch timing.</p>
   </div>
 
   <div class="fit-grid" aria-label="Goosekit API production fit">
@@ -493,11 +493,13 @@
 
   <div class="auth" id="production-request">
     <h2>What to include in a production request</h2>
-    <p>A useful request is short but specific. The fastest path is to say which endpoint you need, what will call it, and what volume would make the free testing tier too small.</p>
+    <p>A useful request is short but specific. The packet builder asks for seven required fields so the request can be answered and scoped without a long back-and-forth.</p>
     <ul>
+      <li><strong>Reply email:</strong> where a production pilot or pricing question can be answered.</li>
       <li><strong>Endpoint:</strong> JSON formatter, hash generator, UUID generator, password generator, or the adjacent endpoint you need next.</li>
       <li><strong>Monthly volume:</strong> expected requests per month and whether traffic is steady or bursty.</li>
       <li><strong>Where it runs:</strong> internal tool, script, agent workflow, backend job, browser app, or customer-facing product.</li>
+      <li><strong>Paid expectation:</strong> whether you can pay for a pilot, need a quote, or already have a budget range.</li>
       <li><strong>Commercial context:</strong> personal, internal business, client-facing, or paid product integration.</li>
       <li><strong>Timing:</strong> when you need production access and what breaks if the endpoint is unavailable.</li>
     </ul>
@@ -527,7 +529,7 @@
     <h2>Endpoints</h2>
     <p style="color: var(--text-dim); text-align: center; margin: -8px auto 24px; max-width: 680px;">Use <strong>POST</strong> for JSON formatting and hashing. Use <strong>GET</strong> for UUID and password generation.</p>
     <div style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);border-radius:12px;padding:16px 18px;margin:0 auto 22px;max-width:720px;text-align:center;">
-      <p style="margin:0;color:#c8f7df;">Testing a real workflow? When a free endpoint becomes part of an internal tool, backend job, QA script, agent, or product feature, <a href="/api/production-request/?ref=endpoints_intro_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="endpoints_intro_production" style="color:#86efac;font-weight:800;text-decoration:underline;">prepare a production request</a> with endpoint, volume, paid-access expectation, and failure mode.</p>
+      <p style="margin:0;color:#c8f7df;">Testing a real workflow? When a free endpoint becomes part of an internal tool, backend job, QA script, agent, or product feature, <a href="/api/production-request/?ref=endpoints_intro_production" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="endpoints_intro_production" style="color:#86efac;font-weight:800;text-decoration:underline;">prepare a production request</a> with reply email, endpoint, volume, paid-access expectation, and failure mode.</p>
     </div>
 
     <div class="endpoint">
@@ -591,7 +593,7 @@ Content-Type: application/json
     <h2>📊 Rate Limits</h2>
     <p>Testing tier: <strong>100 requests/day</strong> per IP address across all endpoints. Rate limit resets daily at midnight UTC.</p>
     <p style="margin-top:8px;">When you hit the limit, you'll receive a <code>429 Too Many Requests</code> response with a <code>Retry-After</code> header.</p>
-    <p style="margin-top:8px;">For production use, higher-volume internal tools, or partner-style access, <a href="/api/production-request/?ref=rate_limits" style="color:#ff4800;" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="rate_limits">prepare a production access request</a> and include endpoint needs, volume, paid-access expectation, and launch timing.</p>
+    <p style="margin-top:8px;">For production use, higher-volume internal tools, or partner-style access, <a href="/api/production-request/?ref=rate_limits" style="color:#ff4800;" data-ph-event="goosekit_api_production_request_builder_clicked" data-ph-product="goosekit_api" data-ph-location="rate_limits">prepare a production access request</a> and include reply email, endpoint needs, volume, paid-access expectation, and launch timing.</p>
   </div>
 
 </div>
