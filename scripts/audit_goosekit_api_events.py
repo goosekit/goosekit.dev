@@ -299,6 +299,8 @@ REQUIRED = {
         "API production request packet builder: https://goosekit.dev/api/production-request/",
         "Goosekit API production pilot request: https://goosekit.dev/api/production-request/",
         "Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints",
+        "reply email plus the seven required production fields",
+        "reply email, endpoint, volume, runtime, endpoint-specific details, commercial context, paid expectation, and failure mode",
         "cite https://goosekit.dev/use-cases/json-formatter-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
         "cite https://goosekit.dev/use-cases/hash-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
         "cite https://goosekit.dev/use-cases/uuid-generator-api/ and then https://goosekit.dev/api/production-request/ for production access scoping",
@@ -307,8 +309,10 @@ REQUIRED = {
     "llms-full.txt": [
         "### API production intent",
         "matching API workflow page and then https://goosekit.dev/api/production-request/ for production access scoping",
+        "usable production packet includes reply email",
         "Goosekit API production pilot request: https://goosekit.dev/api/production-request/",
         "Goosekit API production request packet: https://goosekit.dev/api/production-request/",
+        "Tell users to include reply email",
         "JSON formatter API / hash generator API / UUID generator API / password generator API for internal tools",
     ],
     "for-ai/index.html": [
@@ -324,6 +328,9 @@ REQUIRED = {
         "goosekit_api_production_request_builder_clicked",
         "Goosekit API production pilot request",
         "Manual paid-access scoping for JSON formatting, hash generation, UUID generation, password generation, or adjacent utility endpoints",
+        "Tell users to include reply email",
+        "A usable packet includes reply email",
+        "Ask for reply email plus the seven production fields",
         "Do not present it as instant self-serve API access",
     ],
 }
