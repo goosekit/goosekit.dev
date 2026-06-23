@@ -70,6 +70,7 @@
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || params.get('ref') || 'billing_health_route';
+      var sourceRef = params.get('source_ref') || source;
       var requestedTrack = params.get('track') || '';
       var subject = 'Billing-health support interest';
       var formStarted = false;
@@ -90,7 +91,7 @@
         product: 'billing_reliability',
         location: 'billing_health_request_route',
         path: '/go/billing-reliability/health-support/',
-        source_ref: source,
+        source_ref: sourceRef,
         request_context: 'billing_health_support',
         price_range_eur: '29/mo',
         price_eur_monthly: 29,
@@ -134,6 +135,7 @@
           'Preferred check cadence: ' + value('cadence'),
           '',
           'Source: ' + source,
+          'Source ref: ' + sourceRef,
           'Requested track: ' + (requestedTrack || 'unspecified'),
           'Request context: billing_health_support',
           'Price range: 29/mo'
@@ -145,11 +147,11 @@
         copyText.value = body;
         manual.href = mailto;
         hiddenSource.value = source;
-        hiddenSourceRef.value = source;
+        hiddenSourceRef.value = sourceRef;
         hiddenRequestedTrack.value = requestedTrack || 'unspecified';
         hiddenReplyto.value = value('email');
         hiddenPacket.value = body;
-        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source);
+        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source) + '&source_ref=' + encodeURIComponent(sourceRef);
         return { body: body, mailto: mailto };
       }
       if (requestedTrack === 'action_queue') {
