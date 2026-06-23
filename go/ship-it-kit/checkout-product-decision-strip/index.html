@@ -190,7 +190,7 @@
       if (!params.has('price_eur')) params.set('price_eur', '49');
       var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
       var checkoutWithParams = checkoutUrl + glue + params.toString();
-      capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', path: window.location.pathname });
+      capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', path: window.location.pathname, target_href: checkoutWithParams });
       var manual = document.querySelector('[data-manual-checkout-link]');
       if (manual) manual.addEventListener('click', function () {
         capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit' });
@@ -207,7 +207,7 @@
         });
       });
       setTimeout(function () {
-        capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit' });
+        capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit', target_href: checkoutWithParams });
         window.location.replace(checkoutWithParams);
       }, 900);
     });

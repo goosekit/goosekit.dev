@@ -40,7 +40,7 @@
       if (!params.has('price_eur')) params.set('price_eur', '49');
       var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
       var checkoutWithParams = checkoutUrl + glue + params.toString();
-      capture('ship_it_kit_checkout_redirect_viewed', { source: source, path: window.location.pathname, product: 'ship_it_kit', price_eur: 49 });
+      capture('ship_it_kit_checkout_redirect_viewed', { source: source, path: window.location.pathname, product: 'ship_it_kit', price_eur: 49, target_href: checkoutWithParams });
       var manual = document.querySelector('[data-manual-checkout-link]');
       if (manual) {
         manual.setAttribute('href', checkoutWithParams);
