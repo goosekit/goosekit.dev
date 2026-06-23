@@ -33,6 +33,11 @@
         }
       };
       params.set('source', source);
+      if (!params.has('utm_source')) params.set('utm_source', 'goosekit');
+      if (!params.has('utm_medium')) params.set('utm_medium', 'checkout_redirect');
+      if (!params.has('utm_campaign')) params.set('utm_campaign', 'ship_it_kit');
+      if (!params.has('product')) params.set('product', 'ship_it_kit');
+      if (!params.has('price_eur')) params.set('price_eur', '49');
       var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
       var checkoutWithParams = checkoutUrl + glue + params.toString();
       capture('ship_it_kit_checkout_redirect_viewed', { source: source, path: window.location.pathname, product: 'ship_it_kit', price_eur: 49 });
@@ -40,7 +45,7 @@
       if (manual) {
         manual.setAttribute('href', checkoutWithParams);
         manual.addEventListener('click', function () {
-          capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit', price_eur: 49 });
+          capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit', price_eur: 49, target_href: checkoutWithParams });
         });
       }
       capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit', price_eur: 49 });

@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
   <title>Opening secure checkout…</title>
-  <meta http-equiv="refresh" content="3; url=https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a">
   <style>
     :root {
       --panel: rgba(15, 23, 42, 0.82);
@@ -178,15 +177,23 @@
       var checkoutUrl = 'https://shipitstudio.lemonsqueezy.com/checkout/buy/66928c03-2807-4c41-aa34-69cfdb6ae07a';
       var params = new URLSearchParams(window.location.search);
       var source = params.get('source') || 'product_hero';
+      params.set('source', source);
+      if (!params.has('utm_source')) params.set('utm_source', 'goosekit');
+      if (!params.has('utm_medium')) params.set('utm_medium', 'checkout_redirect');
+      if (!params.has('utm_campaign')) params.set('utm_campaign', 'ship_it_kit');
+      if (!params.has('product')) params.set('product', 'ship_it_kit');
+      if (!params.has('price_eur')) params.set('price_eur', '49');
+      var checkoutWithParams = checkoutUrl + '?' + params.toString();
       var capture = function (eventName, props) {
         if (window.posthog && typeof window.posthog.capture === 'function') {
           window.posthog.capture(eventName, props || {});
         }
       };
-      capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', path: window.location.pathname });
+      capture('ship_it_kit_checkout_redirect_viewed', { source: source, product: 'ship_it_kit', price_eur: 49, path: window.location.pathname, target_href: checkoutWithParams });
       var manual = document.querySelector('[data-manual-checkout-link]');
+      if (manual) manual.setAttribute('href', checkoutWithParams);
       if (manual) manual.addEventListener('click', function () {
-        capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit' });
+        capture('ship_it_kit_checkout_manual_click', { source: source, product: 'ship_it_kit', price_eur: 49, target_href: checkoutWithParams });
       });
       document.querySelectorAll('[data-ph-event]').forEach(function (el) {
         el.addEventListener('click', function () {
@@ -199,9 +206,8 @@
         });
       });
       setTimeout(function () {
-        capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit' });
-        var glue = checkoutUrl.indexOf('?') === -1 ? '?' : '&';
-        window.location.replace(checkoutUrl + glue + params.toString());
+        capture('ship_it_kit_checkout_redirected', { source: source, product: 'ship_it_kit', price_eur: 49, target_href: checkoutWithParams });
+        window.location.replace(checkoutWithParams);
       }, 900);
     });
   </script>
