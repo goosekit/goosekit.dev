@@ -29,7 +29,7 @@
       <input type="hidden" name="_next" data-hidden-next>
       <div class="request-form">
         <label>Reply email
-          <input name="email" data-request-field="email" type="email" autocomplete="email" placeholder="you@example.com">
+          <input name="email" data-request-field="email" type="email" autocomplete="email" placeholder="you@example.com" required>
         </label>
         <label>App status
           <input name="app_status" data-request-field="status" autocomplete="off" placeholder="Live, pre-launch, staging">
@@ -206,7 +206,12 @@
       });
       form.addEventListener('submit', function () {
         refresh();
-        capture('billing_health_request_formspree_submit', Object.assign({}, baseProps, formStats(), { target_href: 'formspree_xblgwdqz' }));
+        var stats = formStats();
+        if (!stats.has_reply_email) {
+          capture('billing_health_request_submit_blocked', Object.assign({}, baseProps, stats, { target_href: 'formspree_xblgwdqz', blocked_reason: 'missing_reply_email' }));
+          return;
+        }
+        capture('billing_health_request_formspree_submit', Object.assign({}, baseProps, stats, { target_href: 'formspree_xblgwdqz' }));
       });
       document.querySelector('[data-copy-request]').addEventListener('click', function () {
         var links = refresh();

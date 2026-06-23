@@ -373,6 +373,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "billing_health_request_submit_blocked",
+        "billing-health route blocked-submit event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "data-request-field=\"track\"",
         "billing-health route support-track field",
     ),
@@ -388,6 +393,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "required",
+        "billing-health route required reply-email field",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "name=\"_replyto\"",
         "billing-health route Formspree reply-to field",
     ),
@@ -400,6 +410,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "has_reply_email",
         "billing-health route reply-email analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "missing_reply_email",
+        "billing-health route blocked-submit reason",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
