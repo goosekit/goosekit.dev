@@ -82,6 +82,8 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "setup_help_request_clicked", "charged_stranded_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "setup_help_retainer_interest", "charged_stranded_monthly_support", require_product=True),
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "billing_drift_check_clicked", "duplicate_subscription_top"),
+    RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_top_packet", require_product=True),
+    RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-invoice-paid-double-extends-supabase-membership/", "billing_drift_check_clicked", "invoice_paid_double_extend_top"),
     RequiredEvent("/blog/stripe-invoice-paid-double-extends-supabase-membership/", "setup_help_request_clicked", "invoice_paid_double_extend_bottom_mailto"),
     RequiredEvent("/blog/stripe-client-paid-flag-supabase-bypass/", "billing_drift_check_clicked", "paid_flag_bypass_top"),

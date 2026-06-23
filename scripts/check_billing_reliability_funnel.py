@@ -363,7 +363,18 @@ PAGES = [
     },
     {
         "path": "/blog/stripe-duplicate-subscription-supabase-access/",
-        "required": ["billing_drift_check_clicked", "duplicate_subscription_top"],
+        "required": [
+            "billing_drift_check_clicked",
+            "duplicate_subscription_top",
+            "setup_help_request_clicked",
+            "duplicate_subscription_top_packet",
+            "duplicate_subscription_bottom_packet",
+            "/go/billing-reliability/setup-request/?source=duplicate_subscription_top_packet",
+            "/go/billing-reliability/setup-request/?source=duplicate_subscription_bottom_packet",
+            "context=duplicate_subscription",
+            "quote_path=launch_blocker",
+            "data-ph-product=\"billing_reliability\"",
+        ],
     },
     {
         "path": "/blog/stripe-invoice-paid-double-extends-supabase-membership/",
