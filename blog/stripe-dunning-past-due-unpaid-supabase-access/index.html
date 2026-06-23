@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=dunning_nav">Run drift check</a><a href="/nextjs-supabase-stripe-setup-help/?ref=dunning_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=dunning_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=dunning_nav_packet&context=dunning_access&price_range_eur=99-149&quote_path=launch_blocker&source_ref=dunning_nav">Setup help</a></div>
     <div class="eyebrow">Stripe dunning + Supabase access</div>
     <h1>Stripe past_due or unpaid leaving Supabase access wrong?</h1>
     <p class="lead">Failed renewals are not a single boolean. A subscription can be <span class="code">active</span>, <span class="code">past_due</span>, <span class="code">unpaid</span>, <span class="code">canceled</span>, or recovering through Smart Retries while your SaaS needs a separate product-access decision in Supabase.</p>
@@ -31,7 +31,7 @@
       <h2 style="margin-top:0">The production failure: “Do I revoke access now or wait?”</h2>
       <p>Many Next.js + Supabase apps start with <span class="code">is_paid = subscription.status === 'active'</span>. That is too blunt for dunning. It can lock out real customers during a recoverable card failure, or keep non-paying customers active forever after Stripe moves the invoice to unpaid or the subscription is canceled.</p>
       <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=dunning_top" data-ph-event="setup_help_interest" data-ph-location="dunning_top">Need dunning/access help?</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=dunning_top_packet&context=dunning_access&price_range_eur=99-149&quote_path=launch_blocker&source_ref=dunning_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="dunning_top_packet">Need dunning/access help?</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=dunning_top" data-ph-event="billing_drift_check_clicked" data-ph-location="dunning_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=dunning_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="dunning_portal_related">Portal entitlement checklist</a>
       </div>
@@ -117,7 +117,7 @@ alter table public.subscriptions add column if not exists last_stripe_event_crea
       <h2 style="margin-top:0">What to send for a dunning/access review</h2>
       <p>Do not send secrets. Send the minimum artifacts needed to compare Stripe billing state with Supabase product access.</p>
       <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20dunning%20%2F%20Supabase%20access%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20Stripe%20dunning%20%2F%20past_due%20%2F%20unpaid%20access%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0AStripe%20Billing%20retry%20setting%20%28Smart%20Retries%20%2F%20custom%20%2F%20unknown%29%3A%0ASubscription%20status%3A%0ALatest%20invoice%20status%3A%0ARelevant%20event%20types%20and%20order%20%28invoice.payment_failed%2C%20invoice.paid%2C%20customer.subscription.updated%2Fdeleted%29%3A%0ACurrent%20Supabase%20subscription%2Fentitlement%20schema%20%28no%20secrets%29%3A%0AWhat%20access%20the%20app%20currently%20grants%3A%0AWhat%20access%20you%20want%20during%20grace%20%2F%20after%20retry%20failure%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="dunning_bottom">Request dunning help →</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=dunning_bottom_packet&context=dunning_access&price_range_eur=99-149&quote_path=launch_blocker&source_ref=dunning_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="dunning_bottom_packet">Prepare dunning packet →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=dunning_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="dunning_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-webhook-event-ordering-supabase/?ref=dunning_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="dunning_ordering_related">Webhook ordering checklist</a>
       </div>

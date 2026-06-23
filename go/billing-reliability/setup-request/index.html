@@ -109,6 +109,7 @@
       var isChargedStranded = requestedContext === 'charged_stranded' || source.indexOf('charged_stranded_') === 0;
       var isPortalCancel = requestedContext === 'portal_cancel' || source.indexOf('portal_cancel_') === 0;
       var isPortalPlanChange = requestedContext === 'portal_plan_change' || source.indexOf('portal_plan_change_') === 0;
+      var isDunningAccess = requestedContext === 'dunning_access' || source.indexOf('dunning_') === 0;
       var isDuplicateSubscription = requestedContext === 'duplicate_subscription' || source.indexOf('duplicate_subscription_') === 0;
       var isCheckoutSuccessWebhook = requestedContext === 'checkout_success_webhook' || source.indexOf('checkout_success_webhook_') === 0;
       var isPaymentElementOrderTracking = requestedContext === 'payment_element_order_tracking' || source.indexOf('payment_element_order_tracking_') === 0;
@@ -121,6 +122,7 @@
       if (isWebhookPaidStatus) subject = 'Stripe webhook + Supabase paid-status review';
       if (isCheckoutSuccessWebhook) subject = 'Stripe Checkout success route + webhook access review';
       if (isDuplicateSubscription) subject = 'Stripe duplicate subscription + Supabase access mismatch';
+      if (isDunningAccess) subject = 'Stripe dunning + Supabase access review';
       if (isPortalPlanChange) subject = 'Stripe portal plan-change entitlement mismatch';
       if (isPortalCancel) subject = 'Stripe portal cancellation state mismatch';
       if (isChargedStranded) subject = 'Stripe charged but Supabase did not provision access';
@@ -147,6 +149,8 @@
         ? 'Stripe Customer Portal changed the plan, but Supabase entitlements do not match.'
         : isDuplicateSubscription
         ? 'Stripe has duplicate active subscriptions or add-on billing, and Supabase access no longer maps cleanly.'
+        : isDunningAccess
+        ? 'Stripe dunning, past_due, unpaid, or recovery state does not match Supabase product access.'
         : isCheckoutSuccessWebhook
         ? 'Stripe Checkout success URL and webhook provisioning can disagree about durable access.'
         : isPaymentElementOrderTracking
@@ -207,6 +211,7 @@
         trial_access: 'For trial/access requests, send the subscription status, trial or invoice timing, and the Supabase access row that disagrees.',
         portal_cancel: 'For portal-cancel requests, send the Stripe cancellation state, current_period_end, and the Supabase access row that disagrees.',
         portal_plan_change: 'For portal plan-change requests, send the before/after Stripe price ids and the Supabase entitlement that did not update.',
+        dunning_access: 'For dunning/access requests, send the Stripe retry policy, latest invoice status, subscription status, Supabase access row, and intended grace/lockout policy.',
         duplicate_subscription: 'For duplicate-subscription requests, send the product rule, active Stripe subscription ids, and the local owner/subscription/entitlement rows.',
         checkout_success_webhook: 'For Checkout success/webhook requests, send the success route, webhook handler, local entitlement row, and one replay case.',
         payment_element_order_tracking: 'For Payment Element order-tracking requests, send the PaymentIntent or Checkout Session id, webhook event, order row, and tracking route.',
@@ -267,6 +272,11 @@
         portal_plan_change: {
           blocker: 'Portal plan-change mismatch: Stripe price or schedule changed but Supabase entitlements did not.',
           evidence: 'Subscription id, before/after price ids, Supabase entitlement row, portal action timestamp, and intended access rule.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        dunning_access: {
+          blocker: 'Dunning/access mismatch: Stripe past_due, unpaid, canceled, or recovered invoice state does not match Supabase access/grace/lockout state.',
+          evidence: 'Stripe Billing retry setting, subscription status, latest invoice status, event order, Supabase access row, and intended grace policy.',
           budget: 'EUR99-149 if scope is clear'
         }
       };
@@ -395,6 +405,13 @@
         setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Customer Portal enabled');
         setFieldIfEmpty('blocker', 'Portal plan-change mismatch: Stripe price/plan/schedule/current_period_end does not match Supabase plan or entitlement window');
         setFieldIfEmpty('evidence', 'Subscription id, before/after price ids, Supabase entitlement row, portal action timestamp, webhook delivery status, intended access rule');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isDunningAccess) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with subscriptions and renewal retries');
+        setFieldIfEmpty('blocker', 'Dunning/access mismatch: Stripe past_due, unpaid, canceled, or recovered invoice state does not match Supabase access/grace/lockout state');
+        setFieldIfEmpty('evidence', 'Stripe Billing retry setting, subscription status, latest invoice status, invoice.payment_failed/invoice.paid/customer.subscription event order, Supabase subscription/access row, intended grace policy');
         setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }

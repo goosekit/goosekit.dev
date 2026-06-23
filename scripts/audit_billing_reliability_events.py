@@ -77,7 +77,9 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_drift_check_clicked", "trial_top"),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "setup_help_request_clicked", "trial_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "setup_help_request_clicked", "trial_bottom", require_product=True),
+    RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "setup_help_request_clicked", "dunning_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "billing_drift_check_clicked", "dunning_top"),
+    RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "setup_help_request_clicked", "dunning_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-customer-portal-cancel-supabase-status/", "billing_drift_check_clicked", "portal_cancel_top"),
     RequiredEvent("/blog/stripe-customer-portal-plan-change-supabase-entitlements/", "billing_drift_check_clicked", "portal_plan_change_top"),
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_drift_check_clicked", "charged_stranded_top", require_product=True),
@@ -150,6 +152,21 @@ REQUIRED_EVENTS = [
 ]
 
 REQUIRED_LINKS = [
+    RequiredLink(
+        "/blog/stripe-dunning-past-due-unpaid-supabase-access/",
+        "/go/billing-reliability/setup-request/?source=dunning_nav_packet",
+        "dunning nav setup-request packet CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-dunning-past-due-unpaid-supabase-access/",
+        "/go/billing-reliability/setup-request/?source=dunning_top_packet",
+        "dunning top setup-request packet CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-dunning-past-due-unpaid-supabase-access/",
+        "/go/billing-reliability/setup-request/?source=dunning_bottom_packet",
+        "dunning bottom setup-request packet CTA",
+    ),
     RequiredLink(
         "/blog/stripe-webhook-supabase-paid-status/",
         "/go/billing-reliability/setup-request/?source=webhook_paid_status_top_packet",

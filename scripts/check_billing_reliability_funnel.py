@@ -339,7 +339,13 @@ PAGES = [
     },
     {
         "path": "/blog/stripe-dunning-past-due-unpaid-supabase-access/",
-        "required": ["billing_drift_check_clicked", "dunning_top"],
+        "required": [
+            "billing_drift_check_clicked",
+            "dunning_top_packet",
+            "dunning_bottom_packet",
+            "context=dunning_access",
+            "dunning_top",
+        ],
     },
     {
         "path": "/blog/stripe-customer-portal-cancel-supabase-status/",
