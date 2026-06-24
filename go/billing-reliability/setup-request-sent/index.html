@@ -15,9 +15,12 @@
   <main class="card">
     <div class="pill">Request sent</div>
     <h1>Your setup request was sent</h1>
-    <p>Arthur should receive the packet by email. If this was urgent, you can also send the same request from your email app.</p>
+    <p>Arthur should receive the packet by email. While you wait, you can turn the same billing context into a checkable query or review the paid audit scope.</p>
     <div class="actions">
-      <a class="btn" href="/ship-it-kit-setup-help/" data-sent-followup="setup_help_back">Back to setup help</a>
+      <a class="btn" href="/billing-reconciliation-query-builder/?ref=setup_request_sent_query" data-sent-followup="build_reconciliation_query">Build reconciliation query</a>
+      <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=setup_request_sent_audit" data-sent-followup="review_revenue_leak_audit">Check audit scope</a>
+      <a class="btn secondary" href="/billing-health-support/?ref=setup_request_sent_monthly" data-sent-followup="review_monthly_support">Monthly billing checks</a>
+      <a class="btn secondary" href="/ship-it-kit-setup-help/" data-sent-followup="setup_help_back">Back to setup help</a>
       <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=formspree_sent_fallback" data-sent-followup="send_another">Send another request</a>
     </div>
     <p class="fine">No payment is due here. Arthur will reply with the next step if the request fits the fixed-scope setup help.</p>

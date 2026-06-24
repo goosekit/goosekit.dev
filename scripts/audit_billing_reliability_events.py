@@ -490,6 +490,21 @@ REQUIRED_LINKS = [
         "setup request sent route follow-up click event",
     ),
     RequiredLink(
+        "/go/billing-reliability/setup-request-sent/",
+        "/billing-reconciliation-query-builder/?ref=setup_request_sent_query",
+        "setup request sent route reconciliation-query follow-up",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request-sent/",
+        "/stripe-supabase-revenue-leak-audit/?ref=setup_request_sent_audit",
+        "setup request sent route audit-scope follow-up",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request-sent/",
+        "/billing-health-support/?ref=setup_request_sent_monthly",
+        "setup request sent route monthly-support follow-up",
+    ),
+    RequiredLink(
         "/go/billing-reliability/setup-request/",
         "setup_help_request_auto_mailto_suppressed",
         "setup route suppresses auto-mailto while packet form is available",
