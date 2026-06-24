@@ -504,6 +504,31 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "billing_health_request_prefill_choice_clicked",
+        "billing-health route packet-prefill choice event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-health-request-packet-chooser",
+        "billing-health route packet chooser",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-health-request-prefill=\"first_month_query\"",
+        "billing-health route first-month chooser",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-health-request-prefill=\"paid_but_blocked\"",
+        "billing-health route paid-but-blocked chooser",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-health-request-prefill=\"trial_conversion\"",
+        "billing-health route trial-conversion chooser",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "billing_health_request_form_started",
         "billing-health route form-start event",
     ),
