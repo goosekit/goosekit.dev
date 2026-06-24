@@ -257,6 +257,8 @@
         prepaid_account_credit: 'For prepaid account-credit requests, send the invoice before/after state, customer credit balance, signed ledger row, apply-credit path, Stripe autopay state, and revenue/payment row.',
         paid_blocked_or_unpaid_unlocked: 'For paid-blocked or unpaid-unlocked requests, send the Checkout Session or invoice id, user/workspace row, webhook event status, local entitlement row, Stripe object id, and the route that unlocked or blocked access.',
         webhook_paid_status: 'For webhook paid-status requests, send the Checkout Session or subscription id, webhook delivery status, Supabase paid/access row, and what the paid user still sees.',
+        ship_it_kit_setup: 'For Ship It Kit setup requests, send whether you bought the starter, whether this is a fresh install or existing repo, the deployed preview or repo state, and the exact auth, checkout, portal, webhook, or paid-access blocker.',
+        ship_it_kit_setup_help: 'For Ship It Kit setup requests, send whether you bought the starter, whether this is a fresh install or existing repo, the deployed preview or repo state, and the exact auth, checkout, portal, webhook, or paid-access blocker.',
         billing_drift_review: 'For drift-check requests, keep the score plus the unchecked risks in the packet so the review starts from the exact failure mode.',
         billing_reconciliation_query: 'For reconciliation-query requests, send the table names, join key, customer column, generated SQL, and one returned mismatch row if the query found drift.',
         revenue_leak_audit: 'For revenue-leak audits, send one paid-but-blocked or unpaid-but-unlocked example and the Stripe/Supabase rows behind it.'
@@ -296,6 +298,18 @@
         if (field && !field.value.trim()) field.value = value;
       }
       var contextExamples = {
+        ship_it_kit_setup: {
+          repo: 'Existing Next.js app or fresh Ship It Kit install; deployed preview if available',
+          blocker: 'Ship It Kit setup pass: auth callback, protected dashboard, Stripe Checkout, customer portal, webhook, paid-access row, or env wiring needs to be adapted to my repo.',
+          evidence: 'Repo state, deployed preview URL if safe, Supabase project status, Stripe test-mode checkout/session/webhook status, relevant file paths, and one screenshot or log for the blocker.',
+          budget: 'EUR199+ if this is existing-repo adaptation; EUR99-149 if it is one narrow auth/billing blocker'
+        },
+        ship_it_kit_setup_help: {
+          repo: 'Existing Next.js app or fresh Ship It Kit install; deployed preview if available',
+          blocker: 'Ship It Kit setup pass: auth callback, protected dashboard, Stripe Checkout, customer portal, webhook, paid-access row, or env wiring needs to be adapted to my repo.',
+          evidence: 'Repo state, deployed preview URL if safe, Supabase project status, Stripe test-mode checkout/session/webhook status, relevant file paths, and one screenshot or log for the blocker.',
+          budget: 'EUR199+ if this is existing-repo adaptation; EUR99-149 if it is one narrow auth/billing blocker'
+        },
         billing_reconciliation_query: {
           repo: 'Live or near-live app with Stripe subscription/customer state mirrored into Supabase',
           blocker: 'Reconciliation query review: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer link, or stale entitlement rows.',
@@ -426,6 +440,15 @@
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange) + '&quote_path=' + encodeURIComponent(quotePathSelected || 'unknown') + '&source_ref=' + encodeURIComponent(sourceRef || source);
       }
       refreshLinks();
+      if (isShipItKit) {
+        var shipitExample = contextExamples[context] || contextExamples.ship_it_kit_setup;
+        setFieldIfEmpty('repo', shipitExample.repo);
+        setFieldIfEmpty('blocker', shipitExample.blocker);
+        setFieldIfEmpty('evidence', shipitExample.evidence);
+        setFieldIfEmpty('budget', shipitExample.budget);
+        refreshLinks();
+        capture('setup_help_request_context_prefill_applied', Object.assign({}, eventProps, formStats(), { target_href: 'shipit_setup_context_prefill', note_context: context }));
+      }
       if (contextExampleButton) {
         contextExampleButton.addEventListener('click', function () {
           var example = contextExamples[context];

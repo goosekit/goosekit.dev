@@ -354,6 +354,21 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
+        "setup_help_request_context_prefill_applied",
+        "setup route context prefill event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "For Ship It Kit setup requests",
+        "setup route Ship It Kit context guidance",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "shipit_setup_context_prefill",
+        "setup route Ship It Kit context prefill marker",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
         "name=\"quote_path\"",
         "setup route quote-path hidden field",
     ),
