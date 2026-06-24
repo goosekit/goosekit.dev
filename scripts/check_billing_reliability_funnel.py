@@ -189,21 +189,6 @@ PAGES = [
         ],
     },
     {
-        "path": "/go/ship-it-kit/checkout-product-paid-path-starter/?v=paid_path_starter_redirect",
-        "required": [
-            "noindex, nofollow",
-            "Redirecting to Ship It Kit checkout",
-            "product_paid_path_starter",
-            "ship_it_kit_checkout_redirect_viewed",
-            "ship_it_kit_checkout_redirected",
-            "ship_it_kit_checkout_manual_click",
-            "utm_campaign",
-            "ship_it_kit",
-            "price_eur: 49",
-            "Continue to checkout",
-        ],
-    },
-    {
         "path": "/nextjs-supabase-stripe-setup-help/",
         "required": [
             "setup_help_request_clicked",
