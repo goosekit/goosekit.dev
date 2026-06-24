@@ -33,10 +33,11 @@
       <p>If Stripe says the customer is paid or active, the app must either have local access state or a visible recovery state. A paid user should not land on an empty dashboard with no way for the system to detect and heal it.</p>
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_revenue_leak_top">Audit revenue leak risk</a>
         <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_hosted_plan_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_hosted_plan_context">Hosted-plan entitlement drift?</a>
         <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=charged_stranded_top_packet&context=charged_stranded&price_range_eur=99-149&quote_path=launch_blocker&source_ref=charged_stranded_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_top_packet">Need a narrow review?</a>
       </div>
-      <p class="note">Founding charged-and-stranded review scope: €99-149 when the checkout/add-on path and local access tables are narrow enough to review safely.</p>
+      <p class="note">If one customer is blocked, use the €99-149 narrow review. If this may affect several paid accounts, treat it as a €149 revenue-leak audit before changing more billing code.</p>
     </section>
 
     <section>
@@ -126,6 +127,7 @@ where s.status in ('active', 'trialing')
       </div>
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=charged_stranded_bottom_packet&context=charged_stranded&price_range_eur=99-149&quote_path=launch_blocker&source_ref=charged_stranded_bottom_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_packet">Prepare charged-and-stranded packet →</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_revenue_leak_bottom">Check revenue-leak audit fit</a>
         <a class="btn secondary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_support" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Monthly drift support →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_bottom" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_bottom_hosted_plan" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_hosted_plan">Hosted-plan replay checklist</a>

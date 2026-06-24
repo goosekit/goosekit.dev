@@ -441,6 +441,11 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "charged_stranded_top",
+            "revenue_leak_audit_interest",
+            "charged_stranded_revenue_leak_top",
+            "charged_stranded_revenue_leak_bottom",
+            "/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_top",
+            "/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_bottom",
             "setup_help_request_clicked",
             "charged_stranded_bottom_packet",
             "charged_stranded_monthly_support",
@@ -631,6 +636,8 @@ PAGES = [
         "required": [
             "billing_drift_check_clicked",
             "charged_stranded_top",
+            "charged_stranded_revenue_leak_top",
+            "charged_stranded_revenue_leak_bottom",
             "charged_stranded_bottom_packet",
             "charged_stranded_monthly_support",
             "charged_stranded_hosted_plan_context",
