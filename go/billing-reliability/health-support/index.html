@@ -181,6 +181,16 @@
         if (reconciliationEvidenceField && !reconciliationEvidenceField.value.trim()) reconciliationEvidenceField.value = 'Generated SQL query, table and join-key names, one mismatch row if present, Stripe event/subscription id, and the Supabase access or entitlement row.';
         if (reconciliationCadenceField && !reconciliationCadenceField.value.trim()) reconciliationCadenceField.value = 'Monthly, plus after billing schema or webhook changes.';
       }
+      if (source === 'revenue_leak_audit_monthly_support') {
+        var auditMonthlyTrackField = document.querySelector('[data-request-field="track"]');
+        var auditMonthlyRiskField = document.querySelector('[data-request-field="risk"]');
+        var auditMonthlyEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var auditMonthlyCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (auditMonthlyTrackField && !auditMonthlyTrackField.value.trim()) auditMonthlyTrackField.value = 'Monthly revenue-leak audit follow-up';
+        if (auditMonthlyRiskField && !auditMonthlyRiskField.value.trim()) auditMonthlyRiskField.value = 'Paid users blocked, unpaid users unlocked, portal/dunning changes, refunds, credits, or seat limits can drift after each billing change.';
+        if (auditMonthlyEvidenceField && !auditMonthlyEvidenceField.value.trim()) auditMonthlyEvidenceField.value = 'One recent Stripe object id, related Supabase access row/table, webhook delivery result, and the expected vs actual app state.';
+        if (auditMonthlyCadenceField && !auditMonthlyCadenceField.value.trim()) auditMonthlyCadenceField.value = 'Monthly, plus after pricing, portal, webhook, dunning, refund, or credit-ledger changes.';
+      }
       if (requestedTrack === 'launch_watch') {
         var launchTrackField = document.querySelector('[data-request-field="track"]');
         var launchRiskField = document.querySelector('[data-request-field="risk"]');

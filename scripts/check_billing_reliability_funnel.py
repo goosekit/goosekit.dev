@@ -85,7 +85,7 @@ PAGES = [
         "required": [
             "revenue_leak_audit_request_clicked",
             "billing_drift_check_clicked",
-            "setup_help_retainer_interest",
+            "billing_health_interest",
             "data-ph-product=\"billing_reliability\"",
             "€149",
             "fixed founding pass",
@@ -98,7 +98,10 @@ PAGES = [
             "revenue_leak_evidence_packet",
             "Expected app state and actual app state",
             "data-ph-event=\"setup_help_secondary_clicked\" data-ph-product=\"billing_reliability\" data-ph-location=\"revenue_leak_audit_bottom\"",
-            "data-ph-event=\"setup_help_retainer_interest\" data-ph-product=\"billing_reliability\" data-ph-location=\"revenue_leak_audit_bottom\"",
+            "data-ph-event=\"billing_health_interest\" data-ph-product=\"billing_reliability\" data-ph-location=\"revenue_leak_audit_bottom\"",
+            "data-ph-request-context=\"billing_health_support\"",
+            "data-ph-price-eur-monthly=\"29\"",
+            "/go/billing-reliability/health-support/?source=revenue_leak_audit_monthly_support&track=access_drift&source_ref=revenue_leak_audit_bottom",
         ],
     },
     {
