@@ -15,7 +15,7 @@
   <main class="card">
     <div class="pill">Founding-5 · €29/mo</div>
     <h1>Prepare a billing-health support request</h1>
-    <p>Add the live billing loop you want checked each month. This is for apps with recurring Stripe/Supabase state, not general consulting.</p>
+    <p>Add the live billing loop you want checked each month. Email, stack, and one concrete billing risk are enough to start; the rest just makes the first reply sharper.</p>
     <form data-billing-health-form action="https://formspree.io/f/xblgwdqz" method="POST">
       <input type="hidden" name="_subject" value="Billing-health support interest">
       <input type="hidden" name="request_context" value="billing_health_support">
@@ -35,7 +35,7 @@
           <input name="app_status" data-request-field="status" autocomplete="off" placeholder="Live, pre-launch, staging">
         </label>
         <label>Stack
-          <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
+          <input name="stack" data-request-field="stack" autocomplete="off" value="Next.js, Supabase, Stripe" placeholder="Next.js, Supabase, Stripe">
         </label>
         <label class="wide">Monthly billing risk
           <textarea name="monthly_billing_risk" data-request-field="risk" placeholder="Trials, dunning, portal changes, paid access drift..."></textarea>
@@ -109,6 +109,7 @@
           completed_field_names: completed.join(','),
           total_fields: fields.length,
           has_reply_email: Boolean(value('email')),
+          has_fast_path_minimum: Boolean(value('email') && value('stack') && value('risk')),
           is_complete: filled >= 5 && Boolean(value('email')),
           support_track: value('track') || 'missing_support_track',
           revenue_at_risk: value('revenue') || 'missing_revenue_at_risk',
@@ -214,7 +215,7 @@
             capture('billing_health_request_form_started', Object.assign({}, baseProps, formStats(), { first_field: field.getAttribute('data-request-field'), target_href: 'billing_health_form' }));
           }
           var stats = formStats();
-          if (!readyCaptured && stats.completed_fields >= 5 && stats.has_reply_email) {
+          if (!readyCaptured && stats.has_fast_path_minimum) {
             readyCaptured = true;
             capture('billing_health_request_ready_to_send', Object.assign({}, baseProps, stats, { target_href: 'billing_health_form' }));
           }

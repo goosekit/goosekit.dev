@@ -527,6 +527,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "has_fast_path_minimum",
+        "billing-health route minimum viable request analytics",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "missing_reply_email",
         "billing-health route blocked-submit reason",
     ),
