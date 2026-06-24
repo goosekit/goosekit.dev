@@ -71,6 +71,8 @@ REQUIRED_EVENTS = [
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_bottom", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "retainer_block", require_product=True),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_retainer_interest", "setup_help_artifacts_monthly_support", require_product=True),
+    RequiredEvent("/blog/nextjs-auth-billing-starter/", "setup_help_request_clicked", "auth_billing_pricing_adaptation", require_product=True),
+    RequiredEvent("/blog/nextjs-auth-billing-starter/", "setup_help_request_clicked", "auth_billing_bottom_adaptation", require_product=True),
     RequiredEvent("/ship-it-kit/", "ship_it_kit_cta_clicked", "product_paid_path_starter"),
     RequiredEvent("/ship-it-kit/", "ship_it_kit_setup_help_interest", "product_paid_path_adaptation"),
     RequiredEvent("/ship-it-kit/", "billing_health_interest", "product_paid_path_monthly", require_product=True),
