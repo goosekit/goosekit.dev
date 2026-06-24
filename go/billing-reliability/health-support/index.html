@@ -8,7 +8,7 @@
   <script defer src="/posthog.js"></script>
   <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
   <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.packet-chooser{margin:18px 0;padding:16px;border:1px solid rgba(255,144,64,.24);border-radius:14px;background:rgba(255,72,0,.08)}.packet-chooser h2{font-size:1rem;margin:0 0 8px}.packet-chooser p{margin:0;color:#c9c9dc}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}@media(max-width:640px){.request-form{grid-template-columns:1fr}}.request-copy{width:100%;min-height:210px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.packet-chooser,.email-fallback{margin:18px 0;padding:16px;border:1px solid rgba(255,144,64,.24);border-radius:14px;background:rgba(255,72,0,.08)}.packet-chooser h2,.email-fallback h2{font-size:1rem;margin:0 0 8px}.packet-chooser p,.email-fallback p{margin:0;color:#c9c9dc}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}@media(max-width:640px){.request-form{grid-template-columns:1fr}}.request-copy{width:100%;min-height:210px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
   </style>
 </head>
 <body>
@@ -72,6 +72,14 @@
         <a class="btn" href="#" data-manual-link="true">Continue in email</a>
         <button class="btn" type="button" data-copy-request="true">Copy request text</button>
       </div>
+      <section class="email-fallback" data-health-email-fallback>
+        <h2>Email fallback</h2>
+        <p>If the form or mail app gets in the way, open the same packet in a web inbox.</p>
+        <div class="actions">
+          <a class="btn" href="#" target="_blank" rel="noopener" data-gmail-link="true">Gmail</a>
+          <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Outlook</a>
+        </div>
+      </section>
     </form>
     <p class="fine" data-copy-status aria-live="polite"></p>
   </main>
@@ -89,6 +97,8 @@
       var copyText = document.querySelector('[data-request-copy]');
       var copyStatus = document.querySelector('[data-copy-status]');
       var manual = document.querySelector('[data-manual-link]');
+      var gmail = document.querySelector('[data-gmail-link]');
+      var outlook = document.querySelector('[data-outlook-link]');
       var form = document.querySelector('[data-billing-health-form]');
       var hiddenSource = document.querySelector('[data-hidden-source]');
       var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
@@ -155,15 +165,19 @@
       function refresh() {
         var body = buildBody();
         var mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        var gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        var outlookUrl = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         copyText.value = body;
         manual.href = mailto;
+        gmail.href = gmailUrl;
+        outlook.href = outlookUrl;
         hiddenSource.value = source;
         hiddenSourceRef.value = sourceRef;
         hiddenRequestedTrack.value = requestedTrack || 'unspecified';
         hiddenReplyto.value = value('email');
         hiddenPacket.value = body;
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source) + '&source_ref=' + encodeURIComponent(sourceRef);
-        return { body: body, mailto: mailto };
+        return { body: body, mailto: mailto, gmail: gmailUrl, outlook: outlookUrl };
       }
       if (requestedTrack === 'action_queue') {
         var trackField = document.querySelector('[data-request-field="track"]');
@@ -282,6 +296,19 @@
         var links = refresh();
         capture('billing_health_request_manual_click', Object.assign({}, baseProps, formStats(), { target_href: links.mailto }));
         capture('billing_health_request_mailto_opened', Object.assign({}, baseProps, formStats(), { target_href: links.mailto, trigger: 'manual_click' }));
+      });
+      [
+        { el: gmail, client: 'gmail', hrefKey: 'gmail' },
+        { el: outlook, client: 'outlook', hrefKey: 'outlook' }
+      ].forEach(function (item) {
+        item.el.addEventListener('click', function () {
+          var links = refresh();
+          capture('billing_health_request_email_client_clicked', Object.assign({}, baseProps, formStats(), {
+            target_href: links[item.hrefKey],
+            email_client: item.client,
+            trigger: 'webmail_fallback'
+          }));
+        });
       });
       form.addEventListener('submit', function () {
         refresh();

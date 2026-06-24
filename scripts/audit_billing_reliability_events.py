@@ -504,6 +504,26 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "billing_health_request_email_client_clicked",
+        "billing-health route webmail fallback event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-health-email-fallback",
+        "billing-health route email fallback chooser",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-gmail-link",
+        "billing-health route Gmail compose fallback",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-outlook-link",
+        "billing-health route Outlook compose fallback",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "billing_health_request_prefill_choice_clicked",
         "billing-health route packet-prefill choice event",
     ),
