@@ -112,6 +112,8 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-checkout-success-url-webhook-access/", "setup_help_request_clicked", "checkout_success_webhook_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-checkout-success-url-webhook-access/", "setup_help_secondary_clicked", "checkout_success_webhook_related", require_product=True),
     RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "billing_drift_check_clicked", "setup_mode_card_gate_top", require_product=True),
+    RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "billing_health_interest", "setup_mode_card_gate_monthly_support", require_product=True),
+    RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "billing_reconciliation_builder_started", "setup_mode_card_monthly_query", require_product=True),
     RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "setup_help_request_clicked", "setup_mode_card_gate_bottom_packet", require_product=True),
     RequiredEvent("/blog/stripe-setup-mode-card-on-file-subscription-gate/", "setup_help_secondary_clicked", "setup_mode_card_gate_related", require_product=True),
     RequiredEvent("/blog/stripe-subscription-monthly-credits-double-grant-supabase/", "billing_drift_check_clicked", "monthly_credit_grant_top", require_product=True),
@@ -554,6 +556,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "Launch watch for one live Stripe checkout path",
         "billing-health route launch-watch prefill",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "source === 'setup_mode_card_monthly_support'",
+        "billing-health route setup-mode monthly prefill",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

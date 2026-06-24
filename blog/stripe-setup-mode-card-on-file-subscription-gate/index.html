@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=setup_mode_card_gate_nav">Run drift check</a><a href="/stripe-billing-reliability-checklist/?ref=setup_mode_card_gate_nav">Billing checklist</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=setup_mode_card_gate_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=setup_mode_card_gate_nav">Reconciliation query</a><a href="/stripe-billing-reliability-checklist/?ref=setup_mode_card_gate_nav">Billing checklist</a></div>
     <div class="eyebrow">Stripe setup mode + card-on-file gates</div>
     <h1>Stripe setup mode card gate looks like subscription access?</h1>
     <p class="lead">Checkout <span class="code">mode: setup</span> is useful when you need to collect a payment method before a free tier, trial, import, or backfill. It is not the same thing as a subscription, paid invoice, or durable entitlement.</p>
@@ -34,6 +34,7 @@
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=setup_mode_card_gate_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_top">Run the billing drift check</a>
         <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=setup_mode_card_gate_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_related">Compare success URL risk</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=setup_mode_card_monthly_support&track=access_drift&source_ref=setup_mode_card_gate_top" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_monthly_support" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Watch this monthly</a>
       </div>
       <p class="note">Fixed-scope review fit: EUR99 for one setup-mode gate and one local row; EUR149 if subscription/trial state and queued job/backfill behavior are also in scope.</p>
     </section>
@@ -108,6 +109,21 @@ having count(*) > 1;</code></pre>
         <li>Log failed DB writes after SetupIntent success as repairable incidents, not just console errors.</li>
         <li>Make the UI honest: “card saved” is different from “subscription active” or “job complete.”</li>
       </ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Monthly setup-mode card gate check</h2>
+      <p>If setup mode controls real access, imports, credits, or queued work, keep one repeatable check: a saved card is allowed to exist without active subscription access, but it must not silently start paid work or leave duplicate ready gates behind.</p>
+      <ul class="checklist">
+        <li>One account has at most one ready setup gate per purpose.</li>
+        <li>Ready setup gates do not grant subscription-only access.</li>
+        <li>Queued jobs reference a ready setup gate and are enqueued once.</li>
+        <li>Later subscription or trial state can be reconciled separately from card-on-file state.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="/billing-reconciliation-query-builder/?ref=setup_mode_card_monthly_query" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_monthly_query" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="setup_mode_card_gate">Build the query shape →</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=setup_mode_card_monthly_support&track=access_drift&source_ref=setup_mode_card_gate_monthly" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_monthly_support" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Ask about monthly check</a>
+      </div>
     </section>
 
     <section class="card cta">

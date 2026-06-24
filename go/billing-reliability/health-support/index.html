@@ -192,6 +192,16 @@
         if (auditMonthlyEvidenceField && !auditMonthlyEvidenceField.value.trim()) auditMonthlyEvidenceField.value = 'One recent Stripe object id, related Supabase access row/table, webhook delivery result, and the expected vs actual app state.';
         if (auditMonthlyCadenceField && !auditMonthlyCadenceField.value.trim()) auditMonthlyCadenceField.value = 'Monthly, plus after pricing, portal, webhook, dunning, refund, or credit-ledger changes.';
       }
+      if (source === 'setup_mode_card_monthly_support') {
+        var setupModeTrackField = document.querySelector('[data-request-field="track"]');
+        var setupModeRiskField = document.querySelector('[data-request-field="risk"]');
+        var setupModeEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var setupModeCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (setupModeTrackField && !setupModeTrackField.value.trim()) setupModeTrackField.value = 'Monthly setup-mode card gate check';
+        if (setupModeRiskField && !setupModeRiskField.value.trim()) setupModeRiskField.value = 'A saved card or SetupIntent should not unlock subscription-only access, start duplicate paid work, or leave multiple ready setup gates for one account and purpose.';
+        if (setupModeEvidenceField && !setupModeEvidenceField.value.trim()) setupModeEvidenceField.value = 'SetupIntent or Checkout Session id, local card-gate row, account/team id, queued job row if any, and the later subscription or trial state if it exists.';
+        if (setupModeCadenceField && !setupModeCadenceField.value.trim()) setupModeCadenceField.value = 'Monthly, plus after setup-mode, trial, subscription, or queued-job changes.';
+      }
       if (requestedTrack === 'launch_watch') {
         var launchTrackField = document.querySelector('[data-request-field="track"]');
         var launchRiskField = document.querySelector('[data-request-field="risk"]');
