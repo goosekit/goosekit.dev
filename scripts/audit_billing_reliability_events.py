@@ -571,6 +571,16 @@ REQUIRED_LINKS = [
         "billing-health sent route follow-up click event",
     ),
     RequiredLink(
+        "/go/billing-reliability/health-support-sent/",
+        "data-health-sent-followup=\"build_reconciliation_query\"",
+        "billing-health sent route reconciliation-query follow-up",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support-sent/",
+        "data-health-sent-followup=\"review_revenue_leak_audit\"",
+        "billing-health sent route revenue-leak audit follow-up",
+    ),
+    RequiredLink(
         "/blog/stripe-invoice-paid-double-extends-supabase-membership/",
         "/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=invoice_paid_monthly_credit_context",
         "invoice paid monthly credit contextual link",

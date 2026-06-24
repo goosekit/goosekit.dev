@@ -16,8 +16,10 @@
     <div class="pill">Request sent</div>
     <h1>Your billing-health support request was sent</h1>
     <p>Arthur should receive the packet by email. Monthly support still needs a concrete first-pass fit check before anything is counted as MRR.</p>
+    <p class="fine">A stronger request has one Stripe object, one Supabase row or table, and one mismatch you want checked every month.</p>
     <div class="actions">
-      <a class="btn" href="/billing-health-support/" data-health-sent-followup="support_back">Back to billing-health support</a>
+      <a class="btn" href="/billing-reconciliation-query-builder/?ref=billing_health_sent_query" data-health-sent-followup="build_reconciliation_query">Build reconciliation query</a>
+      <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_sent_audit" data-health-sent-followup="review_revenue_leak_audit">Check audit scope</a>
       <a class="btn secondary" href="/go/billing-reliability/health-support/?source=formspree_sent_fallback" data-health-sent-followup="send_another">Send another request</a>
     </div>
     <p class="fine">No payment is due here.</p>
@@ -25,7 +27,7 @@
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var params = new URLSearchParams(window.location.search);
-      var sourceRef = params.get('source') || 'formspree_return';
+      var sourceRef = params.get('source_ref') || params.get('source') || 'formspree_return';
       var sentProps = {
         product: 'billing_reliability',
         location: 'billing_health_request_sent_route',
