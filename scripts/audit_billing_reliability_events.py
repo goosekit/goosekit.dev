@@ -524,6 +524,26 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "data-copy-email",
+        "billing-health route email-copy fallback",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "data-copy-subject",
+        "billing-health route subject-copy fallback",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "billing_health_request_email_copy_clicked",
+        "billing-health route email-copy event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "billing_health_request_subject_copy_clicked",
+        "billing-health route subject-copy event",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "billing_health_request_prefill_choice_clicked",
         "billing-health route packet-prefill choice event",
     ),

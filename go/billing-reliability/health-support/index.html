@@ -78,6 +78,8 @@
         <div class="actions">
           <a class="btn" href="#" target="_blank" rel="noopener" data-gmail-link="true">Gmail</a>
           <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Outlook</a>
+          <button class="btn" type="button" data-copy-email="true">Copy email</button>
+          <button class="btn" type="button" data-copy-subject="true">Copy subject</button>
         </div>
       </section>
     </form>
@@ -99,6 +101,8 @@
       var manual = document.querySelector('[data-manual-link]');
       var gmail = document.querySelector('[data-gmail-link]');
       var outlook = document.querySelector('[data-outlook-link]');
+      var copyEmailButton = document.querySelector('[data-copy-email]');
+      var copySubjectButton = document.querySelector('[data-copy-subject]');
       var form = document.querySelector('[data-billing-health-form]');
       var hiddenSource = document.querySelector('[data-hidden-source]');
       var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
@@ -178,6 +182,23 @@
         hiddenPacket.value = body;
         hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/health-support-sent/?source=' + encodeURIComponent(source) + '&source_ref=' + encodeURIComponent(sourceRef);
         return { body: body, mailto: mailto, gmail: gmailUrl, outlook: outlookUrl };
+      }
+      function copyValue(value, label, eventName, targetHref) {
+        refresh();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(function () {
+            copyStatus.textContent = label + ' copied.';
+          }).catch(function () {
+            copyStatus.textContent = label + ': ' + value;
+          });
+        } else {
+          copyStatus.textContent = label + ': ' + value;
+        }
+        capture(eventName, Object.assign({}, baseProps, formStats(), {
+          target_href: targetHref,
+          clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText),
+          copy_attempted: true
+        }));
       }
       if (requestedTrack === 'action_queue') {
         var trackField = document.querySelector('[data-request-field="track"]');
@@ -309,6 +330,12 @@
             trigger: 'webmail_fallback'
           }));
         });
+      });
+      copyEmailButton.addEventListener('click', function () {
+        copyValue('arthur.pierrey@gmail.com', 'Email address', 'billing_health_request_email_copy_clicked', 'copy_email_address');
+      });
+      copySubjectButton.addEventListener('click', function () {
+        copyValue(subject, 'Subject', 'billing_health_request_subject_copy_clicked', 'copy_email_subject');
       });
       form.addEventListener('submit', function () {
         refresh();
