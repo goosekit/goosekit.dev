@@ -38,10 +38,10 @@ class RequiredLink:
 REQUIRED_EVENTS = [
     RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_drift_review_request", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
     RequiredEvent("/stripe-supabase-billing-drift-check/", "revenue_leak_audit_interest", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
-    RequiredEvent("/stripe-supabase-billing-drift-check/", "setup_help_retainer_interest", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
+    RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_health_interest", "drift_check_result", needs_score_attrs=True, needs_commercial_context_attrs=True, require_product=True),
     RequiredEvent("/stripe-supabase-billing-drift-check/", "revenue_leak_audit_interest", "drift_check_bottom", require_product=True),
     RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_drift_check_secondary", "drift_check_bottom", require_product=True),
-    RequiredEvent("/stripe-supabase-billing-drift-check/", "setup_help_retainer_interest", "drift_check_monthly_support", require_product=True),
+    RequiredEvent("/stripe-supabase-billing-drift-check/", "billing_health_interest", "drift_check_monthly_support", require_product=True),
     RequiredEvent("/stripe-billing-reliability-checklist/", "billing_drift_check_clicked", "billing_reliability_checklist_top", require_product=True),
     RequiredEvent("/stripe-billing-reliability-checklist/", "setup_help_retainer_interest", "billing_reliability_checklist_top", require_product=True),
     RequiredEvent("/stripe-billing-reliability-checklist/", "billing_drift_check_clicked", "billing_reliability_checklist_bottom", require_product=True),
