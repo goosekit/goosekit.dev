@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_nav">Run drift check</a><a href="/billing-health-support/?ref=charged_stranded_nav">Monthly support</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=charged_stranded_nav">Reconciliation query</a><a href="/billing-health-support/?ref=charged_stranded_nav">Monthly support</a></div>
     <div class="eyebrow">Stripe + Supabase charged-and-stranded debug</div>
     <h1>Stripe charged the customer, but Supabase did not provision access?</h1>
     <p class="lead">This is the charged-and-stranded failure: Stripe says the customer paid or the subscription is active, but your app never created the tenant, workspace, subscription row, entitlement row, credits, seats, or dashboard access.</p>
@@ -34,6 +34,7 @@
       <div class="actions">
         <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_top">Run the billing drift check</a>
         <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_revenue_leak_top">Audit revenue leak risk</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_top" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_support_top" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Watch this monthly</a>
         <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_hosted_plan_context" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_hosted_plan_context">Hosted-plan entitlement drift?</a>
         <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=charged_stranded_top_packet&context=charged_stranded&price_range_eur=99-149&quote_path=launch_blocker&source_ref=charged_stranded_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_top_packet">Need a narrow review?</a>
       </div>
@@ -90,6 +91,25 @@ where s.status in ('active', 'trialing')
         <li>Keep an equivalent query for local-premium/Stripe-inactive drift.</li>
         <li>Log the expected row, actual missing row, provider object ID, and recovery outcome.</li>
       </ul>
+      <div class="actions">
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=charged_stranded_query_block" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="charged_stranded_query_block" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="charged_stranded">Build reconciliation query</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_query_block" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_query_monthly_support" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Monitor paid-but-blocked drift monthly</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">Monthly paid-but-blocked drift check</h2>
+      <p>After the immediate incident is fixed, the durable check is simple: every month, prove Stripe-active customers have the expected Supabase access rows, and prove inactive/refunded customers are not still unlocked.</p>
+      <ul class="checklist">
+        <li>Keep one saved query for Stripe-active/local-blocked users.</li>
+        <li>Keep one saved query for local-unlocked/Stripe-inactive users.</li>
+        <li>Review any non-zero row with the Stripe object id, Supabase access row, and recovery outcome.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_monthly_block" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_support_block" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Prepare monthly support request</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_monthly_block" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_revenue_leak">Use one-off audit first</a>
+      </div>
+      <p class="note">Founding support is still scoped: one billing invariant, one monthly pass, one small follow-up fix when the evidence is clear.</p>
     </section>
 
     <section>
@@ -128,7 +148,7 @@ where s.status in ('active', 'trialing')
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=charged_stranded_bottom_packet&context=charged_stranded&price_range_eur=99-149&quote_path=launch_blocker&source_ref=charged_stranded_bottom_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_packet">Prepare charged-and-stranded packet →</a>
         <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=charged_stranded_revenue_leak_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_revenue_leak_bottom">Check revenue-leak audit fit</a>
-        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_support" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Monthly drift support →</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_bottom" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="charged_stranded_monthly_support" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Monthly drift support →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=charged_stranded_bottom" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom">Score the drift risk first</a>
         <a class="btn secondary" href="/blog/stripe-hosted-plan-entitlement-provisioning-supabase/?ref=charged_stranded_bottom_hosted_plan" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_bottom_hosted_plan">Hosted-plan replay checklist</a>
         <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=charged_stranded_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="charged_stranded_paid_status_related">Paid-status checklist</a>

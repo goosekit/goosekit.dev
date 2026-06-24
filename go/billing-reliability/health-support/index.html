@@ -192,6 +192,16 @@
         if (auditMonthlyEvidenceField && !auditMonthlyEvidenceField.value.trim()) auditMonthlyEvidenceField.value = 'One recent Stripe object id, related Supabase access row/table, webhook delivery result, and the expected vs actual app state.';
         if (auditMonthlyCadenceField && !auditMonthlyCadenceField.value.trim()) auditMonthlyCadenceField.value = 'Monthly, plus after pricing, portal, webhook, dunning, refund, or credit-ledger changes.';
       }
+      if (source === 'charged_stranded_monthly_support') {
+        var chargedTrackField = document.querySelector('[data-request-field="track"]');
+        var chargedRiskField = document.querySelector('[data-request-field="risk"]');
+        var chargedEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var chargedCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (chargedTrackField && !chargedTrackField.value.trim()) chargedTrackField.value = 'Monthly paid-but-blocked access drift check';
+        if (chargedRiskField && !chargedRiskField.value.trim()) chargedRiskField.value = 'Stripe-active customers should have the expected Supabase access rows, and inactive, refunded, or canceled customers should not stay unlocked locally.';
+        if (chargedEvidenceField && !chargedEvidenceField.value.trim()) chargedEvidenceField.value = 'Stripe Checkout Session, subscription, invoice, or customer id plus the Supabase access, tenant, workspace, entitlement, credit, or membership row that should match it.';
+        if (chargedCadenceField && !chargedCadenceField.value.trim()) chargedCadenceField.value = 'Monthly, plus after checkout, webhook, reconciliation, portal, refund, or entitlement changes.';
+      }
       if (source === 'setup_mode_card_monthly_support') {
         var setupModeTrackField = document.querySelector('[data-request-field="track"]');
         var setupModeRiskField = document.querySelector('[data-request-field="risk"]');

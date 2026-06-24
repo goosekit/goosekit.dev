@@ -96,8 +96,12 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_drift_check_clicked", "charged_stranded_top", require_product=True),
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "revenue_leak_audit_interest", "charged_stranded_revenue_leak_top", require_product=True),
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "revenue_leak_audit_interest", "charged_stranded_revenue_leak_bottom", require_product=True),
+    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_health_interest", "charged_stranded_monthly_support_top", require_product=True),
+    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_health_interest", "charged_stranded_query_monthly_support", require_product=True),
+    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_health_interest", "charged_stranded_monthly_support_block", require_product=True),
+    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_reconciliation_builder_started", "charged_stranded_query_block", require_product=True),
     RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "setup_help_request_clicked", "charged_stranded_bottom_packet", require_product=True),
-    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "setup_help_retainer_interest", "charged_stranded_monthly_support", require_product=True),
+    RequiredEvent("/blog/stripe-charged-customer-not-provisioned-supabase/", "billing_health_interest", "charged_stranded_monthly_support", require_product=True),
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "billing_drift_check_clicked", "duplicate_subscription_top"),
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-duplicate-subscription-supabase-access/", "setup_help_request_clicked", "duplicate_subscription_bottom_packet", require_product=True),
@@ -559,6 +563,11 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",
+        "source === 'charged_stranded_monthly_support'",
+        "billing-health route charged-stranded monthly prefill",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
         "source === 'setup_mode_card_monthly_support'",
         "billing-health route setup-mode monthly prefill",
     ),
@@ -606,6 +615,26 @@ REQUIRED_LINKS = [
         "/blog/stripe-webhook-event-ordering-supabase/",
         "/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=event_ordering_monthly_credit_related",
         "event ordering monthly credit related link",
+    ),
+    RequiredLink(
+        "/blog/stripe-charged-customer-not-provisioned-supabase/",
+        "/billing-reconciliation-query-builder/?ref=charged_stranded_query_block",
+        "charged stranded reconciliation query CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-charged-customer-not-provisioned-supabase/",
+        "/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_top",
+        "charged stranded top monthly support CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-charged-customer-not-provisioned-supabase/",
+        "/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_query_block",
+        "charged stranded query monthly support CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-charged-customer-not-provisioned-supabase/",
+        "/go/billing-reliability/health-support/?source=charged_stranded_monthly_support&track=access_drift&source_ref=charged_stranded_monthly_block",
+        "charged stranded monthly support block CTA",
     ),
     RequiredLink(
         "/blog/stripe-charged-customer-not-provisioned-supabase/",
