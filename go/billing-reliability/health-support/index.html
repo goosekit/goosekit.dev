@@ -171,6 +171,16 @@
         if (accessRiskField && !accessRiskField.value.trim()) accessRiskField.value = 'Stripe paid, trialing, past-due, paused, or canceled state can disagree with Supabase access, credits, seats, bookings, or workspace status.';
         if (accessEvidenceField && !accessEvidenceField.value.trim()) accessEvidenceField.value = 'Stripe subscription, invoice, customer, Checkout Session, or PaymentIntent id plus the Supabase row/table that controls access.';
       }
+      if (source === 'reconciliation_builder_monthly_support') {
+        var reconciliationTrackField = document.querySelector('[data-request-field="track"]');
+        var reconciliationRiskField = document.querySelector('[data-request-field="risk"]');
+        var reconciliationEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var reconciliationCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (reconciliationTrackField && !reconciliationTrackField.value.trim()) reconciliationTrackField.value = 'Monthly reconciliation query review';
+        if (reconciliationRiskField && !reconciliationRiskField.value.trim()) reconciliationRiskField.value = 'A saved Stripe-to-Supabase reconciliation query should catch paid users blocked locally, unpaid users still unlocked, missing customer links, or stale entitlement rows each month.';
+        if (reconciliationEvidenceField && !reconciliationEvidenceField.value.trim()) reconciliationEvidenceField.value = 'Generated SQL query, table and join-key names, one mismatch row if present, Stripe event/subscription id, and the Supabase access or entitlement row.';
+        if (reconciliationCadenceField && !reconciliationCadenceField.value.trim()) reconciliationCadenceField.value = 'Monthly, plus after billing schema or webhook changes.';
+      }
       if (requestedTrack === 'launch_watch') {
         var launchTrackField = document.querySelector('[data-request-field="track"]');
         var launchRiskField = document.querySelector('[data-request-field="risk"]');
