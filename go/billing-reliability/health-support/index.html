@@ -212,6 +212,16 @@
         if (chargedEvidenceField && !chargedEvidenceField.value.trim()) chargedEvidenceField.value = 'Stripe Checkout Session, subscription, invoice, or customer id plus the Supabase access, tenant, workspace, entitlement, credit, or membership row that should match it.';
         if (chargedCadenceField && !chargedCadenceField.value.trim()) chargedCadenceField.value = 'Monthly, plus after checkout, webhook, reconciliation, portal, refund, or entitlement changes.';
       }
+      if (source === 'trial_access_monthly_support') {
+        var trialTrackField = document.querySelector('[data-request-field="track"]');
+        var trialRiskField = document.querySelector('[data-request-field="risk"]');
+        var trialEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var trialCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (trialTrackField && !trialTrackField.value.trim()) trialTrackField.value = 'Monthly trial conversion access drift check';
+        if (trialRiskField && !trialRiskField.value.trim()) trialRiskField.value = 'Trials that convert, fail first invoice, become past_due, or get canceled should map to the intended Supabase access state without leaving unpaid users unlocked or paid users blocked.';
+        if (trialEvidenceField && !trialEvidenceField.value.trim()) trialEvidenceField.value = 'Stripe subscription or invoice id around trial end, Supabase trial/paid access row or table, trial_ends_at/trial_converted_at fields if present, and one mismatch row or query.';
+        if (trialCadenceField && !trialCadenceField.value.trim()) trialCadenceField.value = 'Monthly, plus after trial policy, invoice payment, dunning, cancellation, or access-state changes.';
+      }
       if (source === 'setup_mode_card_monthly_support') {
         var setupModeTrackField = document.querySelector('[data-request-field="track"]');
         var setupModeRiskField = document.querySelector('[data-request-field="risk"]');

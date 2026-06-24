@@ -89,6 +89,10 @@ REQUIRED_EVENTS = [
     RequiredEvent("/blog/stripe-webhook-event-ordering-supabase/", "billing_drift_check_clicked", "event_ordering_top"),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_drift_check_clicked", "trial_top"),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "setup_help_request_clicked", "trial_top_packet", require_product=True),
+    RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_health_interest", "trial_access_monthly_support_top", require_product=True),
+    RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_health_interest", "trial_access_monthly_support_block", require_product=True),
+    RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_health_interest", "trial_access_monthly_support_bottom", require_product=True),
+    RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "billing_reconciliation_builder_started", "trial_access_monthly_query", require_product=True),
     RequiredEvent("/blog/stripe-trial-ending-supabase-access/", "setup_help_request_clicked", "trial_bottom", require_product=True),
     RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "setup_help_request_clicked", "dunning_top_packet", require_product=True),
     RequiredEvent("/blog/stripe-dunning-past-due-unpaid-supabase-access/", "billing_drift_check_clicked", "dunning_top"),
@@ -257,6 +261,26 @@ REQUIRED_LINKS = [
         "/blog/stripe-webhook-duplicate-events-idempotency-supabase/",
         "/blog/stripe-checkout-success-url-webhook-access/?ref=duplicate_webhook_related_list",
         "duplicate webhook related success URL link",
+    ),
+    RequiredLink(
+        "/blog/stripe-trial-ending-supabase-access/",
+        "/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_top",
+        "trial access top monthly support CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-trial-ending-supabase-access/",
+        "/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_monthly_block",
+        "trial access monthly support block CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-trial-ending-supabase-access/",
+        "/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_bottom",
+        "trial access bottom monthly support CTA",
+    ),
+    RequiredLink(
+        "/blog/stripe-trial-ending-supabase-access/",
+        "/billing-reconciliation-query-builder/?ref=trial_access_monthly_query",
+        "trial access monthly query CTA",
     ),
     RequiredLink(
         "/blog/stripe-trial-ending-supabase-access/",
@@ -582,6 +606,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "source === 'charged_stranded_monthly_support'",
         "billing-health route charged-stranded monthly prefill",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "source === 'trial_access_monthly_support'",
+        "billing-health route trial-access monthly prefill",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

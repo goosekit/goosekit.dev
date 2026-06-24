@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=trial_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=trial_access_nav_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=trial_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=trial_nav">Reconciliation query</a><a href="/go/billing-reliability/setup-request/?source=trial_access_nav_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_nav">Setup help</a></div>
     <div class="eyebrow">Stripe trials + Supabase access</div>
     <h1>Stripe trial ended but Supabase access did not update?</h1>
     <p class="lead">Trial transitions are a common place for SaaS billing state to drift. Your app may keep trial users active after payment fails, or lock out a customer whose first invoice was paid but whose Supabase row never changed.</p>
@@ -33,6 +33,7 @@
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=trial_access_top_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="trial_top_packet">Need trial/access help?</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=trial_top" data-ph-event="billing_drift_check_clicked" data-ph-location="trial_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_top" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="trial_access_monthly_support_top" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Watch trial conversion monthly</a>
         <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=trial_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="trial_dunning_related">Dunning/access checklist</a>
       </div>
       <p class="note">Founding setup/debug help starts at €99–149. Live apps can also ask about founding-5 €29/mo billing-health support after an initial pass.</p>
@@ -93,11 +94,39 @@
     </section>
 
     <section class="card cta">
+      <h2 style="margin-top:0">Monthly trial conversion drift check</h2>
+      <p>After the first trial/access fix, the recurring check is narrow: every month, prove trials that converted are unlocked, failed first invoices are not treated as paid, and canceled trials do not keep full access.</p>
+      <div class="grid2">
+        <div>
+          <h3>Good monthly invariant</h3>
+          <ul class="checklist">
+            <li>Trialing users have trial access, not permanent paid access.</li>
+            <li>First paid invoice converts access only after Stripe says paid.</li>
+            <li>Past-due, incomplete, canceled, and unpaid states map to the intended Supabase access state.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Evidence packet</h3>
+          <ul class="checklist">
+            <li>One subscription or invoice id around trial end.</li>
+            <li>The Supabase row/table that stores trial and paid access.</li>
+            <li>One query or mismatch row showing the trial conversion state.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_monthly_block" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="trial_access_monthly_support_block" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Prepare monthly trial/access check</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=trial_access_monthly_query" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="trial_access_monthly_query" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="trial_access">Build trial/access query</a>
+      </div>
+    </section>
+
+    <section class="card cta">
       <h2 style="margin-top:0">What to send for a trial/access review</h2>
       <p>Send artifacts, not secrets: event types, relevant timestamps, subscription status, invoice status, and the Supabase table shape that stores access.</p>
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=trial_access_bottom_packet&amp;context=trial_access&amp;price_range_eur=99-149&amp;quote_path=launch_blocker&amp;source_ref=trial_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="trial_bottom">Request trial/access help →</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=trial_bottom" data-ph-event="billing_drift_check_clicked" data-ph-location="trial_bottom">Score the drift risk first</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=trial_access_monthly_support&track=access_drift&source_ref=trial_bottom" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="trial_access_monthly_support_bottom" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Monthly trial/access support</a>
         <a class="btn secondary" href="/blog/stripe-setup-mode-card-on-file-subscription-gate/?ref=trial_bottom_setup_mode" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="trial_setup_mode_bottom">Card gate before trial?</a>
         <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=trial_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="trial_setup_help">See setup help scope</a>
       </div>
