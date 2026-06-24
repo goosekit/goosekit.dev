@@ -61,6 +61,8 @@ REQUIRED_EVENTS = [
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_review_tracks"),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_launch_watch"),
     RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_action_queue_packet"),
+    RequiredEvent("/billing-health-support/", "billing_health_interest", "billing_health_first_month_check", require_product=True),
+    RequiredEvent("/billing-health-support/", "billing_reconciliation_builder_started", "billing_health_first_month_check", require_product=True),
     RequiredEvent("/billing-health-support/", "billing_drift_check_clicked", "billing_health_review_tracks"),
     RequiredEvent("/billing-health-support/", "billing_health_secondary_clicked", "billing_health_live_money_gate"),
     RequiredEvent("/nextjs-supabase-stripe-setup-help/", "setup_help_request_clicked", "nextjs_setup_help_hero", require_product=True),
@@ -305,6 +307,16 @@ REQUIRED_LINKS = [
         "/billing-health-support/",
         "/go/billing-reliability/health-support/?source=billing_health_cta",
         "billing-health tracked request route",
+    ),
+    RequiredLink(
+        "/billing-health-support/",
+        "/go/billing-reliability/health-support/?source=billing_health_first_month_query&track=access_drift&source_ref=billing_health_first_month_check",
+        "billing-health first-month query support route",
+    ),
+    RequiredLink(
+        "/billing-health-support/",
+        "/billing-reconciliation-query-builder/?ref=billing_health_first_month_check",
+        "billing-health first-month query builder route",
     ),
     RequiredLink(
         "/go/billing-reliability/audit-request/",
@@ -560,6 +572,11 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/health-support/",
         "Launch watch for one live Stripe checkout path",
         "billing-health route launch-watch prefill",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/health-support/",
+        "source === 'billing_health_monthly_query' || source === 'billing_health_first_month_query'",
+        "billing-health route first-month query prefill",
     ),
     RequiredLink(
         "/go/billing-reliability/health-support/",

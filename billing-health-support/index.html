@@ -167,6 +167,19 @@
         <a class="btn secondary" href="/go/billing-reliability/health-support/?source=billing_health_monthly_query&track=access_drift&source_ref=billing_health_monthly_query" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_monthly_query">Ask about monthly review</a>
       </div>
     </section>
+    <section class="section card strip" id="first-month-check" data-ph-section="billing_health_first_month_check">
+      <h2>First-month check packet</h2>
+      <p>The fastest request is not a long brief. Send one saved query or one mismatch row, one Stripe object, one Supabase row/table, and the invariant that should stay true every month.</p>
+      <div class="grid3">
+        <div><h3>Paid but blocked</h3><ul><li>Stripe active/trialing row.</li><li>Missing or inactive Supabase access row.</li><li>Expected recovery state.</li></ul></div>
+        <div><h3>Unpaid but unlocked</h3><ul><li>Canceled, refunded, unpaid, or paused Stripe state.</li><li>Local entitlement still active.</li><li>Rule that should remove access.</li></ul></div>
+        <div><h3>Action queue</h3><ul><li>Failed invoice or portal-change event.</li><li>Human-owned card or queue row.</li><li>Resolve rule after recovery.</li></ul></div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_first_month_query&track=access_drift&source_ref=billing_health_first_month_check" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_first_month_check" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Send first-month check packet</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=billing_health_first_month_check" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_health_first_month_check" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Need a query skeleton?</a>
+      </div>
+    </section>
     <section class="section card strip">
       <h2>Founding-5 intake filter</h2>
       <p>The first five monthly slots should go only to apps where recurring review can protect real or near-real revenue. A good request includes one Stripe object, one Supabase access table or row, and one monthly state that should be checked.</p>

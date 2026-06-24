@@ -182,6 +182,16 @@
         if (reconciliationEvidenceField && !reconciliationEvidenceField.value.trim()) reconciliationEvidenceField.value = 'Generated SQL query, table and join-key names, one mismatch row if present, Stripe event/subscription id, and the Supabase access or entitlement row.';
         if (reconciliationCadenceField && !reconciliationCadenceField.value.trim()) reconciliationCadenceField.value = 'Monthly, plus after billing schema or webhook changes.';
       }
+      if (source === 'billing_health_monthly_query' || source === 'billing_health_first_month_query') {
+        var firstMonthTrackField = document.querySelector('[data-request-field="track"]');
+        var firstMonthRiskField = document.querySelector('[data-request-field="risk"]');
+        var firstMonthEvidenceField = document.querySelector('[data-request-field="evidence"]');
+        var firstMonthCadenceField = document.querySelector('[data-request-field="cadence"]');
+        if (firstMonthTrackField && !firstMonthTrackField.value.trim()) firstMonthTrackField.value = 'First-month reconciliation-backed billing health check';
+        if (firstMonthRiskField && !firstMonthRiskField.value.trim()) firstMonthRiskField.value = 'A saved monthly query should prove paid users are unlocked, unpaid or canceled users are blocked, and any non-zero mismatch row becomes the review queue.';
+        if (firstMonthEvidenceField && !firstMonthEvidenceField.value.trim()) firstMonthEvidenceField.value = 'Saved SQL query or one mismatch row, Stripe object id, Supabase access table/row, join key, and expected monthly invariant.';
+        if (firstMonthCadenceField && !firstMonthCadenceField.value.trim()) firstMonthCadenceField.value = 'First month, then monthly if the same invariant protects real access, credits, seats, bookings, or workspace status.';
+      }
       if (source === 'revenue_leak_audit_monthly_support') {
         var auditMonthlyTrackField = document.querySelector('[data-request-field="track"]');
         var auditMonthlyRiskField = document.querySelector('[data-request-field="risk"]');
