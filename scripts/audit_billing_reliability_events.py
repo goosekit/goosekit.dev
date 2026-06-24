@@ -52,6 +52,7 @@ REQUIRED_EVENTS = [
     RequiredEvent("/billing-reconciliation-query-builder/", "billing_reconciliation_builder_started", "hero", require_product=True),
     RequiredEvent("/billing-reconciliation-query-builder/", "billing_reconciliation_sql_copied", "reconciliation_builder_output", needs_commercial_context_attrs=True, require_product=True),
     RequiredEvent("/billing-reconciliation-query-builder/", "billing_reconciliation_review_request", "reconciliation_builder_output", needs_commercial_context_attrs=True, require_product=True),
+    RequiredEvent("/billing-reconciliation-query-builder/", "billing_reconciliation_builder_setup_followup_viewed", "reconciliation_builder_setup_request_sent_followup", needs_commercial_context_attrs=True, require_product=True),
     RequiredEvent("/billing-reconciliation-query-builder/", "billing_health_interest", "reconciliation_builder_output", require_product=True),
     RequiredEvent("/stripe-supabase-revenue-leak-audit/", "revenue_leak_audit_request_clicked", "revenue_leak_evidence_packet", require_product=True),
     RequiredEvent("/stripe-supabase-revenue-leak-audit/", "billing_drift_check_clicked", "revenue_leak_evidence_packet", require_product=True),

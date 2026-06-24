@@ -29,6 +29,8 @@
         <h1>Build the query that catches paid-state drift.</h1>
         <p class="lead">A narrow helper for SaaS builders who already have Stripe events and Supabase access state. Generate a SQL skeleton for the four money states that matter: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer links, and stale local entitlements.</p>
         <p class="lead">The output is deliberately practical. Paste the query into Supabase SQL editor, adapt table names, then use the result as the evidence packet for a €99-149 billing drift review if it finds real mismatches.</p>
+        <p class="fine" id="inboundContext" hidden></p>
+        <span hidden data-ph-event="billing_reconciliation_builder_setup_followup_viewed" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_setup_request_sent_followup" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query"></span>
         <div class="actions">
           <a class="btn primary" href="#builder" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="hero">Build reconciliation query →</a>
           <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=reconciliation_builder_hero" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_hero">Score drift risk first</a>
@@ -95,6 +97,11 @@
     const reviewCta = document.getElementById('reviewCta');
     const copyQuery = document.getElementById('copyQuery');
     const copyStatus = document.getElementById('copyStatus');
+    const inboundContext = document.getElementById('inboundContext');
+    const params = new URLSearchParams(window.location.search);
+    const inboundRef = params.get('ref') || 'reconciliation_builder';
+    const inboundSourceRef = params.get('source_ref') || inboundRef;
+    const fromSetupRequestSent = inboundRef === 'setup_request_sent_query';
 
     function clean(value, fallback) {
       const trimmed = String(value || '').trim();
@@ -156,11 +163,11 @@ order by coalesce(s.stripe_updated_at, l.local_updated_at) desc
 limit 50;`;
 
       const params = new URLSearchParams({
-        source: 'reconciliation_builder',
+        source: fromSetupRequestSent ? 'setup_request_sent_query' : 'reconciliation_builder',
         context: 'billing_reconciliation_query',
         price_range_eur: '99-149',
         quote_path: 'fixed_scope_quote',
-        source_ref: 'reconciliation_builder',
+        source_ref: fromSetupRequestSent ? inboundSourceRef : 'reconciliation_builder',
         stripe_table: stripeTable,
         access_table: accessTable,
         join_key: joinKey,
@@ -168,9 +175,16 @@ limit 50;`;
         stripe_status_column: stripeStatusColumn,
         local_status_column: localStatusColumn
       });
+      if (fromSetupRequestSent) {
+        params.set('followup_from', 'setup_request_sent');
+      }
       reviewCta.href = `/go/billing-reliability/setup-request/?${params.toString()}`;
       reviewCta.setAttribute('data-ph-recommended-scope', 'Stripe/Supabase reconciliation query review');
+      reviewCta.setAttribute('data-ph-source-ref', fromSetupRequestSent ? inboundSourceRef : 'reconciliation_builder');
+      reviewCta.setAttribute('data-ph-followup-from', fromSetupRequestSent ? 'setup_request_sent' : 'direct_builder');
       copyQuery.setAttribute('data-ph-recommended-scope', 'Stripe/Supabase reconciliation query review');
+      copyQuery.setAttribute('data-ph-source-ref', fromSetupRequestSent ? inboundSourceRef : 'reconciliation_builder');
+      copyQuery.setAttribute('data-ph-followup-from', fromSetupRequestSent ? 'setup_request_sent' : 'direct_builder');
     }
 
     Object.values(fields).forEach((field) => field.addEventListener('input', render));
@@ -208,10 +222,30 @@ limit 50;`;
           access_table: clean(fields.accessTable.value, 'profiles'),
           join_key: clean(fields.joinKey.value, 'user_id'),
           request_context: 'billing_reconciliation_query',
+          source_ref: fromSetupRequestSent ? inboundSourceRef : 'reconciliation_builder',
+          inbound_ref: inboundRef,
+          followup_from: fromSetupRequestSent ? 'setup_request_sent' : 'direct_builder',
           price_eur: '99-149'
         });
       }
     });
+    if (fromSetupRequestSent) {
+      inboundContext.hidden = false;
+      inboundContext.textContent = 'This query can turn the setup request you just sent into a concrete mismatch row for follow-up.';
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('billing_reconciliation_builder_setup_followup_viewed', {
+          site: 'goosekit',
+          product: 'billing_reliability',
+          location: 'reconciliation_builder_setup_request_sent_followup',
+          path: window.location.pathname,
+          source_ref: inboundSourceRef,
+          inbound_ref: inboundRef,
+          request_context: 'billing_reconciliation_query',
+          followup_from: 'setup_request_sent',
+          price_eur: '99-149'
+        });
+      }
+    }
     render();
   </script>
 </body>
