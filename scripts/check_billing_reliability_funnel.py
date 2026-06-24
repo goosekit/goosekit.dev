@@ -173,6 +173,21 @@ PAGES = [
         ],
     },
     {
+        "path": "/ship-it-kit/",
+        "required": [
+            "Choose the paid path",
+            "Starter, adaptation, or monthly checks.",
+            "product_paid_path_starter",
+            "product_paid_path_adaptation",
+            "product_paid_path_monthly",
+            "ship_it_kit_cta_clicked",
+            "ship_it_kit_setup_help_interest",
+            "billing_health_interest",
+            "€199+",
+            "€29/mo",
+        ],
+    },
+    {
         "path": "/nextjs-supabase-stripe-setup-help/",
         "required": [
             "setup_help_request_clicked",
