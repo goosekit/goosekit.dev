@@ -426,7 +426,7 @@ REQUIRED_LINKS = [
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",
-        "name=\"email\"",
+        "name=\"email\" type=\"email\" data-request-field=\"email\" autocomplete=\"email\" placeholder=\"you@example.com\" required",
         "setup route prospect reply email field",
     ),
     RequiredLink(
@@ -448,6 +448,16 @@ REQUIRED_LINKS = [
         "/go/billing-reliability/setup-request/",
         "qualified_packet_ready",
         "setup route qualified packet analytics prop",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "setup_help_request_submit_blocked",
+        "setup route blocks unusable Formspree submits without reply email",
+    ),
+    RequiredLink(
+        "/go/billing-reliability/setup-request/",
+        "blocked_reason: 'missing_reply_email'",
+        "setup route records missing reply email submit block reason",
     ),
     RequiredLink(
         "/go/billing-reliability/setup-request/",

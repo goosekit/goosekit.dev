@@ -57,7 +57,7 @@
     </div>
     <div class="request-form" data-request-form>
       <label class="wide">Reply email
-        <input name="email" type="email" data-request-field="email" autocomplete="email" placeholder="you@example.com">
+        <input name="email" type="email" data-request-field="email" autocomplete="email" placeholder="you@example.com" required>
       </label>
       <label>Stack
         <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
@@ -672,8 +672,16 @@
         refreshLinks();
         capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'outlook_compose' }));
       });
-      formspreeForm.addEventListener('submit', function () {
+      formspreeForm.addEventListener('submit', function (event) {
         refreshLinks();
+        if (!value('email')) {
+          event.preventDefault();
+          copyStatus.textContent = 'Add a reply email first so the request can be answered.';
+          capture('setup_help_request_submit_blocked', Object.assign({}, eventProps, formStats(), { target_href: 'formspree_xblgwdqz', blocked_reason: 'missing_reply_email' }));
+          var emailField = fieldByKey('email');
+          if (emailField) emailField.focus();
+          return;
+        }
         capture('setup_help_request_formspree_submit', Object.assign({}, eventProps, formStats(), { target_href: 'formspree_xblgwdqz' }));
       });
       copyButtons.forEach(function (button) {
