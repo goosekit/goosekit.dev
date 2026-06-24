@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <nav><a href="/">Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_audit_nav">Run drift check</a><a href="/billing-health-support/?ref=revenue_leak_audit_nav">Monthly support</a></nav>
+    <nav><a href="/">Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_audit_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=revenue_leak_audit_nav">Reconciliation query</a><a href="/billing-health-support/?ref=revenue_leak_audit_nav">Monthly support</a></nav>
     <section class="hero">
       <div>
         <div class="eyebrow">Fixed-scope billing audit for small SaaS</div>
@@ -32,6 +32,7 @@
         <div class="actions">
           <a class="btn primary" href="/go/billing-reliability/setup-request/?source=revenue_leak_audit_cta&context=revenue_leak_audit&price_range_eur=149&quote_path=fixed_scope_quote&source_ref=revenue_leak_audit_hero" data-ph-event="revenue_leak_audit_request_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_hero">Request audit scope</a>
           <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_audit_hero" data-ph-event="billing_drift_check_clicked" data-ph-location="revenue_leak_audit_hero">Run drift check first</a>
+          <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=revenue_leak_audit_hero" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_hero" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Build reconciliation query</a>
         </div>
         <p class="fine">Founding validation price: €149 for one focused audit. If the surface is tiny and pre-launch, it may fit the €99 setup/debug pass instead. Optional €29/mo billing-health support only after a first pass.</p>
       </div>
@@ -98,6 +99,34 @@
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=revenue_leak_evidence_packet&context=revenue_leak_audit&price_range_eur=149&quote_path=fixed_scope_quote&source_ref=revenue_leak_evidence_packet" data-ph-event="revenue_leak_audit_request_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_evidence_packet">Send evidence packet</a>
         <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=revenue_leak_evidence_packet" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_evidence_packet">Run drift check first</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=revenue_leak_evidence_packet" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="revenue_leak_evidence_packet" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Generate SQL skeleton</a>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>If you can run one SQL query first</h2>
+      <p>The fastest audit starts with a reconciliation row: Stripe status, local access status, customer id, user or workspace id, and the reason they disagree. If you do not already have that query, generate a skeleton before sending the packet.</p>
+      <div class="grid2">
+        <div>
+          <h3>Useful rows</h3>
+          <ul>
+            <li>Stripe active or trialing, but Supabase is free, missing, or inactive.</li>
+            <li>Stripe canceled, unpaid, incomplete, refunded, or past_due, but Supabase is still paid.</li>
+            <li>Stripe customer or subscription row exists without a matching local user, team, or workspace.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Audit impact</h3>
+          <ul>
+            <li>Rows found: the audit can start from concrete revenue leakage or customer blocking.</li>
+            <li>No rows found: the likely scope shifts to webhook coverage, idempotency, and recurring monitoring.</li>
+            <li>Query cannot be written: the first problem is usually schema clarity, not billing logic.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/billing-reconciliation-query-builder/?ref=revenue_leak_query_block" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="revenue_leak_query_block" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Build the reconciliation query →</a>
+        <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=revenue_leak_query_rows&context=billing_reconciliation_query&price_range_eur=99-149&quote_path=fixed_scope_quote&source_ref=revenue_leak_query_block" data-ph-event="billing_reconciliation_review_request" data-ph-product="billing_reliability" data-ph-location="revenue_leak_query_block" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">I already have mismatch rows</a>
       </div>
     </section>
 
@@ -128,6 +157,7 @@
       <div class="actions">
         <a class="btn primary" href="/go/billing-reliability/setup-request/?source=revenue_leak_audit_cta&context=revenue_leak_audit&price_range_eur=149&quote_path=fixed_scope_quote&source_ref=revenue_leak_audit_bottom" data-ph-event="revenue_leak_audit_request_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_bottom">Send audit request</a>
         <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=revenue_leak_audit_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_bottom">Need setup help instead?</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=revenue_leak_audit_bottom" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_bottom" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Build reconciliation query</a>
         <a class="btn secondary" href="/billing-health-support/?ref=revenue_leak_audit_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="revenue_leak_audit_bottom">See monthly support</a>
       </div>
     </section>

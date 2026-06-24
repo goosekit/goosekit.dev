@@ -100,8 +100,15 @@
       var totalRisks = params.get('total_risks') || '';
       var riskCount = params.get('risk_count') || '';
       var uncheckedRiskKeys = params.get('unchecked_risk_keys') || '';
+      var stripeTable = params.get('stripe_table') || '';
+      var accessTable = params.get('access_table') || '';
+      var joinKey = params.get('join_key') || '';
+      var customerColumn = params.get('customer_column') || '';
+      var stripeStatusColumn = params.get('stripe_status_column') || '';
+      var localStatusColumn = params.get('local_status_column') || '';
       var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
       var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
+      var isBillingReconciliation = requestedContext === 'billing_reconciliation_query' || source === 'reconciliation_builder';
       var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
       var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
       var isTrialAccess = requestedContext === 'trial_access' || source.indexOf('trial_access_') === 0;
@@ -132,6 +139,7 @@
       if (isPrepaidAccountCredit) subject = 'Stripe prepaid invoice account-credit review';
       if (isPaidBlockedOrUnpaidUnlocked) subject = 'Stripe paid-state mismatch review';
       if (isWebhookPaidStatus) subject = 'Stripe webhook + Supabase paid-status review';
+      if (isBillingReconciliation) subject = 'Stripe + Supabase reconciliation query review';
       if (isCheckoutSuccessWebhook) subject = 'Stripe Checkout success route + webhook access review';
       if (isDuplicateSubscription) subject = 'Stripe duplicate subscription + Supabase access mismatch';
       if (isDunningAccess) subject = 'Stripe dunning + Supabase access review';
@@ -145,6 +153,8 @@
       if (isBillingDrift) subject = 'Stripe + Supabase billing drift review';
       var intro = isBillingDrift
         ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
+        : isBillingReconciliation
+        ? 'I generated a Stripe + Supabase reconciliation query and want a narrow review of the mismatches it should catch.'
         : isBillingChecklist
         ? 'I have a small evidence packet for a Stripe + Supabase billing reliability review.'
         : isRevenueLeakAudit
@@ -248,6 +258,7 @@
         paid_blocked_or_unpaid_unlocked: 'For paid-blocked or unpaid-unlocked requests, send the Checkout Session or invoice id, user/workspace row, webhook event status, local entitlement row, Stripe object id, and the route that unlocked or blocked access.',
         webhook_paid_status: 'For webhook paid-status requests, send the Checkout Session or subscription id, webhook delivery status, Supabase paid/access row, and what the paid user still sees.',
         billing_drift_review: 'For drift-check requests, keep the score plus the unchecked risks in the packet so the review starts from the exact failure mode.',
+        billing_reconciliation_query: 'For reconciliation-query requests, send the table names, join key, customer column, generated SQL, and one returned mismatch row if the query found drift.',
         revenue_leak_audit: 'For revenue-leak audits, send one paid-but-blocked or unpaid-but-unlocked example and the Stripe/Supabase rows behind it.'
       };
       if (contextNote && contextNotes[context]) {
@@ -285,6 +296,12 @@
         if (field && !field.value.trim()) field.value = value;
       }
       var contextExamples = {
+        billing_reconciliation_query: {
+          repo: 'Live or near-live app with Stripe subscription/customer state mirrored into Supabase',
+          blocker: 'Reconciliation query review: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer link, or stale entitlement rows.',
+          evidence: 'Stripe mirror table name, local access table name, join key, customer column, generated SQL, one returned mismatch row if available, webhook delivery status.',
+          budget: 'EUR99-149 if scope is clear'
+        },
         charged_stranded: {
           blocker: 'Charged-and-stranded: Stripe says paid or active, but the tenant/workspace/subscription/entitlement row is missing or blocked.',
           evidence: 'Stripe object id, missing Supabase row/table, webhook delivery status, and what the paid user currently sees.',
@@ -364,6 +381,12 @@
           driftScore ? 'Billing drift score: ' + driftScore + (totalRisks ? '/' + totalRisks : '') : '',
           riskCount ? 'Unchecked risk count: ' + riskCount : '',
           uncheckedRiskKeys ? 'Unchecked risk keys: ' + uncheckedRiskKeys : '',
+          stripeTable ? 'Stripe mirror table: ' + stripeTable : '',
+          accessTable ? 'Local access table: ' + accessTable : '',
+          joinKey ? 'Join key: ' + joinKey : '',
+          customerColumn ? 'Customer column: ' + customerColumn : '',
+          stripeStatusColumn ? 'Stripe status column: ' + stripeStatusColumn : '',
+          localStatusColumn ? 'Local status column: ' + localStatusColumn : '',
           '',
           lineValue('Reply email:', 'email'),
           lineValue('My current stack:', 'stack'),
@@ -420,6 +443,23 @@
         setFieldIfEmpty('repo', 'Live or near-launch app with Stripe + Supabase billing drift risk');
         setFieldIfEmpty('blocker', 'Billing drift check score: ' + (driftScore || 'unknown') + (totalRisks ? '/' + totalRisks : '') + (uncheckedRiskKeys ? '; unchecked risk keys: ' + uncheckedRiskKeys : ''));
         setFieldIfEmpty('evidence', 'Stripe object ids, Supabase rows, webhook delivery status, and one user-visible mismatch');
+        refreshLinks();
+      }
+      if (isBillingReconciliation) {
+        setFieldIfEmpty('repo', 'Live or near-live app with Stripe subscription/customer state mirrored into Supabase');
+        setFieldIfEmpty('blocker', 'Reconciliation query review: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer link, or stale entitlement rows');
+        setFieldIfEmpty('evidence', [
+          stripeTable ? 'Stripe mirror table: ' + stripeTable : 'Stripe mirror table',
+          accessTable ? 'Local access table: ' + accessTable : 'local access table',
+          joinKey ? 'join key: ' + joinKey : 'join key',
+          customerColumn ? 'customer column: ' + customerColumn : 'customer column',
+          stripeStatusColumn ? 'Stripe status column: ' + stripeStatusColumn : 'Stripe status column',
+          localStatusColumn ? 'local status column: ' + localStatusColumn : 'local status column',
+          'generated SQL',
+          'one returned mismatch row if available',
+          'webhook delivery status'
+        ].join('; '));
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
         refreshLinks();
       }
       if (isBillingChecklist) {

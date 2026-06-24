@@ -53,7 +53,7 @@
 </head>
 <body>
   <main class="wrap">
-    <nav><a href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_nav">← Setup help</a><a href="/">Goosekit</a><a href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_nav">Revenue leak audit</a><a href="/stripe-billing-reliability-checklist/?ref=nav">Reliability checklist</a></nav>
+    <nav><a href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_nav">← Setup help</a><a href="/">Goosekit</a><a href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_nav">Revenue leak audit</a><a href="/billing-reconciliation-query-builder/?ref=billing_health_nav">Reconciliation query</a><a href="/stripe-billing-reliability-checklist/?ref=nav">Reliability checklist</a></nav>
     <section class="hero">
       <div>
         <div class="eyebrow">Founding-5 monthly billing-health support</div>
@@ -64,6 +64,7 @@
         <div class="actions">
           <a class="btn primary" href="/go/billing-reliability/health-support/?source=billing_health_cta&track=access_drift&source_ref=billing_health_hero" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_hero">Request an access drift review →</a>
           <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_hero" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_hero">Need the audit first?</a>
+          <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=billing_health_hero" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_health_hero" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Build reconciliation query</a>
           <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=billing_health_setup_first" data-ph-event="billing_health_secondary_clicked" data-ph-location="setup_first">Need the first setup pass?</a>
         </div>
         <p class="fine">Manual availability. Best fit after a €99–149 founding setup/debug pass. No fake monitoring dashboard, no broad agency retainer.</p>
@@ -138,6 +139,32 @@
         <div><h3>Event check</h3><ul><li>Recent failed webhook deliveries.</li><li>Duplicate or out-of-order subscription events.</li><li>Unhandled billing events worth adding.</li></ul></div>
         <div><h3>State check</h3><ul><li>Stripe subscriptions vs Supabase paid rows.</li><li>Trial, past-due, unpaid, paused, canceled, and portal-change state.</li><li>Customer/user/workspace mapping drift.</li></ul></div>
         <div><h3>Action check</h3><ul><li>One small fix, test, or logging improvement.</li><li>One billing action queue or retention-card risk when relevant.</li><li>One risk to ignore for now.</li><li>Clear escalation if the issue is bigger than this support scope.</li></ul></div>
+      </div>
+    </section>
+    <section class="section card strip" id="monthly-reconciliation-query" data-ph-section="monthly_reconciliation_query">
+      <h2>Make the monthly check query-shaped</h2>
+      <p>Monthly support is easiest to buy and repeat when the invariant can be checked with one reconciliation query: Stripe truth on one side, Supabase access state on the other, and a small list of mismatch rows to review.</p>
+      <div class="grid2">
+        <div>
+          <h3>Bring this</h3>
+          <ul>
+            <li>Stripe mirror table or event-derived subscription state.</li>
+            <li>Supabase user, team, workspace, entitlement, credit, or booking table.</li>
+            <li>One join key and one policy for active, trialing, past-due, paused, canceled, or unpaid.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Monthly value</h3>
+          <ul>
+            <li>Rows found become the review queue.</li>
+            <li>No rows found still proves the billing invariant for the month.</li>
+            <li>Repeated mismatch types become a fix/test plan instead of vague monitoring.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/billing-reconciliation-query-builder/?ref=billing_health_monthly_query" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_health_monthly_query" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Build monthly reconciliation query →</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=billing_health_monthly_query&track=access_drift&source_ref=billing_health_monthly_query" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="billing_health_monthly_query">Ask about monthly review</a>
       </div>
     </section>
     <section class="section card strip">

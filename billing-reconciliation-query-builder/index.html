@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe + Supabase Reconciliation Query Builder — Goosekit</title>
+  <meta name="description" content="Build a practical SQL reconciliation query for Stripe + Supabase billing drift: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customers, and stale access rows.">
+  <link rel="canonical" href="https://goosekit.dev/billing-reconciliation-query-builder/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stripe + Supabase Reconciliation Query Builder">
+  <meta property="og:description" content="Generate a billing drift SQL skeleton and debug packet before a narrow Stripe/Supabase review.">
+  <meta property="og:url" content="https://goosekit.dev/billing-reconciliation-query-builder/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.14),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.62}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:50px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,5.6vw,4.6rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.45rem,3vw,2.05rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 14px}h3{margin:0 0 9px;font-size:1.08rem}p,li,label{color:#bebed1}.lead{font-size:1.17rem;max-width:800px}.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:28px;align-items:start}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:18px;padding:22px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.section{margin-top:52px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.form{display:grid;gap:13px}input,select,textarea{width:100%;border:1px solid #34344e;border-radius:12px;background:rgba(255,255,255,.035);color:#f7f7fb;padding:12px 13px;font:inherit}textarea{min-height:92px;resize:vertical}.fine{color:#9090aa;font-size:.94rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}pre{white-space:pre-wrap;word-break:break-word;background:#080811;border:1px solid #2a2a41;border-radius:14px;padding:16px;color:#e8e8f2;overflow:auto}.pill{display:inline-block;border:1px solid #34344e;border-radius:999px;padding:5px 9px;color:#d8d8e5;font-size:.82rem;margin:4px 4px 0 0}ul{padding-left:1.15rem}li{margin:8px 0}@media(max-width:860px){.hero,.grid2,.grid3{grid-template-columns:1fr}nav{margin-bottom:34px;flex-wrap:wrap}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <nav><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=reconciliation_builder_nav">Drift check</a><a href="/stripe-billing-reliability-checklist/?ref=reconciliation_builder_nav">Checklist</a><a href="/billing-health-support/?ref=reconciliation_builder_nav">Monthly support</a></nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Stripe + Supabase billing reconciliation</div>
+        <h1>Build the query that catches paid-state drift.</h1>
+        <p class="lead">A narrow helper for SaaS builders who already have Stripe events and Supabase access state. Generate a SQL skeleton for the four money states that matter: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer links, and stale local entitlements.</p>
+        <p class="lead">The output is deliberately practical. Paste the query into Supabase SQL editor, adapt table names, then use the result as the evidence packet for a €99-149 billing drift review if it finds real mismatches.</p>
+        <div class="actions">
+          <a class="btn primary" href="#builder" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="hero">Build reconciliation query →</a>
+          <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=reconciliation_builder_hero" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_hero">Score drift risk first</a>
+        </div>
+      </div>
+      <aside class="card strip">
+        <h2>Good input</h2>
+        <p>One Stripe customer/subscription mirror table, one Supabase access/entitlement table, and one user or workspace key.</p>
+        <div><span class="pill">subscriptions</span><span class="pill">entitlements</span><span class="pill">customer id</span><span class="pill">workspace id</span><span class="pill">status</span><span class="pill">current_period_end</span></div>
+        <p class="fine">No secrets, no credentials, no private data required.</p>
+      </aside>
+    </section>
+
+    <section class="section grid2" id="builder">
+      <div class="card">
+        <h2>Query inputs</h2>
+        <div class="form">
+          <label>Stripe mirror table <input id="stripeTable" value="stripe_subscriptions" autocomplete="off"></label>
+          <label>Local access table <input id="accessTable" value="profiles" autocomplete="off"></label>
+          <label>Join key <input id="joinKey" value="user_id" autocomplete="off"></label>
+          <label>Stripe customer column <input id="customerColumn" value="stripe_customer_id" autocomplete="off"></label>
+          <label>Stripe subscription status column <input id="stripeStatusColumn" value="status" autocomplete="off"></label>
+          <label>Local plan/status column <input id="localStatusColumn" value="plan" autocomplete="off"></label>
+          <label>Local paid values <input id="localPaidValues" value="'pro', 'paid', 'active'" autocomplete="off"></label>
+          <label>Stripe active values <input id="stripeActiveValues" value="'active', 'trialing'" autocomplete="off"></label>
+          <label>Optional date/window column <input id="dateColumn" value="updated_at" autocomplete="off"></label>
+        </div>
+      </div>
+      <div class="card strip">
+        <h2>Generated SQL skeleton</h2>
+        <pre id="query"></pre>
+        <div class="actions">
+          <button class="btn secondary" type="button" id="copyQuery" data-ph-event="billing_reconciliation_sql_copied" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_output" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Copy SQL</button>
+          <a class="btn primary" id="reviewCta" href="/go/billing-reliability/setup-request/?source=reconciliation_builder&context=billing_reconciliation_query&price_range_eur=99-149&quote_path=fixed_scope_quote&source_ref=reconciliation_builder" data-ph-event="billing_reconciliation_review_request" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_output" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="reconciliation_query">Request query review →</a>
+          <a class="btn secondary" href="/billing-health-support/?ref=reconciliation_builder_output" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="reconciliation_builder_output" data-ph-price-eur-monthly="29">Monthly drift support</a>
+        </div>
+        <p class="fine" id="copyStatus" aria-live="polite">The review CTA tracks this as reconciliation intent, which is stronger than a generic page visit.</p>
+      </div>
+    </section>
+
+    <section class="section grid3">
+      <div class="card"><h3>Mismatch A</h3><p>Stripe says active or trialing, but the app does not grant paid access. This blocks customers who paid.</p></div>
+      <div class="card"><h3>Mismatch B</h3><p>Stripe says canceled, unpaid, incomplete, or past due, but the app still grants paid access. This leaks revenue.</p></div>
+      <div class="card"><h3>Mismatch C</h3><p>Customer or subscription rows do not map cleanly to a user, team, or workspace. This makes support/debug slow.</p></div>
+    </section>
+
+    <section class="section card">
+      <h2>Evidence packet if the query returns rows</h2>
+      <ul>
+        <li>One returned mismatch row with Stripe customer/subscription id and local user/team/workspace id.</li>
+        <li>The Stripe event or invoice that last changed the billing state.</li>
+        <li>The Supabase row that grants access or credits.</li>
+        <li>Webhook delivery status: delivered, failed, retried, duplicate, or missing handler.</li>
+        <li>The intended invariant: paid users unlocked, unpaid users blocked, no duplicate grant, or monthly reconciliation in place.</li>
+      </ul>
+    </section>
+  </main>
+  <script>
+    const fields = ['stripeTable','accessTable','joinKey','customerColumn','stripeStatusColumn','localStatusColumn','localPaidValues','stripeActiveValues','dateColumn'].reduce((acc, id) => {
+      acc[id] = document.getElementById(id);
+      return acc;
+    }, {});
+    const query = document.getElementById('query');
+    const reviewCta = document.getElementById('reviewCta');
+    const copyQuery = document.getElementById('copyQuery');
+    const copyStatus = document.getElementById('copyStatus');
+
+    function clean(value, fallback) {
+      const trimmed = String(value || '').trim();
+      return trimmed || fallback;
+    }
+
+    function render() {
+      const stripeTable = clean(fields.stripeTable.value, 'stripe_subscriptions');
+      const accessTable = clean(fields.accessTable.value, 'profiles');
+      const joinKey = clean(fields.joinKey.value, 'user_id');
+      const customerColumn = clean(fields.customerColumn.value, 'stripe_customer_id');
+      const stripeStatusColumn = clean(fields.stripeStatusColumn.value, 'status');
+      const localStatusColumn = clean(fields.localStatusColumn.value, 'plan');
+      const localPaidValues = clean(fields.localPaidValues.value, "'pro', 'paid', 'active'");
+      const stripeActiveValues = clean(fields.stripeActiveValues.value, "'active', 'trialing'");
+      const dateColumn = clean(fields.dateColumn.value, 'updated_at');
+
+      query.textContent = `-- Adapt table and column names before running in Supabase.
+-- Goal: find Stripe/Supabase billing state drift without exposing secrets.
+with stripe_state as (
+  select
+    ${joinKey},
+    ${customerColumn},
+    ${stripeStatusColumn} as stripe_status,
+    ${dateColumn} as stripe_updated_at
+  from ${stripeTable}
+),
+local_state as (
+  select
+    ${joinKey},
+    ${customerColumn},
+    ${localStatusColumn} as local_status,
+    ${dateColumn} as local_updated_at
+  from ${accessTable}
+)
+select
+  coalesce(s.${joinKey}, l.${joinKey}) as ${joinKey},
+  coalesce(s.${customerColumn}, l.${customerColumn}) as ${customerColumn},
+  s.stripe_status,
+  l.local_status,
+  s.stripe_updated_at,
+  l.local_updated_at,
+  case
+    when s.${joinKey} is null then 'local_access_without_stripe_row'
+    when l.${joinKey} is null then 'stripe_row_without_local_access_row'
+    when s.stripe_status in (${stripeActiveValues}) and l.local_status not in (${localPaidValues}) then 'paid_in_stripe_but_inactive_locally'
+    when s.stripe_status not in (${stripeActiveValues}) and l.local_status in (${localPaidValues}) then 'inactive_in_stripe_but_unlocked_locally'
+    else 'needs_manual_review'
+  end as drift_reason
+from stripe_state s
+full outer join local_state l
+  on s.${joinKey} = l.${joinKey}
+where
+  s.${joinKey} is null
+  or l.${joinKey} is null
+  or (s.stripe_status in (${stripeActiveValues}) and l.local_status not in (${localPaidValues}))
+  or (s.stripe_status not in (${stripeActiveValues}) and l.local_status in (${localPaidValues}))
+order by coalesce(s.stripe_updated_at, l.local_updated_at) desc
+limit 50;`;
+
+      const params = new URLSearchParams({
+        source: 'reconciliation_builder',
+        context: 'billing_reconciliation_query',
+        price_range_eur: '99-149',
+        quote_path: 'fixed_scope_quote',
+        source_ref: 'reconciliation_builder',
+        stripe_table: stripeTable,
+        access_table: accessTable,
+        join_key: joinKey,
+        customer_column: customerColumn,
+        stripe_status_column: stripeStatusColumn,
+        local_status_column: localStatusColumn
+      });
+      reviewCta.href = `/go/billing-reliability/setup-request/?${params.toString()}`;
+      reviewCta.setAttribute('data-ph-recommended-scope', 'Stripe/Supabase reconciliation query review');
+      copyQuery.setAttribute('data-ph-recommended-scope', 'Stripe/Supabase reconciliation query review');
+    }
+
+    Object.values(fields).forEach((field) => field.addEventListener('input', render));
+    copyQuery.addEventListener('click', async () => {
+      const sql = query.textContent;
+      let copied = false;
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(sql);
+          copied = true;
+        }
+      } catch (error) {
+        copied = false;
+      }
+      if (!copied) {
+        const textarea = document.createElement('textarea');
+        textarea.value = sql;
+        textarea.setAttribute('readonly', '');
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try { copied = document.execCommand('copy'); } catch (error) { copied = false; }
+        textarea.remove();
+      }
+      copyStatus.textContent = copied ? 'SQL copied. Paste it into Supabase SQL editor, adapt names, then send mismatch rows if any appear.' : 'Copy failed. Select the SQL block manually.';
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('billing_reconciliation_sql_copied', {
+          site: 'goosekit',
+          product: 'billing_reliability',
+          location: 'reconciliation_builder_output',
+          path: window.location.pathname,
+          copied: copied,
+          stripe_table: clean(fields.stripeTable.value, 'stripe_subscriptions'),
+          access_table: clean(fields.accessTable.value, 'profiles'),
+          join_key: clean(fields.joinKey.value, 'user_id'),
+          request_context: 'billing_reconciliation_query',
+          price_eur: '99-149'
+        });
+      }
+    });
+    render();
+  </script>
+</body>
+</html>
