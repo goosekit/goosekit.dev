@@ -1,97 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe One-Time Booking and Subscription Credits Drift?</title>
-  <meta name="description" content="Debug one-time paid booking flows beside subscription-credit models: fail-before-charge invariants, atomic booking creation, webhooks, and Supabase state.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-one-time-booking-subscription-credit-atomic/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe One-Time Booking and Subscription Credits Drift?">
-  <meta property="og:description" content="A replay checklist for one-time paid sessions, subscription credits, atomic booking rows, and fail-before-charge payment paths.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-one-time-booking-subscription-credit-atomic/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.05rem,6vw,4.15rem);line-height:1;letter-spacing:-.055em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.03em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=one_time_booking_nav">Run drift check</a><a href="/billing-health-support/?ref=one_time_booking_nav">Billing-health support</a></div>
-    <div class="eyebrow">One-time bookings + subscription credits</div>
-    <h1>Stripe one-time bookings and subscription credits can drift.</h1>
-    <p class="lead">A product can sell one-time paid sessions while also granting subscription credits. The risky part is not the checkout button. It is proving that booking creation, credit use, and Stripe events converge before money is captured or access is granted.</p>
-    <p class="lead">The failure mode is a charged user with no booking, a booked session with no paid state, or a subscription-credit path that bypasses the fail-before-charge rule.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>Do not charge unless the session can be reserved atomically, and do not consume subscription credits unless the same booking row and replay guard prove exactly one paid session exists.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=one_time_booking_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=one_time_booking_top_packet&context=one_time_booking&price_range_eur=99-149&quote_path=launch_blocker&source_ref=one_time_booking_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_top_packet">Need booking/credit help?</a>
-        <a class="btn secondary" href="/blog/stripe-subscription-add-credit-checkout-ledger/?ref=one_time_booking_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_related">Compare subscription credit drift</a>
-      </div>
-      <p class="note">Fixed-scope review fit: EUR149 when one-time paid sessions, subscription credits, booking rows, and webhook replay can disagree.</p>
-    </section>
-
-    <section>
-      <h2>1. Keep the booking row as the local anchor</h2>
-      <div class="grid2">
-        <div class="card"><h3>Payment truth</h3><ul class="checklist"><li>Checkout Session or PaymentIntent id</li><li>Payment status and webhook delivery status</li><li>Processed-event row for duplicate delivery</li><li>Refund/cancel path if reservation fails</li></ul></div>
-        <div class="card"><h3>Booking truth</h3><ul class="checklist"><li>Booking/session row created atomically</li><li>Session type, slot, teacher/provider, or resource id</li><li>Subscription credit balance before/after</li><li>User-visible booking confirmation state</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Test the cross-path failure cases</h2>
-      <ul class="checklist warn">
-        <li>One-time checkout succeeds but booking insert fails.</li>
-        <li>Booking row is reserved but payment fails or webhook never arrives.</li>
-        <li>Subscription credit is consumed and Stripe checkout also charges for the same session.</li>
-        <li>Duplicate webhook creates two sessions or consumes two credits.</li>
-        <li>Concurrent booking attempts reserve the same slot before payment state converges.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Use one replay matrix for paid sessions</h2>
-      <pre><code>checkout succeeds + booking insert fails -> no confirmed booking, refund/repair row exists
-booking reserved + payment fails -> slot released, no credit consumed
-subscription credit session -> one credit consumed, no checkout charge
-duplicate webhook -> processed-event hit, no second booking
-concurrent checkout -> one booking wins, the loser fails before charge</code></pre>
-    </section>
-
-    <section class="card" id="one-time-booking-evidence-packet">
-      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
-      <pre><code>Checkout Session or PaymentIntent id:
-Webhook event id/type/delivery status:
-Booking/session row before/after:
-Subscription credit row before/after:
-Processed-event or idempotency row:
-Slot/resource/session type:
-Expected booking/payment state:
-Actual user-visible bug:
-Refund, release, or repair path:
-One replay command, test, or local repro:</code></pre>
-      <div class="actions">
-        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=one_time_booking_bottom_packet&context=one_time_booking&price_range_eur=99-149&quote_path=launch_blocker&source_ref=one_time_booking_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_bottom_packet">Send booking packet →</a>
-      </div>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What to review before launch</h2>
-      <p>Check checkout creation, slot reservation, webhook fulfillment, credit consumption, duplicate replay, and the user-facing booking confirmation. That keeps the scope small while covering the money-state bugs that become refunds.</p>
-      <div class="actions">
-        <a class="btn primary" href="/billing-health-support/?ref=one_time_booking_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="one_time_booking_bottom">See billing-health support</a>
-        <a class="btn secondary" href="/blog/stripe-payment-element-redirect-webhook-order-tracking/?ref=one_time_booking_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="one_time_booking_related">Compare order tracking drift</a>
-      </div>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

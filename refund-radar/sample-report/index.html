@@ -1,41 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta name="robots" content="noindex">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Refund Radar sample report — churn reasons into retention actions</title>
-  <meta name="description" content="See a sample Refund Radar report: refund reasons, cancellation buckets, retention fixes, and a winback email draft for an indie SaaS.">
-  <link rel="canonical" href="https://goosekit.dev/refund-radar/sample-report/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <script defer src="/posthog.js"></script>
-  <script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"TechArticle","headline":"Refund Radar sample churn report","description":"A fictional sample report showing how Refund Radar turns refunds and cancellations into retention actions.","url":"https://goosekit.dev/refund-radar/sample-report/","publisher":{"@type":"Organization","name":"Goosekit"}}
-  </script>
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 18% 0%,rgba(255,72,0,.18),transparent 32%),#080b14;color:#f8fafc;line-height:1.62}a{color:inherit}.wrap{width:min(1040px,calc(100% - 36px));margin:0 auto}.hero{padding:76px 0 34px}.eyebrow{display:inline-flex;padding:8px 13px;border-radius:999px;border:1px solid rgba(255,72,0,.28);background:rgba(255,72,0,.12);color:#ffc2a8;font-weight:850;font-size:.88rem;margin-bottom:16px}h1{font-size:clamp(2.25rem,5vw,4.4rem);line-height:1;letter-spacing:-.055em;margin:0 0 16px}.lead{font-size:1.15rem;color:#c5d0e4;max-width:760px;margin:0}.meta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0}.meta span,.pill{display:inline-flex;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.045);border-radius:999px;padding:6px 10px;color:#aebbd0;font-size:.9rem}.report{padding:36px 0 64px}.panel{border:1px solid rgba(255,255,255,.09);border-radius:24px;background:rgba(255,255,255,.045);padding:24px;margin:18px 0}.panel.hot{border-color:rgba(255,72,0,.28);background:linear-gradient(135deg,rgba(255,72,0,.13),rgba(255,255,255,.045))}h2{font-size:clamp(1.45rem,2.7vw,2.2rem);line-height:1.12;letter-spacing:-.035em;margin:0 0 12px}.muted{color:#9aa8be}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.bucket{border:1px solid rgba(255,255,255,.09);border-radius:18px;padding:18px;background:rgba(8,11,20,.56)}.bucket strong{display:block;margin-bottom:5px}.bucket p{margin:0 0 11px;color:#aebbd0}.action{border-left:3px solid #ff4800;padding-left:12px;color:#dbe6f6}.email{white-space:pre-wrap;border:1px solid rgba(255,255,255,.09);border-radius:18px;background:rgba(8,11,20,.65);padding:18px;color:#dbe6f6}.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:12px 17px;border-radius:14px;border:1px solid rgba(255,255,255,.12);text-decoration:none;font-weight:850}.btn.primary{border-color:rgba(255,72,0,.7);background:linear-gradient(135deg,#ff4800,#ef4444);color:#fff}.btn.secondary{background:rgba(255,255,255,.045);color:#e8eefb}footer{border-top:1px solid rgba(255,255,255,.09);padding:34px 0 46px;color:#8e9bb1}@media(max-width:820px){.grid{grid-template-columns:1fr}.hero{padding-top:58px}}
-  </style>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main>
-    <section class="hero"><div class="wrap"><div class="eyebrow">📡 Sample Refund Radar report</div><h1>Where money leaked this week — and what to fix.</h1><p class="lead">A fictional example of the weekly report Refund Radar should deliver: not raw churn charts, but reason buckets, retention actions, and a winback email.</p><div class="meta"><span>Fictional product: Demo SaaS</span><span>5 events analyzed</span><span>2 refunds</span><span>2 cancellations</span><span>1 failed payment</span></div></div></section>
-    <section class="report"><div class="wrap">
-      <article class="panel hot"><h2>Executive read</h2><p class="muted">The biggest leak is pricing/value mismatch, followed by setup friction. Do not start with new acquisition. First, clarify value near pricing and move the first useful outcome earlier in onboarding.</p><div class="cta"><a class="btn primary" href="/refund-radar/#early-access" data-rr-sample-cta="summary">Request a report like this →</a><a class="btn secondary" href="/refund-radar/">Back to Refund Radar</a></div></article>
-      <div class="grid">
-        <article class="bucket"><strong>Pricing objection — 2 events</strong><p>“Too expensive for my current usage” and “not using it enough to justify the price”.</p><div class="action"><b>Action:</b> add a pricing FAQ that explains value, refund policy, and a smaller entry path.</div></article>
-        <article class="bucket"><strong>Setup friction — 1 event</strong><p>“Setup was confusing and I could not get first result.”</p><div class="action"><b>Action:</b> ship a shorter first-run checklist and send it immediately after purchase/trial start.</div></article>
-        <article class="bucket"><strong>Failed payment — 1 event</strong><p>Card declined after invoice retry.</p><div class="action"><b>Action:</b> send a softer dunning email with product value recap before the payment retry.</div></article>
-        <article class="bucket"><strong>Missing feature — 1 event</strong><p>Missing Stripe integration needed for the buyer’s workflow.</p><div class="action"><b>Action:</b> add a public fit note and workaround before promising a feature.</div></article>
-      </div>
-      <article class="panel"><h2>Winback email draft</h2><div class="email">Subject: Was the plan too much for what you needed?
-
-Thanks for trying us. If pricing was the blocker, I’d love to understand what felt mismatched: price, plan limits, or unclear value. Your reply will help us fix the offer.</div></article>
-      <article class="panel hot"><h2>Next 7-day plan</h2><p class="muted">1. Fix the top bucket before adding acquisition work. 2. Add one cleaner cancellation reason question. 3. Send the winback email to pricing-objection users. 4. Re-run the report next week and compare bucket movement.</p><div class="cta"><a class="btn primary" href="/refund-radar/#early-access" data-rr-sample-cta="bottom">Ask for early access →</a></div></article>
-    </div></section>
-  </main>
-  <footer><div class="wrap">Fictional sample for Refund Radar. <a href="/refund-radar/">Refund Radar</a> is an early Goosekit product concept.</div></footer>
-  <script>(function(){function c(n,p){if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(n,p||{})}c('refund_radar_sample_report_viewed',{product:'refund_radar'});document.querySelectorAll('[data-rr-sample-cta]').forEach(function(el){el.addEventListener('click',function(){c('refund_radar_sample_report_cta_clicked',{source:el.getAttribute('data-rr-sample-cta')})})})})();</script>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

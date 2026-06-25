@@ -22,7 +22,7 @@
 </head>
 <body>
   <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=middleware_loop_guide_nav">Setup help</a></div>
+    <div class="nav"><a href="/">← Goosekit</a></div>
     <div class="eyebrow">Next.js auth middleware debug</div>
     <h1>Next.js + Supabase middleware redirect loop after login?</h1>
     <p class="lead">If a user logs in successfully but protected pages still bounce back to <span class="code">/login</span>, the problem is usually cookie propagation, middleware matching, callback handling, or redirect logic. Debug it as a request/response loop, not as a generic “Supabase is broken” problem.</p>
@@ -31,10 +31,9 @@
       <h2 style="margin-top:0">First, capture the loop path</h2>
       <p>Open the Network tab and record the exact sequence: login action → Supabase callback → your callback route → protected route → middleware redirect. A loop only makes sense when you can see which request has the session cookie and which request loses it.</p>
       <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=middleware_loop_guide_top" data-ph-event="setup_help_interest" data-ph-location="middleware_loop_top">Need an auth debug pass?</a>
         <a class="btn secondary" href="/blog/supabase-auth-callback-vercel-production/?ref=middleware_loop_guide_top_callback" data-ph-event="setup_help_secondary_clicked" data-ph-location="middleware_loop_callback_guide">Callback URL checklist</a>
       </div>
-      <p class="note">Founding setup/debug help starts at €99–149 when the repo, callback route, middleware file, and failure path are narrow enough to review safely.</p>
+      <p class="note">Founding setup/debug help starts at free when the repo, callback route, middleware file, and failure path are narrow enough to review safely.</p>
     </section>
 
     <section>
@@ -100,7 +99,6 @@
       <p>Do not send secrets. Send the middleware/proxy file, callback route, login action, Supabase client helpers, matcher config, and a sanitized Network screenshot showing the redirect chain and cookie headers.</p>
       <div class="actions">
         <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Next.js%20Supabase%20middleware%20redirect%20loop&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20a%20Next.js%20%2B%20Supabase%20middleware%20redirect%20loop.%0A%0ANext.js%20version/router%3A%0ASupabase%20packages%3A%0AProtected%20path%20that%20loops%3A%0AAuth%20method%20%28email%2C%20magic%20link%2C%20OAuth%29%3A%0ACallback%20route%20path%3A%0AMiddleware/proxy%20matcher%3A%0AWhat%20the%20Network%20tab%20shows%20%28sanitized%29%3A%0ARelevant%20file%20paths%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="middleware_loop_bottom">Request middleware debug help →</a>
-        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=middleware_loop_guide_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="middleware_loop_setup_help">See setup help scope</a>
       </div>
     </section>
 

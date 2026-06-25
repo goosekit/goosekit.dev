@@ -1,61 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex, nofollow">
-  <title>Billing-health request sent</title>
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:680px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:#ff4800;color:white;font-weight:800;text-decoration:none}.btn.secondary{background:rgba(255,255,255,.04);color:#ff9040}.fine{color:#b8b8cc;font-size:.94rem}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="card">
-    <div class="pill">Request sent</div>
-    <h1>Your billing-health support request was sent</h1>
-    <p>Arthur should receive the packet by email. Monthly support still needs a concrete first-pass fit check before anything is counted as MRR.</p>
-    <p class="fine">A stronger request has one Stripe object, one Supabase row or table, and one mismatch you want checked every month.</p>
-    <div class="actions">
-      <a class="btn" href="/billing-reconciliation-query-builder/?ref=billing_health_sent_query" data-health-sent-followup="build_reconciliation_query">Build reconciliation query</a>
-      <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_health_sent_audit" data-health-sent-followup="review_revenue_leak_audit">Check audit scope</a>
-      <a class="btn secondary" href="/go/billing-reliability/health-support/?source=formspree_sent_fallback" data-health-sent-followup="send_another">Send another request</a>
-    </div>
-    <p class="fine">No payment is due here.</p>
-  </main>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-      var params = new URLSearchParams(window.location.search);
-      var sourceRef = params.get('source_ref') || params.get('source') || 'formspree_return';
-      var sentProps = {
-        product: 'billing_reliability',
-        location: 'billing_health_request_sent_route',
-        path: '/go/billing-reliability/health-support-sent/',
-        source_ref: sourceRef,
-        request_context: 'billing_health_support',
-        price_range_eur: '29/mo',
-        price_eur_monthly: 29
-      };
-      document.querySelectorAll('[data-health-sent-followup]').forEach(function (link) {
-        var glue = link.href.indexOf('?') === -1 ? '?' : '&';
-        link.href = link.href + glue + 'source_ref=' + encodeURIComponent(sourceRef);
-        link.addEventListener('click', function () {
-          if (window.posthog && typeof window.posthog.capture === 'function') {
-            window.posthog.capture('billing_health_request_sent_followup_clicked', Object.assign({}, sentProps, {
-              location: 'billing_health_request_sent_' + link.getAttribute('data-health-sent-followup'),
-              sent_followup: link.getAttribute('data-health-sent-followup'),
-              target_href: link.href
-            }));
-          }
-        });
-      });
-      if (window.posthog && typeof window.posthog.capture === 'function') {
-        window.posthog.capture('billing_health_request_formspree_returned', Object.assign({}, sentProps, {
-          target_href: window.location.href
-        }));
-      }
-    });
-  </script>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

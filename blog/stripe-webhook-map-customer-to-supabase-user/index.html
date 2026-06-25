@@ -1,142 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Payment Succeeds but Webhook Cannot Find the Supabase User?</title>
-  <meta name="description" content="Debug Stripe Checkout customer/subscription mapping bugs in Next.js + Supabase: metadata, client_reference_id, customer tables, webhook event order, org IDs, and paid-user state.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-webhook-map-customer-to-supabase-user/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Payment Succeeds but Webhook Cannot Find the Supabase User?">
-  <meta property="og:description" content="A practical checklist for mapping Stripe Checkout customers and subscriptions back to the right Supabase user or organization.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-webhook-map-customer-to-supabase-user/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.2rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:790px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=stripe_user_mapping_guide_nav">Setup help</a></div>
-    <div class="eyebrow">Stripe → Supabase identity mapping debug</div>
-    <h1>Stripe payment succeeds, but the webhook cannot find the Supabase user?</h1>
-    <p class="lead">If Checkout says paid but your app cannot unlock the account, the failure is often not Stripe delivery. It is identity mapping: the webhook has a <span class="code">customer</span>, <span class="code">subscription</span>, or <span class="code">checkout.session</span>, but your Supabase tables do not have a trusted way to map that object back to the right user or organization.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">Debug the mapping path, not just the webhook status</h2>
-      <p>A 200 webhook response can still write the wrong row, write no row, or depend on email matching that breaks when customers change email, use team billing, or start Checkout while logged out. Trace the identifier from the signed-in Supabase user to Checkout metadata, then to the webhook event, then to the database row.</p>
-      <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=stripe_user_mapping_guide_top" data-ph-event="setup_help_interest" data-ph-location="stripe_user_mapping_top">Need a billing mapping pass?</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=stripe_user_mapping_guide_top_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="stripe_user_mapping_webhook_guide">General webhook checklist</a>
-      </div>
-      <p class="note">Founding setup/debug help starts at €99–149 when the repo, Stripe event, and Supabase table shape are narrow enough to review safely.</p>
-    </section>
-
-    <section>
-      <h2>1. Decide the source of truth: user ID, organization ID, or customer table</h2>
-      <p>Before changing code, decide what actually owns billing access. Solo apps can often map a Stripe customer to <span class="code">auth.users.id</span>. Team apps usually need an <span class="code">organization_id</span>, workspace ID, or membership table instead.</p>
-      <ul class="checklist warn">
-        <li>Do not rely only on customer email for durable billing access. Emails can change and can be duplicated across auth, billing, and team invites.</li>
-        <li>If subscriptions belong to teams, store the team/workspace identifier, not only the individual user who clicked Checkout.</li>
-        <li>If a user can buy multiple plans or products, model subscriptions as rows instead of a single boolean on the profile.</li>
-        <li>Keep a table such as <span class="code">stripe_customers</span> or <span class="code">billing_customers</span> that links Supabase owner IDs to Stripe customer IDs.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>2. Pass the app identifier when creating Checkout</h2>
-      <p>The safest moment to link Stripe to your app is when a logged-in user asks your server to create a Checkout Session. Put a non-secret internal ID in metadata and/or <span class="code">client_reference_id</span>, then persist the resulting Stripe customer ID after the session completes.</p>
-      <pre><code>const session = await stripe.checkout.sessions.create({
-  mode: 'subscription',
-  customer: existingStripeCustomerId || undefined,
-  customer_email: existingStripeCustomerId ? undefined : user.email,
-  client_reference_id: user.id,
-  metadata: {
-    supabase_user_id: user.id,
-    organization_id: activeOrgId,
-  },
-  subscription_data: {
-    metadata: {
-      supabase_user_id: user.id,
-      organization_id: activeOrgId,
-    },
-  },
-  line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
-  success_url: `${appUrl}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
-  cancel_url: `${appUrl}/billing`,
-});</code></pre>
-      <p class="note">Use IDs that are safe to expose to Stripe metadata. Never put service-role keys, access tokens, or private user data in metadata.</p>
-    </section>
-
-    <section>
-      <h2>3. Know which metadata appears on which Stripe object</h2>
-      <p>A common bug: metadata is added to the Checkout Session, then the code expects the same metadata to appear on <span class="code">customer.subscription.created</span> or <span class="code">invoice.paid</span>. Stripe objects are related, but metadata does not magically appear everywhere unless you set it in the right nested field or fetch the related object.</p>
-      <ul class="checklist">
-        <li><span class="code">checkout.session.completed</span> has the Checkout Session metadata and <span class="code">client_reference_id</span>.</li>
-        <li>Subscription events describe a Subscription object; use <span class="code">subscription_data.metadata</span> at Checkout creation if you need metadata there.</li>
-        <li>For one-time payments, use <span class="code">payment_intent_data.metadata</span> if downstream PaymentIntent/Charge events need app IDs.</li>
-        <li>When metadata is missing, retrieve the Checkout Session, Subscription, or Customer explicitly instead of guessing from email.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>4. Persist customer mapping idempotently in Supabase</h2>
-      <p>Handle webhooks as repeatable state sync, not as one-shot UI callbacks. Stripe can retry events and events can arrive in an order you did not expect, so writes should be idempotent and keyed by durable Stripe IDs.</p>
-      <div class="grid2">
-        <div class="card">
-          <h3>Minimum useful tables</h3>
-          <ul class="checklist">
-            <li><span class="code">billing_customers</span>: owner type, owner ID, Stripe customer ID.</li>
-            <li><span class="code">subscriptions</span>: Stripe subscription ID, customer ID, owner ID, status, price ID, period dates.</li>
-            <li><span class="code">webhook_events</span>: event ID, type, processed timestamp, optional error.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Failure symptoms</h3>
-          <ul class="checklist warn">
-            <li>Checkout is paid, but the app profile remains free.</li>
-            <li>The webhook logs say “no user found for customer”.</li>
-            <li>A returning customer creates a second Stripe customer accidentally.</li>
-            <li>Team billing unlocks the buyer but not the workspace.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>5. Backfill safely when a live payment already happened</h2>
-      <p>If someone already paid and the mapping failed, do not rerun random webhooks blindly. Create a short recovery path: identify the Stripe customer/subscription, confirm the intended Supabase user or org, write the customer mapping, then replay or manually sync the subscription row once.</p>
-      <ul class="checklist warn">
-        <li>Verify the payer identity outside the webhook before granting access manually.</li>
-        <li>Record the Stripe event ID or admin action used for the recovery.</li>
-        <li>After backfill, make future Checkout sessions reuse the stored Stripe customer ID.</li>
-        <li>Add logging around missing metadata/customer mappings so the next failure is visible immediately.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What to send for a mapping review</h2>
-      <p>Do not send secrets. Send the Checkout creation route, webhook handler, sanitized Stripe event payload, the Supabase tables that should change, and the exact row state before/after the failed payment.</p>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20Supabase%20user%20mapping%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20a%20Stripe%20%E2%86%92%20Supabase%20user%2Forg%20mapping%20issue.%0A%0AApp%20stack%3A%0AWhat%20paid%20successfully%20%28Checkout%20Session%20ID%20or%20event%20ID%2C%20sanitized%29%3A%0AWhat%20Supabase%20row%20should%20have%20changed%3A%0AWhat%20actually%20changed%3A%0ARelevant%20file%20paths%20%28Checkout%20creation%20%2B%20webhook%29%3A%0ADatabase%20tables%20involved%20%28schema%20summary%2C%20no%20secrets%29%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="stripe_user_mapping_bottom">Request mapping help →</a>
-        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=stripe_user_mapping_guide_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="stripe_user_mapping_setup_help">See setup help scope</a>
-      </div>
-    </section>
-
-    <section>
-      <h2>Quick diagnosis table</h2>
-      <div class="grid2">
-        <div class="card"><h3>Metadata is empty on subscription events</h3><p>You probably set Checkout Session metadata only. Set <span class="code">subscription_data.metadata</span> or retrieve the Checkout Session from the completed event.</p></div>
-        <div class="card"><h3>Webhook has only a customer ID</h3><p>Look up the customer in your <span class="code">billing_customers</span> table. If it is missing, your Checkout completion path never persisted the mapping.</p></div>
-        <div class="card"><h3>Access unlocks for the wrong account</h3><p>Stop matching by email. Use Supabase user/org IDs captured server-side while the user is authenticated.</p></div>
-        <div class="card"><h3>Returning users create new customers</h3><p>Before creating Checkout, check whether the Supabase owner already has a Stripe customer ID and pass it as <span class="code">customer</span>.</p></div>
-      </div>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

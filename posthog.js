@@ -36,13 +36,20 @@
 
         var href = el.getAttribute('href') || '';
         var product = el.getAttribute('data-ph-product') ||
-          (href.indexOf('/offline-pack') !== -1 || href.indexOf('/go/offline-pack') !== -1 ? 'offline_pack' :
-          (href.indexOf('/ship-it-kit') !== -1 || href.indexOf('/go/ship-it-kit') !== -1 ? 'ship_it_kit' :
+          (href.indexOf('/offline-pack') !== -1 || href.indexOf('/go/offline-pack') !== -1 ? 'free-tools' :
+          (href.indexOf('/free-tools') !== -1 || href.indexOf('/go/free-tools') !== -1 ? 'free_tools' :
           (href.indexOf('/stripe-supabase-billing-drift-check') !== -1 ||
+           href.indexOf('/stripe-webhook-supabase-not-updating') !== -1 ||
+           href.indexOf('/stripe-paid-but-no-access-supabase') !== -1 ||
+           href.indexOf('/stripe-unpaid-still-has-access-supabase') !== -1 ||
+           href.indexOf('/stripe-renewed-but-credits-not-added-supabase') !== -1 ||
+           href.indexOf('/stripe-customer-portal-plan-change-supabase-access') !== -1 ||
+           href.indexOf('/stripe-customer-portal-cancel-supabase-access') !== -1 ||
+           href.indexOf('/stripe-past-due-unpaid-supabase-access') !== -1 ||
            href.indexOf('/stripe-billing-reliability-checklist') !== -1 ||
-           href.indexOf('/billing-health-support') !== -1 ||
+           href.indexOf('free-tools') !== -1 ||
            href.indexOf('/go/billing-reliability') !== -1 ||
-           href.indexOf('/nextjs-supabase-stripe-setup-help') !== -1 ? 'billing_reliability' : 'unknown')));
+           href.indexOf('/nextjs-supabase-stripe-setup-help') !== -1 ? 'free_tools' : 'unknown')));
 
         window.posthog.capture(eventName, {
           site: 'goosekit',
@@ -55,15 +62,17 @@
           risk_count: el.getAttribute('data-ph-risk-count') || null,
           recommended_scope: el.getAttribute('data-ph-recommended-scope') || null,
           unchecked_risk_keys: el.getAttribute('data-ph-unchecked-risk-keys') || null,
+          top_unchecked_severity: el.getAttribute('data-ph-top-unchecked-severity') || null,
+          unchecked_severity_counts: el.getAttribute('data-ph-unchecked-severity-counts') || null,
           price_eur: el.getAttribute('data-ph-price-eur') || null,
           price_eur_monthly: el.getAttribute('data-ph-price-eur-monthly') || null,
           request_context: el.getAttribute('data-ph-request-context') || null
         });
 
         if (href.indexOf('/go/offline-pack') !== -1 || href.indexOf('f897713c-9cd2-4aaa-bd95-abd5ecd6b757') !== -1) {
-          window.posthog.capture('offline_pack_checkout_intent', {
+          window.posthog.capture('free_extension_interest', {
             site: 'goosekit',
-            product: 'offline_pack',
+            product: 'free-tools',
             location: el.getAttribute('data-ph-location') || 'unknown',
             path: window.location.pathname,
             target_href: href

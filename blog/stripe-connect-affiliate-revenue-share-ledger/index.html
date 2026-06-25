@@ -1,115 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Connect Affiliate Revenue Share Ledger Check</title>
-  <meta name="description" content="Debug Stripe Connect affiliate revenue share, creator earnings ledgers, referral attribution, refund reversals, and replay-safe payout batches.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-connect-affiliate-revenue-share-ledger/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Connect Affiliate Revenue Share Ledger Check">
-  <meta property="og:description" content="A narrow replay checklist for Connect platforms that split creator earnings, affiliate fees, refunds, and payout batches.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-connect-affiliate-revenue-share-ledger/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.055em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'+';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=affiliate_revenue_share_nav">Run drift check</a><a href="/blog/stripe-connect-transfer-reversed-clawback-ledger/?ref=affiliate_revenue_share_nav">Transfer reversal check</a></div>
-    <div class="eyebrow">Stripe Connect + affiliate ledgers</div>
-    <h1>Stripe Connect affiliate revenue share, but your earnings ledger can drift?</h1>
-    <p class="lead">Affiliate revenue share looks like a growth feature, but it is also a money-state problem. One checkout can touch a connected account, creator earnings, platform fees, affiliate attribution, self-referral rules, refund reversals, and a monthly payout batch.</p>
-    <p class="lead">The useful review is narrow: one purchase, one attribution path, and one refund reversal should replay into the same local earnings ledger exactly once.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>One paid event should produce one correct creator earning, one correct affiliate fee when attribution is valid, one platform fee, and one reversible money-state trail before any monthly payout batch runs.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=affiliate_revenue_share_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="affiliate_revenue_share_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=affiliate_revenue_share_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="affiliate_revenue_share_top">Check revenue leakage</a>
-      </div>
-      <p class="note">Fixed-scope review fit: usually EUR149 when live creator earnings, refund reversals, self-referral blocking, or payout-batch replay are in scope.</p>
-    </section>
-
-    <section>
-      <h2>1. Separate attribution from money movement</h2>
-      <p>A referral cookie or code should not be the source of truth for money. It is an input. The final local ledger should show which creator earned money, which affiliate earned money, what the platform kept, and why.</p>
-      <div class="grid2">
-        <div class="card"><h3>Attribution truth</h3><ul class="checklist"><li>Referral code</li><li>Click or attribution row</li><li>Cookie window start and end</li><li>Self-referral block result</li></ul></div>
-        <div class="card"><h3>Money truth</h3><ul class="checklist"><li>Stripe Checkout or payment event</li><li>Connected account id</li><li>Creator earnings ledger row</li><li>Platform and affiliate fee config</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Replay the refund path before payout day</h2>
-      <p>The highest-risk bug often appears after the first happy-path sale. If a purchase is refunded after affiliate attribution was recorded, the local reversal needs to unwind creator and affiliate earnings before a payout batch pays stale balances.</p>
-      <ul class="checklist warn">
-        <li>The refund webhook reverses creator earnings but not affiliate earnings.</li>
-        <li>A duplicate refund event subtracts twice from the same affiliate balance.</li>
-        <li>The payout batch reads available earnings while a refund reversal is only half-written.</li>
-        <li>Self-referral blocking happens at click time but not at payout time.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Store one replay-safe earnings result</h2>
-      <p>For a Stripe Connect platform, a good local model usually has a durable event key, signed ledger deltas, and a payout-batch boundary that only reads settled local truth.</p>
-      <pre><code>purchase_event_id
-connected_account_id
-creator_earning_delta
-affiliate_earning_delta
-platform_fee_delta
-attribution_row_id
-refund_reversal_event_id
-payout_batch_id</code></pre>
-      <ul class="checklist">
-        <li>Use provider event ids and local transaction ids as replay keys.</li>
-        <li>Record signed deltas rather than overwriting balances silently.</li>
-        <li>Return the same ledger result on duplicate purchase or refund delivery.</li>
-        <li>Do not include unsettled or disputed earnings in the payout batch.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>4. Test these cases before trusting the launch</h2>
-      <ul class="checklist">
-        <li>Valid affiliate purchase inside the cookie window.</li>
-        <li>Purchase with expired attribution.</li>
-        <li>Self-referral attempt.</li>
-        <li>Duplicate checkout or payment event delivery.</li>
-        <li>Refund after creator and affiliate earnings were credited.</li>
-        <li>Duplicate refund event delivery.</li>
-        <li>Monthly payout batch after a partial refund-reversal failure.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">Evidence packet for a narrow review</h2>
-      <p>Send one redacted revenue-share path. The goal is to prove whether a purchase and a refund can replay into the same creator earnings, affiliate attribution, platform fee, and payout batch state.</p>
-      <pre><code>Stripe Connect account id:
-Checkout/payment event id:
-Refund or reversal event id:
-Creator earnings ledger row before/after:
-Affiliate click/referral row:
-Fee percentages:
-Self-referral rule:
-Payout batch state:
-Expected local state:
-Actual bug or uncertainty:
-Replay command, test, or local repro:</code></pre>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20Connect%20affiliate%20revenue-share%20ledger%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20Connect%20affiliate%20revenue-share%20ledger%20review.%0A%0AStack%3A%0AStripe%20Connect%20account%20id%20%28redacted%20if%20needed%29%3A%0ACheckout%2Fpayment%20event%20id%3A%0ARefund%20or%20reversal%20event%20id%3A%0ACreator%20earnings%20ledger%20row%20before%2Fafter%3A%0AAffiliate%20click%2Freferral%20row%3A%0AFee%20percentages%3A%0ASelf-referral%20rule%3A%0APayout%20batch%20state%3A%0AExpected%20local%20state%3A%0AActual%20bug%20or%20uncertainty%3A%0AReplay%20command%2C%20test%2C%20or%20local%20repro%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="affiliate_revenue_share_bottom_mailto">Send this packet for review -></a>
-        <a class="btn secondary" href="/blog/stripe-connect-transfer-reversed-clawback-ledger/?ref=affiliate_revenue_share_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="affiliate_revenue_share_related">Compare transfer reversal drift</a>
-      </div>
-      <p class="note">This is a focused money-state replay review, not an affiliate marketing strategy session.</p>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

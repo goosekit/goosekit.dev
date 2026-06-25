@@ -1,99 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Payment Element Redirect but Order Tracking Drifted?</title>
-  <meta name="description" content="Debug Stripe Payment Element return_url, redirect_status, async webhooks, and live order tracking when paid orders do not converge in Supabase.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-payment-element-redirect-webhook-order-tracking/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Payment Element Redirect but Order Tracking Drifted?">
-  <meta property="og:description" content="A replay checklist for Stripe Payment Element redirects, async webhook fulfillment, and live order tracking state.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-payment-element-redirect-webhook-order-tracking/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.055em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.03em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=payment_element_nav">Run drift check</a><a href="/billing-health-support/?ref=payment_element_nav">Billing-health support</a></div>
-    <div class="eyebrow">Stripe Payment Element + async fulfillment</div>
-    <h1>Stripe Payment Element redirect but order tracking drifted?</h1>
-    <p class="lead">Payment Element often returns the customer before the webhook has finished the real work. That is fine if the order tracker treats the redirect as a hint and the webhook as the source of truth.</p>
-    <p class="lead">The failure mode is a diner or buyer who sees <code>redirect_status=succeeded</code> while the live tracking page is still missing the order, showing stale status, or trusting the client-side PaymentIntent result too early.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>The return page can read <code>payment_intent</code> and <code>redirect_status</code>, but order fulfillment, paid status, and Realtime tracking should converge from webhook-owned state.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=payment_element_order_tracking_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="payment_element_order_tracking_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=payment_element_order_tracking_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="payment_element_order_tracking_related">Compare Checkout success URL drift</a>
-      </div>
-      <p class="note">Fixed-scope review fit: EUR149 when Payment Element redirect, webhook fulfillment, order rows, and live tracking can disagree for paid orders.</p>
-    </section>
-
-    <section>
-      <h2>1. Separate redirect state from fulfillment state</h2>
-      <div class="grid2">
-        <div class="card"><h3>Redirect hint</h3><ul class="checklist"><li><code>return_url</code> receives <code>payment_intent</code> and <code>redirect_status</code></li><li>Client page can show pending confirmation or tracking shell</li><li>Client must not mark the order paid by itself</li><li>Refresh/reload should not create another order mutation</li></ul></div>
-        <div class="card"><h3>Webhook truth</h3><ul class="checklist"><li><code>payment_intent.succeeded</code> or Checkout event updates the order row</li><li>Processed-event row proves duplicate delivery is safe</li><li>Order status transition is idempotent and replayable</li><li>Realtime/subscription payload matches the stored order state</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Test the states that buyers actually see</h2>
-      <ul class="checklist warn">
-        <li>Redirect succeeds before webhook delivery: tracking page should show pending, then update from the order row.</li>
-        <li>Webhook succeeds before redirect loads: tracking page should render paid/confirmed immediately from stored state.</li>
-        <li>Webhook retries: the order row and tracking event should not duplicate fulfillment or notifications.</li>
-        <li>PaymentIntent fails or is canceled after a redirect attempt: tracking should fail closed, not show confirmed.</li>
-        <li>Realtime disconnects: refresh should recover from the database row, not from stale client params.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Use one replay matrix for redirect, webhook, and tracking</h2>
-      <p>The review should prove what each layer is allowed to write. Keep the matrix small: one paid order, one failed order, one duplicate webhook, and one tracking refresh.</p>
-      <pre><code>redirect_status=succeeded + webhook pending -> tracking shows pending from order row
-webhook succeeded + redirect not loaded -> tracking shows paid/confirmed from order row
-duplicate payment_intent.succeeded -> processed-event hit, no second fulfillment
-redirect success + payment failed later -> order remains unpaid/failed
-Realtime missed event + page refresh -> state recovers from database truth</code></pre>
-    </section>
-
-    <section class="card" id="payment-element-order-tracking-evidence-packet">
-      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
-      <p>Use one affected order or staging order. Redact secrets, but keep object ids, route names, and row shapes that show the redirect/webhook/tracking handoff.</p>
-      <pre><code>PaymentIntent or Checkout Session id:
-return_url and redirect_status received:
-Webhook event id, type, delivery status:
-Order row before/after webhook:
-Processed-event or idempotency row:
-Tracking route or component:
-Realtime payload or subscription log:
-Expected order/tracking state:
-Actual order/tracking bug:
-One replay command, test, or local repro:</code></pre>
-      <div class="actions">
-        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=payment_element_order_tracking_bottom_packet&context=payment_element_order_tracking&price_range_eur=149&quote_path=launch_blocker&source_ref=payment_element_order_tracking_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="payment_element_order_tracking_bottom_packet">Send tracking packet →</a>
-      </div>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What to review before launch</h2>
-      <p>Check the redirect handler, webhook fulfillment handler, order-state transition, processed-event guard, and the tracking page’s database/Realtime recovery path. That keeps the scope small while covering the money-state bugs that become support tickets.</p>
-      <div class="actions">
-        <a class="btn primary" href="/billing-health-support/?ref=payment_element_order_tracking_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="payment_element_order_tracking_bottom">See billing-health support</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=payment_element_order_tracking_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="payment_element_order_tracking_related">Compare duplicate webhook handling</a>
-      </div>
-      <p class="note">This is a focused billing/order-state review, not a full ordering system rebuild or restaurant-platform architecture engagement.</p>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

@@ -1,130 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Works in Test Mode but Fails in Live Mode?</title>
-  <meta name="description" content="Debug Next.js + Supabase Stripe live-mode failures: test/live keys, price IDs, webhook signing secrets, customer portal config, Vercel env vars, and paid-user state.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-test-mode-live-mode-production/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Works in Test Mode but Fails in Live Mode?">
-  <meta property="og:description" content="A practical production checklist for Stripe checkout, portal, webhooks, env variables, and Supabase paid-state drift after switching from test mode to live mode.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-test-mode-live-mode-production/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.2rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:790px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=stripe_live_mode_guide_nav">Setup help</a></div>
-    <div class="eyebrow">Stripe production launch debug</div>
-    <h1>Stripe works in test mode but fails in live mode?</h1>
-    <p class="lead">When checkout works locally or in Stripe test mode but production breaks, the cause is usually not one mysterious Stripe bug. It is usually a mixed set of test/live API keys, price IDs, webhook secrets, portal configuration, Vercel environment variables, or Supabase state updates.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">Start by separating test and live artifacts</h2>
-      <p>Stripe test mode and live mode are separate worlds. Do not debug by looking for a generic “Stripe config”. Build a table of every key, price, product, webhook endpoint, customer portal setting, and deployed environment variable that production actually uses.</p>
-      <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=stripe_live_mode_guide_top" data-ph-event="setup_help_interest" data-ph-location="stripe_live_mode_top">Need a production billing pass?</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=stripe_live_mode_guide_top_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="stripe_live_mode_webhook_guide">Webhook paid-state checklist</a>
-      </div>
-      <p class="note">Founding setup/debug help starts at €99–149 when the repo, Stripe dashboard state, and failure path are narrow enough to review safely.</p>
-    </section>
-
-    <section>
-      <h2>1. Match every live key with live resources</h2>
-      <p>The most common production failure is mixing live API keys with test resources, or test keys with live price IDs. Stripe object IDs can look similar, so verify them in the dashboard mode where they were created.</p>
-      <ul class="checklist warn">
-        <li><span class="code">STRIPE_SECRET_KEY</span> in production should be a live key, not <span class="code">sk_test_...</span>.</li>
-        <li>Checkout <span class="code">price_...</span> IDs should exist in live mode and match the product/interval/currency you expect.</li>
-        <li>Publishable key, secret key, webhook secret, and price IDs should all come from the same Stripe account and same mode.</li>
-        <li>If you use multiple products or plans, confirm the code path does not fall back to a test/default price when an env var is missing.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>2. Create a live webhook endpoint and use its own signing secret</h2>
-      <p>Local CLI webhook secrets, test-mode dashboard secrets, and live-mode endpoint secrets are different. If production verifies a live webhook with a test or CLI <span class="code">whsec_...</span>, your handler will reject real events before it updates Supabase.</p>
-      <ul class="checklist">
-        <li>Create the production webhook endpoint in Stripe live mode with your deployed URL, for example <span class="code">https://yourdomain.com/api/stripe/webhook</span>.</li>
-        <li>Copy the signing secret from that exact live endpoint into the production environment.</li>
-        <li>Check the endpoint delivery logs in Stripe: HTTP status, response body, redirects, signature errors, and whether events are being sent at all.</li>
-        <li>Make sure the webhook route is public, does not require app auth, and is not redirected by middleware, canonical-domain rules, or trailing-slash redirects.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Redeploy after changing Vercel environment variables</h2>
-      <p>Changing env vars in a dashboard does not always change the already-running deployment. Treat env changes like code changes: update production variables, redeploy, then verify the deployed function sees the expected mode.</p>
-      <div class="grid2">
-        <div class="card">
-          <h3>Production env checklist</h3>
-          <ul class="checklist">
-            <li>Live Stripe secret key.</li>
-            <li>Live publishable key exposed to the browser.</li>
-            <li>Live price IDs for each plan.</li>
-            <li>Live webhook signing secret.</li>
-            <li>Canonical app URL used in success/cancel/portal returns.</li>
-          </ul>
-        </div>
-        <div class="card">
-          <h3>Drift symptoms</h3>
-          <ul class="checklist warn">
-            <li>Checkout opens but shows the wrong product or amount.</li>
-            <li>Payment succeeds but Supabase still says free/inactive.</li>
-            <li>Portal link fails or opens for the wrong customer.</li>
-            <li>Webhook logs show 307/308 redirects, 401/403, or signature verification failures.</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section>
-      <h2>4. Configure the live Customer Portal separately</h2>
-      <p>Stripe Billing Portal settings can differ by mode. A portal flow that works in test mode can fail in live mode if the live portal is not configured, the return URL is wrong, or the customer ID in Supabase points to a test customer.</p>
-      <ul class="checklist warn">
-        <li>Enable and configure the live Customer Portal in the Stripe dashboard.</li>
-        <li>Confirm your app stores a live <span class="code">cus_...</span> ID after a live checkout, not a test customer ID from earlier testing.</li>
-        <li>Use a live-mode Stripe client when creating the portal session.</li>
-        <li>Check that cancellation, downgrade, and subscription update events are included in webhook handling.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>5. Verify Supabase state from webhook events, not success URLs</h2>
-      <p>Success URLs are useful for the user experience, but they are not reliable proof of payment. Production access should unlock from verified Stripe webhook events mapped to the right Supabase user or organization.</p>
-      <ul class="checklist">
-        <li>Store <span class="code">user_id</span> or organization ID in Checkout metadata or map through a trusted customer table.</li>
-        <li>Handle at least <span class="code">checkout.session.completed</span>, <span class="code">customer.subscription.updated</span>, and <span class="code">customer.subscription.deleted</span> for subscriptions.</li>
-        <li>Log event IDs and make updates idempotent so retries do not corrupt state.</li>
-        <li>In Supabase, compare the live customer/subscription IDs against the event payload before blaming frontend gating.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What to send for a production billing review</h2>
-      <p>Do not send secrets. Send sanitized env variable names, Stripe dashboard screenshots with secret values hidden, webhook delivery logs, relevant route files, and the Supabase rows that should change after a live checkout.</p>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20live%20mode%20production%20debug&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20a%20Stripe%20live-mode%20production%20issue%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AWhat%20works%20in%20test%20mode%3A%0AWhat%20fails%20in%20live%20mode%3A%0ADeployment%20host%3A%0AStripe%20resources%20involved%20%28checkout%2C%20portal%2C%20webhook%29%3A%0AWebhook%20delivery%20status%20%28sanitized%29%3A%0ARelevant%20file%20paths%3A%0ASupabase%20table%2Fstate%20that%20should%20change%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="stripe_live_mode_bottom">Request production billing help →</a>
-        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=stripe_live_mode_guide_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="stripe_live_mode_setup_help">See setup help scope</a>
-      </div>
-    </section>
-
-    <section>
-      <h2>Quick diagnosis table</h2>
-      <div class="grid2">
-        <div class="card"><h3>Checkout says price not found</h3><p>The deployed app is probably using a test price ID with live keys, a live price ID from another account, or an env var that was not redeployed.</p></div>
-        <div class="card"><h3>Payment succeeds but app stays free</h3><p>Check live webhook endpoint, signing secret, event delivery, user/customer mapping, and Supabase update logs.</p></div>
-        <div class="card"><h3>Webhook returns 307 or 308</h3><p>Use the final canonical webhook URL in Stripe and exclude the webhook route from middleware/canonical redirects.</p></div>
-        <div class="card"><h3>Portal link fails in production</h3><p>Check live portal configuration, live customer IDs, return URL, and whether you are creating the portal session with a live-mode Stripe client.</p></div>
-      </div>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

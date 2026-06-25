@@ -1,145 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Subscription Credits and Add-Credit Checkout Drift?</title>
-  <meta name="description" content="Debug Stripe subscription monthly credits, one-time add-credit Checkout purchases, webhook grant functions, credit ledgers, and reset-boundary double-grant bugs.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-subscription-add-credit-checkout-ledger/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Subscription Credits and Add-Credit Checkout Drift?">
-  <meta property="og:description" content="A replay checklist for apps where monthly subscription credits and one-time add-credit purchases write to the same local balance.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-subscription-add-credit-checkout-ledger/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=add_credit_nav">Run drift check</a><a href="/stripe-billing-reliability-checklist/?ref=add_credit_nav">Billing checklist</a></div>
-    <div class="eyebrow">Subscription credits + one-time add-credit purchases</div>
-    <h1>Subscription credits and add-credit checkout can drift.</h1>
-    <p class="lead">A common SaaS pattern is simple on the pricing page: Starter, Pro, and Team include monthly credits, and users can buy an extra credit when they need more. The billing-state risk is that two Stripe paths now write to one local balance.</p>
-    <p class="lead">If <span class="code">invoice.paid</span>, <span class="code">checkout.session.completed</span>, a credit grant function, and a monthly reset job disagree, users can lose purchased credits, receive duplicate credits, or see the wrong remaining balance after renewal.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>Monthly included credits and one-time purchased credits should converge on one idempotent credit ledger. Subscription renewal can reset or refill the included allowance, but it must not overwrite purchased credit or double-apply an add-credit Checkout session.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=subscription_add_credit_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_top">Run the billing drift check</a>
-        <a class="btn secondary" href="#subscription-add-credit-packet" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_packet_jump">Prepare the evidence packet</a>
-        <a class="btn secondary" href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=subscription_add_credit_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_related">Compare monthly refill risk</a>
-      </div>
-      <p class="note">Fixed-scope review fit: EUR99 for one contained grant path, EUR149 when monthly subscription credits and purchased credits share one balance or reset boundary.</p>
-    </section>
-
-    <section id="subscription-add-credit-packet" class="card" data-ph-section="subscription_add_credit_packet" data-ph-product="billing_reliability">
-      <h2 style="margin-top:0">Evidence packet</h2>
-      <p>For a narrow review, the useful packet is not the pricing-page copy. It is the smallest proof that both Stripe paths write through the same replay-safe local money state.</p>
-      <ul class="checklist">
-        <li>Subscription renewal event: <span class="code">invoice.paid</span> or the subscription Checkout/session event that creates the monthly credit entitlement.</li>
-        <li>One-time add-credit event: <span class="code">checkout.session.completed</span>, PaymentIntent, or invoice/payment object for the add-credit purchase.</li>
-        <li>Credit ledger row: signed delta, balance after, source event id, credit type, and account/customer id.</li>
-        <li>Grant function or webhook log: the code path that mutates the balance for both monthly and purchased credits.</li>
-        <li>Tier config: monthly credits for Starter, Pro, Team, or equivalent plans.</li>
-        <li>Replay proof: duplicate webhook, add-credit retry, renewal boundary, and monthly reset behavior.</li>
-      </ul>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Subscription%20add-credit%20ledger%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20subscription%20plus%20add-credit%20ledger%20review.%0A%0AStack%3A%0ASubscription%20plans%20and%20monthly%20credits%3A%0AOne-time%20add-credit%20Checkout%20price%2Fsession%3A%0ASubscription%20renewal%20event%20%28invoice.paid%20or%20other%29%3A%0AAdd-credit%20event%20%28checkout.session.completed%2C%20PaymentIntent%2C%20invoice%29%3A%0ACredit%20ledger%20or%20balance%20row%20shape%3A%0AGrant%20function%20or%20webhook%20handler%3A%0AMonthly%20reset%20or%20refill%20rule%3A%0AExpected%20state%20after%20renewal%20and%20add-credit%3A%0AActual%20bug%20%28overwrite%2C%20double-credit%2C%20missing%20credit%2C%20wrong%20balance%29%3A%0AReplay%2Fidempotency%20evidence%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_packet_mailto">Send add-credit evidence packet -></a>
-      </div>
-    </section>
-
-    <section>
-      <h2>1. Model included and purchased credits separately</h2>
-      <p>A single balance is fine if the ledger preserves why each delta exists. Problems start when the subscription refill job rewrites the entire balance without knowing which credits were purchased separately.</p>
-      <div class="grid2">
-        <div class="card"><h3>Included credits</h3><ul class="checklist"><li>Granted by plan tier</li><li>Usually period-bound</li><li>Often reset or refill monthly</li><li>May expire at renewal boundary</li></ul></div>
-        <div class="card"><h3>Purchased credits</h3><ul class="checklist"><li>Granted by one-time Checkout</li><li>Should be additive</li><li>May survive monthly reset</li><li>Must be replay-safe by purchase event</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Use a ledger, not only a balance column</h2>
-      <p>The balance column is a fast read model. The ledger is how you prove what happened after webhook retries, refunds, plan changes, and manual repairs.</p>
-      <pre><code>-- Example shape only: adapt table names to your app.
-create table credit_ledger (
-  id bigserial primary key,
-  account_id uuid not null,
-  source_type text not null,
-  source_event_id text not null,
-  credit_delta integer not null,
-  balance_after integer not null,
-  created_at timestamptz not null default now(),
-  unique (source_type, source_event_id)
-);</code></pre>
-      <ul class="checklist">
-        <li>Use <span class="code">source_type</span> values such as monthly_subscription_credit and add_credit_checkout.</li>
-        <li>Keep <span class="code">source_event_id</span> stable across retries.</li>
-        <li>Store the Stripe event id and the Checkout Session or PaymentIntent id if both matter.</li>
-        <li>Return the existing ledger row on duplicate delivery instead of applying the delta again.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Make the reset boundary explicit</h2>
-      <p>Before launch, decide whether a renewal resets only the included allowance, resets the whole visible balance, or adds a monthly grant. Each choice is valid for a different product. Mixing them silently is the bug.</p>
-      <ul class="checklist warn">
-        <li>Monthly reset sets total balance to 3 and overwrites 2 purchased credits.</li>
-        <li>Add-credit Checkout grants once on success URL and once again on webhook delivery.</li>
-        <li>Plan upgrade changes monthly allowance but does not preserve purchased credits.</li>
-        <li>Refund or dispute removes money but leaves purchased credits active.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>4. Replay the exact mixed path</h2>
-      <ul class="checklist">
-        <li>Customer subscribes to a plan with 1, 2, or 3 monthly credits.</li>
-        <li>Customer buys one extra credit through one-time Stripe Checkout.</li>
-        <li>Duplicate add-credit webhook returns the existing ledger row.</li>
-        <li>Subscription renews after purchased credits remain unused.</li>
-        <li>Monthly reset updates included credits without deleting purchased credits.</li>
-        <li>Payment succeeds but local ledger write fails, then webhook retry completes the grant.</li>
-        <li>Refunded add-credit purchase creates one signed reversal or repair state.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What a focused review returns</h2>
-      <p>A first pass should return the exact drift point, the replay matrix, and the smallest ledger/reset change needed to keep monthly and purchased credits consistent. It should not require production secrets or a broad rebuild.</p>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Subscription%20add-credit%20ledger%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20subscription%20plus%20add-credit%20ledger%20review.%0A%0ASubscription%20plans%20and%20monthly%20credits%3A%0AOne-time%20add-credit%20Checkout%20path%3A%0AStripe%20events%20handled%3A%0ACredit%20ledger%20or%20balance%20row%3A%0AGrant%20function%20or%20webhook%20handler%3A%0AMonthly%20reset%20or%20refill%20rule%3A%0AActual%20bug%20or%20launch%20risk%3A%0AReplay%2Fidempotency%20evidence%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_bottom_mailto">Request add-credit ledger review -></a>
-        <a class="btn secondary" href="/blog/stripe-prepaid-invoice-account-credit-ledger/?ref=subscription_add_credit_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="subscription_add_credit_related">Compare account-credit ledger risk</a>
-      </div>
-    </section>
-  </main>
-  <script>
-    (function () {
-      var packet = document.querySelector('[data-ph-section="subscription_add_credit_packet"]');
-      if (!packet || !('IntersectionObserver' in window)) return;
-      var sent = false;
-      var observer = new IntersectionObserver(function (entries) {
-        entries.forEach(function (entry) {
-          if (sent || !entry.isIntersecting) return;
-          sent = true;
-          if (window.posthog && typeof window.posthog.capture === 'function') {
-            window.posthog.capture('billing_reliability_section_reached', {
-              product: 'billing_reliability',
-              location: 'subscription_add_credit_evidence_packet',
-              path: window.location.pathname
-            });
-          }
-          observer.disconnect();
-        });
-      }, { threshold: 0.35 });
-      observer.observe(packet);
-    })();
-  </script>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

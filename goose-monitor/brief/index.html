@@ -1,35 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta name="robots" content="noindex">
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Goose Monitor brief — request an early market report</title>
-  <meta name="description" content="Send a short Goose Monitor brief with your site, competitors, and market question so the first report can be useful.">
-  <link rel="canonical" href="https://goosekit.dev/goose-monitor/brief/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <script defer src="/posthog.js"></script>
-  <script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;background:radial-gradient(circle at 15% 0%,rgba(255,72,0,.18),transparent 32%),#080b14;color:#f8fafc;line-height:1.6}a{color:#ffd1c0}.wrap{width:min(900px,calc(100% - 36px));margin:0 auto}.hero{padding:76px 0 24px}.eyebrow{display:inline-flex;padding:8px 13px;border-radius:999px;border:1px solid rgba(255,72,0,.28);background:rgba(255,72,0,.12);color:#ffc2a8;font-weight:800;font-size:.88rem;margin-bottom:16px}h1{font-size:clamp(2.2rem,5vw,4.2rem);line-height:1;letter-spacing:-.055em;margin:0 0 16px}.lead{font-size:1.12rem;color:#c5d0e4;max-width:740px}.card{border:1px solid rgba(255,255,255,.09);border-radius:26px;background:rgba(255,255,255,.045);padding:24px;margin:24px 0 70px;box-shadow:0 28px 90px rgba(0,0,0,.36)}label{display:block;font-weight:800;margin:16px 0 7px}input,textarea{width:100%;border:1px solid rgba(255,255,255,.11);border-radius:14px;background:rgba(8,11,20,.74);color:#f8fafc;padding:13px 14px;font:inherit}textarea{min-height:94px;resize:vertical}.hint{color:#9aa8be;font-size:.92rem;margin:6px 0 0}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:48px;margin-top:20px;padding:12px 18px;border-radius:14px;border:1px solid rgba(255,72,0,.7);background:linear-gradient(135deg,#ff4800,#ef4444);color:#fff;font-weight:850;cursor:pointer}.small{color:#9aa8be;font-size:.92rem;margin-top:12px}footer{border-top:1px solid rgba(255,255,255,.09);padding:32px 0 44px;color:#8e9bb1}
-  </style>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main>
-    <section class="hero"><div class="wrap"><div class="eyebrow">🪿 Goose Monitor early brief</div><h1>Request a first market radar report.</h1><p class="lead">Share your site, a few competitors, and one market question. The goal is to produce a useful first report before building heavy SaaS plumbing.</p></div></section>
-    <section><div class="wrap"><form class="card" id="brief-form">
-      <label for="email">Email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com" required>
-      <label for="site">Your site</label><input id="site" type="url" placeholder="https://your-saas.com" required><p class="hint">A public landing page is enough.</p>
-      <label for="competitors">Competitors to watch</label><textarea id="competitors" placeholder="https://competitor-one.com&#10;https://competitor-two.com&#10;https://competitor-three.com" required></textarea>
-      <label for="question">Main question</label><textarea id="question" placeholder="Example: what pages should we publish next to get more qualified traffic?"></textarea>
-      <button class="btn" type="submit">Open email brief →</button>
-      <p class="small">This currently opens an email draft. No fake backend, no hidden list.</p>
-    </form></div></section>
-  </main>
-  <footer><div class="wrap"><a href="/goose-monitor/">Goose Monitor</a> · <a href="/goose-monitor/sample-report/">Sample report</a></div></footer>
-  <script>
-    (function(){function capture(n,p){if(window.posthog&&typeof window.posthog.capture==='function')window.posthog.capture(n,p||{})}capture('goose_monitor_brief_viewed',{product:'goose_monitor'});var form=document.getElementById('brief-form');if(!form)return;form.addEventListener('submit',function(e){e.preventDefault();var email=document.getElementById('email').value.trim();var site=document.getElementById('site').value.trim();var competitors=document.getElementById('competitors').value.trim();var question=document.getElementById('question').value.trim();capture('goose_monitor_brief_submitted',{has_email:!!email,has_site:!!site,competitor_lines:competitors?competitors.split(/\n+/).length:0});var subject=encodeURIComponent('Goose Monitor brief');var body=encodeURIComponent('Hi Goosekit,\n\nI want a first Goose Monitor report.\n\nEmail: '+email+'\nSite: '+site+'\n\nCompetitors:\n'+competitors+'\n\nMain question:\n'+question);window.location.href='mailto:hello@goosekit.dev?subject='+subject+'&body='+body;});})();
-  </script>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

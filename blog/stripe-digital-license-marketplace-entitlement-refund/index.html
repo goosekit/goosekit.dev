@@ -1,116 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Digital License Marketplace Entitlement Refund Check</title>
-  <meta name="description" content="Debug Stripe marketplace flows where list, pay, deliver, unlock, refund, and license entitlements can drift from local app truth.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-digital-license-marketplace-entitlement-refund/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Digital License Marketplace Entitlement Refund Check">
-  <meta property="og:description" content="A replay checklist for digital marketplaces that sell files, packs, licenses, or creator content through Stripe.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-digital-license-marketplace-entitlement-refund/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.055em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'+';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=digital_license_marketplace_nav">Run drift check</a><a href="/blog/stripe-connect-affiliate-revenue-share-ledger/?ref=digital_license_marketplace_nav">Revenue-share ledger check</a></div>
-    <div class="eyebrow">Stripe + digital marketplace entitlements</div>
-    <h1>Stripe marketplace paid, delivered, unlocked, and refunded states can drift.</h1>
-    <p class="lead">Digital marketplaces look simple when the happy path is “list -> pay -> deliver -> unlock”. The risky part is that Stripe payment truth, local license truth, delivery status, refund clawbacks, creator availability, and buyer access all change asynchronously.</p>
-    <p class="lead">A useful review follows one paid item through purchase, durable delivery, entitlement unlock, duplicate webhook replay, and refund reversal. If those paths do not converge, buyers can lose access after paying, keep access after refunds, or receive duplicate licenses.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>One Stripe purchase should create one durable license, one delivery record, one buyer entitlement, and one reversible refund/clawback trail. Every duplicate delivery or browser refresh should return the same local result.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=digital_license_marketplace_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="digital_license_marketplace_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=digital_license_marketplace_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="digital_license_marketplace_top">Check revenue leakage</a>
-      </div>
-      <p class="note">Fixed-scope review fit: usually EUR149 when live buyer entitlements, file delivery, refunds, or creator payouts can disagree.</p>
-    </section>
-
-    <section>
-      <h2>1. Separate listing truth, payment truth, and license truth</h2>
-      <p>A published item is not a license. A paid Checkout Session is not a delivery record. A success page visit is not durable access. Keep those states separate enough that they can be replayed and compared.</p>
-      <div class="grid2">
-        <div class="card"><h3>Provider truth</h3><ul class="checklist"><li>Checkout Session or PaymentIntent id</li><li>Customer and buyer account mapping</li><li>Payment, refund, and dispute status</li><li>Webhook event id and delivery status</li></ul></div>
-        <div class="card"><h3>App truth</h3><ul class="checklist"><li>Marketplace item/listing id</li><li>License or entitlement row</li><li>Delivery/download row</li><li>Refund or clawback ledger row</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Treat refunds as entitlement events</h2>
-      <p>The dangerous bug often appears after the first refund. Stripe can reverse the money while the app keeps the license active, or the app can revoke access before the refund is final and strand a legitimate buyer.</p>
-      <ul class="checklist warn">
-        <li>The success URL unlocks the file before the verified webhook writes the license.</li>
-        <li>Duplicate <span class="code">checkout.session.completed</span> delivery creates duplicate licenses or duplicate download grants.</li>
-        <li>A refund webhook updates the payment row but leaves the entitlement active.</li>
-        <li>A failed delivery keeps the charge but never creates a repairable delivery state.</li>
-        <li>A creator payout or affiliate share reads stale earnings before the refund clawback is durable.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Use replay keys across the whole marketplace path</h2>
-      <p>For digital products, the replay key should cover the business result, not only the Stripe event row. A duplicate event should return the existing license and delivery result, not create another grant.</p>
-      <pre><code>checkout_session_id
-payment_intent_id
-marketplace_item_id
-buyer_user_id
-license_id
-delivery_id
-refund_event_id
-clawback_or_reversal_id</code></pre>
-      <ul class="checklist">
-        <li>Store processed provider event ids, then also enforce one active license per buyer/item/payment path.</li>
-        <li>Write delivery as a durable state: pending, delivered, failed_repairable, refunded, or revoked.</li>
-        <li>Make refund handling idempotent and visible in the same table or ledger that gates access.</li>
-        <li>Never let the browser return page be the only place that unlocks purchased content.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>4. Test these cases before trusting the marketplace</h2>
-      <ul class="checklist">
-        <li>Valid purchase, webhook delivery, and download unlock.</li>
-        <li>Success page loads before webhook delivery.</li>
-        <li>Duplicate checkout/webhook delivery.</li>
-        <li>Delivery write fails after Stripe payment succeeds.</li>
-        <li>Refund after license has been delivered.</li>
-        <li>Duplicate refund event delivery.</li>
-        <li>Refund after creator payout, affiliate credit, or revenue-share calculation.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">Evidence packet for a narrow review</h2>
-      <p>Send one redacted marketplace purchase path. The goal is to prove whether purchase, delivery, license unlock, and refund reversal converge on the same local truth.</p>
-      <pre><code>Stripe Checkout Session or PaymentIntent id:
-Webhook event id/type/delivery status:
-Marketplace item/listing id:
-Buyer/user id mapping:
-License or entitlement row before/after:
-Delivery/download row before/after:
-Refund event and local clawback row:
-Creator payout, affiliate, or revenue-share row if relevant:
-Expected buyer access state:
-Actual bug or uncertainty:
-Replay command, test, or local repro:</code></pre>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20digital%20license%20marketplace%20review&body=Hi%20Arthur%2C%0A%0AI%20need%20a%20Stripe%20digital%20license%20marketplace%20review.%0A%0AStack%3A%0AStripe%20Checkout%20Session%20or%20PaymentIntent%20id%3A%0AWebhook%20event%20id%2Ftype%2Fdelivery%20status%3A%0AMarketplace%20item%2Flisting%20id%3A%0ABuyer%2Fuser%20id%20mapping%3A%0ALicense%20or%20entitlement%20row%20before%2Fafter%3A%0ADelivery%2Fdownload%20row%20before%2Fafter%3A%0ARefund%20event%20and%20local%20clawback%20row%3A%0ACreator%20payout%2C%20affiliate%2C%20or%20revenue-share%20row%20if%20relevant%3A%0AExpected%20buyer%20access%20state%3A%0AActual%20bug%20or%20uncertainty%3A%0AReplay%20command%2C%20test%2C%20or%20local%20repro%3A%0ARepo%20access%20situation%20%28no%20secrets%29%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="digital_license_marketplace_bottom_mailto">Send marketplace packet -></a>
-        <a class="btn secondary" href="/blog/stripe-connect-affiliate-revenue-share-ledger/?ref=digital_license_marketplace_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="digital_license_marketplace_related">Compare revenue-share drift</a>
-      </div>
-      <p class="note">This is a focused entitlement/refund replay review, not a marketplace growth or catalog strategy session.</p>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

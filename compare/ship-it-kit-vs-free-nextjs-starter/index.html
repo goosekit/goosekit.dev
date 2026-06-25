@@ -1,74 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ship It Kit vs Free Next.js Starters — Is a Paid SaaS Starter Worth It?</title>
-  <meta name="description" content="Honest free vs paid Next.js SaaS starter comparison. See when a free starter is enough and when Ship It Kit saves time on auth, Stripe billing, webhooks, and MVP setup.">
-  <link rel="canonical" href="https://goosekit.dev/compare/ship-it-kit-vs-free-nextjs-starter/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:title" content="Ship It Kit vs Free Next.js Starters — Free vs Paid SaaS Starter">
-  <meta property="og:description" content="A practical comparison for builders choosing between a free starter and a focused €49 Next.js + Supabase + Stripe kit.">
-  <meta property="og:url" content="https://goosekit.dev/compare/ship-it-kit-vs-free-nextjs-starter/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:type" content="article">
-  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-  <script defer src="/posthog.js"></script>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}:root{--bg:#0a0a0f;--surface:#12121f;--border:#2a2a40;--text:#e5e7eb;--muted:#9ca3af;--accent:#ff4800;--green:#4ade80;--amber:#fbbf24}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.65}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}header{border-bottom:1px solid var(--border);padding:1rem 2rem}.breadcrumb{font-size:.8rem;color:var(--muted)}.breadcrumb a{color:var(--muted)}.breadcrumb span{margin:0 .4rem}.hero{text-align:center;padding:4rem 2rem 3rem;max-width:760px;margin:0 auto}.hero h1{font-size:2.1rem;line-height:1.2;color:#fff;margin-bottom:1rem}.hero h1 span{color:var(--accent)}.hero p{color:var(--muted);font-size:1.05rem;max-width:620px;margin:0 auto 1.4rem}.cta-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap}.btn-primary,.btn-secondary{display:inline-block;border-radius:8px;padding:.75rem 1.35rem;font-weight:700}.btn-primary{background:var(--accent);color:#090909}.btn-secondary{background:var(--surface);border:1px solid var(--border);color:var(--text)}main{max-width:920px;margin:0 auto;padding:2rem}.note{background:#102018;border:1px solid #16a34a35;color:#b7f7c8;border-radius:12px;padding:1rem 1.25rem;margin:0 auto 2rem;max-width:760px}.section{margin:3rem 0}.section h2{font-size:1.35rem;color:#fff;margin-bottom:1rem;border-bottom:1px solid var(--border);padding-bottom:.5rem}.section p{color:var(--muted);margin-bottom:1rem}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem}.card h3{font-size:1rem;color:#fff;margin-bottom:.5rem}.card p,.card li{color:var(--muted);font-size:.92rem}.card ul{padding-left:1.1rem}table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:1rem}th,td{padding:.85rem 1rem;border-bottom:1px solid var(--border);vertical-align:top}th{color:#fff;text-align:left}.feature{color:#fff;font-weight:700}.yes{color:var(--green);font-weight:700}.maybe{color:var(--amber);font-weight:700}.final{background:linear-gradient(135deg,#12121f 0%,#1a1030 100%);border:1px solid var(--border);border-radius:18px;padding:2rem;text-align:center}.final h2{color:#fff;margin-bottom:.75rem}.final p{color:var(--muted);max-width:620px;margin:0 auto 1.25rem}footer{text-align:center;padding:2rem;color:var(--muted);font-size:.82rem;border-top:1px solid var(--border);margin-top:3rem}@media(max-width:640px){.hero h1{font-size:1.55rem}main{padding:1rem}table{font-size:.8rem}th,td{padding:.55rem}.cta-row{align-items:stretch}.btn-primary,.btn-secondary{width:100%}}
-  </style>
-  <script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-<header><div class="breadcrumb"><a href="/">Goosekit</a><span>›</span><a href="/compare/">Compare</a><span>›</span>Ship It Kit vs free Next.js starter</div></header>
-<section class="hero">
-  <h1>Ship It Kit vs <span>free Next.js starters</span></h1>
-  <p>Free starters are often the right choice. A paid starter only makes sense when it removes a setup loop you were going to rebuild anyway: auth, billing, protected pages, webhooks, and the first dashboard shell.</p>
-  <div class="cta-row"><a class="btn-primary" href="/ship-it-kit/?ref=compare_free_vs_paid_hero#proof">See Ship It Kit proof →</a><a class="btn-secondary" href="/blog/nextjs-auth-billing-starter/?ref=compare_free_vs_paid_hero">Read the auth + billing tradeoff →</a></div>
-</section>
-<main>
-  <div class="note">Short version: choose free when you want maximum control and have time to wire the product foundation yourself. Choose Ship It Kit only when Next.js + Supabase + Stripe is already your stack and speed matters more than assembling plumbing from scattered examples.</div>
-
-  <section class="section">
-    <h2>The honest decision</h2>
-    <div class="grid">
-      <div class="card"><h3>Choose a free starter if…</h3><ul><li>You enjoy owning every architectural choice.</li><li>You need a custom auth or billing model.</li><li>You are learning the stack and time is not the constraint.</li><li>You do not need checkout or webhooks this week.</li></ul></div>
-      <div class="card"><h3>Choose Ship It Kit if…</h3><ul><li>You already want Next.js 15, Supabase auth, and Stripe.</li><li>You are validating a SaaS MVP and need billing early.</li><li>You want a smaller starter instead of a large framework.</li><li>You want a repo that is clear enough for AI-assisted editing.</li></ul></div>
-    </div>
-  </section>
-
-  <section class="section">
-    <h2>Free vs paid starter comparison</h2>
-    <table>
-      <tr><th>Question</th><th>Free Next.js starter</th><th>Ship It Kit</th></tr>
-      <tr><td class="feature">Upfront price</td><td><span class="yes">€0</span></td><td>€49 one-time</td></tr>
-      <tr><td class="feature">Auth + database assumptions</td><td>Varies by repo; often needs integration work.</td><td>Supabase auth and app structure are already aligned.</td></tr>
-      <tr><td class="feature">Stripe checkout + portal</td><td><span class="maybe">Usually manual</span>; you wire examples yourself.</td><td>Checkout, customer portal, and billing flow are part of the starter scope.</td></tr>
-      <tr><td class="feature">Webhook handling</td><td>Often the easiest place to make subtle mistakes.</td><td>Included as a first-class part of the billing foundation.</td></tr>
-      <tr><td class="feature">Time cost</td><td>Low money cost, higher integration cost.</td><td>Higher money cost, lower repeated setup cost.</td></tr>
-      <tr><td class="feature">Best fit</td><td>Learning, custom architecture, non-paid MVPs.</td><td>Paid SaaS MVPs where the stack already matches.</td></tr>
-    </table>
-  </section>
-
-  <section class="section">
-    <h2>The real cost of “free”</h2>
-    <p>Free is not bad. The hidden cost is context switching: finding examples, checking if they match the App Router, adapting auth callbacks, preserving raw Stripe webhook bodies, mapping customers to users, and then explaining the project structure to your AI coding tool or future self.</p>
-    <p>If that work teaches you something useful, do it. If it is blocking validation of the actual product, buying a focused base can be rational.</p>
-  </section>
-
-  <section class="section">
-    <h2>Why Ship It Kit stays small</h2>
-    <p>Ship It Kit is not trying to beat every large SaaS boilerplate on feature count. It is intentionally scoped around the first paid-product foundation: landing page, pricing flow, auth, dashboard shell, Stripe checkout, portal, webhooks, and setup notes.</p>
-    <p>That smaller scope matters when you are building with Cursor, Claude, Copilot, or by hand: less inherited code means less to understand before you can ship.</p>
-  </section>
-
-  <section class="final">
-    <h2>Verdict</h2>
-    <p>Start free if you are exploring or learning. Consider Ship It Kit only when you are ready to test a paid SaaS idea and want the Next.js + Supabase + Stripe foundation handled before product work starts.</p>
-    <div class="cta-row"><a class="btn-primary" href="/ship-it-kit/?ref=compare_free_vs_paid_final#proof">Check the exact files first →</a><a class="btn-secondary" href="/ship-it-kit/?ref=compare_free_vs_paid_final">Run the quick fit check →</a></div>
-  </section>
-</main>
-<footer><p>Part of the <a href="/compare/">Goosekit comparison hub</a>. No hype: pick the starter that matches your stack and time constraint.</p></footer>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

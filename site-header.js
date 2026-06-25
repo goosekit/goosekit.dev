@@ -10,8 +10,6 @@
     ['Students', '/tools/for-students/'],
     ['Compare', '/compare/'],
     ['Blog', '/blog/'],
-    ['Offline Pack', '/offline-pack/?ref=global_nav'],
-    ['API', '/api/'],
     ['Extension', 'https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend'],
   ];
 
@@ -106,7 +104,6 @@
             var external = link[1].indexOf('http') === 0;
             return '<a href="' + link[1] + '"' + (external ? ' target="_blank" rel="noopener"' : '') + '>' + link[0] + '</a>';
           }).join('') +
-          '<a class="nav-cta" href="/go/ship-it-kit/home-nav/">Ship It Kit</a>' +
         '</nav>' +
       '</div>';
     return header;

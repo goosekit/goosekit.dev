@@ -1,145 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe duplicate customers breaking Supabase access?</title>
-  <meta name="description" content="Debug duplicate Stripe customers, duplicate subscriptions, missing customer_id reuse, and fragile email matching in a Next.js + Supabase billing flow.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-duplicate-customers-supabase-user/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe duplicate customers breaking Supabase access?">
-  <meta property="og:description" content="A practical checklist for preventing duplicate Stripe customers and keeping Supabase user, organization, and subscription records mapped correctly.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-duplicate-customers-supabase-user/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.1rem,6vw,4.2rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=duplicate_customer_nav">Setup help</a></div>
-    <div class="eyebrow">Stripe customer mapping + Supabase access</div>
-    <h1>Stripe duplicate customers breaking Supabase access?</h1>
-    <p class="lead">A user can complete checkout, pay successfully, and still look unpaid in your app when the Stripe <span class="code">customer</span> or <span class="code">subscription</span> is not mapped to the same Supabase user or organization every time.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The production failure: “Stripe shows payment, Supabase cannot find the user.”</h2>
-      <p>Duplicate Stripe customers usually appear after retries, multiple checkout attempts, payment links, email-only matching, or a database rollback after creating a Stripe customer. The result is messy: one customer has the payment, another customer is stored on the app user, and webhooks update the wrong row or no row at all.</p>
-      <div class="actions">
-        <a class="btn primary" href="/nextjs-supabase-stripe-setup-help/?ref=duplicate_customer_top" data-ph-event="setup_help_interest" data-ph-location="duplicate_customer_top">Need customer-mapping help?</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=duplicate_customer_related" data-ph-event="setup_help_secondary_clicked" data-ph-location="duplicate_customer_mapping_related">User mapping checklist</a>
-      </div>
-      <p class="note">Founding setup/debug help starts at €99–149 when the failing Checkout Session, Stripe customer IDs, and Supabase mapping schema are narrow enough to review safely.</p>
-    </section>
-
-    <section>
-      <h2>1. Reuse the customer ID before creating Checkout</h2>
-      <p>For logged-in SaaS checkout, the safest default is: look up the Supabase user or organization, reuse its stored Stripe customer ID, and pass that ID into Checkout. Do not rely on the email typed into Checkout to magically merge customers later.</p>
-      <ul class="checklist">
-        <li>Store <span class="code">stripe_customer_id</span> on the billing owner: user, team, workspace, or organization.</li>
-        <li>When creating a subscription Checkout Session, pass <span class="code">customer: stripeCustomerId</span> if the owner already has one.</li>
-        <li>Only create a new Stripe customer when the owner genuinely has no Stripe customer ID yet.</li>
-        <li>Persist the new Stripe customer ID immediately, before creating unrelated side effects that could fail.</li>
-        <li>Use <span class="code">client_reference_id</span> and subscription/customer metadata as backup context, not as the only mapping.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>2. Add idempotency around customer creation</h2>
-      <p>Duplicate customers often come from retries or two browser tabs racing through checkout at the same time. External Stripe calls and database writes need a stable key and a unique local constraint.</p>
-      <pre><code>// Shape, not drop-in code
-const ownerId = workspace.id;
-const existing = await getBillingOwner(ownerId);
-
-const customerId = existing.stripe_customer_id
-  ?? await createStripeCustomerAndPersist({
-    ownerId,
-    email: user.email,
-    idempotencyKey: `stripe-customer:${ownerId}`
-  });
-
-const session = await stripe.checkout.sessions.create({
-  mode: 'subscription',
-  customer: customerId,
-  client_reference_id: ownerId,
-  subscription_data: {
-    metadata: { owner_id: ownerId, supabase_user_id: user.id }
-  },
-  line_items: [{ price: priceId, quantity: 1 }],
-  success_url,
-  cancel_url
-});</code></pre>
-      <ul class="checklist">
-        <li>Make <span class="code">stripe_customer_id</span> unique in Supabase so two owners cannot claim the same Stripe customer.</li>
-        <li>Use a stable idempotency key for customer creation, derived from the billing owner, not a random request ID.</li>
-        <li>Lock or upsert the billing-owner row before parallel checkouts can create two customers.</li>
-        <li>Prefer returning the existing active checkout/session path over creating a new customer on every click.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Do not repair identity from email alone</h2>
-      <p>Email is useful for support, but it is not a durable billing foreign key. Users change email, teams share billing emails, test/live modes differ, and Stripe can legitimately contain multiple customers with the same email.</p>
-      <div class="grid2">
-        <div class="card"><h3>Good primary keys</h3><p><span class="code">stripe_customer_id</span>, <span class="code">stripe_subscription_id</span>, Supabase <span class="code">user_id</span>, organization/workspace ID, and metadata written when Checkout is created.</p></div>
-        <div class="card"><h3>Weak fallback only</h3><p>Email, customer name, Checkout success URL visits, or “latest customer with this email” searches. Use these for manual diagnosis, not automatic access grants.</p></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>4. Store enough fields to untangle duplicate customers</h2>
-      <p>When duplicates already exist, you need to compare Stripe customer IDs, subscription IDs, Checkout Session IDs, and the Supabase owner row without exposing secrets.</p>
-      <pre><code>alter table public.billing_customers add column if not exists owner_id uuid;
-alter table public.billing_customers add column if not exists stripe_customer_id text unique;
-alter table public.subscriptions add column if not exists owner_id uuid;
-alter table public.subscriptions add column if not exists stripe_customer_id text;
-alter table public.subscriptions add column if not exists stripe_subscription_id text unique;
-alter table public.subscriptions add column if not exists checkout_session_id text;
-alter table public.subscriptions add column if not exists last_stripe_event_id text;
-alter table public.subscriptions add column if not exists mapping_source text;</code></pre>
-      <ul class="checklist">
-        <li>Record whether a mapping came from an existing stored customer, Checkout metadata, subscription metadata, or manual repair.</li>
-        <li>Keep live-mode and test-mode customer IDs separate; do not let test data overwrite production billing state.</li>
-        <li>Use a server-only Supabase client for webhook writes so RLS does not block billing repair updates.</li>
-        <li>Keep an event ledger so a retry cannot create a second subscription row for the same Stripe subscription.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>5. Test the duplicate-customer paths</h2>
-      <p>Most teams test one happy checkout. The duplicate bugs appear when customers retry, open multiple tabs, or switch from test flows to production billing.</p>
-      <ul class="checklist warn">
-        <li>Click checkout twice quickly and confirm only one Stripe customer is attached to the billing owner.</li>
-        <li>Cancel Checkout, retry, then complete payment and confirm the same customer ID is reused.</li>
-        <li>Start checkout from two devices or tabs with the same logged-in user and confirm unique constraints hold.</li>
-        <li>Complete checkout with the same email on a different Supabase account and confirm your app does not grant access by email alone.</li>
-        <li>Simulate webhook retry and confirm the same subscription row is updated, not duplicated.</li>
-      </ul>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What to send for a duplicate-customer review</h2>
-      <p>Do not send secrets. Send sanitized IDs and screenshots that show the mismatch between Stripe and Supabase.</p>
-      <div class="actions">
-        <a class="btn primary" href="mailto:arthur.pierrey@gmail.com?subject=Stripe%20duplicate%20customer%20%2F%20Supabase%20mapping%20help&body=Hi%20Arthur%2C%0A%0AI%20need%20help%20with%20duplicate%20Stripe%20customers%20or%20customer%20mapping%20in%20a%20Next.js%20%2B%20Supabase%20app.%0A%0AStack%20%28versions%20if%20known%29%3A%0ABilling%20owner%20%28user%20%2F%20team%20%2F%20workspace%29%3A%0AStripe%20customer%20IDs%20involved%20%28safe%20to%20share%2C%20no%20secrets%29%3A%0ACheckout%20Session%20ID%20%2F%20subscription%20ID%20if%20known%3A%0ASupabase%20billing%20tables%20or%20schema%20%28no%20secrets%29%3A%0AHow%20Checkout%20is%20created%20%28customer%2C%20customer_email%2C%20client_reference_id%2C%20metadata%29%3A%0AWhat%20access%20the%20app%20currently%20grants%3A%0AWhat%20should%20happen%20instead%3A%0ADeadline%3A%0ABudget%20range%20if%20any%3A%0A" data-ph-event="setup_help_request_clicked" data-ph-location="duplicate_customer_bottom">Request mapping help →</a>
-        <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=duplicate_customer_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-location="duplicate_customer_idempotency_related">Webhook idempotency checklist</a>
-      </div>
-    </section>
-
-    <section>
-      <h2>Related debugging paths</h2>
-      <ul class="checklist">
-        <li><a href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=duplicate_customer_related_list">Mapping Stripe customers and subscriptions to Supabase users</a></li>
-        <li><a href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=duplicate_customer_related_list">Duplicate Stripe webhook processing and idempotency</a></li>
-        <li><a href="/blog/stripe-trial-ending-supabase-access/?ref=duplicate_customer_related_list">Stripe trial conversion and Supabase access</a></li>
-        <li><a href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=duplicate_customer_related_list">Stripe dunning, past_due, unpaid, and access grace periods</a></li>
-      </ul>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

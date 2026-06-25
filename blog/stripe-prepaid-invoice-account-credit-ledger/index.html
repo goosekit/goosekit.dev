@@ -1,110 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Prepaid Invoice but Account Credit Ledger Drifted?</title>
-  <meta name="description" content="Debug prepaid invoices, customer account credits, signed credit ledgers, revenue recognition timing, and Stripe autopay race conditions.">
-  <link rel="canonical" href="https://goosekit.dev/blog/stripe-prepaid-invoice-account-credit-ledger/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Prepaid Invoice but Account Credit Ledger Drifted?">
-  <meta property="og:description" content="A replay checklist for prepaid invoices, customer account credits, ledger balances, and revenue-recognition-safe application.">
-  <meta property="og:url" content="https://goosekit.dev/blog/stripe-prepaid-invoice-account-credit-ledger/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=prepaid_credit_nav">Run drift check</a><a href="/stripe-supabase-revenue-leak-audit/?ref=prepaid_credit_nav">Revenue leak audit</a></div>
-    <div class="eyebrow">Prepaid invoices + account credits</div>
-    <h1>Stripe prepaid invoice but account credit ledger drifted?</h1>
-    <p class="lead">Prepaid service money is easy to double-count. A customer can hold account credit, an invoice can become prepaid, Stripe autopay may still be collectable, and revenue should be recognized only when the credit is applied to the serviced invoice.</p>
-    <p class="lead">The critical path is not the button that applies credit. It is the ledger invariant: one signed credit movement, one cached balance, one invoice status, and one revenue-recognition event.</p>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">The invariant to protect</h2>
-      <p>Issuing account credit should not create revenue. Applying account credit to an invoice should move exactly one amount from credit balance to invoice collection, mark the invoice prepaid, and block a second collection path.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=prepaid_credit_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="prepaid_credit_top">Run the billing drift check</a>
-        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=prepaid_credit_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="prepaid_credit_top">Map the revenue leak</a>
-      </div>
-      <p class="note">Fixed-scope review fit: EUR99 for one invoice apply-credit flow, EUR149 when Stripe autopay, partial credit, follow-up stops, and revenue-recognition reporting are all in scope.</p>
-    </section>
-
-    <section>
-      <h2>1. Keep credit issuance separate from revenue</h2>
-      <p>Account credit is a holding bucket. The ledger row that issues or adjusts credit should explain the customer balance, not pretend that an invoice has been paid.</p>
-      <div class="grid2">
-        <div class="card"><h3>Credit truth</h3><ul class="checklist"><li>Append-only `customer_credit_ledger` row</li><li>Signed delta and `balance_after`</li><li>Cached `customers.account_credits` value</li><li>Source such as manual, prepay, adjustment, or later referral</li></ul></div>
-        <div class="card"><h3>Invoice truth</h3><ul class="checklist"><li>Invoice status `prepaid`, not Stripe-paid</li><li>`credit_applied` amount and `prepaid_at` timestamp</li><li>Payment or revenue row created only when applied</li><li>Public pay page blocked from collecting again</li></ul></div>
-      </div>
-    </section>
-
-    <section>
-      <h2>2. Replay the cases that break prepaid billing</h2>
-      <ul class="checklist warn">
-        <li>Credit is issued, but no invoice is serviced yet: balance changes, revenue does not.</li>
-        <li>Full credit covers the invoice: invoice becomes `prepaid`, follow-ups stop, pay page cannot collect.</li>
-        <li>Partial credit is applied: balance due remains collectable and the invoice is not marked fully prepaid.</li>
-        <li>Stripe autopay races manual apply: the system does not collect both card payment and account credit.</li>
-        <li>Referral or promo credit exists elsewhere: it is not double-credited into account credit without reconciliation.</li>
-      </ul>
-    </section>
-
-    <section>
-      <h2>3. Query for stranded or double-counted credit</h2>
-      <pre><code>-- Example shape only.
-select
-  i.id as invoice_id,
-  i.status,
-  i.credit_applied,
-  c.account_credits,
-  l.balance_after
-from invoices i
-join customers c on c.id = i.customer_id
-left join customer_credit_ledger l on l.invoice_id = i.id
-where i.status = 'prepaid'
-  and (i.credit_applied is null or l.id is null);</code></pre>
-      <ul class="checklist">
-        <li>Find prepaid invoices without a matching credit-ledger row.</li>
-        <li>Find ledger application rows that did not update invoice status.</li>
-        <li>Find invoices marked paid/prepaid twice through credit and Stripe collection.</li>
-      </ul>
-    </section>
-
-    <section class="card">
-      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
-      <p>Use one invoice and one customer. Redact secrets, but keep the ids, status values, amounts, and row shapes needed to prove the accounting boundary.</p>
-      <pre><code>Invoice id and status before/after:
-Customer id and account_credits before/after:
-Credit ledger row with signed delta and balance_after:
-Apply-credit endpoint or function:
-Stripe payment/autopay state:
-Payment or revenue row created when applied:
-Follow-up/send-guard state:
-Expected revenue-recognition state:
-Actual bug:
-One replay command, test, or local repro:</code></pre>
-      <div class="actions">
-        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=prepaid_credit_bottom_packet&context=prepaid_account_credit&price_range_eur=99-149&quote_path=launch_blocker&source_ref=prepaid_credit_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="prepaid_credit_bottom_packet">Send prepaid-credit packet →</a>
-        <a class="btn secondary" href="/blog/stripe-invoice-paid-double-extends-supabase-membership/?ref=prepaid_credit_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="prepaid_credit_related">Compare duplicate invoice effects</a>
-      </div>
-    </section>
-
-    <section class="card cta">
-      <h2 style="margin-top:0">What this review is not</h2>
-      <p>It is not tax advice, bookkeeping policy, or revenue-recognition consulting. It is a billing-state review: whether the app can prove credit issue, credit application, invoice status, collection blocking, and local revenue rows agree.</p>
-      <div class="actions">
-        <a class="btn primary" href="/billing-health-support/?ref=prepaid_credit_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="prepaid_credit_bottom">See billing-health support</a>
-      </div>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>

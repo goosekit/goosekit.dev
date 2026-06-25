@@ -1,101 +1,15 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Stripe Billing Reliability Checklist — Supabase + Next.js</title>
-  <meta name="description" content="A practical Stripe billing reliability checklist for Next.js + Supabase apps: webhook idempotency, paid-user state, failed payments, portal changes, and reconciliation.">
-  <link rel="canonical" href="https://goosekit.dev/stripe-billing-reliability-checklist/">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
-  <meta property="og:type" content="article">
-  <meta property="og:title" content="Stripe Billing Reliability Checklist">
-  <meta property="og:description" content="Check the boring billing edge cases before Stripe/Supabase state quietly drifts.">
-  <meta property="og:url" content="https://goosekit.dev/stripe-billing-reliability-checklist/">
-  <meta property="og:site_name" content="Goosekit">
-  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
-  <script defer src="/posthog.js"></script>
-  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
-  <style>
-    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.14),transparent 28rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.68}.wrap{max-width:980px;margin:0 auto;padding:28px 20px 76px}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}nav{display:flex;justify-content:space-between;margin-bottom:54px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,6vw,4.7rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.12;letter-spacing:-.04em;margin:42px 0 14px}p,li{color:#bebed1}.lead{font-size:1.18rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:20px;padding:24px;margin-top:22px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}ul{padding-left:1.2rem}.checklist li{margin:12px 0}.matrix{width:100%;border-collapse:collapse;margin-top:14px;overflow:hidden;border-radius:14px}.matrix th,.matrix td{border:1px solid #2a2a41;padding:12px;text-align:left;vertical-align:top}.matrix th{color:#fff;background:rgba(255,255,255,.06)}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.fine{color:#9090aa;font-size:.94rem}@media(max-width:760px){.matrix{display:block;overflow-x:auto}nav{margin-bottom:34px}}
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, follow">
+  <title>Goosekit free tools</title>
+  <link rel="canonical" href="https://goosekit.dev/tools/">
+  <meta http-equiv="refresh" content="0;url=/tools/">
+  <script>window.location.replace('/tools/');</script>
 </head>
 <body>
-  <main class="wrap">
-    <nav><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=billing_reliability_checklist_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=billing_reliability_checklist_nav">Reconciliation query</a><a href="/stripe-supabase-revenue-leak-audit/?ref=billing_reliability_checklist_nav">Revenue leak audit</a><a href="/nextjs-supabase-stripe-setup-help/?ref=billing_reliability_checklist_nav">Setup/debug help</a></nav>
-    <div class="eyebrow">Stripe + Supabase billing reliability</div>
-    <h1>A practical checklist for the billing bugs that quietly cost money.</h1>
-    <p class="lead">A Stripe payment can succeed while the app state stays wrong. This checklist is for Next.js + Supabase SaaS builders who want to catch webhook, entitlement, dunning, portal, and reconciliation edge cases before users hit them.</p>
-
-    <section class="card strip">
-      <h2>Use this before launch, after launch, and after every billing change.</h2>
-      <p>Do not test only the happy checkout path. Test the state transitions: what Stripe says, what Supabase stores, what the user sees, and how the app recovers when the first write fails.</p>
-      <div class="actions">
-        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=billing_reliability_checklist_top&context=billing_reliability_checklist&price_range_eur=99-149&quote_path=fixed_scope_quote&source_ref=billing_reliability_checklist_top" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_top">Ask for a billing check →</a>
-        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_reliability_checklist_top" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_top">See revenue leak audit</a>
-        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=billing_reliability_checklist_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_top">Run the drift check</a>
-        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=billing_reliability_checklist_top" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_top" data-ph-request-context="billing_reconciliation_query">Build reconciliation query</a>
-        <a class="btn secondary" href="/billing-health-support/?ref=billing_reliability_checklist_top" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_top">Monthly billing-health support</a>
-      </div>
-      <p class="fine">Founding validation scope: €99–149 for a narrow first fix/review. Founding-5 monthly support: €29/mo after a first pass.</p>
-    </section>
-
-    <h2>The minimum matrix</h2>
-    <table class="matrix">
-      <thead><tr><th>Case</th><th>Stripe/provider state</th><th>Supabase/app state</th><th>Recovery action</th></tr></thead>
-      <tbody>
-        <tr><td>Checkout succeeds, webhook delayed</td><td>Checkout/session paid or subscription active</td><td>User still pending/processing</td><td>Show processing state; webhook or reconciliation unlocks access.</td></tr>
-        <tr><td>Webhook delivered twice</td><td>Same event id delivered again</td><td>No duplicate rows, emails, credits, or access mutations</td><td>Use processed event ids and unique constraints.</td></tr>
-        <tr><td>DB write fails after payment</td><td>Invoice/subscription paid</td><td>No entitlement mutation happened</td><td>Reconciliation job detects paid-but-inactive and queues a fix.</td></tr>
-        <tr><td>Payment fails, retry later succeeds</td><td>past_due then paid/active</td><td>Grace/downgrade then restored access</td><td>State machine handles both downgrade and recovery.</td></tr>
-        <tr><td>Portal cancellation or downgrade</td><td>cancel_at_period_end, canceled, or new price</td><td>Access follows the agreed policy</td><td>Map portal states to entitlement and user-facing copy.</td></tr>
-      </tbody>
-    </table>
-
-    <h2>Checklist</h2>
-    <div class="card checklist">
-      <ul>
-        <li>Store Stripe customer, subscription, price, and latest relevant event ids against the right user/team/workspace.</li>
-        <li>Verify webhooks with the raw body and endpoint secret in production, not only locally.</li>
-        <li>Make webhook handling idempotent with a processed-events table keyed by Stripe event id.</li>
-        <li>Do not unlock paid access from the success URL alone; treat redirect as UX, not source of truth.</li>
-        <li>Test duplicate, delayed, and out-of-order events with saved fixtures or Stripe CLI replays.</li>
-        <li>Run a recurring reconciliation scan for recent subscriptions, invoices, refunds, and portal changes.</li>
-        <li>Define what happens during trial end, past_due, unpaid, pause_collection, cancel_at_period_end, cancel, refund, and downgrade.</li>
-        <li>Log an exception queue: expected state, actual state, provider object id, local user/team id, detected time, resolution note.</li>
-      </ul>
-    </div>
-
-    <section class="card strip">
-      <h2>Evidence packet for a paid review</h2>
-      <p>If one check fails, turn it into a small packet before asking for help. The useful packet is one provider object, one app row, one expected state, one actual state, and the webhook delivery result.</p>
-      <table class="matrix">
-        <thead><tr><th>Send</th><th>Example</th><th>Why it matters</th></tr></thead>
-        <tbody>
-          <tr><td>Stripe object id</td><td>Checkout Session, subscription, invoice, event, refund, or customer id</td><td>Anchors the provider state without exposing secrets.</td></tr>
-          <tr><td>Supabase state</td><td>Table name, row id, status/plan/credits/seats fields, sanitized values</td><td>Shows how the app represents paid access.</td></tr>
-          <tr><td>Webhook delivery</td><td>Delivered, failed, retried, duplicate, endpoint mismatch, or not configured</td><td>Separates billing logic bugs from delivery/config bugs.</td></tr>
-          <tr><td>Visible symptom</td><td>Paid but blocked, unpaid but unlocked, wrong workspace, stale entitlement</td><td>Keeps the review tied to revenue impact.</td></tr>
-        </tbody>
-      </table>
-      <p class="fine">The direct email asks for the expected app state, actual app state, user-visible symptom, webhook delivery status, and the Stripe/Supabase object references needed for a narrow review.</p>
-      <div class="actions">
-        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=billing_reliability_evidence_packet&context=billing_reliability_checklist&price_range_eur=99-149&quote_path=fixed_scope_quote&source_ref=billing_reliability_evidence_packet" data-ph-event="billing_reliability_evidence_packet" data-ph-product="billing_reliability" data-ph-location="billing_reliability_evidence_packet">Send evidence packet →</a>
-        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=billing_reliability_evidence_packet" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_reliability_evidence_packet" data-ph-request-context="billing_reconciliation_query">Generate SQL skeleton</a>
-        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_reliability_evidence_packet" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_evidence_packet">See audit scope</a>
-      </div>
-    </section>
-
-    <section class="card strip">
-      <h2>If this already feels familiar</h2>
-      <p>The fastest paid scope is not a dashboard. It is one narrow pass over the billing surface: event coverage, idempotency, Supabase paid-state writes, and the top mismatch cases.</p>
-      <div class="actions">
-        <a class="btn primary" href="/stripe-supabase-revenue-leak-audit/?ref=billing_reliability_checklist_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_bottom">See revenue leak audit →</a>
-        <a class="btn secondary" href="/nextjs-supabase-stripe-setup-help/?ref=billing_reliability_checklist_bottom" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_bottom">See setup/debug scope</a>
-        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=billing_reliability_checklist_bottom" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_bottom">Run the drift check</a>
-        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=billing_reliability_checklist_bottom" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_bottom" data-ph-request-context="billing_reconciliation_query">Build reconciliation query</a>
-        <a class="btn secondary" href="/billing-health-support/?ref=billing_reliability_checklist_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="billing_reliability_checklist_bottom">See monthly support →</a>
-      </div>
-    </section>
-  </main>
+  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
 </body>
 </html>
