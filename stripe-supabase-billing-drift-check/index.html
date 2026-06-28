@@ -1,15 +1,232 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe + Supabase Billing Drift Check — Goosekit</title>
+  <meta name="description" content="Run a quick Stripe + Supabase billing drift check for your SaaS: webhook retries, entitlement state, customer portal changes, dunning, trials, and reconciliation.">
+  <link rel="canonical" href="https://goosekit.dev/stripe-supabase-billing-drift-check/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stripe + Supabase Billing Drift Check">
+  <meta property="og:description" content="Score the billing edge cases that make Stripe say paid while your Supabase app state says something else.">
+  <meta property="og:url" content="https://goosekit.dev/stripe-supabase-billing-drift-check/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.14),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.62}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1100px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:50px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(320px,.95fr);gap:28px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,5.6vw,4.6rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.55rem,3vw,2.15rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 14px}h3{margin:0 0 9px;font-size:1.08rem}p,li,label{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:18px;padding:22px}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.section{margin-top:52px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}.checks{display:grid;gap:11px;margin-top:14px}.check{display:grid;grid-template-columns:24px 1fr;gap:12px;align-items:start;padding:13px 14px;border:1px solid #2a2a41;border-radius:12px;background:rgba(255,255,255,.025)}.check input{width:18px;height:18px;margin-top:2px;accent-color:#ff4800}.score{font-size:3.3rem;letter-spacing:-.06em;font-weight:950;margin:4px 0}.status{font-weight:900;color:#fff;margin:0 0 8px}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.fine{color:#9090aa;font-size:.94rem}.resultList{padding-left:1.1rem;margin:10px 0 0}.resultList li{margin:7px 0}@media(max-width:860px){.hero,.grid2{grid-template-columns:1fr}nav{margin-bottom:34px}.score{font-size:2.8rem}}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <nav><a href="/">← Goosekit</a><a href="/stripe-billing-reliability-checklist/?ref=drift_check_nav">Reliability checklist</a><a href="/billing-reconciliation-query-builder/?ref=drift_check_nav">Reconciliation query</a><a href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_nav">Revenue leak audit</a><a href="/billing-health-support/?ref=drift_check_nav">Monthly support</a></nav>
+
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Stripe + Supabase billing drift check</div>
+        <h1>Can your app find when Stripe and Supabase disagree?</h1>
+        <p class="lead">A quick self-check for live or near-live SaaS apps. Score the cases that usually create silent revenue leaks: duplicate webhooks, 23505 retry storms, failed local writes after payment, mock grants left in live Checkout, schema drift between subscriptions and plan config, customer portal changes, dunning, trials, monthly credit resets, add-credit purchases, and missing reconciliation.</p>
+        <p class="lead">No login. No fake audit. If the result exposes real risk, the paid path is a narrow €99-149 billing review and optional €29/mo founding support after a first pass.</p>
+      </div>
+      <aside class="card strip" aria-live="polite">
+        <h2>Your drift risk</h2>
+        <div class="score"><span id="score">0</span>/<span id="total">19</span></div>
+        <p class="status" id="status">Start checking the boxes.</p>
+        <p id="summary">Each unchecked item is a place where Stripe can be right and your app can still grant, block, or bill incorrectly.</p>
+        <p class="fine"><strong>Likely paid scope:</strong> <span id="scope">Score the app first, then choose the smallest review that matches the risk.</span></p>
+        <div class="actions">
+          <a class="btn primary" id="emailCta" href="/go/billing-reliability/setup-request/?source=billing_drift_check_result&context=billing_drift_review&price_range_eur=99-149&quote_path=launch_blocker&source_ref=drift_check_result&drift_score=0&total_risks=19&risk_count=19" data-ph-event="billing_drift_review_request" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="99-149" data-ph-request-context="billing_drift_review">Request a narrow review →</a>
+          <a class="btn secondary" id="auditCta" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_result" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="149" data-ph-request-context="revenue_leak_audit">See revenue leak audit</a>
+          <a class="btn secondary" id="queryCta" href="/billing-reconciliation-query-builder/?ref=drift_check_result" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur="99-149" data-ph-request-context="billing_reconciliation_query">Build reconciliation query</a>
+          <a class="btn secondary" id="monthlyCta" href="/go/billing-reliability/health-support/?source=drift_check_result_monthly_support&track=access_drift&source_ref=drift_check_result" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_result" data-ph-score="0" data-ph-risk-count="19" data-ph-recommended-scope="unscored" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">See monthly support</a>
+        </div>
+        <p class="fine">Best fit: Next.js + Supabase + Stripe, with trials, subscriptions, paid access, credits, or seat limits already wired or close to launch.</p>
+      </aside>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>Run the check</h2>
+        <div class="checks" id="checks">
+          <label class="check"><input type="checkbox" data-risk="Duplicate webhook deliveries can duplicate entitlements, emails, credits, or tier updates."><span>Duplicate Stripe webhook deliveries are idempotent by event ID.</span></label>
+          <label class="check"><input type="checkbox" data-risk="A processed-event insert can hit Postgres 23505, return 500, and make Stripe retry an event whose side effect already happened."><span>Known duplicate event IDs return 2xx after a 23505 conflict and do not rerun subscription, credit, email, or entitlement side effects.</span></label>
+          <label class="check"><input type="checkbox" data-risk="A successful Stripe payment can leave Supabase unpaid if the local write fails."><span>There is a recovery path when Stripe succeeds but the Supabase write fails.</span></label>
+          <label class="check"><input type="checkbox" data-risk-key="missing_subscription_columns" data-risk="Webhook or check-subscription code can write plan-limit fields to a subscription table that lacks those columns, leaving paid users with stale limits or credits."><span>Webhook and manual subscription checks write only existing subscription columns, and derive plan limits or included credits from the plan config table.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Older delayed subscription events can overwrite newer paid access state."><span>Out-of-order subscription events cannot overwrite newer entitlement state.</span></label>
+          <label class="check"><input type="checkbox" data-risk="The success URL can unlock users before the verified webhook updates app state."><span>Paid access does not rely on the checkout success URL alone.</span></label>
+          <label class="check"><input type="checkbox" data-risk-key="checkout_success_mock_grant" data-risk="Mock grants can remain active when hosted Stripe Checkout goes live, or plan, credit-pack, and gift purchases can share one non-idempotent success-route fulfillment path."><span>Mock fallback, plan checkout, credit-pack checkout, and paid-gift checkout each have a replay-safe live-mode path keyed by Checkout Session.</span></label>
+          <label class="check"><input type="checkbox" data-risk="A client-supplied plan, paid flag, or isPro value can unlock paid features without Stripe proof."><span>Server APIs never accept client-supplied plan, paid, or isPro flags as the source of paid access.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Customer portal cancels, downgrades, and plan changes can drift from app access."><span>Customer portal cancel, downgrade, and plan-change events update Supabase access correctly.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Monthly credit, usage, or quota refill can double-grant or miss a paid cycle when Stripe, RevenueCat, and cron overlap."><span>Monthly credit, usage, or quota refills use one cycle key and cannot double-grant from provider retries or fallback cron.</span></label>
+          <label class="check"><input type="checkbox" data-risk-key="subscription_add_credit" data-risk="One-time add-credit Checkout can be double-granted, missed, refunded incorrectly, or overwritten by the next subscription monthly reset."><span>One-time add-credit purchases and monthly subscription credits write through one replay-safe credit ledger without overwriting each other.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Dunning and failed renewals can either block too early or leak access forever."><span>Past-due, unpaid, retry, and recovery states have an explicit access policy.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Trial endings can fail silently if invoice/subscription events are not mapped to access."><span>Trial ending and trial conversion are tested against the real access gate.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Paused billing can leave ambiguous paid state unless pause_collection is mapped."><span>Paused billing and resumed billing are mapped to the intended Supabase state.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Email-only customer mapping can update the wrong user or workspace."><span>Stripe customer/subscription IDs map to the local user, team, or workspace without relying on email alone.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Hosted-plan purchases can pay successfully while tenant/workspace provisioning fails, duplicates, or drifts from entitlement state."><span>Hosted-plan, tenant, or workspace provisioning can be replayed from Stripe truth without duplicate access.</span></label>
+          <label class="check"><input type="checkbox" data-risk="Billing trouble can stay hidden if Stripe money events do not raise and resolve durable human-owned action queue cards."><span>Billing trouble events raise and resolve durable action queue or retention cards from a billing ledger row.</span></label>
+          <label class="check"><input type="checkbox" data-risk-key="connect_transfer_reversal" data-risk="Stripe Connect transfer.reversed events can double-deduct, double-credit, or strand clawback rows if payout, commission, and queue updates are not replay-safe."><span>Stripe Connect transfer reversals update payout balance, commission state, and clawback queue exactly once under duplicate delivery.</span></label>
+          <label class="check"><input type="checkbox" data-risk="No recurring scan means paid-in-Stripe/inactive-locally drift can sit unnoticed."><span>A recurring reconciliation query can find Stripe-active/Supabase-inactive and Stripe-inactive/Supabase-active mismatches.</span></label>
+        </div>
+      </div>
+      <div class="card">
+        <h2>What your result means</h2>
+        <p><strong>0-4:</strong> the happy checkout path may work, but the billing loop is probably fragile.</p>
+        <p><strong>5-8:</strong> the core shape exists, but one bad webhook, portal change, provisioning miss, or failed write can still leak access or block paid users.</p>
+        <p><strong>9+:</strong> good foundation. The remaining value is usually monthly drift review and sharper observability, not more launch code.</p>
+        <h3>Unchecked risks</h3>
+        <ul class="resultList" id="risks"><li>Check the boxes to generate the risk list.</li></ul>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>Debug packet for a paid review</h2>
+      <p>If the score exposes risk, the fastest first pass is a small incident packet. It should show one real mismatch, not a full codebase tour.</p>
+      <ul class="resultList">
+        <li>Stripe object ids: customer, subscription, checkout session, invoice, or event id.</li>
+        <li>Supabase rows or table names that store user, team, subscription, entitlement, credit, or booking state.</li>
+        <li>Checkout Session ledger row before/after fulfillment, plus the mock fallback or Stripe env mode evidence.</li>
+        <li>Plan, credit-pack, or gift grant row after success-route refresh and webhook replay.</li>
+        <li>Entitlement/access row before and after replay, plus any tenant/workspace provisioning job or result row.</li>
+        <li>One-time add-credit Checkout or payment event, credit ledger/balance row, and grant function/webhook log.</li>
+        <li>23505 duplicate-key log or processed-event conflict, plus the HTTP response Stripe saw after duplicate delivery.</li>
+        <li>For Stripe Connect: transfer id, payout balance row, commission row, clawback queue row, and the replay/idempotency result.</li>
+        <li>What the paid user currently sees: blocked, free plan, missing credits, duplicate access, wrong team, or stale portal state.</li>
+        <li>Webhook delivery status: delivered, failed, retried, duplicated, missing handler, or unknown.</li>
+        <li>The one state that must be true after review: paid users unlocked, unpaid users blocked, no duplicate grant, or recurring reconciliation in place.</li>
+      </ul>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>First paid review scope</h2>
+        <p><strong>€99 narrow review:</strong> one Stripe event, customer, subscription, session, or invoice path; one local entitlement table or access gate; one expected invariant; written findings plus the smallest fix or test plan.</p>
+        <p><strong>€149 revenue leak audit:</strong> live paid users, deposits, missing tenant/workspace provisioning, duplicate grants, portal/dunning/trial drift, or a webhook failure path that can block or leak paid access.</p>
+        <p><a href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_paid_scope" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_paid_scope">See the fixed audit scope →</a></p>
+      </div>
+      <div class="card">
+        <h2>Not a broad rebuild</h2>
+        <p>This is not unlimited development, a billing dashboard, or generic SaaS consulting. If the first pass shows a recurring risk and the app is live, monthly billing-health support can be discussed after the review.</p>
+        <p class="fine">If there is no concrete Stripe/app mismatch yet, start with the checklist and send one reproducible state example first.</p>
+      </div>
+    </section>
+
+    <section class="section card strip">
+      <h2>If the score is low, keep the first paid scope narrow.</h2>
+      <p>The right first step is not a dashboard or a full rebuild. It is one billing drift review: event coverage, idempotency, Stripe-to-Supabase state projection, and the highest-risk mismatch cases.</p>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=drift_check_bottom_packet&context=billing_drift_review&price_range_eur=99-149&quote_path=fixed_scope_quote&source_ref=drift_check_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="drift_check_bottom_packet" data-ph-request-context="billing_drift_review" data-ph-price-eur="99-149">Request a €99-149 billing review →</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=drift_check_monthly_support&track=access_drift&source_ref=drift_check_bottom" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_monthly_support" data-ph-price-eur-monthly="29" data-ph-request-context="billing_health_support">Monthly drift support →</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=drift_check_bottom" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="drift_check_bottom">See €149 audit scope</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=drift_check_bottom" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="drift_check_bottom" data-ph-request-context="billing_reconciliation_query">Build reconciliation query</a>
+        <a class="btn secondary" href="/stripe-billing-reliability-checklist/?ref=drift_check_bottom" data-ph-event="billing_drift_check_secondary" data-ph-product="billing_reliability" data-ph-location="drift_check_bottom">Read the full checklist</a>
+      </div>
+    </section>
+  </main>
+  <script>
+    const inputs = [...document.querySelectorAll('#checks input')];
+    const score = document.getElementById('score');
+    const total = document.getElementById('total');
+    const status = document.getElementById('status');
+    const summary = document.getElementById('summary');
+    const scope = document.getElementById('scope');
+    const risks = document.getElementById('risks');
+    const emailCta = document.getElementById('emailCta');
+    const auditCta = document.getElementById('auditCta');
+    const monthlyCta = document.getElementById('monthlyCta');
+    const queryCta = document.getElementById('queryCta');
+
+    function update() {
+      const checked = inputs.filter(input => input.checked).length;
+      const missing = inputs.filter(input => !input.checked).map(input => input.dataset.risk);
+      const missingKeys = inputs.filter(input => !input.checked).map(input => input.dataset.riskKey).filter(Boolean);
+      score.textContent = checked;
+      total.textContent = inputs.length;
+      if (checked <= 4) {
+        status.textContent = 'High drift risk';
+        summary.textContent = 'The app may pass happy-path checkout while still leaking access, blocking paid users, or missing failed renewals.';
+        scope.textContent = '€99-149 first review: webhook coverage, idempotency, Stripe-to-Supabase mapping, and one recovery path for paid-but-inactive users.';
+      } else if (checked <= 8) {
+        status.textContent = 'Medium drift risk';
+        summary.textContent = 'The billing loop has a base, but the edge cases still deserve a focused review before more paid traffic.';
+        scope.textContent = '€99-149 targeted review: the missing edge cases, event-ordering policy, and a reconciliation query before launch or the next billing change.';
+      } else {
+        status.textContent = 'Lower drift risk';
+        summary.textContent = 'The foundation looks stronger. The value is now recurring review, reconciliation, and observability.';
+        scope.textContent = 'Monthly billing-health support: a lightweight recurring check of webhook failures, drift rows, dunning, trials, portal changes, and one small fix.';
+      }
+      risks.innerHTML = missing.length ? missing.map(item => `<li>${item}</li>`).join('') : '<li>No unchecked risks in this quick pass. Keep a recurring reconciliation habit.</li>';
+      const body = [
+        'Hi Arthur,',
+        '',
+        'I ran the billing drift check and want a narrow review.',
+        '',
+        'App status (live / pre-launch):',
+        'Stack:',
+        `Check score: ${checked}/${inputs.length}`,
+        `Likely paid scope: ${scope.textContent}`,
+        `Unchecked risk keys: ${missingKeys.join(', ') || 'none'}`,
+        'Unchecked billing risks:',
+        ...missing.map(item => `- ${item}`),
+        'Recent Stripe or Supabase issue:',
+        'Stripe object ids you can share (customer/subscription/session/invoice/event/transfer):',
+        'Supabase rows or table names involved:',
+        'Checkout Session ledger row before/after fulfillment:',
+        'Mock fallback or Stripe env mode evidence:',
+        'Plan, credit-pack, or gift grant row after replay:',
+        'Entitlement or access row before/after replay:',
+        'Subscriptions table schema:',
+        'Pricing_config or plan-limit schema:',
+        'Attempted webhook/check-subscription columns:',
+        'Tenant/workspace provisioning job or result:',
+        'Monthly credit/refill row or tier cap config:',
+        'One-time add-credit Checkout event or payment object:',
+        'Credit ledger or balance row after subscription and add-credit:',
+        'Grant function or webhook log for both credit paths:',
+        'Action queue or retention card row:',
+        'Billing ledger or processed-event row:',
+        'Stripe Connect transfer id, payout balance row, commission row, clawback queue row, and replay/idempotency result:',
+        '23505 duplicate-key log or processed-event conflict:',
+        'HTTP response Stripe saw after duplicate delivery:',
+        'What the paid user currently sees:',
+        'Webhook delivery status or error:',
+        'One state that must be true after review:',
+        'Repo access situation:',
+        'Budget range if any:'
+      ].join('\n');
+      const reviewParams = new URLSearchParams({
+        source: 'billing_drift_check_result',
+        context: 'billing_drift_review',
+        price_range_eur: '99-149',
+        quote_path: checked <= 4 ? 'launch_blocker' : 'fixed_scope_quote',
+        source_ref: 'drift_check_result',
+        drift_score: String(checked),
+        total_risks: String(inputs.length),
+        risk_count: String(missing.length),
+        unchecked_risk_keys: missingKeys.join(',')
+      });
+      emailCta.href = `/go/billing-reliability/setup-request/?${reviewParams.toString()}`;
+      emailCta.setAttribute('data-ph-score', String(checked));
+      emailCta.setAttribute('data-ph-risk-count', String(missing.length));
+      emailCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      emailCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
+      auditCta.setAttribute('data-ph-score', String(checked));
+      auditCta.setAttribute('data-ph-risk-count', String(missing.length));
+      auditCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      auditCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
+      monthlyCta.setAttribute('data-ph-score', String(checked));
+      monthlyCta.setAttribute('data-ph-risk-count', String(missing.length));
+      monthlyCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      monthlyCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
+      queryCta.setAttribute('data-ph-score', String(checked));
+      queryCta.setAttribute('data-ph-risk-count', String(missing.length));
+      queryCta.setAttribute('data-ph-recommended-scope', scope.textContent);
+      queryCta.setAttribute('data-ph-unchecked-risk-keys', missingKeys.join(','));
+    }
+    inputs.forEach(input => input.addEventListener('change', update));
+    update();
+  </script>
 </body>
 </html>

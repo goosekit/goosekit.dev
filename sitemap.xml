@@ -160,6 +160,13 @@
   <url><loc>https://goosekit.dev/use-cases/graphql-response-debugging/</loc><lastmod>2026-05-23</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <url><loc>https://goosekit.dev/use-cases/api-pagination-debugging/</loc><lastmod>2026-05-24</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/format-json-locally/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/regex-examples-javascript/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/decode-jwt-locally/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/base64-decode-locally/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/hash-checksum-locally/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/image-to-pdf-browser/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://goosekit.dev/use-cases/open-graph-meta-tags/</loc><lastmod>2026-06-28</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
 
   <url><loc>https://goosekit.dev/blog/format-json-locally-without-upload/</loc><lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://goosekit.dev/blog/offline-jwt-decoder/</loc><lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.7</priority></url>

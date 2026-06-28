@@ -1,15 +1,140 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Setup Mode Card Gate Looks Like Subscription Access?</title>
+  <meta name="description" content="Debug Stripe Checkout setup mode, card-on-file gates, SetupIntent metadata, and local access or job state that drifts from subscription truth.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-setup-mode-card-on-file-subscription-gate/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Setup Mode Card Gate Looks Like Subscription Access?">
+  <meta property="og:description" content="A practical checklist for Checkout setup mode, card-on-file gates, SetupIntent metadata, and local billing state.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-setup-mode-card-on-file-subscription-gate/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=setup_mode_card_gate_nav">Run drift check</a><a href="/billing-reconciliation-query-builder/?ref=setup_mode_card_gate_nav">Reconciliation query</a><a href="/stripe-billing-reliability-checklist/?ref=setup_mode_card_gate_nav">Billing checklist</a></div>
+    <div class="eyebrow">Stripe setup mode + card-on-file gates</div>
+    <h1>Stripe setup mode card gate looks like subscription access?</h1>
+    <p class="lead">Checkout <span class="code">mode: setup</span> is useful when you need to collect a payment method before a free tier, trial, import, or backfill. It is not the same thing as a subscription, paid invoice, or durable entitlement.</p>
+    <p class="lead">The risky version is a card-on-file gate that unlocks local access or starts expensive work while the app has not stored enough SetupIntent, customer, account, and job state to repair the flow later.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>A setup-mode Checkout Session, the resulting SetupIntent, the saved payment method, and the local account row must point to the same user or team before access, imports, backfills, or usage jobs start.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=setup_mode_card_gate_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=setup_mode_card_gate_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_related">Compare success URL risk</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=setup_mode_card_monthly_support&track=access_drift&source_ref=setup_mode_card_gate_top" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_monthly_support" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Watch this monthly</a>
+      </div>
+      <p class="note">Fixed-scope review fit: EUR99 for one setup-mode gate and one local row; EUR149 if subscription/trial state and queued job/backfill behavior are also in scope.</p>
+    </section>
+
+    <section>
+      <h2>1. Do not treat a saved card as paid state</h2>
+      <p><span class="code">mode: setup</span> creates a SetupIntent flow. It can prove that a payment method was collected. It does not prove that the customer has an active subscription, paid invoice, trial entitlement, usage allowance, or completed billing agreement beyond the setup flow you designed.</p>
+      <ul class="checklist warn">
+        <li>Local access flips to active after Checkout returns from a setup session.</li>
+        <li>A backfill, import, or usage job starts before the payment method is attached to the expected account.</li>
+        <li>The app stores the Checkout Session id but not the SetupIntent id or payment method id.</li>
+        <li>The later subscription/trial path cannot tell whether the card gate already ran.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>2. Put account metadata where future webhooks can use it</h2>
+      <p>Setup-mode Checkout has several objects in play. If the only useful account identifier lives on the Checkout Session, later SetupIntent or payment method flows may not have enough context for repair.</p>
+      <pre><code>// Example shape only: adapt names to your app.
+await stripe.checkout.sessions.create({
+  mode: "setup",
+  customer: stripeCustomerId,
+  client_reference_id: accountId,
+  metadata: { accountId },
+  setup_intent_data: {
+    metadata: { accountId }
+  },
+  success_url,
+  cancel_url
+});</code></pre>
+      <ul class="checklist">
+        <li>Store the Checkout Session id, SetupIntent id, Stripe customer id, local account id, and payment method state.</li>
+        <li>Use the same account identifier in session metadata and SetupIntent metadata when the app depends on later SetupIntent events.</li>
+        <li>Keep the local row idempotent: one account should not create several active card-gate records for the same purpose.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Gate jobs separately from card collection</h2>
+      <p>Card-on-file is often used before a costly operation: historical import, AI generation, enrichment, bulk processing, or usage-based billing. That job/backfill gate needs its own state machine instead of assuming “card collected” means “safe to run everything.”</p>
+      <div class="grid2">
+        <div class="card"><h3>Billing setup state</h3><ul class="checklist"><li>Checkout setup session created</li><li>SetupIntent succeeded</li><li>Payment method attached</li><li>Local card gate marked ready</li></ul></div>
+        <div class="card"><h3>Work state</h3><ul class="checklist"><li>Job requested</li><li>Billing setup verified</li><li>Job enqueued once</li><li>Failure/refund/repair path recorded</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>4. Keep the replay matrix small but real</h2>
+      <ul class="checklist">
+        <li>Setup Checkout returns to the success URL before SetupIntent events are processed.</li>
+        <li>The success URL is refreshed twice.</li>
+        <li>The same account starts two setup sessions in two tabs.</li>
+        <li>SetupIntent succeeds, but the local DB write fails.</li>
+        <li>Payment method attaches to the customer, but the local account row is missing or belongs to another team.</li>
+        <li>The expensive job is enqueued once, retried once, and blocked when setup state is incomplete.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. The minimum query to add</h2>
+      <p>Adapt the table names, but keep the question: can one local account have more than one open card gate or queued job for the same billing setup purpose?</p>
+      <pre><code>select
+  account_id,
+  purpose,
+  count(*) as open_gate_count
+from billing_setup_gates
+where status in ('pending', 'ready')
+group by account_id, purpose
+having count(*) > 1;</code></pre>
+      <ul class="checklist">
+        <li>Add the inverse check too: job queued with no ready card gate.</li>
+        <li>Log failed DB writes after SetupIntent success as repairable incidents, not just console errors.</li>
+        <li>Make the UI honest: “card saved” is different from “subscription active” or “job complete.”</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 style="margin-top:0">Monthly setup-mode card gate check</h2>
+      <p>If setup mode controls real access, imports, credits, or queued work, keep one repeatable check: a saved card is allowed to exist without active subscription access, but it must not silently start paid work or leave duplicate ready gates behind.</p>
+      <ul class="checklist">
+        <li>One account has at most one ready setup gate per purpose.</li>
+        <li>Ready setup gates do not grant subscription-only access.</li>
+        <li>Queued jobs reference a ready setup gate and are enqueued once.</li>
+        <li>Later subscription or trial state can be reconciled separately from card-on-file state.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="/billing-reconciliation-query-builder/?ref=setup_mode_card_monthly_query" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_monthly_query" data-ph-request-context="billing_reconciliation_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="setup_mode_card_gate">Build the query shape →</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=setup_mode_card_monthly_support&track=access_drift&source_ref=setup_mode_card_gate_monthly" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_monthly_support" data-ph-request-context="billing_health_support" data-ph-price-eur-monthly="29">Ask about monthly check</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to send for a narrow review</h2>
+      <p>Send the setup-mode Checkout creator, SetupIntent/webhook handling, local account/payment method row, and the job or feature gate that depends on the card. Redact secrets.</p>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=setup_mode_card_gate_bottom_packet&context=setup_mode_card_gate&price_range_eur=99-149&quote_path=launch_blocker&source_ref=setup_mode_card_gate_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_bottom_packet">Request setup-mode review →</a>
+        <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_mode_card_gate_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="setup_mode_card_gate_related">Trial ending access drift?</a>
+      </div>
+      <p class="note">This is a focused billing-state review, not a full SaaS rebuild.</p>
+    </section>
+  </main>
 </body>
 </html>

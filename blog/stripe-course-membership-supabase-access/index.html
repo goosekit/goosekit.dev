@@ -1,15 +1,101 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Course Membership Paid but Supabase Access Drifted?</title>
+  <meta name="description" content="Debug Stripe course memberships, Supabase subscription rows, per-course entitlements, access-code overrides, and webhook access drift.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-course-membership-supabase-access/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Course Membership Paid but Supabase Access Drifted?">
+  <meta property="og:description" content="A replay checklist for course platforms moving from one-time access to recurring Stripe memberships with Supabase entitlements.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-course-membership-supabase-access/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=course_membership_nav">Run drift check</a><a href="/go/billing-reliability/setup-request/?source=course_membership_nav_packet&context=course_membership&price_range_eur=99-149&quote_path=launch_blocker&source_ref=course_membership_nav">Setup help</a></div>
+    <div class="eyebrow">Stripe course memberships + Supabase access</div>
+    <h1>Stripe course membership paid but Supabase access drifted?</h1>
+    <p class="lead">Course platforms often start with one lifetime course, then become a recurring academy: multiple course ids, all-access memberships, access-code grants, and Stripe subscription plans. That is exactly where a simple paid flag starts breaking.</p>
+    <p class="lead">The risky bug is not just "webhook failed." It is when the subscription row says active, the course catalog says locked, an access code says unlocked, or a Stripe price env var points at the wrong plan.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>For every logged-in learner, course access should be explainable from one current membership subscription or one explicit per-course grant. Checkout success and browser state should not be the source of truth.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=course_membership_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="course_membership_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=course_membership_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="course_membership_related">Check portal plan-change drift</a>
+      </div>
+      <p class="note">Fixed-scope review fit: EUR99 for one Stripe membership path and one course gate; EUR149 when access-code overrides, multiple prices, portal changes, and subscription lifecycle replay are all in scope.</p>
+    </section>
+
+    <section>
+      <h2>1. Separate membership access from course grants</h2>
+      <p>A good course gate can answer why access is allowed. "Has active subscription" and "has per-course grant" are different reasons and should be visible in the data.</p>
+      <div class="grid2">
+        <div class="card"><h3>Membership truth</h3><ul class="checklist"><li>Stripe customer id</li><li>Subscription id and status</li><li>Price id mapped to a membership plan</li><li>Current period and cancellation state</li></ul></div>
+        <div class="card"><h3>Course truth</h3><ul class="checklist"><li>Course id on protected content</li><li>Per-course entitlement or grant row</li><li>Access-code or comp override</li><li>Resolved access reason shown in support logs</li></ul></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>2. Replay each Stripe event into the same access result</h2>
+      <ul class="checklist warn">
+        <li>Checkout completes before the webhook updates the subscription row.</li>
+        <li>`customer.subscription.updated` changes plan or period but course gates keep stale access.</li>
+        <li>Portal cancellation sets cancel-at-period-end, but the app removes access immediately.</li>
+        <li>A duplicate webhook overwrites an access-code grant or creates two membership rows.</li>
+        <li>A missing Stripe price env var sends checkout into a graceful error but leaves a half-created local row.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Test access with course ids, not just user roles</h2>
+      <p>If content is scoped by `course_id`, test the exact protected route and module id. A global role can look correct while `/learn/[course]` still leaks or blocks content.</p>
+      <pre><code>membership active + course_id=ai-eng -> allowed by membership
+membership canceled + course_id=ai-eng + grant row -> allowed by grant
+membership canceled + course_id=foundations + no grant -> blocked
+subscription updated + annual price -> same access, new renewal window</code></pre>
+    </section>
+
+    <section class="card" id="course-membership-evidence-packet">
+      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
+      <p>Use one real or staging learner. Redact secrets, but keep the object ids and row shapes that prove where provider state and course access diverged.</p>
+      <pre><code>Stripe Checkout Session id:
+Stripe subscription id and status:
+Stripe price env vars involved:
+Webhook event id/type:
+subscriptions row:
+has_active_subscription() result:
+is_entitled(course_id) result:
+Course id and protected route:
+Per-course grant or access-code row:
+Expected access:
+Actual access bug:
+One replay command, test, or local repro:</code></pre>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=course_membership_bottom_packet&context=course_membership&price_range_eur=99-149&quote_path=launch_blocker&source_ref=course_membership_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="course_membership_bottom_packet">Send course-membership packet →</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to review before launch</h2>
+      <p>Check the subscription lifecycle, portal cancel/change states, price env vars, membership resolver, per-course override path, and one protected course route. That keeps the review narrow enough to finish before a paid learner hits the bug.</p>
+      <div class="actions">
+        <a class="btn primary" href="/billing-health-support/?ref=course_membership_bottom" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="course_membership_bottom">See billing-health support</a>
+        <a class="btn secondary" href="/blog/stripe-subscription-monthly-credits-double-grant-supabase/?ref=course_membership_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="course_membership_related">Compare subscription renewal drift</a>
+      </div>
+      <p class="note">This is a focused billing/access-state review, not course-platform strategy or curriculum work.</p>
+    </section>
+  </main>
 </body>
 </html>

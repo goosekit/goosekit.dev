@@ -499,6 +499,24 @@
     .seo-content a { color: #7b8cff; text-decoration: none; }
     .seo-content a:hover { text-decoration: underline; }
     .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+    .trust-panel {
+      width: 100%;
+      max-width: 980px;
+      margin: 18px auto 0;
+      padding: 14px 16px;
+      border: 1px solid rgba(34,197,94,0.24);
+      border-radius: 8px;
+      background: rgba(34,197,94,0.06);
+      color: #b8c7d4;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .trust-panel strong { display: block; color: #e6edf3; font-size: 12px; margin-bottom: 2px; }
+    @media (max-width: 760px) { .trust-panel { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 460px) { .trust-panel { grid-template-columns: 1fr; } }
     .builder-cta {
       margin: 28px 0;
       padding: 18px 20px;
@@ -815,6 +833,13 @@
     <span class="error-msg" id="error-msg" style="display:none"></span>
   </div>
 
+  <section class="trust-panel" aria-label="Goosekit JSON formatter trust notes">
+    <div><strong>Runs in your browser</strong>No JSON payload is uploaded to Goosekit.</div>
+    <div><strong>No signup</strong>Open the page, paste data, copy the result.</div>
+    <div><strong>Real error feedback</strong>Syntax issues stay visible with line-aware messages.</div>
+    <div><strong>Built for repeat work</strong>Format, minify, sort keys, copy, or download.</div>
+  </section>
+
   <div class="seo-content">
   <h2>How to format and validate JSON online</h2>
   <p>Paste your raw JSON into the editor above. Goosekit's JSON Formatter instantly beautifies your data with syntax highlighting, validates the structure, and highlights any errors.</p>
@@ -843,14 +868,8 @@
   <h3>Is this tool free?</h3>
   <p>Yes, completely free with no signup required.</p>
 
-  <div class="builder-cta" aria-label="Goosekit for API builders">
-    <strong>Building the app that produces this JSON?</strong>
-    <p>Goosekit is a one-time Next.js, Supabase, and Stripe starter for getting auth, billing, and a product foundation in place faster.</p>
-    <a href="/tools/">See the Goosekit starter</a>
-  </div>
-
   <h2>Related Tools</h2>
-  <p>Try our <a href="/base64/">Base64 Encoder</a>, <a href="/jwt/">JWT Decoder</a>, <a href="/json-yaml/">JSON ↔ YAML Converter</a>, or <a href="/json-csv/">JSON to CSV Converter</a>. Need JSON formatting in an internal tool or product flow?. brings 12 of these tools into one portable folder you can run offline.</p>
+  <p>Try our <a href="/base64/">Base64 Encoder</a>, <a href="/jwt/">JWT Decoder</a>, <a href="/json-yaml/">JSON to YAML Converter</a>, or <a href="/json-csv/">JSON to CSV Converter</a>. For adjacent workflows, browse the <a href="/use-cases/json-tools/">JSON tools collection</a>, <a href="/use-cases/format-json-locally/">format JSON locally workflow</a>, or the full <a href="/tools/for-developers/">developer tools</a> page.</p>
   <h2>Related Guides</h2>
   <p>Learn more with <a href="/blog/best-json-formatter-2026/">Best Free JSON Formatter &amp; Validator Online</a>, <a href="/blog/json-vs-yaml/">JSON vs YAML</a>, and <a href="/blog/free-online-developer-tools-no-signup/">50+ Free Online Developer Tools That Require No Signup</a>.</p>
   </div>
@@ -882,7 +901,6 @@
   <span><a href="/">🪿 Goosekit</a></span>
   <span>·</span>
   <span>Free JSON tools, no signup needed.</span>
-  <div class="affiliate-credits" style="flex-basis:100%;margin-top:6px;font-size:11px;opacity:0.6;line-height:1.5;">Built with <a href="https://vercel.com/?ref=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="json" data-ph-program="vercel" style="color:inherit;">Vercel</a> · Data by <a href="https://supabase.com/?via=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="json" data-ph-program="supabase" style="color:inherit;">Supabase</a> · <a href="https://m.do.co/c/GOOSEKIT_TODO" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="json" data-ph-program="digitalocean" style="color:inherit;">Deploy your own tool</a></div>
 </footer>
 
 <div class="toast" id="toast"></div>

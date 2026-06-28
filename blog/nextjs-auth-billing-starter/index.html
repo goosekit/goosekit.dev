@@ -1,15 +1,705 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ship It Kit by Goosekit — Focused Auth + Billing Starter for Next.js MVPs</title>
+  <meta name="description" content="Ship It Kit by Goosekit is a focused Next.js auth + billing starter with Supabase auth, Stripe checkout, portal, webhooks, and protected routes already wired.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #09111f;
+      --bg-soft: #0f172a;
+      --panel: #111c33;
+      --panel-2: #16233f;
+      --border: rgba(148, 163, 184, 0.18);
+      --text: #e5eefc;
+      --muted: #94a3b8;
+      --accent: #f97316;
+      --accent-2: #fb923c;
+      --green: #22c55e;
+      --danger: #f87171;
+      --shadow: rgba(15, 23, 42, 0.45);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(249, 115, 22, 0.16), transparent 34%),
+        linear-gradient(180deg, #08111f 0%, #0b1324 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .pill,
+    .mini-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(251, 146, 60, 0.24);
+      background: rgba(249, 115, 22, 0.12);
+      color: #fed7aa;
+      font-weight: 700;
+    }
+
+    .pill {
+      padding: 8px 14px;
+      font-size: 0.86rem;
+      letter-spacing: 0.01em;
+    }
+
+    .mini-pill {
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #fdba74;
+    }
+
+    header {
+      padding: 24px 0 12px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand {
+      text-decoration: none;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.08rem;
+    }
+
+    .brand span { color: var(--accent-2); }
+
+    .nav-cta,
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 12px;
+      padding: 14px 20px;
+      text-decoration: none;
+      font-weight: 700;
+      transition: transform 0.18s ease, opacity 0.18s ease, border-color 0.18s ease;
+    }
+
+    .nav-cta,
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: white;
+      box-shadow: 0 14px 34px rgba(249, 115, 22, 0.25);
+    }
+
+    .btn-secondary {
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.66);
+      color: var(--text);
+    }
+
+    .nav-cta:hover,
+    .btn-primary:hover,
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 32px;
+      align-items: start;
+      padding: 56px 0 56px;
+    }
+
+    .hero-copy h1 {
+      margin: 18px 0 18px;
+      font-size: clamp(2.5rem, 5vw, 4.35rem);
+      line-height: 1.02;
+      letter-spacing: -0.055em;
+      max-width: 760px;
+    }
+
+    .hero-copy p {
+      margin: 0;
+      max-width: 710px;
+      color: #c8d5ea;
+      font-size: 1.11rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 28px 0 22px;
+    }
+
+    .hero-points,
+    .fit-list,
+    .not-fit-list,
+    .price-list,
+    .steps,
+    .pain-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px 14px;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-points li,
+    .fit-list li,
+    .price-list li,
+    .steps li,
+    .pain-list li,
+    .not-fit-list li {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .check { color: var(--green); font-weight: 800; }
+    .cross { color: var(--danger); font-weight: 800; }
+
+    .card,
+    .panel {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: 0 18px 44px var(--shadow);
+    }
+
+    .hero-card {
+      padding: 28px;
+      position: sticky;
+      top: 24px;
+    }
+
+    .hero-card h2,
+    .section h2,
+    .cta h2 {
+      margin: 0 0 12px;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+    }
+
+    .hero-card p,
+    .section-sub,
+    .price-note,
+    .cta p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .hero-card .price {
+      margin: 16px 0 6px;
+      font-size: 3rem;
+      line-height: 1;
+      letter-spacing: -0.06em;
+      font-weight: 900;
+    }
+
+    .hero-card .price span {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0;
+    }
+
+    .hero-card .proof-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 18px 0 22px;
+    }
+
+    .section {
+      padding: 34px 0;
+    }
+
+    .section-head {
+      max-width: 760px;
+      margin-bottom: 24px;
+    }
+
+    .eyebrow {
+      margin-bottom: 12px;
+      color: #fdba74;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .fit-grid,
+    .included-grid,
+    .proof-grid,
+    .steps-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .fit-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .included-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .proof-grid { grid-template-columns: 1.05fr 0.95fr; }
+    .steps-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    .panel {
+      padding: 24px;
+    }
+
+    .panel h3 {
+      margin: 0 0 14px;
+      font-size: 1.18rem;
+      letter-spacing: -0.03em;
+    }
+
+    .panel p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .fit-list li,
+    .not-fit-list li,
+    .price-list li,
+    .steps li,
+    .pain-list li {
+      margin-bottom: 12px;
+      color: #dce7f7;
+    }
+
+    .fit-list li:last-child,
+    .not-fit-list li:last-child,
+    .price-list li:last-child,
+    .steps li:last-child,
+    .pain-list li:last-child { margin-bottom: 0; }
+
+    .included-grid .panel {
+      min-height: 100%;
+      background: rgba(17, 28, 51, 0.82);
+    }
+
+    .proof-code {
+      margin: 0;
+      padding: 18px;
+      border-radius: 16px;
+      background: #07101f;
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      color: #dbeafe;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88rem;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .path-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .path-item {
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(8, 17, 31, 0.74);
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .path-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 0.94rem;
+    }
+
+    .price-card {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 20px;
+      padding: 28px;
+      align-items: start;
+      background: linear-gradient(135deg, rgba(17, 28, 51, 0.95), rgba(11, 19, 36, 0.95));
+    }
+
+    .price-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.22);
+      color: #bbf7d0;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .price-value {
+      margin: 0 0 8px;
+      font-size: 4rem;
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+    }
+
+    .price-value span {
+      font-size: 1rem;
+      color: var(--muted);
+      font-weight: 600;
+      letter-spacing: 0;
+    }
+
+    .cta {
+      padding: 38px;
+      margin: 38px 0 72px;
+      text-align: center;
+      background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(17, 28, 51, 0.9));
+    }
+
+    .cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    footer {
+      padding: 0 0 42px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .footer-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(148, 163, 184, 0.12);
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 980px) {
+      .hero,
+      .proof-grid,
+      .price-card,
+      .fit-grid,
+      .included-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .container { padding: 0 18px; }
+      .topbar { flex-direction: column; align-items: flex-start; }
+      .hero { padding-top: 34px; }
+      .hero-points { grid-template-columns: 1fr; }
+      .hero-card, .panel, .price-card, .cta { padding: 22px; }
+      .hero-card .price, .price-value { font-size: 2.7rem; }
+      .footer-line { flex-direction: column; }
+    }
+  </style>
+  <script defer src="/posthog.js"></script>
+<script defer src="/site-header-homefix.js?v=20260503-mobilemenu1"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <header>
+    <div class="container topbar">
+      <a class="brand" href="#top">Ship It <span>Kit</span> by Goosekit</a>
+      <a class="nav-cta" href="/ship-it-kit/?ref=auth_billing_sticky_current">Check fit before checkout</a>
+    </div>
+  </header>
+
+  <main class="container" id="top">
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="pill">Focused starter by Goosekit</div>
+        <h1>Stop rewiring auth and billing for every Next.js MVP.</h1>
+        <p>Ship It Kit is the focused Next.js + Supabase + Stripe starter for builders who want signup, protected routes, checkout, portal, and webhook plumbing already done before the real product work starts.</p>
+        <div class="hero-actions">
+          <a class="btn-primary" href="/ship-it-kit/?ref=auth_billing_hero_current">Check fit before checkout</a>
+          <a class="btn-secondary" href="#fit">Check if your stack fits</a>
+        </div>
+        <p class="price-note" style="max-width:680px;margin-top:0;">€49 one-time, no sales call or manual onboarding queue. Prefer the exact product page first? <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_hero_full_offer">See the full offer</a>. Want the most product-specific walkthrough? <a href="/blog/ship-it-kit-review/?ref=auth_billing_hero_review">Read the review</a>. Still unsure? Use the <a href="/ship-it-kit/?ref=auth_billing_hero_quick_fit">30-second proof-first router</a> first.</p>
+        <ul class="hero-points">
+          <li><span class="check">✓</span><span>Next.js 15 App Router, TypeScript, Tailwind CSS 4</span></li>
+          <li><span class="check">✓</span><span>Supabase auth, protected routes, typed database layer</span></li>
+          <li><span class="check">✓</span><span>Stripe Checkout, customer portal, webhook handlers</span></li>
+          <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell</span></li>
+        </ul>
+      </div>
+
+      <aside class="card hero-card">
+        <div class="pill">Lightweight, self-serve starter</div>
+        <h2>For builders blocked by the same two jobs.</h2>
+        <p>If auth and billing are the parts you keep rebuilding, this is the shortest path back to product work. You get a smaller starter you can understand quickly, edit with Cursor, Claude, or Copilot, and extend without inheriting a giant framework. If you need a huge framework or a different stack, skip it honestly.</p>
+        <div class="price">€49 <span>one-time</span></div>
+        <p class="price-note">Instant starter download, unlimited projects, lifetime updates for the starter, and a 30-day money-back guarantee.</p>
+        <div class="proof-row">
+          <span class="mini-pill">Signup already wired</span>
+          <span class="mini-pill">Billing already wired</span>
+          <span class="mini-pill">Protected routes ready</span>
+        </div>
+        <ul class="pain-list">
+          <li><span class="check">✓</span><span>No sales call, no onboarding ceremony, no subscription.</span></li>
+          <li><span class="check">✓</span><span>Use it as the base for your own MVP, then customize from there.</span></li>
+          <li><span class="check">✓</span><span>Designed to be easy to edit with Cursor, Claude, Copilot, or by hand.</span></li>
+        </ul>
+      </aside>
+    </section>
+
+    <section class="section" id="fit">
+      <div class="section-head">
+        <div class="eyebrow">Who this is for</div>
+        <h2>Small scope, clear fit.</h2>
+        <p class="section-sub">The shortest path to a first sale is a very specific promise. This page is for people who already know auth and Stripe are the annoying part.</p>
+      </div>
+      <div class="fit-grid">
+        <div class="panel">
+          <h3>Great fit</h3>
+          <ul class="fit-list">
+            <li><span class="check">✓</span><span>Solo founders validating a Next.js SaaS MVP.</span></li>
+            <li><span class="check">✓</span><span>Builders using Cursor, Claude, or Copilot to move quickly.</span></li>
+            <li><span class="check">✓</span><span>People comparing ShipFast, Makerkit, Supastarter, or free starters.</span></li>
+            <li><span class="check">✓</span><span>Anyone tired of rebuilding signup, protected routes, checkout, portal, and webhooks before product work starts.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>Probably not a fit</h3>
+          <ul class="not-fit-list">
+            <li><span class="cross">✕</span><span>Non-Next.js stacks.</span></li>
+            <li><span class="cross">✕</span><span>No-code buyers looking for a hosted tool.</span></li>
+            <li><span class="cross">✕</span><span>Teams that need a giant multi-tenant enterprise framework.</span></li>
+            <li><span class="cross">✕</span><span>People who want a generic launch checklist instead of starter code.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="included">
+      <div class="section-head">
+        <div class="eyebrow">What is included</div>
+        <h2>The auth + billing layer, already done.</h2>
+        <p class="section-sub">This is still a starter, not a miracle. The value is removing the repeat setup loop around access and payments.</p>
+      </div>
+      <div class="included-grid">
+        <div class="panel">
+          <h3>Next.js base</h3>
+          <p>Next.js 15 App Router, TypeScript, Tailwind CSS 4, and a repo structure that is clean enough to hand to an AI coding assistant without chaos.</p>
+        </div>
+        <div class="panel">
+          <h3>Signup + protected routes</h3>
+          <p>Supabase auth flow, route protection, typed database access, and the app shell you need before adding actual product features.</p>
+        </div>
+        <div class="panel">
+          <h3>Stripe flow already wired</h3>
+          <p>Stripe Checkout, customer portal, webhook handler, pricing page, and the subscription plumbing founders usually lose a weekend to.</p>
+        </div>
+        <div class="panel">
+          <h3>What you can launch from</h3>
+          <p>Landing page, auth screen, pricing page, protected dashboard shell, and the core routes needed to get to a first usable MVP.</p>
+        </div>
+        <div class="panel">
+          <h3>Fast setup docs</h3>
+          <p>.env example, schema file, quick-start instructions, deployment notes, and enough structure to get from checkout to local dev fast.</p>
+        </div>
+        <div class="panel">
+          <h3>Clean repo for AI edits</h3>
+          <p>CLAUDE.md plus a repo layout built to be editable with AI tools, not a giant codebase that fights every prompt.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="proof">
+      <div class="section-head">
+        <div class="eyebrow">Concrete proof</div>
+        <h2>Show the plumbing, not startup poetry.</h2>
+        <p class="section-sub">Trust comes from showing the files that usually take time: middleware, webhook handling, auth wiring, and schema basics.</p>
+      </div>
+      <div class="proof-grid">
+        <div class="panel">
+          <pre class="proof-code">src/
+├── app/
+│   ├── page.tsx
+│   ├── auth/page.tsx
+│   ├── (app)/dashboard/page.tsx
+│   ├── (marketing)/pricing/page.tsx
+│   └── api/webhooks/stripe/route.ts
+├── lib/
+│   ├── auth.ts
+│   ├── stripe.ts
+│   └── supabase.ts
+├── types/database.ts
+└── middleware.ts
+supabase/
+└── schema.sql</pre>
+          <div class="path-list">
+            <div class="path-item">
+              <strong>src/app/api/webhooks/stripe/route.ts</strong>
+              Checkout completion, subscription updates, and cancellation events are already handled.
+            </div>
+            <div class="path-item">
+              <strong>src/middleware.ts</strong>
+              Route protection is already in place, so the dashboard shell is not a fake screenshot.
+            </div>
+            <div class="path-item">
+              <strong>supabase/schema.sql + src/types/database.ts</strong>
+              The schema and typed layer already exist, which removes another common MVP slowdown.
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <h3>What this removes from the next MVP</h3>
+          <ul class="price-list">
+            <li><span class="check">✓</span><span>Signup and login flow.</span></li>
+            <li><span class="check">✓</span><span>Protected app routes and middleware.</span></li>
+            <li><span class="check">✓</span><span>Stripe Checkout and customer portal plumbing.</span></li>
+            <li><span class="check">✓</span><span>Webhook handling for subscription state changes.</span></li>
+            <li><span class="check">✓</span><span>Landing, pricing, auth, and dashboard starter pages.</span></li>
+            <li><span class="check">✓</span><span>Initial AI context so code assistants can edit safely.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="setup">
+      <div class="section-head">
+        <div class="eyebrow">3-step handoff</div>
+        <h2>From checkout to product work, fast.</h2>
+        <p class="section-sub">Nothing mystical here. It just means you stop burning time on account and payment plumbing.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="panel">
+          <h3>1. Clone and install</h3>
+          <ul class="steps">
+            <li><span class="check">✓</span><span>Instant repo access after checkout.</span></li>
+            <li><span class="check">✓</span><span>Clone the repo and install dependencies.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>2. Add your keys</h3>
+          <ul class="steps">
+            <li><span class="check">✓</span><span>Set your Supabase project and Stripe keys.</span></li>
+            <li><span class="check">✓</span><span>Use the provided env example and schema file.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <h3>3. Start building product logic</h3>
+          <ul class="steps">
+            <li><span class="check">✓</span><span>Deploy, customize, and hand feature work to your AI tool or your own hands.</span></li>
+            <li><span class="check">✓</span><span>Skip the auth + billing loop next time too.</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="pricing">
+      <div class="price-card card">
+        <div>
+          <div class="price-kicker">One-time self-serve starter</div>
+          <h2>€49 to skip the auth + billing loop.</h2>
+          <p class="section-sub">This is intentionally smaller and cheaper than the big boilerplates. It is for founders who want the access + payments layer handled without buying a giant framework first.</p>
+          <div class="price-value">€49 <span>one-time</span></div>
+          <p class="price-note">Instant repo access. Unlimited projects. Lifetime starter updates. 30-day money-back guarantee.</p>
+        </div>
+        <div>
+          <ul class="price-list">
+            <li><span class="check">✓</span><span>Next.js 15 + Supabase + Stripe starter codebase.</span></li>
+            <li><span class="check">✓</span><span>Landing page, pricing page, auth flow, dashboard shell.</span></li>
+            <li><span class="check">✓</span><span>Schema, env example, setup notes, AI context file.</span></li>
+            <li><span class="check">✓</span><span>No subscription, no service upsell, no onboarding ceremony.</span></li>
+          </ul>
+          <div class="hero-actions" style="margin-top:20px;">
+            <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-pricing/?source=auth_billing_pricing" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="auth_billing_pricing">Get instant repo access</a>
+            <a class="btn-secondary" href="/go/billing-reliability/setup-request/?source=auth_billing_pricing_adaptation&context=ship_it_kit_setup&price_range_eur=199%2B&quote_path=setup_help&source_ref=auth_billing_pricing_adaptation" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="auth_billing_pricing_adaptation">Adapt it to my repo</a>
+            <a class="btn-secondary" href="#fit">Check fit before buying</a>
+          </div>
+          <p class="price-note" style="margin-top:16px;">Still unsure? Use the <a href="/ship-it-kit/?ref=auth_billing_price_quick_fit">30-second proof-first router</a> first, then buy only if the stack and timing are right. If you already have a repo and need adaptation instead of a self-serve starter, send a setup packet first.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta card">
+      <div class="eyebrow">Bottom line</div>
+      <h2>Stop rewiring auth and Stripe for every MVP.</h2>
+      <p>If your stack is Next.js + Supabase + Stripe, this is the fastest honest way to stop rebuilding auth and billing. If that is not your stack, skip it. If it is your stack and the payment layer is blocking launch, the honest next step is not more reading — it is getting the repo and replacing the demo with your product.</p>
+      <div class="cta-actions">
+        <a class="btn-primary" href="/go/ship-it-kit/checkout-auth-billing-bottom/?source=auth_billing_bottom" data-ph-event="ship_it_kit_cta_clicked" data-ph-location="auth_billing_bottom">Get the starter, €49</a>
+        <a class="btn-secondary" href="/go/billing-reliability/setup-request/?source=auth_billing_bottom_adaptation&context=ship_it_kit_setup&price_range_eur=199%2B&quote_path=setup_help&source_ref=auth_billing_bottom_adaptation" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="auth_billing_bottom_adaptation">Ask for setup adaptation</a>
+        <a class="btn-secondary" href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer">See the full offer</a>
+      </div>
+      <p style="margin-top:14px;">€49 one-time; no sales call or manual onboarding queue. Need one more check before buying? <a href="/blog/ship-it-kit-review/?ref=auth_billing_bottom_review">Read the review</a>, <a href="/go/ship-it-kit/product-from-auth-billing/?source=auth_billing_bottom_full_offer_note">see the full offer</a>, or use the <a href="/ship-it-kit/?ref=auth_billing_bottom_quick_fit">30-second proof-first router</a> first. If it is not the right fit after purchase, there is a 30-day refund policy.</p>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-line">
+      <span>Ship It Kit by Goosekit, a focused auth + billing starter for Next.js builders.</span>
+      <span>Built by Arthur Pierrey. Checkout handled by Lemon Squeezy.</span>
+    </div>
+  </footer>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var params = new URLSearchParams(window.location.search);
+    var ref = params.get('ref') || 'direct';
+    var capture = function (eventName, props) {
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture(eventName, props || {});
+      }
+    };
+
+    capture('ship_it_kit_page_viewed', {
+      ref: ref,
+      path: window.location.pathname,
+      page_type: 'auth_billing_entry'
+    });
+
+    document.querySelectorAll('a[href*="checkout-auth-billing"], a[href*="go/billing-reliability/setup-request"], a[href*="ship-it-kit-checklist"], a[href*="ship-it-kit-quick-fit"], a[href*="ship-it-kit-review"], a[href*="product-from-auth-billing"], a[href*="ship-it-kit-vs-"]').forEach(function (el) {
+      el.addEventListener('click', function () {
+        capture('ship_it_kit_cta_clicked', {
+          ref: ref,
+          path: window.location.pathname,
+          page_type: 'auth_billing_entry',
+          cta_text: (el.textContent || '').trim(),
+          target_href: el.getAttribute('href') || null
+        });
+      });
+    });
+  });
+</script>
 </body>
 </html>

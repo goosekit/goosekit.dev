@@ -1,15 +1,67 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Setup request sent</title>
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:720px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:#ff4800;color:white;font-weight:800;text-decoration:none}.btn.secondary{background:rgba(255,255,255,.04);color:#ff9040}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="card">
+    <div class="pill">Request sent</div>
+    <h1>Your setup request was sent</h1>
+    <p>Arthur should receive the packet by email. While you wait, you can turn the same billing context into a checkable query or review the paid audit scope.</p>
+    <div class="actions">
+      <a class="btn" href="/billing-reconciliation-query-builder/?ref=setup_request_sent_query" data-sent-followup="build_reconciliation_query">Build reconciliation query</a>
+      <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=setup_request_sent_audit" data-sent-followup="review_revenue_leak_audit">Check audit scope</a>
+      <a class="btn secondary" href="/billing-health-support/?ref=setup_request_sent_monthly" data-sent-followup="review_monthly_support">Monthly billing checks</a>
+      <a class="btn secondary" href="/ship-it-kit-setup-help/" data-sent-followup="setup_help_back">Back to setup help</a>
+      <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=formspree_sent_fallback" data-sent-followup="send_another">Send another request</a>
+    </div>
+    <p class="fine">No payment is due here. Arthur will reply with the next step if the request fits the fixed-scope setup help.</p>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || 'formspree_return';
+      var context = params.get('context') || 'unknown';
+      var priceRange = params.get('price_range_eur') || 'unknown';
+      var quotePath = params.get('quote_path') || 'unknown';
+      var sourceRef = params.get('source_ref') || source;
+      var sentProps = {
+        source: source,
+        source_ref: sourceRef,
+        request_context: context,
+        quote_path: quotePath,
+        product: 'billing_reliability',
+        location: 'setup_help_request_sent_route',
+        path: '/go/billing-reliability/setup-request-sent/',
+        price_range_eur: priceRange
+      };
+      document.querySelectorAll('[data-sent-followup]').forEach(function (link) {
+        var glue = link.href.indexOf('?') === -1 ? '?' : '&';
+        link.href = link.href + glue + 'source_ref=' + encodeURIComponent(sourceRef);
+        link.addEventListener('click', function () {
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('setup_help_request_sent_followup_clicked', Object.assign({}, sentProps, {
+              location: 'setup_help_request_sent_' + link.getAttribute('data-sent-followup'),
+              sent_followup: link.getAttribute('data-sent-followup'),
+              target_href: link.href
+            }));
+          }
+        });
+      });
+      if (window.posthog && typeof window.posthog.capture === 'function') {
+        window.posthog.capture('setup_help_request_formspree_returned', Object.assign({}, sentProps, {
+          target_href: window.location.href
+        }));
+      }
+    });
+  </script>
 </body>
 </html>

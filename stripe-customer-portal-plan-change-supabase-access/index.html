@@ -3,13 +3,42 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <title>Stripe Customer Portal plan change access drift</title>
+  <meta name="description" content="Commercial triage for Stripe Customer Portal upgrades, downgrades, and scheduled plan changes that leave Supabase entitlements wrong.">
+  <link rel="canonical" href="https://goosekit.dev/stripe-customer-portal-plan-change-supabase-access/">
+  <script defer src="/posthog.js"></script>
+  <style>body{margin:0;background:#101018;color:#f4f4fb;font-family:Inter,system-ui,sans-serif;line-height:1.65}.wrap{max-width:880px;margin:0 auto;padding:32px 20px 72px}a{color:#ff9040}.nav{display:flex;gap:16px;justify-content:space-between;margin-bottom:44px}.eyebrow{color:#ff9040;text-transform:uppercase;font-weight:800;letter-spacing:.12em;font-size:.8rem}h1{font-size:clamp(2rem,6vw,4rem);line-height:1;margin:10px 0 18px}.lead{color:#c9c9d8;font-size:1.15rem}.card{border:1px solid #303047;background:#171728;border-radius:14px;padding:22px;margin:22px 0}.actions{display:flex;flex-wrap:wrap;gap:12px}.btn{display:inline-flex;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:800}.primary{background:#ff4800;color:white}.secondary{border:1px solid #41415a;color:#f4f4fb}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}@media(max-width:720px){.grid{grid-template-columns:1fr}.nav{flex-direction:column}}</style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <nav class="nav"><a href="/">Goosekit</a><a href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=portal_plan_root_nav">Portal guide</a></nav>
+    <p class="eyebrow">Portal plan-change incident</p>
+    <h1>Stripe Customer Portal changed plan, but Supabase access did not?</h1>
+    <p class="lead">Use this when a portal upgrade, downgrade, quantity change, or scheduled change leaves local entitlements on the wrong plan or date.</p>
+
+    <section class="card">
+      <h2>Fast incident triage</h2>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=portal_plan_change_incident&context=portal_plan_change" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_hero" data-ph-request-context="portal_plan_change" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="portal_plan_change_drift">Request portal-plan help</a>
+        <a class="btn secondary" href="/go/billing-reliability/health-support/?source=portal_plan_change_monthly_support&track=access_drift&source_ref=portal_plan_change_hero" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_hero" data-ph-request-context="portal_plan_change_monthly_support" data-ph-price-eur-monthly="29" data-ph-unchecked-risk-keys="portal_plan_change_drift">Monitor portal changes</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=portal_plan_change_hero" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_hero" data-ph-request-context="portal_plan_change_audit" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="portal_plan_change_drift">Audit revenue leakage</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <div class="card"><h2>Immediate change</h2><p>Stripe and Supabase should agree on current price, plan key, period dates, and access level after the subscription snapshot is applied.</p></div>
+      <div class="card"><h2>Scheduled change</h2><p>The current entitlement should stay active until the period boundary while a pending plan is stored separately.</p></div>
+    </section>
+
+    <section class="card">
+      <h2>Monthly invariant</h2>
+      <p>Track current plan, pending plan, period end, cancellation flags, and last Stripe event. This prevents portal return URLs from becoming the accidental source of truth.</p>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/health-support/?source=portal_plan_change_monthly_support&track=access_drift&source_ref=portal_plan_change_monthly_block" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_monthly_block" data-ph-request-context="portal_plan_change_monthly_support" data-ph-price-eur-monthly="29" data-ph-unchecked-risk-keys="portal_plan_change_drift">Send portal invariant</a>
+        <a class="btn secondary" href="/billing-reconciliation-query-builder/?ref=portal_plan_change_monthly_block" data-ph-event="billing_reconciliation_builder_started" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_monthly_block" data-ph-request-context="portal_plan_change_query" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="portal_plan_change_drift">Build reconciliation query</a>
+        <a class="btn secondary" href="/go/billing-reliability/setup-request/?source=portal_plan_change_monthly_block&context=portal_plan_change" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="portal_plan_change_monthly_block" data-ph-request-context="portal_plan_change" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="portal_plan_change_drift">Fix the sync path</a>
+      </div>
+    </section>
+  </main>
 </body>
 </html>

@@ -1,15 +1,729 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Prepare setup help request</title>
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#e8e8f2;background:#0f0f19}.card{max-width:760px;padding:28px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(24,24,37,.9);text-align:center}.pill{display:inline-block;padding:8px 14px;border-radius:999px;background:rgba(255,72,0,.12);border:1px solid rgba(255,72,0,.24);color:#ffbf9f;font-weight:800;margin-bottom:16px}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}.btn{display:inline-flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:12px 16px;background:rgba(255,255,255,.04);color:#ff9040;font-weight:800;text-decoration:none;cursor:pointer}.btn.primary{background:#ff4800;color:white;border-color:#ff4800}.btn:hover{text-decoration:none;border-color:#ff9040}.quote-lanes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0;text-align:left}.quote-lane{border:1px solid rgba(255,255,255,.12);border-radius:12px;background:#10101d;color:#f7f7fb;padding:12px;text-align:left;cursor:pointer}.quote-lane strong{display:block;color:#fff;margin-bottom:4px}.quote-lane span{display:block;color:#b8b8cc;font-size:.9rem;line-height:1.45}.quote-lane:hover{border-color:#ff9040}.request-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0;text-align:left}.request-form label{display:grid;gap:6px;color:#d8d8e8;font-size:.9rem;font-weight:700}.request-form input,.request-form textarea{border:1px solid rgba(255,255,255,.12);border-radius:10px;background:#10101d;color:#f7f7fb;padding:10px;font:14px/1.4 Inter,system-ui,sans-serif}.request-form textarea{min-height:72px;resize:vertical}.request-form .wide{grid-column:1/-1}.fast-note,.context-note{margin:14px 0 0;padding:10px 12px;border:1px solid rgba(255,72,0,.22);border-radius:12px;background:rgba(255,72,0,.07);color:#ffd0bd;font-size:.94rem;text-align:left}.context-note{border-color:rgba(61,214,140,.28);background:rgba(61,214,140,.08);color:#d9ffe9}.context-note[hidden],.context-actions[hidden]{display:none}.context-actions{display:flex;justify-content:flex-start;margin:10px 0 0}@media(max-width:640px){.request-form,.quote-lanes{grid-template-columns:1fr}}.request-copy{width:100%;min-height:220px;margin-top:16px;padding:14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#10101d;color:#f7f7fb;font:14px/1.5 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;resize:vertical;text-align:left}.fallback-line{display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin:10px 0 0;color:#d8d8e8;font-size:.96rem}.email-chip{padding:7px 10px;border-radius:10px;background:#10101d;border:1px solid rgba(255,255,255,.12);font:13px/1.2 ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace;color:#f7f7fb}.fine{color:#b8b8cc;font-size:.94rem}a{color:#ff9040;font-weight:800;text-decoration:none}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="card">
+    <div class="pill">Next.js + Supabase + Stripe</div>
+    <h1>Prepare your setup request</h1>
+    <p>Add the few details needed to price and triage the fixed-scope setup pass.</p>
+    <p class="fast-note">Short on time? Stack + blocker is enough to start. Evidence, deadline, and budget can be rough.</p>
+    <p class="context-note" data-context-note hidden></p>
+    <div class="context-actions" data-context-actions hidden>
+      <button class="btn" type="button" data-context-example>Use suggested packet</button>
+    </div>
+    <div class="quote-lanes" aria-label="Choose request path">
+      <button class="quote-lane" type="button" data-quote-path="fixed_scope_quote">
+        <strong>I need a fixed-scope quote</strong>
+        <span>Use this when the repo exists and you want a small priced pass, not ongoing consulting.</span>
+      </button>
+      <button class="quote-lane" type="button" data-quote-path="launch_blocker">
+        <strong>I have a launch blocker</strong>
+        <span>Use this when checkout, auth, portal, or webhooks are risky before users arrive.</span>
+      </button>
+    </div>
+    <div class="actions">
+      <a class="btn" href="#" data-manual-link="true" data-button-position="top">Skip the form and email</a>
+      <button class="btn" type="button" data-copy-request="true">Copy request text</button>
+    </div>
+    <form data-formspree-form action="https://formspree.io/f/xblgwdqz" method="POST">
+      <input type="hidden" name="_subject" data-hidden-subject>
+      <input type="hidden" name="_replyto" data-hidden-replyto>
+      <input type="hidden" name="request_context" data-hidden-context>
+      <input type="hidden" name="price_range_eur" data-hidden-price-range>
+      <input type="hidden" name="quote_path" data-hidden-quote-path>
+      <input type="hidden" name="source" data-hidden-source>
+      <input type="hidden" name="source_ref" data-hidden-source-ref>
+      <input type="hidden" name="request_packet" data-hidden-packet>
+      <input type="hidden" name="_next" data-hidden-next>
+    <p class="fallback-line">
+      <span>Send it to</span>
+      <span class="email-chip" data-email-address>arthur.pierrey@gmail.com</span>
+      <button class="btn" type="button" data-copy-email="true">Copy email</button>
+      <button class="btn" type="button" data-copy-subject="true">Copy subject</button>
+    </p>
+    <div class="actions">
+      <a class="btn" href="#" target="_blank" rel="noopener" data-gmail-link="true">Open in Gmail</a>
+      <a class="btn" href="#" target="_blank" rel="noopener" data-outlook-link="true">Open in Outlook</a>
+    </div>
+    <div class="request-form" data-request-form>
+      <label class="wide">Reply email
+        <input name="email" type="email" data-request-field="email" autocomplete="email" placeholder="you@example.com" required>
+      </label>
+      <label>Stack
+        <input name="stack" data-request-field="stack" autocomplete="off" placeholder="Next.js, Supabase, Stripe">
+      </label>
+      <label>Repo state
+        <input name="repo_state" data-request-field="repo" autocomplete="off" placeholder="Starter, existing repo, live app">
+      </label>
+      <label class="wide">Blocker or launch risk
+        <textarea name="blocker_or_launch_risk" data-request-field="blocker" placeholder="What needs to be wired, fixed, or checked?"></textarea>
+      </label>
+      <label>Evidence ready
+        <input name="evidence_ready" data-request-field="evidence" autocomplete="off" placeholder="Logs, screenshots, file paths">
+      </label>
+      <label>Deadline
+        <input name="deadline" data-request-field="deadline" autocomplete="off" placeholder="Launch date or urgency">
+      </label>
+      <label>Budget range
+        <input name="budget_range" data-request-field="budget" autocomplete="off" placeholder="€99-149, €199+, not sure">
+      </label>
+    </div>
+    <p class="fine">The text below is the exact packet to send. Copy it if your browser blocks the email app.</p>
+    <textarea class="request-copy" data-request-copy readonly></textarea>
+    <div class="actions">
+      <button class="btn primary" type="submit" data-formspree-submit>Send request</button>
+      <a class="btn primary" href="#" data-manual-link="true" data-button-position="after_form">Continue in email</a>
+      <button class="btn" type="button" data-copy-request="true" data-button-position="after_form">Copy request text</button>
+    </div>
+    </form>
+    <p class="fine" data-copy-status aria-live="polite"></p>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var params = new URLSearchParams(window.location.search);
+      var source = params.get('source') || params.get('ref') || 'setup_request_route';
+      var sourceRef = params.get('source_ref') || '';
+      var requestedContext = params.get('context') || '';
+      var requestedPriceRange = params.get('price_range_eur') || '';
+      var requestedQuotePath = params.get('quote_path') || '';
+      var driftScore = params.get('drift_score') || '';
+      var totalRisks = params.get('total_risks') || '';
+      var riskCount = params.get('risk_count') || '';
+      var uncheckedRiskKeys = params.get('unchecked_risk_keys') || '';
+      var stripeTable = params.get('stripe_table') || '';
+      var accessTable = params.get('access_table') || '';
+      var joinKey = params.get('join_key') || '';
+      var customerColumn = params.get('customer_column') || '';
+      var stripeStatusColumn = params.get('stripe_status_column') || '';
+      var localStatusColumn = params.get('local_status_column') || '';
+      var isShipItKit = source.indexOf('shipit_setup_help_') === 0;
+      var isBillingDrift = requestedContext === 'billing_drift_review' || source === 'billing_drift_check_result';
+      var isBillingReconciliation = requestedContext === 'billing_reconciliation_query' || source === 'reconciliation_builder';
+      var isBillingChecklist = requestedContext === 'billing_reliability_checklist' || source === 'billing_reliability_evidence_packet';
+      var isRevenueLeakAudit = requestedContext === 'revenue_leak_audit' || source.indexOf('revenue_leak_') === 0;
+      var isTrialAccess = requestedContext === 'trial_access' || source.indexOf('trial_access_') === 0;
+      var isOneTimeBooking = requestedContext === 'one_time_booking' || source.indexOf('one_time_booking_') === 0;
+      var isChargedStranded = requestedContext === 'charged_stranded' || source.indexOf('charged_stranded_') === 0;
+      var isPortalCancel = requestedContext === 'portal_cancel' || source.indexOf('portal_cancel_') === 0;
+      var isPortalPlanChange = requestedContext === 'portal_plan_change' || source.indexOf('portal_plan_change_') === 0;
+      var isDunningAccess = requestedContext === 'dunning_access' || source.indexOf('dunning_') === 0;
+      var isDuplicateSubscription = requestedContext === 'duplicate_subscription' || source.indexOf('duplicate_subscription_') === 0;
+      var isCheckoutSuccessWebhook = requestedContext === 'checkout_success_webhook' || source.indexOf('checkout_success_webhook_') === 0;
+      var isPaymentElementOrderTracking = requestedContext === 'payment_element_order_tracking' || source.indexOf('payment_element_order_tracking_') === 0;
+      var isWebhookPaidStatus = requestedContext === 'webhook_paid_status' || source.indexOf('webhook_paid_status_') === 0;
+      var isCourseMembership = requestedContext === 'course_membership' || source.indexOf('course_membership_') === 0;
+      var isMissingSubscriptionColumns = requestedContext === 'missing_subscription_columns' || source.indexOf('missing_subscription_columns_') === 0;
+      var isInvoicePaidDoubleExtend = requestedContext === 'invoice_paid_double_extend' || source.indexOf('invoice_paid_double_extend_') === 0;
+      var isSetupModeCardGate = requestedContext === 'setup_mode_card_gate' || source.indexOf('setup_mode_card_gate_') === 0;
+      var isPrepaidAccountCredit = requestedContext === 'prepaid_account_credit' || source.indexOf('prepaid_credit_') === 0;
+      var isPaidBlockedOrUnpaidUnlocked = requestedContext === 'paid_blocked_or_unpaid_unlocked' || source.indexOf('paid_blocked_or_unpaid_unlocked') === 0;
+      var context = requestedContext || (isShipItKit ? 'ship_it_kit_setup_help' : 'nextjs_supabase_stripe_setup_help');
+      var priceRange = requestedPriceRange || (isShipItKit ? '199-plus' : '99-149');
+      var subject = 'Next.js Supabase Stripe setup help';
+      if (isShipItKit) subject = 'Ship It Kit setup help request';
+      if (isPaymentElementOrderTracking) subject = 'Stripe Payment Element order tracking review';
+      if (isCourseMembership) subject = 'Stripe course membership access review';
+      if (isMissingSubscriptionColumns) subject = 'Stripe subscription schema drift review';
+      if (isInvoicePaidDoubleExtend) subject = 'Stripe invoice.paid membership renewal review';
+      if (isSetupModeCardGate) subject = 'Stripe setup-mode card gate review';
+      if (isPrepaidAccountCredit) subject = 'Stripe prepaid invoice account-credit review';
+      if (isPaidBlockedOrUnpaidUnlocked) subject = 'Stripe paid-state mismatch review';
+      if (isWebhookPaidStatus) subject = 'Stripe webhook + Supabase paid-status review';
+      if (isBillingReconciliation) subject = 'Stripe + Supabase reconciliation query review';
+      if (isCheckoutSuccessWebhook) subject = 'Stripe Checkout success route + webhook access review';
+      if (isDuplicateSubscription) subject = 'Stripe duplicate subscription + Supabase access mismatch';
+      if (isDunningAccess) subject = 'Stripe dunning + Supabase access review';
+      if (isPortalPlanChange) subject = 'Stripe portal plan-change entitlement mismatch';
+      if (isPortalCancel) subject = 'Stripe portal cancellation state mismatch';
+      if (isChargedStranded) subject = 'Stripe charged but Supabase did not provision access';
+      if (isOneTimeBooking) subject = 'Stripe booking and subscription-credit mismatch';
+      if (isTrialAccess) subject = 'Stripe trial access state mismatch';
+      if (isRevenueLeakAudit) subject = 'Stripe + Supabase revenue leak audit';
+      if (isBillingChecklist) subject = 'Stripe billing reliability evidence packet';
+      if (isBillingDrift) subject = 'Stripe + Supabase billing drift review';
+      var intro = isBillingDrift
+        ? 'I ran the Stripe + Supabase billing drift check and want a narrow review.'
+        : isBillingReconciliation
+        ? 'I generated a Stripe + Supabase reconciliation query and want a narrow review of the mismatches it should catch.'
+        : isBillingChecklist
+        ? 'I have a small evidence packet for a Stripe + Supabase billing reliability review.'
+        : isRevenueLeakAudit
+        ? 'I want a fixed-scope Stripe + Supabase revenue leak audit.'
+        : isTrialAccess
+        ? 'Stripe trial or first-invoice state changed, but Supabase access does not match.'
+        : isOneTimeBooking
+        ? 'Stripe booking, one-time payment, or subscription-credit state does not match Supabase.'
+        : isChargedStranded
+        ? 'Stripe charged the customer, but Supabase did not provision access.'
+        : isPortalCancel
+        ? 'Stripe Customer Portal changed cancellation state, but Supabase access state does not match.'
+        : isPortalPlanChange
+        ? 'Stripe Customer Portal changed the plan, but Supabase entitlements do not match.'
+        : isDuplicateSubscription
+        ? 'Stripe has duplicate active subscriptions or add-on billing, and Supabase access no longer maps cleanly.'
+        : isDunningAccess
+        ? 'Stripe dunning, past_due, unpaid, or recovery state does not match Supabase product access.'
+        : isCheckoutSuccessWebhook
+        ? 'Stripe Checkout success URL and webhook provisioning can disagree about durable access.'
+        : isPaymentElementOrderTracking
+        ? 'Stripe Payment Element redirect, webhook fulfillment, and order tracking can disagree for paid orders.'
+        : isCourseMembership
+        ? 'Stripe course membership payment, subscription, grant, or course access state does not match Supabase.'
+        : isMissingSubscriptionColumns
+        ? 'Stripe webhook or subscription-check writes do not match the Supabase subscription and plan-config schema.'
+        : isInvoicePaidDoubleExtend
+        ? 'Stripe invoice.paid renewal, duplicate delivery, or retried invoice state does not match Supabase membership expiry.'
+        : isSetupModeCardGate
+        ? 'Stripe setup-mode card collection, local card-gate state, and gated job or access state need to converge before work starts.'
+        : isPrepaidAccountCredit
+        ? 'Stripe invoice, customer account credit, credit ledger, and revenue-recognition state need to converge before a second collection path opens.'
+        : isPaidBlockedOrUnpaidUnlocked
+        ? 'Stripe payment state and Supabase access state disagree: paid users may be blocked, or unpaid/refunded users may still be unlocked.'
+        : isWebhookPaidStatus
+        ? 'Stripe checkout succeeded, but Supabase paid-user state or app access did not update.'
+        : isShipItKit
+        ? 'I need help adapting Ship It Kit to my Next.js + Supabase + Stripe repo.'
+        : 'I need Next.js + Supabase + Stripe setup help.';
+      var bodyTemplate = [
+        'Hi Arthur,',
+        '',
+        intro,
+        '',
+        'Reply email:',
+        'My current stack:',
+        'My repo state:',
+        isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):',
+        'Evidence ready:',
+        'Deadline:',
+        'Budget range:',
+        isShipItKit ? 'Have I bought Ship It Kit yet:' : 'Production URL / repo access situation:',
+        isShipItKit ? 'What I need adapted from Ship It Kit:' : '',
+        '',
+        'Source: ' + source,
+        sourceRef ? 'Source ref: ' + sourceRef : '',
+        'Request context: ' + context
+      ].filter(function (line, index, lines) {
+        return line !== '' || lines[index - 1] !== '';
+      }).join('\n');
+      var body = bodyTemplate;
+      var mailto = '';
+      var gmailCompose = '';
+      var outlookCompose = '';
+      var formStarted = false;
+      var fastPathCaptured = false;
+      var readyToSendCaptured = false;
+      var qualifiedPacketCaptured = false;
+      var quotePathSelected = requestedQuotePath;
+      function capture(name, props) {
+        if (window.posthog && typeof window.posthog.capture === 'function') window.posthog.capture(name, props || {});
+      }
+      var eventProps = {
+        source: source,
+        source_ref: sourceRef,
+        request_context: context,
+        quote_path: quotePathSelected,
+        product: 'billing_reliability',
+        location: 'setup_help_request_route',
+        path: '/go/billing-reliability/setup-request/',
+        price_range_eur: priceRange
+      };
+      capture('setup_help_request_route_viewed', Object.assign({}, eventProps, { target_href: window.location.href }));
+      var contextNote = document.querySelector('[data-context-note]');
+      var contextActions = document.querySelector('[data-context-actions]');
+      var contextExampleButton = document.querySelector('[data-context-example]');
+      var contextNotes = {
+        charged_stranded: 'For charged-and-stranded requests, the minimum useful packet is: Stripe object, missing Supabase row, and what the paid user currently sees.',
+        trial_access: 'For trial/access requests, send the subscription status, trial or invoice timing, and the Supabase access row that disagrees.',
+        portal_cancel: 'For portal-cancel requests, send the Stripe cancellation state, current_period_end, and the Supabase access row that disagrees.',
+        portal_plan_change: 'For portal plan-change requests, send the before/after Stripe price ids and the Supabase entitlement that did not update.',
+        dunning_access: 'For dunning/access requests, send the Stripe retry policy, latest invoice status, subscription status, Supabase access row, and intended grace/lockout policy.',
+        duplicate_subscription: 'For duplicate-subscription requests, send the product rule, active Stripe subscription ids, and the local owner/subscription/entitlement rows.',
+        checkout_success_webhook: 'For Checkout success/webhook requests, send the success route, webhook handler, local entitlement row, and one replay case.',
+        payment_element_order_tracking: 'For Payment Element order-tracking requests, send the PaymentIntent or Checkout Session id, webhook event, order row, and tracking route.',
+        course_membership: 'For course-membership requests, send the subscription status, price id, membership row, course id, entitlement check result, and the protected route that locked or leaked.',
+        missing_subscription_columns: 'For subscription schema-drift requests, send the Stripe event, subscription/customer/price ids, subscriptions schema, pricing_config schema, attempted columns, replay result, and user-visible stale state.',
+        invoice_paid_double_extend: 'For invoice.paid renewal-drift requests, send the invoice id, subscription id, billing_reason, period window, local membership row, idempotency row, and replay result.',
+        setup_mode_card_gate: 'For setup-mode card-gate requests, send the Checkout setup session, SetupIntent metadata, local account/customer row, payment-method state, and the gated job or access path.',
+        prepaid_account_credit: 'For prepaid account-credit requests, send the invoice before/after state, customer credit balance, signed ledger row, apply-credit path, Stripe autopay state, and revenue/payment row.',
+        paid_blocked_or_unpaid_unlocked: 'For paid-blocked or unpaid-unlocked requests, send the Checkout Session or invoice id, user/workspace row, webhook event status, local entitlement row, Stripe object id, and the route that unlocked or blocked access.',
+        webhook_paid_status: 'For webhook paid-status requests, send the Checkout Session or subscription id, webhook delivery status, Supabase paid/access row, and what the paid user still sees.',
+        ship_it_kit_setup: 'For Ship It Kit setup requests, send whether you bought the starter, whether this is a fresh install or existing repo, the deployed preview or repo state, and the exact auth, checkout, portal, webhook, or paid-access blocker.',
+        ship_it_kit_setup_help: 'For Ship It Kit setup requests, send whether you bought the starter, whether this is a fresh install or existing repo, the deployed preview or repo state, and the exact auth, checkout, portal, webhook, or paid-access blocker.',
+        billing_drift_review: 'For drift-check requests, keep the score plus the unchecked risks in the packet so the review starts from the exact failure mode.',
+        billing_reconciliation_query: 'For reconciliation-query requests, send the table names, join key, customer column, generated SQL, and one returned mismatch row if the query found drift.',
+        revenue_leak_audit: 'For revenue-leak audits, send one paid-but-blocked or unpaid-but-unlocked example and the Stripe/Supabase rows behind it.'
+      };
+      if (contextNote && contextNotes[context]) {
+        contextNote.textContent = contextNotes[context];
+        contextNote.hidden = false;
+        if (contextActions) contextActions.hidden = false;
+        capture('setup_help_request_context_note_shown', Object.assign({}, eventProps, { target_href: 'context_note', note_context: context }));
+      }
+      var manual = document.querySelector('[data-manual-link]');
+      var manualLinks = Array.prototype.slice.call(document.querySelectorAll('[data-manual-link]'));
+      var copyText = document.querySelector('[data-request-copy]');
+      var copyButtons = Array.prototype.slice.call(document.querySelectorAll('[data-copy-request]'));
+      var copyEmailButton = document.querySelector('[data-copy-email]');
+      var copySubjectButton = document.querySelector('[data-copy-subject]');
+      var gmailLink = document.querySelector('[data-gmail-link]');
+      var outlookLink = document.querySelector('[data-outlook-link]');
+      var copyStatus = document.querySelector('[data-copy-status]');
+      var formspreeForm = document.querySelector('[data-formspree-form]');
+      var hiddenSubject = document.querySelector('[data-hidden-subject]');
+      var hiddenReplyTo = document.querySelector('[data-hidden-replyto]');
+      var hiddenContext = document.querySelector('[data-hidden-context]');
+      var hiddenPriceRange = document.querySelector('[data-hidden-price-range]');
+      var hiddenQuotePath = document.querySelector('[data-hidden-quote-path]');
+      var hiddenSource = document.querySelector('[data-hidden-source]');
+      var hiddenSourceRef = document.querySelector('[data-hidden-source-ref]');
+      var hiddenPacket = document.querySelector('[data-hidden-packet]');
+      var hiddenNext = document.querySelector('[data-hidden-next]');
+      var fields = Array.prototype.slice.call(document.querySelectorAll('[data-request-field]'));
+      var quotePathButtons = Array.prototype.slice.call(document.querySelectorAll('[data-quote-path]'));
+      function fieldByKey(key) {
+        return document.querySelector('[data-request-field="' + key + '"]');
+      }
+      function setFieldIfEmpty(key, value) {
+        var field = fieldByKey(key);
+        if (field && !field.value.trim()) field.value = value;
+      }
+      var contextExamples = {
+        ship_it_kit_setup: {
+          repo: 'Existing Next.js app or fresh Ship It Kit install; deployed preview if available',
+          blocker: 'Ship It Kit setup pass: auth callback, protected dashboard, Stripe Checkout, customer portal, webhook, paid-access row, or env wiring needs to be adapted to my repo.',
+          evidence: 'Repo state, deployed preview URL if safe, Supabase project status, Stripe test-mode checkout/session/webhook status, relevant file paths, and one screenshot or log for the blocker.',
+          budget: 'EUR199+ if this is existing-repo adaptation; EUR99-149 if it is one narrow auth/billing blocker'
+        },
+        ship_it_kit_setup_help: {
+          repo: 'Existing Next.js app or fresh Ship It Kit install; deployed preview if available',
+          blocker: 'Ship It Kit setup pass: auth callback, protected dashboard, Stripe Checkout, customer portal, webhook, paid-access row, or env wiring needs to be adapted to my repo.',
+          evidence: 'Repo state, deployed preview URL if safe, Supabase project status, Stripe test-mode checkout/session/webhook status, relevant file paths, and one screenshot or log for the blocker.',
+          budget: 'EUR199+ if this is existing-repo adaptation; EUR99-149 if it is one narrow auth/billing blocker'
+        },
+        billing_reconciliation_query: {
+          repo: 'Live or near-live app with Stripe subscription/customer state mirrored into Supabase',
+          blocker: 'Reconciliation query review: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer link, or stale entitlement rows.',
+          evidence: 'Stripe mirror table name, local access table name, join key, customer column, generated SQL, one returned mismatch row if available, webhook delivery status.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        charged_stranded: {
+          blocker: 'Charged-and-stranded: Stripe says paid or active, but the tenant/workspace/subscription/entitlement row is missing or blocked.',
+          evidence: 'Stripe object id, missing Supabase row/table, webhook delivery status, and what the paid user currently sees.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        trial_access: {
+          blocker: 'Trial/access mismatch: Stripe trialing/active/incomplete/past_due/canceled does not match Supabase access.',
+          evidence: 'Subscription id, latest invoice status, trial_end/current_period_end, Supabase access row, and intended trial/grace policy.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        portal_cancel: {
+          blocker: 'Portal cancellation mismatch: Stripe cancellation state does not match Supabase access.',
+          evidence: 'Subscription id, cancel_at_period_end/current_period_end, Supabase access row, portal action timestamp, and webhook delivery status.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        portal_plan_change: {
+          blocker: 'Portal plan-change mismatch: Stripe price or schedule changed but Supabase entitlements did not.',
+          evidence: 'Subscription id, before/after price ids, Supabase entitlement row, portal action timestamp, and intended access rule.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        dunning_access: {
+          blocker: 'Dunning/access mismatch: Stripe past_due, unpaid, canceled, or recovered invoice state does not match Supabase access/grace/lockout state.',
+          evidence: 'Stripe Billing retry setting, subscription status, latest invoice status, event order, Supabase access row, and intended grace policy.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        course_membership: {
+          blocker: 'Course-membership access mismatch: Stripe membership says paid or active, but a course gate is locked, leaked, stale, or mapped to the wrong price/course.',
+          evidence: 'Checkout Session or subscription id, Stripe price id, webhook event, membership/subscription row, course id, entitlement result, grant/access-code row, and protected route.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        prepaid_account_credit: {
+          blocker: 'Prepaid account-credit mismatch: invoice status, customer credit balance, signed ledger row, Stripe autopay state, or revenue/payment row does not converge.',
+          evidence: 'Invoice id/status before and after, customer id and account_credits before/after, credit ledger row with signed delta and balance_after, apply-credit endpoint, Stripe autopay state, revenue/payment row, replay result.',
+          budget: 'EUR99-149 if scope is clear'
+        },
+        paid_blocked_or_unpaid_unlocked: {
+          blocker: 'Paid-state mismatch: Stripe says paid/active but Supabase blocks access, or Stripe says failed/expired/canceled/refunded but the app still unlocks access.',
+          evidence: 'Checkout Session or invoice id, user/workspace row, webhook event status, local entitlement row, Stripe object id, and the route that unlocked or blocked access.',
+          budget: 'EUR99-149 if scope is clear'
+        }
+      };
+      function value(key) {
+        var field = fieldByKey(key);
+        return field ? field.value.trim() : '';
+      }
+      function formStats() {
+        var filled = fields.filter(function (field) { return field.value.trim(); }).length;
+        var completed = fields.filter(function (field) { return field.value.trim(); }).map(function (field) { return field.getAttribute('data-request-field'); });
+        var required = ['email', 'stack', 'repo', 'blocker', 'evidence', 'budget'];
+        var missing = required.filter(function (key) { return !value(key); });
+        var fastPathReady = Boolean(value('email') && value('stack') && value('blocker'));
+        var qualifiedPacketReady = missing.length === 0;
+        return {
+          completed_fields: filled,
+          completed_field_names: completed.join(','),
+          total_fields: fields.length,
+          is_complete: fastPathReady,
+          fast_path_ready: fastPathReady,
+          qualified_packet_ready: qualifiedPacketReady,
+          has_reply_email: Boolean(value('email')),
+          missing_required_fields: missing.join(','),
+          required_fields_filled: required.length - missing.length,
+          required_fields_total: required.length,
+          quote_path: quotePathSelected
+        };
+      }
+      function lineValue(label, key) {
+        var field = document.querySelector('[data-request-field="' + key + '"]');
+        return label + (field && field.value.trim() ? ' ' + field.value.trim() : '');
+      }
+      function buildBody() {
+        return [
+          'Hi Arthur,',
+          '',
+          intro,
+          quotePathSelected ? 'Request path: ' + quotePathSelected.replace(/_/g, ' ') : '',
+          driftScore ? 'Billing drift score: ' + driftScore + (totalRisks ? '/' + totalRisks : '') : '',
+          riskCount ? 'Unchecked risk count: ' + riskCount : '',
+          uncheckedRiskKeys ? 'Unchecked risk keys: ' + uncheckedRiskKeys : '',
+          stripeTable ? 'Stripe mirror table: ' + stripeTable : '',
+          accessTable ? 'Local access table: ' + accessTable : '',
+          joinKey ? 'Join key: ' + joinKey : '',
+          customerColumn ? 'Customer column: ' + customerColumn : '',
+          stripeStatusColumn ? 'Stripe status column: ' + stripeStatusColumn : '',
+          localStatusColumn ? 'Local status column: ' + localStatusColumn : '',
+          '',
+          lineValue('Reply email:', 'email'),
+          lineValue('My current stack:', 'stack'),
+          lineValue('My repo state:', 'repo'),
+          lineValue(isShipItKit ? 'Exact blocker or launch risk:' : 'Debug artifacts I can send (logs, screenshots, settings, file paths):', 'blocker'),
+          lineValue('Evidence ready:', 'evidence'),
+          lineValue('Deadline:', 'deadline'),
+          lineValue('Budget range:', 'budget'),
+          isShipItKit ? 'Have I bought Ship It Kit yet:' : 'Production URL / repo access situation:',
+          isShipItKit ? 'What I need adapted from Ship It Kit:' : '',
+          '',
+          'Source: ' + source,
+          sourceRef ? 'Source ref: ' + sourceRef : '',
+          'Request context: ' + context,
+          quotePathSelected ? 'Quote path: ' + quotePathSelected : ''
+        ].filter(function (line, index, lines) {
+          return line !== '' || lines[index - 1] !== '';
+        }).join('\n');
+      }
+      function refreshLinks() {
+        body = buildBody();
+        mailto = 'mailto:arthur.pierrey@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        gmailCompose = 'https://mail.google.com/mail/?view=cm&fs=1&to=arthur.pierrey@gmail.com&su=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        outlookCompose = 'https://outlook.live.com/mail/0/deeplink/compose?to=arthur.pierrey@gmail.com&subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        manualLinks.forEach(function (link) { link.href = mailto; });
+        gmailLink.href = gmailCompose;
+        outlookLink.href = outlookCompose;
+        copyText.value = body;
+        hiddenSubject.value = subject;
+        hiddenReplyTo.value = value('email');
+        hiddenContext.value = context;
+        hiddenPriceRange.value = priceRange;
+        hiddenQuotePath.value = quotePathSelected;
+        hiddenSource.value = source;
+        hiddenSourceRef.value = sourceRef;
+        hiddenPacket.value = body;
+        hiddenNext.value = 'https://goosekit.dev/go/billing-reliability/setup-request-sent/?source=' + encodeURIComponent(source) + '&context=' + encodeURIComponent(context) + '&price_range_eur=' + encodeURIComponent(priceRange) + '&quote_path=' + encodeURIComponent(quotePathSelected || 'unknown') + '&source_ref=' + encodeURIComponent(sourceRef || source);
+      }
+      refreshLinks();
+      if (isShipItKit) {
+        var shipitExample = contextExamples[context] || contextExamples.ship_it_kit_setup;
+        setFieldIfEmpty('repo', shipitExample.repo);
+        setFieldIfEmpty('blocker', shipitExample.blocker);
+        setFieldIfEmpty('evidence', shipitExample.evidence);
+        setFieldIfEmpty('budget', shipitExample.budget);
+        refreshLinks();
+        capture('setup_help_request_context_prefill_applied', Object.assign({}, eventProps, formStats(), { target_href: 'shipit_setup_context_prefill', note_context: context }));
+      }
+      if (contextExampleButton) {
+        contextExampleButton.addEventListener('click', function () {
+          var example = contextExamples[context];
+          if (!example) return;
+          setFieldIfEmpty('blocker', example.blocker);
+          setFieldIfEmpty('evidence', example.evidence);
+          setFieldIfEmpty('budget', example.budget);
+          refreshLinks();
+          capture('setup_help_request_context_example_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'context_example', note_context: context }));
+          var emailField = fieldByKey('email');
+          if (emailField) emailField.focus();
+        });
+      }
+      if (isBillingDrift) {
+        setFieldIfEmpty('repo', 'Live or near-launch app with Stripe + Supabase billing drift risk');
+        setFieldIfEmpty('blocker', 'Billing drift check score: ' + (driftScore || 'unknown') + (totalRisks ? '/' + totalRisks : '') + (uncheckedRiskKeys ? '; unchecked risk keys: ' + uncheckedRiskKeys : ''));
+        setFieldIfEmpty('evidence', 'Stripe object ids, Supabase rows, webhook delivery status, and one user-visible mismatch');
+        refreshLinks();
+      }
+      if (isBillingReconciliation) {
+        setFieldIfEmpty('repo', 'Live or near-live app with Stripe subscription/customer state mirrored into Supabase');
+        setFieldIfEmpty('blocker', 'Reconciliation query review: active in Stripe but inactive locally, inactive in Stripe but still unlocked, missing customer link, or stale entitlement rows');
+        setFieldIfEmpty('evidence', [
+          stripeTable ? 'Stripe mirror table: ' + stripeTable : 'Stripe mirror table',
+          accessTable ? 'Local access table: ' + accessTable : 'local access table',
+          joinKey ? 'join key: ' + joinKey : 'join key',
+          customerColumn ? 'customer column: ' + customerColumn : 'customer column',
+          stripeStatusColumn ? 'Stripe status column: ' + stripeStatusColumn : 'Stripe status column',
+          localStatusColumn ? 'local status column: ' + localStatusColumn : 'local status column',
+          'generated SQL',
+          'one returned mismatch row if available',
+          'webhook delivery status'
+        ].join('; '));
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isBillingChecklist) {
+        setFieldIfEmpty('repo', 'Live or pre-launch Next.js + Supabase + Stripe app');
+        setFieldIfEmpty('blocker', 'Billing reliability review: one Stripe object, one Supabase row, one expected state, one actual state');
+        setFieldIfEmpty('evidence', 'Stripe object id, Supabase table/row, webhook delivery status, user-visible symptom');
+        refreshLinks();
+      }
+      if (isRevenueLeakAudit) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app');
+        setFieldIfEmpty('blocker', 'Revenue leak audit: paid but blocked, unpaid but unlocked, duplicate access, wrong workspace, or stale credits/seats');
+        setFieldIfEmpty('evidence', 'Stripe object id, Supabase access row, webhook delivery status, expected app state, actual app state');
+        setFieldIfEmpty('budget', priceRange === '149' ? 'EUR149 fixed-scope audit' : priceRange);
+        refreshLinks();
+      }
+      if (isTrialAccess) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with trials or first-invoice activation');
+        setFieldIfEmpty('blocker', 'Trial/access mismatch: Stripe trialing/active/incomplete/past_due/canceled state does not match Supabase access state');
+        setFieldIfEmpty('evidence', 'Subscription id, latest invoice status, trial_end/current_period_end, Supabase access row, webhook delivery status, intended trial/grace policy');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isOneTimeBooking) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with paid bookings, sessions, credits, or appointments');
+        setFieldIfEmpty('blocker', 'Booking/payment/credit mismatch: one-time Checkout, booking row, subscription credit balance, or webhook replay does not converge');
+        setFieldIfEmpty('evidence', 'Checkout Session or PaymentIntent id, booking/session row before/after, subscription credit row before/after, processed-event/idempotency row, refund/release/repair path');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isChargedStranded) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app');
+        setFieldIfEmpty('blocker', 'Charged-and-stranded: Stripe says paid or active, but tenant/workspace/subscription/entitlement/credits/seats are missing or blocked');
+        setFieldIfEmpty('evidence', 'Checkout Session, PaymentIntent, invoice, subscription, or event id; expected Supabase rows; webhook delivery status; user-visible symptom');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPortalCancel) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Customer Portal enabled');
+        setFieldIfEmpty('blocker', 'Portal cancellation mismatch: Stripe status/cancel_at_period_end/current_period_end does not match Supabase access state');
+        setFieldIfEmpty('evidence', 'Subscription id, Supabase subscription/access row, portal action timestamp, webhook delivery status, intended access rule');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPortalPlanChange) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Customer Portal enabled');
+        setFieldIfEmpty('blocker', 'Portal plan-change mismatch: Stripe price/plan/schedule/current_period_end does not match Supabase plan or entitlement window');
+        setFieldIfEmpty('evidence', 'Subscription id, before/after price ids, Supabase entitlement row, portal action timestamp, webhook delivery status, intended access rule');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isDunningAccess) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with subscriptions and renewal retries');
+        setFieldIfEmpty('blocker', 'Dunning/access mismatch: Stripe past_due, unpaid, canceled, or recovered invoice state does not match Supabase access/grace/lockout state');
+        setFieldIfEmpty('evidence', 'Stripe Billing retry setting, subscription status, latest invoice status, invoice.payment_failed/invoice.paid/customer.subscription event order, Supabase subscription/access row, intended grace policy');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isDuplicateSubscription) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with subscriptions, add-ons, seats, or workspaces');
+        setFieldIfEmpty('blocker', 'Duplicate-subscription mismatch: one customer/workspace has multiple active Stripe subscriptions or add-on billing, and Supabase access cannot map them cleanly');
+        setFieldIfEmpty('evidence', 'Product rule, Stripe customer id, active subscription ids, local owner row, subscription/entitlement rows, checkout or add-on path, cancellation behavior');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isCheckoutSuccessWebhook) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Checkout success route and webhooks');
+        setFieldIfEmpty('blocker', 'Checkout success route and webhook disagree: success URL, webhook, portal, or renewal path can write different access/entitlement state');
+        setFieldIfEmpty('evidence', 'Checkout Session id or shape, success route file, webhook handler file, local subscription/entitlement row, failing replay case, what the paid user sees');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPaymentElementOrderTracking) {
+        setFieldIfEmpty('repo', 'Live or near-live app with Stripe Payment Element, async webhook fulfillment, and order tracking');
+        setFieldIfEmpty('blocker', 'Payment Element redirect/webhook/tracking mismatch: redirect_status, webhook fulfillment, order row, or tracking page does not converge');
+        setFieldIfEmpty('evidence', 'PaymentIntent or Checkout Session id, return_url and redirect_status, webhook event/delivery status, order row before/after, processed-event row, tracking route/component');
+        setFieldIfEmpty('budget', 'EUR149 if scope is clear');
+        refreshLinks();
+      }
+      if (isWebhookPaidStatus) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with Checkout and webhooks');
+        setFieldIfEmpty('blocker', 'Webhook paid-status mismatch: Stripe checkout/subscription says paid or active, but Supabase paid/access state or protected route still says free');
+        setFieldIfEmpty('evidence', 'Checkout Session or subscription id, webhook delivery/signature status, Supabase user/customer/subscription/access row, processed-event row, and what the paid user sees');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isCourseMembership) {
+        setFieldIfEmpty('repo', 'Live or near-live course platform with Stripe memberships and Supabase course access');
+        setFieldIfEmpty('blocker', 'Course-membership access mismatch: membership/subscription state, per-course grant, access-code override, or protected route result does not converge');
+        setFieldIfEmpty('evidence', 'Checkout Session id, subscription id/status, Stripe price id, webhook event id/type, subscription row, has_active_subscription result, is_entitled(course_id) result, course id/route, grant or access-code row');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isMissingSubscriptionColumns) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with subscription plans, credits, or feature limits');
+        setFieldIfEmpty('blocker', 'Subscription schema drift: webhook or check-subscription writes columns that are missing, stale, or split between subscriptions and pricing_config');
+        setFieldIfEmpty('evidence', 'Stripe event id/type/delivery status, subscription/customer/price ids, subscriptions schema, pricing_config schema, attempted webhook/check-subscription columns, row before/after replay, processed-event row, exact error or stale user-visible state');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isInvoicePaidDoubleExtend) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with recurring memberships or subscription access');
+        setFieldIfEmpty('blocker', 'invoice.paid renewal drift: initial invoice, renewal invoice, retried invoice, duplicate webhook, or manual repair extends membership twice or away from Stripe period truth');
+        setFieldIfEmpty('evidence', 'Stripe invoice id, subscription id, billing_reason, current_period_start/end, local subscription or membership row before/after, invoice-application/idempotency row, webhook handler path, entitlement update path, replay result, observed wrong expiry');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isSetupModeCardGate) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with setup-mode Checkout, card-on-file, trial, import, or usage job gating');
+        setFieldIfEmpty('blocker', 'Setup-mode card gate mismatch: saved card, SetupIntent metadata, local account/customer row, subscription/trial state, or gated job/access state does not converge');
+        setFieldIfEmpty('evidence', 'Checkout setup session shape, SetupIntent id/metadata, Stripe customer/payment method id, local account/customer row, payment-method state, free/trial/subscription row, gated job/backfill path, expected state, actual state');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPrepaidAccountCredit) {
+        setFieldIfEmpty('repo', 'Live or near-live app with prepaid invoices, customer account credits, Stripe autopay, or revenue-recognition-sensitive ledger rows');
+        setFieldIfEmpty('blocker', 'Prepaid account-credit mismatch: invoice status, customer credit balance, signed credit ledger, Stripe autopay state, or payment/revenue row does not converge');
+        setFieldIfEmpty('evidence', 'Invoice id/status before and after, customer id and account_credits before/after, credit ledger row with signed delta and balance_after, apply-credit endpoint or function, Stripe payment/autopay state, payment or revenue row, follow-up/send guard state, replay result');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      if (isPaidBlockedOrUnpaidUnlocked) {
+        setFieldIfEmpty('repo', 'Live or near-live Next.js + Supabase + Stripe app with paid-state mismatch');
+        setFieldIfEmpty('blocker', 'Paid-state mismatch: Stripe says paid/active but Supabase blocks access, or Stripe says failed/expired/canceled/refunded but the app still unlocks access');
+        setFieldIfEmpty('evidence', 'Checkout Session or invoice id, user/workspace row, webhook event status, local entitlement row, Stripe object id, and the route that unlocked or blocked access');
+        setFieldIfEmpty('budget', 'EUR99-149 if scope is clear');
+        refreshLinks();
+      }
+      quotePathButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          quotePathSelected = button.getAttribute('data-quote-path') || '';
+          eventProps.quote_path = quotePathSelected;
+          if (quotePathSelected === 'fixed_scope_quote') {
+            setFieldIfEmpty('repo', 'Existing repo; quote needed for one fixed-scope setup pass');
+            setFieldIfEmpty('budget', priceRange === '199-plus' ? 'EUR199+ if scope is clear' : 'EUR99-149 if scope is clear');
+          }
+          if (quotePathSelected === 'launch_blocker') {
+            setFieldIfEmpty('repo', 'Live or near-launch app');
+            setFieldIfEmpty('blocker', 'Launch blocker: ');
+            setFieldIfEmpty('deadline', 'Urgent / before launch');
+          }
+          refreshLinks();
+          capture('setup_help_request_quote_path_selected', Object.assign({}, eventProps, formStats(), { target_href: 'setup_request_form' }));
+          if (quotePathSelected === 'launch_blocker') {
+            var blockerField = fieldByKey('blocker');
+            if (blockerField) blockerField.focus();
+          }
+        });
+      });
+      fields.forEach(function (field) {
+        field.addEventListener('input', function () {
+          refreshLinks();
+          if (!formStarted && field.value.trim()) {
+            formStarted = true;
+            capture('setup_help_request_form_started', Object.assign({}, eventProps, formStats(), { first_field: field.getAttribute('data-request-field') }));
+          }
+          var stats = formStats();
+          if (!fastPathCaptured && stats.fast_path_ready) {
+            fastPathCaptured = true;
+            capture('setup_help_request_fast_path_ready', Object.assign({}, eventProps, stats));
+          }
+          if (!readyToSendCaptured && stats.is_complete) {
+            readyToSendCaptured = true;
+            capture('setup_help_request_ready_to_send', Object.assign({}, eventProps, stats));
+          }
+          if (!qualifiedPacketCaptured && stats.qualified_packet_ready) {
+            qualifiedPacketCaptured = true;
+            capture('setup_help_request_qualified_packet_ready', Object.assign({}, eventProps, stats));
+          }
+        });
+        field.addEventListener('blur', function () {
+          if (field.value.trim()) capture('setup_help_request_field_completed', Object.assign({}, eventProps, formStats(), { field: field.getAttribute('data-request-field') }));
+        });
+      });
+      manualLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+          refreshLinks();
+          var position = link.getAttribute('data-button-position') || 'unknown';
+          capture('setup_help_request_manual_click', Object.assign({}, eventProps, formStats(), { target_href: mailto, button_position: position }));
+          capture('setup_help_request_mailto_opened', Object.assign({}, eventProps, formStats(), { target_href: mailto, trigger: 'manual_click', button_position: position }));
+        });
+      });
+      gmailLink.addEventListener('click', function () {
+        refreshLinks();
+        capture('setup_help_request_gmail_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'gmail_compose' }));
+      });
+      outlookLink.addEventListener('click', function () {
+        refreshLinks();
+        capture('setup_help_request_outlook_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'outlook_compose' }));
+      });
+      formspreeForm.addEventListener('submit', function (event) {
+        refreshLinks();
+        if (!value('email')) {
+          event.preventDefault();
+          copyStatus.textContent = 'Add a reply email first so the request can be answered.';
+          capture('setup_help_request_submit_blocked', Object.assign({}, eventProps, formStats(), { target_href: 'formspree_xblgwdqz', blocked_reason: 'missing_reply_email' }));
+          var emailField = fieldByKey('email');
+          if (emailField) emailField.focus();
+          return;
+        }
+        capture('setup_help_request_formspree_submit', Object.assign({}, eventProps, formStats(), { target_href: 'formspree_xblgwdqz' }));
+      });
+      copyButtons.forEach(function (button) {
+        button.addEventListener('click', function () {
+          refreshLinks();
+          copyText.select();
+          var copied = false;
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(body).then(function () {
+              copyStatus.textContent = 'Copied. Paste it into your email to Arthur.';
+            }).catch(function () {
+              document.execCommand('copy');
+              copyStatus.textContent = 'Selected. Copy it manually if your browser blocked clipboard access.';
+            });
+            copied = true;
+          } else {
+            copied = document.execCommand('copy');
+            copyStatus.textContent = copied ? 'Copied. Paste it into your email to Arthur.' : 'Selected. Copy it manually.';
+          }
+          capture('setup_help_request_copy_clicked', Object.assign({}, eventProps, formStats(), { target_href: 'copy_request_text', button_position: button.getAttribute('data-button-position') || 'top', clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+        });
+      });
+      function copyValue(value, label, eventName, targetHref) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(value).then(function () {
+            copyStatus.textContent = label + ' copied.';
+          }).catch(function () {
+            copyStatus.textContent = label + ': ' + value;
+          });
+        } else {
+          copyStatus.textContent = label + ': ' + value;
+        }
+        capture(eventName, Object.assign({}, eventProps, formStats(), { target_href: targetHref, clipboard_api: Boolean(navigator.clipboard && navigator.clipboard.writeText), copy_attempted: true }));
+      }
+      copyEmailButton.addEventListener('click', function () {
+        copyValue('arthur.pierrey@gmail.com', 'Email address', 'setup_help_request_email_copy_clicked', 'copy_email_address');
+      });
+      copySubjectButton.addEventListener('click', function () {
+        copyValue(subject, 'Subject', 'setup_help_request_subject_copy_clicked', 'copy_email_subject');
+      });
+      capture('setup_help_request_auto_mailto_suppressed', Object.assign({}, eventProps, { target_href: mailto }));
+    });
+  </script>
 </body>
 </html>

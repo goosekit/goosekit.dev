@@ -492,6 +492,23 @@
     .seo-content a { color: #7b8cff; text-decoration: none; }
     .seo-content a:hover { text-decoration: underline; }
     .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+    .trust-panel {
+      max-width: 980px;
+      margin: 18px auto 0;
+      padding: 14px 16px;
+      border: 1px solid rgba(255,72,0,0.24);
+      border-radius: 8px;
+      background: rgba(255,72,0,0.06);
+      color: #c9c9d8;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .trust-panel strong { display: block; color: #fff; font-size: 12px; margin-bottom: 2px; }
+    @media (max-width: 760px) { .trust-panel { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 460px) { .trust-panel { grid-template-columns: 1fr; } }
   </style>
 <script defer src="/posthog.js"></script>
 <style id="gk-homepage-header-copy-styles">
@@ -801,6 +818,13 @@
     </div>
   </div>
 
+  <section class="trust-panel" aria-label="Goosekit regex tester trust notes">
+    <div><strong>JavaScript-style testing</strong>Check patterns against realistic frontend strings.</div>
+    <div><strong>Local input</strong>Your pattern and test text stay in the browser.</div>
+    <div><strong>Capture groups</strong>See match details before copying code.</div>
+    <div><strong>No account wall</strong>Use examples, flags, replace mode, and references free.</div>
+  </section>
+
 <section style="max-width:980px;margin:48px auto 0;padding:0 24px;">
   <div style="border:1px solid rgba(255,255,255,0.08);border-radius:18px;background:rgba(255,255,255,0.03);padding:22px;">
     <h2 style="margin:0 0 10px;color:#fff;">Related Goosekit guides</h2>
@@ -847,7 +871,7 @@
   <h3>What do regex flags mean?</h3>
   <p><code>g</code> finds all matches, <code>i</code> ignores case, <code>m</code> enables multiline anchors, and <code>s</code> lets dots match newlines.</p>
   <h2>Related Tools</h2>
-  <p>More tools: <a href="/json/">JSON Formatter</a>, <a href="/hash/">Hash Generator</a>, <a href="/url-encode/">URL Encoder</a>. brings 12 of these tools into one portable folder you can run offline.</p>
+  <p>More tools: <a href="/json/">JSON Formatter</a>, <a href="/hash/">Hash Generator</a>, <a href="/url-encode/">URL Encoder</a>, and the <a href="/use-cases/regex-tools/">regex tools collection</a>. For more examples, use the <a href="/use-cases/regex-examples-javascript/">JavaScript regex examples workflow</a>. They are free, browser-based, and require no account.</p>
   <h2>Related Guides</h2>
   <p>Read <a href="/blog/free-online-regex-tester/">Free Online Regex Tester</a>, <a href="/blog/free-regex-cheat-sheet/">Regex Cheat Sheet JavaScript</a>, and <a href="/blog/developer-productivity-tools/">15 Free Developer Productivity Tools You Should Bookmark</a>.</p>
 </div>
@@ -860,7 +884,6 @@
     <a href="/base64/">🔐 Base64 Encoder</a>
   </div>
   <div class="footer-copy">RegexLab — Free developer tools. No sign-up required.</div>
-  <div class="affiliate-credits" style="margin-top:8px;font-size:11px;opacity:0.6;line-height:1.5;text-align:center;">Built with <a href="https://vercel.com/?ref=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="regex" data-ph-program="vercel" style="color:inherit;">Vercel</a> · Data by <a href="https://supabase.com/?via=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="regex" data-ph-program="supabase" style="color:inherit;">Supabase</a> · <a href="https://m.do.co/c/GOOSEKIT_TODO" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="regex" data-ph-program="digitalocean" style="color:inherit;">Deploy your own tool</a></div>
 </footer>
 
 <div id="toast"></div>

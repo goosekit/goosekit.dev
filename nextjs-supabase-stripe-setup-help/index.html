@@ -1,15 +1,263 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next.js + Supabase + Stripe Setup Help — Auth, Billing, Webhooks</title>
+  <meta name="description" content="Scoped setup help for Next.js apps using Supabase auth and Stripe billing. Get auth callbacks, checkout, webhooks, paid-user state, and optional monthly billing-health support reviewed or wired.">
+  <link rel="canonical" href="https://goosekit.dev/nextjs-supabase-stripe-setup-help/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://goosekit.dev/brand/apple-touch-icon.png">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Next.js + Supabase + Stripe Setup Help">
+  <meta property="og:description" content="Scoped help for auth callbacks, Stripe checkout, webhooks, env drift, paid-user state, and optional monthly billing-health support in a real repo.">
+  <meta property="og:url" content="https://goosekit.dev/nextjs-supabase-stripe-setup-help/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at top left,rgba(255,72,0,.16),transparent 30rem),#0f0f19;color:#f7f7fb;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.68}a{color:#ff9040;text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1120px;margin:0 auto;padding:28px 20px 76px}nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:56px;color:#9999b3;font-size:.94rem}nav a{color:#c8c8d8}.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:28px;align-items:start}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-size:.8rem;font-weight:900;margin-bottom:14px}h1{font-size:clamp(2.35rem,6vw,4.8rem);line-height:.98;letter-spacing:-.06em;margin:0 0 20px}h2{font-size:clamp(1.7rem,3vw,2.35rem);line-height:1.12;letter-spacing:-.04em;margin:0 0 16px}h3{margin:0 0 10px;font-size:1.12rem}p,li{color:#bebed1}.lead{font-size:1.17rem;max-width:760px}.card{background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));border:1px solid #2a2a41;border-radius:20px;padding:24px}.price{font-size:2.7rem;letter-spacing:-.05em;font-weight:950;margin:10px 0 0}.fine,.muted{color:#9090aa;font-size:.94rem}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:12px;padding:14px 19px;font-weight:850;border:1px solid transparent;text-decoration:none}.primary{background:#ff4800;color:#fff;box-shadow:0 12px 34px rgba(255,72,0,.22)}.primary:hover{background:#e13f00;text-decoration:none}.secondary{border-color:#34344e;color:#e8e8f2;background:rgba(255,255,255,.02)}.secondary:hover{border-color:#ff9040;text-decoration:none}.section{margin-top:58px}.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}ul{list-style:none;padding:0;margin:0}li{position:relative;padding-left:27px;margin:10px 0}li::before{content:'✓';position:absolute;left:0;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.steps{counter-reset:step}.step{position:relative;padding-left:56px}.step::before{counter-increment:step;content:counter(step);position:absolute;left:20px;top:23px;width:26px;height:26px;border-radius:999px;background:#ff4800;color:#fff;display:grid;place-items:center;font-weight:900}.strip{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.07));border-color:rgba(255,144,64,.36)}.tag{display:inline-block;border:1px solid #34344e;border-radius:999px;padding:5px 9px;color:#d8d8e5;font-size:.82rem;margin:4px 4px 0 0}@media(max-width:860px){.hero,.grid3,.grid2{grid-template-columns:1fr}nav{margin-bottom:36px}}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <nav><a href="/">← Goosekit</a><a href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=setup_help_nav_checklist">Setup checklist</a><a href="/stripe-supabase-revenue-leak-audit/?ref=setup_help_nav">Revenue leak audit</a><a href="/stripe-billing-reliability-checklist/?ref=nav">Reliability checklist</a></nav>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Scoped setup help for SaaS builders</div>
+        <h1>Next.js + Supabase + Stripe setup help.</h1>
+        <p class="lead">For founders who already have a repo and need the boring revenue plumbing finished: Supabase auth callbacks, protected routes, Stripe checkout, customer portal, webhooks, live-money go-live checks, environment variables, and paid-user state.</p>
+        <p class="lead">The first paid pass is fixed-scope. If the app is live or close to live, the follow-up offer is monthly billing-health support so Stripe/Supabase edge cases do not quietly break paid access after launch.</p>
+        <p class="lead">This is not a full agency build. Send the current repo state and the exact blocker. If it is narrow enough to scope safely, you get a fixed-scope quote. If not, you get a straight no.</p>
+        <div class="actions">
+          <a class="btn primary" href="/go/billing-reliability/setup-request/?source=nextjs_setup_help_hero&context=nextjs_supabase_stripe_setup&price_range_eur=99-149&quote_path=setup_help&source_ref=nextjs_setup_help_hero" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="nextjs_setup_help_hero">Request setup help →</a>
+          <a class="btn secondary" href="/blog/nextjs-supabase-stripe-setup-checklist/?ref=setup_help_hero_checklist" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_checklist">Use the checklist first</a>
+          <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=setup_help_hero_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_webhook_guide">Webhook paid-state debug</a>
+          <a class="btn secondary" href="/blog/supabase-auth-callback-vercel-production/?ref=setup_help_hero_auth_callback" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_auth_callback_guide">Auth callback debug</a>
+          <a class="btn secondary" href="/blog/nextjs-supabase-middleware-redirect-loop/?ref=setup_help_hero_middleware_loop" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_middleware_loop_guide">Middleware loop debug</a>
+          <a class="btn secondary" href="/blog/stripe-test-mode-live-mode-production/?ref=setup_help_hero_live_mode" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_live_mode_guide">Live-mode billing debug</a>
+          <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=setup_help_hero_user_mapping" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_user_mapping_guide">User mapping debug</a>
+          <a class="btn secondary" href="/blog/vercel-preview-production-callback-stripe-supabase/?ref=setup_help_hero_url_drift" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_url_drift_guide">Preview/prod URL debug</a>
+          <a class="btn secondary" href="/blog/stripe-webhook-307-308-401-403-vercel/?ref=setup_help_hero_webhook_status" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_webhook_status_guide">Webhook 307/401 debug</a>
+          <a class="btn secondary" href="/blog/stripe-webhook-signature-verification-failed-production/?ref=setup_help_hero_signature" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_signature_guide">Webhook signature debug</a>
+          <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_hero_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_rls_guide">Supabase RLS webhook debug</a>
+          <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=setup_help_hero_duplicate_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_duplicate_webhook_guide">Duplicate webhook debug</a>
+          <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=setup_help_hero_portal_plan_change" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_portal_plan_change_guide">Portal plan-change debug</a>
+          <a class="btn secondary" href="/blog/stripe-duplicate-customers-supabase-user/?ref=setup_help_hero_duplicate_customer" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_duplicate_customer_guide">Duplicate customer debug</a>
+          <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_hero_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_trial_guide">Trial conversion debug</a>
+          <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=setup_help_hero_dunning" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_dunning_guide">Dunning/access debug</a>
+          <a class="btn secondary" href="/blog/stripe-pause-collection-supabase-access/?ref=setup_help_hero_pause" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_pause_guide">Paused billing debug</a>
+          <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=setup_help_hero_portal" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_portal_guide">Portal cancel debug</a>
+        </div>
+        <p class="fine">Founding validation scope: €99–149 for a narrow auth/billing debug or go-live review. Existing-repo adaptation, including Ship It Kit wiring, usually starts at €199+. Optional founding-5 billing-health support: €29/mo after the first pass. Availability is manual and case-by-case.</p>
+      </div>
+      <aside class="card strip">
+        <h2>Best first scope</h2>
+        <div class="price">€99–149 <span class="fine">narrow debug</span></div>
+        <p>Most useful when you are close to launch but stuck on one auth, checkout, webhook, paid-state, or go-live blocker. Larger existing-repo adaptation is scoped separately from €199+.</p>
+        <p class="fine" style="margin-top:12px;"><strong>Recurring path:</strong> after the first pass, the first 5 live apps can request a lightweight €29/mo billing-health retainer for webhook/event review, Stripe/Supabase drift checks, and prioritized small fixes.</p>
+        <div>
+          <span class="tag">Next.js App Router</span><span class="tag">Supabase auth</span><span class="tag">Stripe Checkout</span><span class="tag">Webhooks</span><span class="tag">Vercel envs</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section grid3">
+      <div class="card"><h3>Auth callback review</h3><p>Confirm Supabase callback routes, middleware/session handling, redirect allowlists, password recovery, OAuth, and protected route behavior.</p></div>
+      <div class="card"><h3>Stripe billing wiring</h3><p>Review checkout sessions, customer references, portal route, live/test env split, success/cancel URLs, and paid-user gating.</p></div>
+      <div class="card"><h3>Webhook sanity pass</h3><p>Check raw-body signature handling, idempotency, event coverage, database updates, local Stripe CLI testing, and production endpoint config.</p></div>
+    </section>
+
+    <section class="section card strip">
+      <h2>Live-money go-live review</h2>
+      <p>If a real Stripe button is about to go live, the paid pass can be scoped as a go/no-go review instead of broad setup help: one checkout, deposit, booking, cart, add-on, or subscription path; the webhook/success/cancel behavior around it; and the local rows that prove paid, unpaid, canceled, refunded, retry, and recovery state.</p>
+      <div class="grid2">
+        <div>
+          <h3>Good go-live scope</h3>
+          <ul>
+            <li>Test/live mode, webhook secret, and production URL are named before merge.</li>
+            <li>Each paid Stripe object maps to exactly one local booking, order, cart, subscription, or entitlement row.</li>
+            <li>The app has a recovery path if the browser never returns after Checkout.</li>
+            <li>Webhook retry and refresh paths are idempotent.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>No-go signals</h3>
+          <ul class="warn">
+            <li>Success URL is the only place that marks paid state.</li>
+            <li>Refund/support cannot find the original PaymentIntent or Checkout Session from the local row.</li>
+            <li>Unpaid/expired local state can reopen a paid or canceled Stripe state.</li>
+            <li>A second click can create a second active Stripe session or subscription accidentally.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Paid but blocked?</h3>
+          <p>If Stripe says the customer paid but Supabase still blocks access, send the Checkout Session or invoice id, the user/workspace row, and the webhook event status.</p>
+        </div>
+        <div class="card">
+          <h3>Unpaid but unlocked?</h3>
+          <p>If the app grants access after a failed, expired, canceled, or refunded payment, send the local entitlement row, Stripe object id, and the route that unlocked the account.</p>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=live_money_gate&context=nextjs_supabase_stripe_setup&price_range_eur=99-149&quote_path=launch_blocker&source_ref=live_money_gate_block" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="live_money_gate_block">Request go-live review →</a>
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=paid_blocked_or_unpaid_unlocked&context=paid_blocked_or_unpaid_unlocked&price_range_eur=99-149&quote_path=launch_blocker&source_ref=paid_blocked_unpaid_unlocked_block" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="paid_blocked_unpaid_unlocked_block">Request paid-state fix →</a>
+        <a class="btn secondary" href="/stripe-supabase-revenue-leak-audit/?ref=live_money_gate_block" data-ph-event="revenue_leak_audit_interest" data-ph-product="billing_reliability" data-ph-location="live_money_gate_block">See revenue leak audit</a>
+        <a class="btn secondary" href="/stripe-supabase-billing-drift-check/?ref=live_money_gate_block" data-ph-event="billing_drift_check_clicked" data-ph-location="live_money_gate_block">Run drift check first</a>
+      </div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card">
+        <h2>This is a fit if…</h2>
+        <ul>
+          <li>Your app is already Next.js, Supabase, and Stripe or very close.</li>
+          <li>You can share the repo state, screenshots/logs, or exact error path.</li>
+          <li>The request is setup/review/integration, not “build my SaaS from scratch”.</li>
+          <li>You want a small fixed-scope pass that gets you back to product work: €99–149 for narrow debug, or €199+ when the repo needs broader adaptation.</li>
+        </ul>
+      </div>
+      <div class="card warn">
+        <h2>Common blockers this catches</h2>
+        <ul>
+          <li>OAuth or magic-link callback works locally but fails on Vercel.</li>
+          <li>Protected routes keep redirecting back to login after a successful callback.</li>
+          <li>Stripe checkout returns to the wrong domain or loses the app user.</li>
+          <li>Webhook fires but the Supabase paid state is not updated reliably.</li>
+          <li>Stripe webhook delivery returns 307, 308, 401, or 403 in production.</li>
+          <li>Stripe webhook signature verification fails only in production.</li>
+          <li>Supabase RLS blocks Stripe webhook inserts or paid-state updates in production.</li>
+          <li>Duplicate Stripe webhook deliveries create duplicate subscription rows, emails, or credit grants.</li>
+          <li>Stripe subscription events arrive or finish out of order and overwrite paid state with stale data.</li>
+          <li>Payment succeeds but the webhook cannot map the Stripe customer/subscription to the Supabase user or workspace.</li>
+          <li>Duplicate Stripe customers exist for the same app user, workspace, or email and paid access updates the wrong row.</li>
+          <li>Customer portal exists but cancellation/downgrade state is unclear.</li>
+          <li>Preview, production, and local environment variables drift apart.</li>
+          <li>Supabase Auth or Stripe Checkout returns users to a preview Vercel URL instead of the production domain.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section steps grid3">
+      <div class="card step"><h3>1. Send context</h3><p>Stack, repo state, what is broken, current deployment, and the exact outcome you want.</p></div>
+      <div class="card step"><h3>2. Scope or decline</h3><p>If the request can be done safely as a small pass, you get a fixed quote and expected output. If not, it is declined instead of becoming vague consulting.</p></div>
+      <div class="card step"><h3>3. Setup pass</h3><p>The output is practical: reviewed routes/config, implementation notes, or a narrow wiring pass depending on agreed scope.</p></div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card strip">
+        <h2>Optional monthly billing-health support — founding 5</h2>
+        <div class="price">€29/mo <span class="fine">founding 5, after the first pass</span></div>
+        <p>For founders with a live or nearly-live SaaS who do not want Stripe/Supabase billing state to become silent revenue leakage.</p>
+        <ul>
+          <li>Monthly review of recent Stripe webhook failures, retries, cancels, and portal changes.</li>
+          <li>Supabase paid-state sanity check against the agreed subscription policy.</li>
+          <li>One prioritized small billing/auth fix or implementation note per month.</li>
+          <li>Clear escalation if the issue is bigger than a lightweight support scope.</li>
+        </ul>
+        <div class="actions">
+          <a class="btn primary" href="/billing-health-support/?ref=setup_help_retainer_block" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="retainer_block">See monthly support →</a>
+        </div>
+      </div>
+      <div class="card warn">
+        <h2>Why this is not just another one-off</h2>
+        <ul>
+          <li>Failed renewals, dunning, portal cancels, duplicate webhooks, and env drift happen after launch.</li>
+          <li>A one-time starter cannot prove the production billing loop stays healthy over time.</li>
+          <li>The retainer is intentionally small: recurring protection for a narrow revenue-critical surface, not an agency contract.</li>
+          <li>If nobody asks for it, that is useful evidence to pivot instead of building a fantasy SaaS plan.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>What to include in the first email</h2>
+      <ul>
+        <li>Current stack: Next.js version/router, Supabase package pattern, Stripe mode, deployment host.</li>
+        <li>Repo state: new app, existing app, Ship It Kit purchase, or custom codebase.</li>
+        <li>Exact blocker: auth callback, route protection, checkout, portal, webhook, paid state, env variables, or deployment.</li>
+        <li>What “done” means for this pass: review notes, fixed route, webhook debug, or launch sanity check.</li>
+        <li>Deadline and budget range, even if rough.</li>
+      </ul>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=nextjs_setup_help_bottom&context=nextjs_supabase_stripe_setup&price_range_eur=99-149&quote_path=setup_help&source_ref=nextjs_setup_help_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="nextjs_setup_help_bottom">Send setup request →</a>
+        <a class="btn secondary" href="/ship-it-kit/?ref=nextjs_setup_help_bottom_product" data-ph-event="setup_help_secondary_clicked" data-ph-location="nextjs_setup_help_product">Need the starter instead?</a>
+      </div>
+    </section>
+
+
+    <section class="section card">
+      <h2>Debug artifacts that make this cheaper to scope</h2>
+      <p>Do not send secrets in the first email. Send sanitized evidence that shows where the flow breaks, then repo access can be handled only if the scope is real.</p>
+      <div class="grid2">
+        <div>
+          <h3>For auth callback bugs</h3>
+          <ul>
+            <li>Production URL, callback route path, and the exact final URL after login fails.</li>
+            <li>Supabase Site URL plus redirect allowlist summary, with secrets removed.</li>
+            <li>Vercel env variable names used for app URL / Supabase URL, not secret values.</li>
+            <li>Relevant auth files or file paths: login action, callback route, middleware/proxy matcher, Supabase client helpers.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>For Stripe billing bugs</h3>
+          <ul>
+            <li>Checkout Session ID or test event ID, with customer email/token data redacted.</li>
+            <li>Webhook endpoint mode, recent delivery status, and any signature/handler error.</li>
+            <li>Expected Supabase row/table state after checkout and the actual row state.</li>
+            <li>Success/cancel URL behavior and whether the app unlocks from webhook state or URL visits.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="actions">
+        <a class="btn secondary" href="/blog/supabase-auth-callback-vercel-production/?ref=setup_help_artifacts_auth" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_auth">Auth callback checklist</a>
+        <a class="btn secondary" href="/blog/nextjs-supabase-middleware-redirect-loop/?ref=setup_help_artifacts_middleware" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_middleware">Middleware loop checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-supabase-paid-status/?ref=setup_help_artifacts_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_webhook">Stripe webhook checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-map-customer-to-supabase-user/?ref=setup_help_artifacts_user_mapping" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_user_mapping">User mapping checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-307-308-401-403-vercel/?ref=setup_help_artifacts_webhook_status" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_webhook_status">Webhook status checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-signature-verification-failed-production/?ref=setup_help_artifacts_signature" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_signature">Signature verification checklist</a>
+        <a class="btn secondary" href="/blog/supabase-rls-blocks-stripe-webhook/?ref=setup_help_artifacts_rls" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_rls">Supabase RLS webhook checklist</a>
+        <a class="btn secondary" href="/blog/stripe-webhook-duplicate-events-idempotency-supabase/?ref=setup_help_artifacts_duplicate_webhook" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_duplicate_webhook">Duplicate webhook checklist</a>
+        <a class="btn secondary" href="/blog/stripe-customer-portal-plan-change-supabase-entitlements/?ref=setup_help_artifacts_portal_plan_change" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_portal_plan_change">Portal entitlement checklist</a>
+        <a class="btn secondary" href="/blog/stripe-duplicate-customers-supabase-user/?ref=setup_help_artifacts_duplicate_customer" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_duplicate_customer">Duplicate customer checklist</a>
+        <a class="btn secondary" href="/blog/stripe-trial-ending-supabase-access/?ref=setup_help_artifacts_trial" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_trial">Trial/access checklist</a>
+        <a class="btn secondary" href="/blog/stripe-dunning-past-due-unpaid-supabase-access/?ref=setup_help_artifacts_dunning" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_dunning">Dunning/access checklist</a>
+        <a class="btn secondary" href="/blog/stripe-pause-collection-supabase-access/?ref=setup_help_artifacts_pause" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_pause">Paused billing checklist</a>
+        <a class="btn secondary" href="/blog/vercel-preview-production-callback-stripe-supabase/?ref=setup_help_artifacts_url_drift" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_url_drift">Preview/prod URL checklist</a>
+        <a class="btn secondary" href="/blog/stripe-customer-portal-cancel-supabase-status/?ref=setup_help_artifacts_portal" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_portal">Portal cancel checklist</a>
+        <a class="btn secondary" href="/blog/stripe-test-mode-live-mode-production/?ref=setup_help_artifacts_live_mode" data-ph-event="setup_help_secondary_clicked" data-ph-location="setup_help_artifacts_live_mode">Live-mode billing checklist</a>
+        <a class="btn secondary" href="/billing-health-support/?ref=setup_help_artifacts_monthly_support" data-ph-event="setup_help_retainer_interest" data-ph-product="billing_reliability" data-ph-location="setup_help_artifacts_monthly_support">Monthly billing-health support</a>
+      </div>
+    </section>
+
+    <section class="section card">
+      <h2>FAQ for this stack</h2>
+      <div class="grid2">
+        <div>
+          <h3>How is this different from a free starter?</h3>
+          <p>Free starters are useful, but the last mile is usually project-specific: callback URLs, Supabase auth package choices, Stripe product IDs, webhook secrets, database sync, and deployment envs. This offer is for that last-mile setup/debug pass.</p>
+        </div>
+        <div>
+          <h3>Does this replace Ship It Kit?</h3>
+          <p>No. Ship It Kit is the starter. Setup help is for people who already have a repo, bought a starter, or copied a free example and need the auth + billing flow adapted safely.</p>
+        </div>
+        <div>
+          <h3>What is not included?</h3>
+          <p>No full SaaS build, enterprise RBAC, compliance review, custom multi-tenant architecture, or unlimited support. Those need a different scope.</p>
+        </div>
+        <div>
+          <h3>What evidence should I send?</h3>
+          <p>Send the failing route, screenshots/logs, package versions, deployment host, Supabase redirect settings, Stripe webhook status, and what the paid-user state should become after checkout.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid2">
+      <div class="card"><h2>Starter vs setup help</h2><p><strong>Buy Ship It Kit</strong> if you want a clean Next.js + Supabase + Stripe starter and can adapt it yourself. <strong>Ask for setup help</strong> if you already have a real repo and need billing/auth wiring reviewed or adapted: narrow debug is €99–149; broader adaptation usually starts at €199+.</p></div>
+      <div class="card"><h2>No fake certainty</h2><p>Some repos are too custom for a small pass. In that case, the honest answer is to decline or suggest the smallest diagnostic step, not pretend every integration can be fixed for a flat fee.</p></div>
+    </section>
+  </main>
 </body>
 </html>

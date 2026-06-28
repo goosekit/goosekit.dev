@@ -193,6 +193,23 @@
     .seo-content a { color: #7b8cff; text-decoration: none; }
     .seo-content a:hover { text-decoration: underline; }
     .seo-content code { background: #1a1a2e; padding: 0.15rem 0.4rem; border-radius: 4px; font-size: 0.85rem; }
+    .trust-panel {
+      max-width: 920px;
+      margin: 18px auto 0;
+      padding: 14px 16px;
+      border: 1px solid rgba(34,211,238,0.24);
+      border-radius: 8px;
+      background: rgba(34,211,238,0.06);
+      color: #c9c9d8;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .trust-panel strong { display: block; color: #fff; font-size: 12px; margin-bottom: 2px; }
+    @media (max-width: 760px) { .trust-panel { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 460px) { .trust-panel { grid-template-columns: 1fr; } }
   </style>
 <script defer src="/posthog.js"></script>
 <style id="gk-homepage-header-copy-styles">
@@ -424,6 +441,13 @@
             </div>
         </div>
 
+        <section class="trust-panel" aria-label="Goosekit JWT decoder trust notes">
+            <div><strong>Local decode</strong>Header and payload decoding happens in your browser.</div>
+            <div><strong>No secret required</strong>Inspect claims without verifying the signature.</div>
+            <div><strong>Expiration checks</strong>See exp, iat, nbf, issuer, audience, and common claims.</div>
+            <div><strong>No signup</strong>Paste, inspect, copy decoded JSON, then clear the page.</div>
+        </section>
+
         <div class="seo-content">
   <h2>How to decode a JWT online</h2>
   <p>Paste your JSON Web Token above. Goosekit's JWT Decoder instantly reveals the header, payload, and token claims.</p>
@@ -449,7 +473,7 @@
   <h3>Is this safe for production tokens?</h3>
   <p>Yes. All decoding happens locally — no data is sent to any server.</p>
   <h2>Related Tools</h2>
-  <p>More tools: <a href="/json/">JSON Formatter</a>, <a href="/hash/">Hash Generator</a>, <a href="/base64/">Base64 Encoder</a>. brings 12 of these tools into one portable folder you can run offline.</p>
+  <p>More tools: <a href="/json/">JSON Formatter</a>, <a href="/hash/">Hash Generator</a>, <a href="/base64/">Base64 Encoder</a>, and the <a href="/use-cases/privacy-tools/">privacy tools collection</a>. For sensitive token workflows, read the <a href="/use-cases/decode-jwt-locally/">decode JWT locally guide</a>. No token data is uploaded to Goosekit.</p>
   <h2>Related Guides</h2>
   <p>Read <a href="/blog/best-jwt-decoder-2026/">Best Free JWT Decoder in 2026</a>, <a href="/compare/goosekit-vs-jwt-io/">Goosekit vs jwt.io</a>, <a href="/blog/free-jwt-decoder-online-client-side/">Free Online JWT Decoder</a>, and <a href="/blog/understanding-base64-encoding/">Understanding Base64 Encoding</a>.</p>
 </div>
@@ -472,7 +496,6 @@
 <footer>
             <p><a href="/">🪿 Goosekit</a></p>
             <p style="margin-top: 0.4rem;">Free developer tools. No tracking, no account wall. Open source.</p>
-            <div class="affiliate-credits" style="margin-top:8px;font-size:11px;opacity:0.6;line-height:1.5;">Built with <a href="https://vercel.com/?ref=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="jwt" data-ph-program="vercel" style="color:inherit;">Vercel</a> · Data by <a href="https://supabase.com/?via=GOOSEKIT" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="jwt" data-ph-program="supabase" style="color:inherit;">Supabase</a> · <a href="https://m.do.co/c/GOOSEKIT_TODO" target="_blank" rel="noopener noreferrer sponsored" data-ph-track="affiliate_click" data-ph-tool="jwt" data-ph-program="digitalocean" style="color:inherit;">Deploy your own tool</a></div>
         </footer>
     </div>
 

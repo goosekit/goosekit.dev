@@ -1,15 +1,157 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stripe Hosted Plan Paid but Tenant Entitlement Drifted?</title>
+  <meta name="description" content="Debug Stripe hosted-plan purchases, entitlement resolution, tenant provisioning, billing event ledgers, and Supabase plan access drift.">
+  <link rel="canonical" href="https://goosekit.dev/blog/stripe-hosted-plan-entitlement-provisioning-supabase/">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://goosekit.dev/brand/favicon.png">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Stripe Hosted Plan Paid but Tenant Entitlement Drifted?">
+  <meta property="og:description" content="A replay checklist for Stripe hosted-plan billing that must resolve entitlements and provision tenant platform access exactly once.">
+  <meta property="og:url" content="https://goosekit.dev/blog/stripe-hosted-plan-entitlement-provisioning-supabase/">
+  <meta property="og:site_name" content="Goosekit">
+  <meta property="og:image" content="https://goosekit.dev/brand/logo-dark.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script defer src="/posthog.js"></script>
+  <link rel="stylesheet" href="/brand/goosekit-fonts.css?v=20260501-fonts1">
+  <style>
+    *,*::before,*::after{box-sizing:border-box}body{margin:0;background:#0f0f19;color:#e9e9f4;font-family:Inter,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;line-height:1.72}a{color:#ff9040}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 72px}.nav{display:flex;justify-content:space-between;gap:16px;margin-bottom:48px;color:#9b9bb7;font-size:.95rem}.nav a{color:#c9c9d8;text-decoration:none}.eyebrow{color:#ff9040;text-transform:uppercase;letter-spacing:.14em;font-weight:850;font-size:.8rem;margin-bottom:12px}h1{font-size:clamp(2.15rem,6vw,4.35rem);line-height:1;letter-spacing:-.06em;margin:0 0 20px;color:#fff}h2{font-size:1.72rem;line-height:1.16;letter-spacing:-.035em;margin:46px 0 14px;color:#fff}h3{font-size:1.12rem;margin:22px 0 8px;color:#fff}.lead{font-size:1.17rem;color:#b9b9cc;max-width:800px}.card{background:#151527;border:1px solid #2b2b42;border-radius:18px;padding:24px;margin:24px 0}.cta{background:linear-gradient(135deg,rgba(255,72,0,.18),rgba(255,144,64,.08));border:1px solid rgba(255,144,64,.35)}.checklist{list-style:none;padding:0;margin:0}.checklist li{position:relative;padding:12px 0 12px 34px;border-bottom:1px solid #24243a;color:#c7c7d8}.checklist li:last-child{border-bottom:0}.checklist li::before{content:'✓';position:absolute;left:0;top:12px;color:#3dd68c;font-weight:900}.warn li::before{content:'!';color:#f0b429}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;background:#090914;border:1px solid #2a2a40;padding:2px 6px;border-radius:6px;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 18px;border-radius:11px;text-decoration:none;font-weight:850}.primary{background:#ff4800;color:#fff}.secondary{border:1px solid #34344c;color:#e3e3ee}.note{font-size:.94rem;color:#9b9bb7}.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}pre{overflow:auto;background:#090914;border:1px solid #2a2a40;border-radius:14px;padding:16px;color:#f4f4ff;font-size:.9rem}@media(max-width:720px){.grid2{grid-template-columns:1fr}.wrap{padding-top:20px}}
+  </style>
 </head>
 <body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
+  <main class="wrap">
+    <div class="nav"><a href="/">← Goosekit</a><a href="/stripe-supabase-billing-drift-check/?ref=hosted_plan_entitlement_nav">Run drift check</a><a href="/stripe-billing-reliability-checklist/?ref=hosted_plan_entitlement_nav">Billing checklist</a></div>
+    <div class="eyebrow">Stripe hosted plans + tenant provisioning</div>
+    <h1>Stripe hosted plan paid but tenant entitlement drifted?</h1>
+    <p class="lead">Hosted-plan billing has a wider blast radius than a simple paid flag. A paid Checkout Session may need to resolve the buyer, map the subscription, create or update a tenant, attach platform features, and write a durable entitlement row.</p>
+    <p class="lead">The risky bug is when Stripe truth, entitlement truth, and tenant provisioning truth do not move together. A customer can pay and still get no hosted plan, or a retry can provision the same tenant twice.</p>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">The invariant to protect</h2>
+      <p>One paid hosted-plan purchase should create one entitlement, mapped to one Stripe customer/subscription, one account or tenant, and one provisioning job/result. Checkout success should not be the source of truth.</p>
+      <div class="actions">
+        <a class="btn primary" href="/stripe-supabase-billing-drift-check/?ref=hosted_plan_entitlement_top" data-ph-event="billing_drift_check_clicked" data-ph-product="billing_reliability" data-ph-location="hosted_plan_entitlement_top">Run the billing drift check</a>
+        <a class="btn secondary" href="/blog/stripe-charged-customer-not-provisioned-supabase/?ref=hosted_plan_entitlement_related" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="hosted_plan_entitlement_related">Compare charged-but-not-provisioned risk</a>
+      </div>
+      <p class="note">Fixed-scope review fit: EUR99 for one hosted-plan purchase path, EUR149 when entitlement resolver, billing ledger, and provisioning replay are all in scope.</p>
+    </section>
+
+    <section>
+      <h2>1. Split payment, entitlement, and provisioning state</h2>
+      <p>A hosted plan has at least three truths. If they share one Boolean, debugging becomes guesswork after the first retry, failed write, or tenant setup error.</p>
+      <div class="grid2">
+        <div class="card"><h3>Provider truth</h3><ul class="checklist"><li>Checkout Session id</li><li>Stripe customer id</li><li>Subscription id and status</li><li>Price or hosted-plan id</li></ul></div>
+        <div class="card"><h3>App truth</h3><ul class="checklist"><li>Entitlement resolver output</li><li>Tenant or workspace id</li><li>Provisioning job/result row</li><li>Feature/plan access snapshot</li></ul></div>
+      </div>
+      <p>The entitlement row should explain why a tenant has access. The provisioning row should explain whether the hosted plan was actually created or repaired.</p>
+    </section>
+
+    <section>
+      <h2>2. Make the entitlement resolver replayable</h2>
+      <p>The resolver should be able to run from Stripe event truth plus local account mapping and produce the same entitlement result every time.</p>
+      <pre><code>-- Example shape only.
+create unique index if not exists tenant_entitlements_provider_key
+  on tenant_entitlements (provider, provider_subscription_id, plan_key)
+  where provider_subscription_id is not null;</code></pre>
+      <ul class="checklist">
+        <li>Store Stripe ids separately from tenant ids and user ids.</li>
+        <li>Keep price-to-plan mapping explicit and versioned.</li>
+        <li>Return the existing entitlement on duplicate delivery.</li>
+        <li>Record resolver errors without marking the event fully applied.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>3. Treat tenant provisioning as a separate dispatch</h2>
+      <p>Provisioning often touches platform tables, background jobs, permissions, billing limits, or integrations. That step can fail after payment and entitlement writes succeed.</p>
+      <ul class="checklist warn">
+        <li>Checkout or webhook writes an entitlement but tenant setup fails.</li>
+        <li>Webhook returns 200 after only the billing event row was inserted.</li>
+        <li>Retry sees the event id and skips the missing provisioning job.</li>
+        <li>Tenant plan changes but feature flags or platform limits stay stale.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Keep event rows non-terminal until dispatch finishes</h2>
+      <p>A billing event ledger should distinguish received, resolved entitlement, provisioned tenant, failed dispatch, and repaired. A single received-event idempotency check is not enough.</p>
+      <pre><code>-- Example states, not a required schema.
+received -> entitlement_resolved -> tenant_provisioned
+received -> entitlement_failed -> repair_needed
+entitlement_resolved -> provisioning_failed -> repair_needed</code></pre>
+      <ul class="checklist">
+        <li>Only mark the event complete after entitlement and provisioning side effects are durable.</li>
+        <li>Retry failed local dispatch without duplicating tenant or entitlement rows.</li>
+        <li>Expose a repair state support can query before a customer reports missing access.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>5. Replay these cases before launch</h2>
+      <ul class="checklist">
+        <li>Checkout completed returns to the browser, but access waits for the verified webhook path.</li>
+        <li>First subscription payment resolves one hosted-plan entitlement.</li>
+        <li>Duplicate webhook delivery returns the same entitlement and tenant result.</li>
+        <li>Provisioning fails after payment, then retry completes without a duplicate tenant.</li>
+        <li>Plan change updates entitlement and tenant limits atomically enough to avoid mixed access.</li>
+        <li>Subscription cancel, unpaid, or deleted state removes future hosted-plan access without deleting history.</li>
+      </ul>
+    </section>
+
+    <section class="card" id="hosted-plan-evidence-packet" data-ph-section="hosted_plan_entitlement_evidence_packet">
+      <h2 style="margin-top:0">Evidence packet that makes this review fast</h2>
+      <p>A useful review starts with one real paid flow, not a broad architecture description. Redact secrets, but keep the ids and row shapes that prove where the state diverged.</p>
+      <pre><code>Checkout Session or subscription id:
+Stripe event id and event type:
+Webhook handler file and route:
+Entitlement resolver function:
+Tenant/workspace provisioning job:
+Billing event ledger row states:
+Entitlement row before/after replay:
+Provisioning job/result row:
+Expected tenant state:
+Actual tenant state:
+One replay command, test, or local repro:</code></pre>
+      <p class="note">The key question is whether a verified Stripe event can be replayed into the same entitlement and provisioning result without duplicate tenant access.</p>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=hosted_plan_entitlement_packet&context=hosted_plan_entitlement&price_range_eur=99-149&quote_path=launch_blocker&source_ref=hosted_plan_packet" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="hosted_plan_entitlement_packet">Send this packet for review →</a>
+      </div>
+    </section>
+
+    <section class="card cta">
+      <h2 style="margin-top:0">What to send for a narrow review</h2>
+      <p>Send the Checkout/webhook handler, entitlement resolver, tenant provisioning path, billing event ledger, and one redacted paid user or tenant that drifted. A concrete packet is usually enough to keep this inside a fixed-scope EUR149 review.</p>
+      <div class="actions">
+        <a class="btn primary" href="/go/billing-reliability/setup-request/?source=hosted_plan_entitlement_bottom&context=hosted_plan_entitlement&price_range_eur=99-149&quote_path=launch_blocker&source_ref=hosted_plan_bottom" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="hosted_plan_entitlement_bottom">Request hosted-plan review →</a>
+        <a class="btn secondary" href="/blog/stripe-checkout-success-url-webhook-access/?ref=hosted_plan_entitlement_related_list" data-ph-event="setup_help_secondary_clicked" data-ph-product="billing_reliability" data-ph-location="hosted_plan_entitlement_related">Checkout success URL risk</a>
+      </div>
+      <p class="note">This is a focused billing-state review, not a full platform migration.</p>
+    </section>
+  </main>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var section = document.querySelector('[data-ph-section="hosted_plan_entitlement_evidence_packet"]');
+      if (!section || !('IntersectionObserver' in window)) return;
+      var captured = false;
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (captured || !entry.isIntersecting) return;
+          captured = true;
+          observer.disconnect();
+          if (window.posthog && typeof window.posthog.capture === 'function') {
+            window.posthog.capture('billing_reliability_section_reached', {
+              site: 'goosekit',
+              product: 'billing_reliability',
+              location: 'hosted_plan_entitlement_evidence_packet',
+              path: window.location.pathname
+            });
+          }
+        });
+      }, { threshold: 0.45 });
+      observer.observe(section);
+    });
+  </script>
 </body>
 </html>

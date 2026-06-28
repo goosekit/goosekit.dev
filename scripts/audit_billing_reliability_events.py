@@ -975,6 +975,19 @@ REQUIRED_LINKS = [
     ),
 ]
 
+GENERIC_FREE_TOOLS_REDIRECT_MARKERS = (
+    "<title>Goosekit free tools</title>",
+    "window.location.replace('/tools/')",
+)
+
+COMMERCIAL_ROUTE_MARKERS = (
+    "stripe",
+    "billing",
+    "ship-it-kit",
+    "nextjs-supabase",
+    "saas-credits",
+)
+
 
 class CTAParser(HTMLParser):
     def __init__(self) -> None:
@@ -1017,6 +1030,22 @@ def parse_page(route: str) -> tuple[list[dict[str, str]], str]:
 
 def page_html(route: str) -> str:
     return page_file(route).read_text(encoding="utf-8")
+
+
+def is_generic_free_tools_redirect(html: str) -> bool:
+    return all(marker in html for marker in GENERIC_FREE_TOOLS_REDIRECT_MARKERS)
+
+
+def commercial_redirect_failures() -> list[str]:
+    failures: list[str] = []
+    for file_path in sorted(SITE_ROOT.rglob("index.html")):
+        route = "/" + file_path.relative_to(SITE_ROOT).parent.as_posix().strip("/") + "/"
+        if not any(marker in route for marker in COMMERCIAL_ROUTE_MARKERS):
+            continue
+        html = file_path.read_text(encoding="utf-8")
+        if is_generic_free_tools_redirect(html):
+            failures.append(f"{route}: generic free-tools redirect replaced commercial page")
+    return failures
 
 
 def location_matches(cta: dict[str, str], requirement: RequiredEvent) -> bool:
@@ -1074,6 +1103,24 @@ def has_required_product(cta: dict[str, str], requirement: RequiredEvent) -> boo
 def audit() -> tuple[list[str], list[str]]:
     failures: list[str] = []
     lines: list[str] = []
+    for failure in commercial_redirect_failures():
+        failures.append(failure)
+        lines.append(f"## {failure.split(':', 1)[0]}")
+        lines.append("- FAIL generic free-tools redirect replaced commercial page")
+        lines.append("")
+
+    revenue_routes = sorted({event.path for event in REQUIRED_EVENTS} | {link.path for link in REQUIRED_LINKS})
+    for route in revenue_routes:
+        file_path = page_file(route)
+        if not file_path.exists():
+            continue
+        html = page_html(route)
+        if is_generic_free_tools_redirect(html):
+            failures.append(f"{route}: generic free-tools redirect replaced revenue page")
+            lines.append(f"## {route}")
+            lines.append("- FAIL generic free-tools redirect replaced revenue page")
+            lines.append("")
+
     grouped: dict[str, list[RequiredEvent]] = {}
     for requirement in REQUIRED_EVENTS:
         grouped.setdefault(requirement.path, []).append(requirement)

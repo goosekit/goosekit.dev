@@ -1,21 +1,16 @@
 #!/bin/bash
 # ============================================================
 # audit_revenue_paths.sh
-# Combined pre-deploy / revenue smoke check for Goosekit.
-# Night-sprint block 52 — aggregates block 50 + block 51.
+# Goosekit pre-deploy smoke check for the current free-tools-first contract.
 #
-# WHEN TO RUN:
-#   - Before any deploy to production.
-#   - Before activating a flash sale or changing sale copy/CTAs
-#     (wait until LS price is verified live first).
-#   - After any money-route, pricing, or checkout edits.
-#   - As part of a CI/CD pre-merge gate.
+# Default mode, 2026-06-28:
+#   Goosekit's primary surface is free browser tools. This audit now verifies
+#   that the core tool pages stay free/local/no-signup and that the SEO
+#   workflow pages are present, linked, and indexed in the sitemap.
 #
-# WHAT IT CHECKS:
-#   1. Privacy/offline routing + checkout attribution
-#      (audit_privacy_offline.sh — block 50)
-#   2. Ship It Kit money routes
-#      (audit_shipitkit_money_routes.sh — block 51)
+# Legacy revenue audits:
+#   Set GOOSEKIT_LEGACY_REVENUE_AUDIT=1 to additionally run the historical
+#   Ship It Kit / checkout / billing route audits.
 # ============================================================
 
 set -euo pipefail
@@ -25,49 +20,49 @@ ROOT="${1:-$(cd "$SCRIPT_DIR/.." && pwd)}"
 
 run_and_report() {
   local label="$1"
-  local script="$2"
+  shift
   echo ""
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
   echo "▶  $label"
   echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-  if [[ ! -f "$script" ]]; then
-    echo "⚠️  Script not found: $script — SKIPPING"
-    return 0
-  fi
-  local output
-  local exit_code=0
-  output=$(bash "$script" "$ROOT" 2>&1) || exit_code=$?
-  echo "$output"
-  # Extract and echo the summary line for visibility
-  local summary
-  summary=$(echo "$output" | grep "Summary:" | tail -1)
-  [[ -n "$summary" ]] && echo "" && echo "   → $summary"
-  return $exit_code
+  "$@"
 }
 
-BLOCK50_EXIT=0
-BLOCK51_EXIT=0
+FREE_EXIT=0
+LEGACY_EXIT=0
 
 run_and_report \
-  "Block 50 — Privacy / Offline + Checkout Attribution" \
-  "$SCRIPT_DIR/audit_privacy_offline.sh" || BLOCK50_EXIT=$?
+  "Free tools first contract" \
+  python3 "$SCRIPT_DIR/audit_free_tools_first.py" || FREE_EXIT=$?
 
-run_and_report \
-  "Block 51 — Ship It Kit Money Routes" \
-  "$SCRIPT_DIR/audit_shipitkit_money_routes.sh" || BLOCK51_EXIT=$?
-
-echo ""
-echo "══════════════════════════════════════════════════════"
-echo "Combined Revenue Smoke Check — Final Status"
-echo "══════════════════════════════════════════════════════"
-echo "  Block 50 (privacy/offline):  exit=$BLOCK50_EXIT"
-echo "  Block 51 (money routes):      exit=$BLOCK51_EXIT"
-echo ""
-
-if [[ $BLOCK50_EXIT -eq 0 ]] && [[ $BLOCK51_EXIT -eq 0 ]]; then
-  echo "✅ All checks passed. Safe to deploy."
-  exit 0
+if [[ "${GOOSEKIT_LEGACY_REVENUE_AUDIT:-0}" == "1" ]]; then
+  echo ""
+  echo "Legacy revenue audits enabled via GOOSEKIT_LEGACY_REVENUE_AUDIT=1"
+  for script in "$SCRIPT_DIR/audit_privacy_offline.sh" "$SCRIPT_DIR/audit_shipitkit_money_routes.sh"; do
+    if [[ -f "$script" ]]; then
+      run_and_report "$(basename "$script")" bash "$script" "$ROOT" || LEGACY_EXIT=$?
+    else
+      echo "Skipping missing legacy audit: $script"
+    fi
+  done
 else
-  echo "⚠️  One or more blocks failed. Review above before deploying."
-  exit 1
+  echo ""
+  echo "Legacy revenue audits skipped by default under free-tools-first."
+  echo "Set GOOSEKIT_LEGACY_REVENUE_AUDIT=1 to run Ship It Kit / checkout checks."
 fi
+
+echo ""
+echo "══════════════════════════════════════════════════════"
+echo "Goosekit Smoke Check — Final Status"
+echo "══════════════════════════════════════════════════════"
+echo "  Free tools first: exit=$FREE_EXIT"
+echo "  Legacy revenue:   exit=$LEGACY_EXIT"
+echo ""
+
+if [[ $FREE_EXIT -eq 0 ]] && [[ $LEGACY_EXIT -eq 0 ]]; then
+  echo "All required checks passed."
+  exit 0
+fi
+
+echo "One or more required checks failed."
+exit 1

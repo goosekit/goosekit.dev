@@ -3,13 +3,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="noindex, follow">
-  <title>Goosekit free tools</title>
-  <link rel="canonical" href="https://goosekit.dev/tools/">
-  <meta http-equiv="refresh" content="0;url=/tools/">
-  <script>window.location.replace('/tools/');</script>
+  <title>Stripe paid but Supabase access not granted</title>
+  <meta name="description" content="Debug Stripe paid-but-blocked incidents where Checkout or invoice payment succeeded but Supabase access was not granted.">
+  <link rel="canonical" href="https://goosekit.dev/stripe-paid-but-no-access-supabase/">
+  <script defer src="/posthog.js"></script>
+  <style>body{margin:0;background:#101018;color:#f4f4fb;font-family:Inter,system-ui,sans-serif;line-height:1.65}.wrap{max-width:840px;margin:0 auto;padding:32px 20px 72px}a{color:#ff9040}.card{border:1px solid #303047;background:#171728;border-radius:14px;padding:22px;margin:22px 0}.btn{display:inline-flex;padding:12px 16px;border-radius:10px;text-decoration:none;font-weight:800;margin:6px 8px 6px 0}.primary{background:#ff4800;color:white}.secondary{border:1px solid #41415a;color:#f4f4fb}h1{font-size:clamp(2rem,6vw,4rem);line-height:1}</style>
 </head>
-<body>
-  <p>Goosekit is focused on free browser-based tools. Continue to <a href="/tools/">all free tools</a> or install the <a href="https://chromewebstore.google.com/detail/maodnbppejkbnmjkcohhapmoajedkend" rel="noopener">free extension</a>.</p>
-</body>
+<body><main class="wrap">
+  <a href="/">Goosekit</a>
+  <h1>Stripe says paid, but Supabase access was not granted?</h1>
+  <p>This incident path is for live-money support tickets where a customer paid but your app still blocks the account.</p>
+  <section class="card">
+    <h2>Send a narrow packet</h2>
+    <p>Include the Checkout Session or invoice ID, subscription/customer ID, sanitized Supabase row, webhook delivery status, and intended access rule. No secrets.</p>
+    <a class="btn primary" href="/go/billing-reliability/setup-request/?source=paid_access_incident&context=paid_no_access" data-ph-event="setup_help_request_clicked" data-ph-product="billing_reliability" data-ph-location="paid_access_hero" data-ph-request-context="paid_no_access" data-ph-price-eur="99-149" data-ph-unchecked-risk-keys="paid_no_access">Request paid-access debug</a>
+    <a class="btn secondary" href="/go/billing-reliability/health-support/?source=paid_access_monthly_support&track=access_drift&source_ref=paid_access_hero" data-ph-event="billing_health_interest" data-ph-product="billing_reliability" data-ph-location="paid_access_hero" data-ph-request-context="paid_access_monthly_support" data-ph-price-eur-monthly="29" data-ph-unchecked-risk-keys="paid_no_access">Monitor paid access</a>
+  </section>
+</main></body>
 </html>
